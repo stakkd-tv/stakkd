@@ -852,7 +852,7 @@ concat-map@0.0.1:
   resolved "https://registry.yarnpkg.com/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
   integrity sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==
 
-cross-spawn@^7.0.3, cross-spawn@^7.0.6:
+cross-spawn@^7.0.6:
   version "7.0.6"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-7.0.6.tgz#8a58fe78f00dcd70c370451759dfbfaf03e8ee9f"
   integrity sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==
@@ -2308,7 +2308,7 @@ stream-combiner@~0.0.4:
   dependencies:
     duplexer "~0.1.1"
 
-string-argv@^0.3.1:
+string-argv@^0.3.2:
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/string-argv/-/string-argv-0.3.2.tgz#2b6d0ef24b656274d957d54e0a4bbf6153dc02b6"
   integrity sha512-aqD2Q0144Z+/RqG52NeHEkZauTAUWJO8c6yTftGJKO3Tja5tUgIfmIl6kExvhtxSDP7fXB6DvzkfMpCd/F3G+Q==
@@ -2406,15 +2406,15 @@ ts-api-utils@^2.1.0:
   resolved "https://registry.yarnpkg.com/ts-api-utils/-/ts-api-utils-2.1.0.tgz#595f7094e46eed364c13fd23e75f9513d29baf91"
   integrity sha512-CUgTZL1irw8u29bzrOD/nH85jqyc74D6SshFgujOIA7osm2Rz7dYH77agkx7H4FBNxDq7Cjf+IjaX/8zwFW+ZQ==
 
-tsc-watch@^6.2.1:
-  version "6.3.1"
-  resolved "https://registry.yarnpkg.com/tsc-watch/-/tsc-watch-6.3.1.tgz#b082cae71c599e3af18344cff31342ea17bc6f85"
-  integrity sha512-x1hNJ/m1Cln2OvNJJLPsnWI1pObm+Jq9jF6kyz0flEy/ym7Y9TvU9edg6lXLuGVkhDClwBWi8aWAFE0qgzEkzw==
+tsc-watch@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/tsc-watch/-/tsc-watch-7.0.0.tgz#fcf774d355d83ffae1da3f489a66efafa98d4cf3"
+  integrity sha512-Y1O0yB9gt7hnJ1hJ2WUcx/T898niAI1w8ZZA/tmbFyRawF5SiGbwCv8DX+Zwhcmt3dyO6PvmIF6R/GNEGyWIvg==
   dependencies:
-    cross-spawn "^7.0.3"
+    cross-spawn "^7.0.6"
     node-cleanup "^2.1.2"
     ps-tree "^1.2.0"
-    string-argv "^0.3.1"
+    string-argv "^0.3.2"
 
 tsconfig-paths@^3.15.0:
   version "3.15.0"
