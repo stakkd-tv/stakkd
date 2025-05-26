@@ -1,0 +1,194 @@
+<div class="p-20 flex flex-col gap-8 items-center justify-center relative">
+  <%= image_tag "wordmark.svg" %>
+  <div class="absolute -bottom-9 -left-1 h-9 w-full bg-contain opacity-75" style="background-image: url('<%= image_path "film.svg" %>');"></div>
+  <p class="text-white text-xl font-domine">The <span class="underline font-bold italic text-2xl decoration-2">open</span> platform for movie and TV tracking</p>
+  <div class="flex h-16 outline-3 outline-pop divide-x-3 divide-pop">
+    <div class="primary-btn">
+      <%= link_to new_user_path, class: "link-flex h-full px-6" do %>
+        <i class="fa-solid fa-signature text-xl"></i>
+        Join!
+      <% end %>
+    </div>
+    <div class="secondary-btn">
+      <%= link_to "/", class: "link-flex h-full px-6" do %>
+        <i class="fa-solid fa-people-group text-xl"></i>
+        Contribute
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="max-w-6xl mx-auto my-28 px-6">
+  <div class="grid grid-cols-3 gap-8">
+    <div class="col-span-2">
+      <div class="bg-pop/50 rounded-lg w-full h-full flex border-3 border-transparent outline-0 outline-transparent hover:outline-2 hover:outline-pop outline-offset-8 transition-colors duration-200 ease-in-out">
+        <div class="w-3/12 rounded-lg h-full flex items-center justify-center">
+          <i class="fa-solid fa-square-check text-8xl text-white"></i>
+        </div>
+        <div class="w-3/4 rounded-lg h-full flex flex-col gap-4 p-10 justify-center text-white text-right">
+          <p class="font-bold text-2xl font-domine">Track what you watch.</p>
+          <p>We currently have over 1000 movies and TV shows in our database. If you can't find what you're looking for, you can add it yourself!</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-span-1">
+      <div class="bg-pop/25 rounded-lg w-full h-0 pb-[100%] overflow-hidden relative">
+        <div class="absolute w-full h-full flex justify-center items-center">
+          <img src="https://image.tmdb.org/t/p/original/op8pVzVeDNzGT3gupo3e8hIGPIO.svg" class="w-3/4 h-auto">
+        </div>
+      </div>
+    </div>
+
+    <div class="col-span-1">
+      <div class="bg-pop/25 rounded-lg w-full h-0 pb-[100%] overflow-hidden relative">
+        <div class="absolute w-full h-full flex justify-center items-center">
+          <img src="https://image.tmdb.org/t/p/original/2iplYenbpiFru2n9gay1BTrJxa0.png" class="w-3/4 h-auto">
+        </div>
+      </div>
+    </div>
+    <div class="col-span-2">
+      <div class="bg-pop/50 rounded-lg w-full h-full flex border-3 border-transparent outline-0 outline-transparent hover:outline-2 hover:outline-pop outline-offset-8 transition-colors duration-200 ease-in-out">
+        <div class="w-3/4 rounded-lg h-full flex flex-col gap-4 p-10 justify-center text-white">
+          <p class="font-bold text-2xl font-domine">Watching together just got smarter.</p>
+          <p>Build shared <a href="" class="underline">stacks</a>, drop ratings, and keep the conversation going! Whether it's a solo binge or a group movie night, Stakkd lets you share the experience.</p>
+        </div>
+        <div class="w-3/12 rounded-lg h-full flex items-center justify-center">
+          <i class="fa-solid fa-comments text-8xl text-white"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-span-2">
+      <div class="bg-pop/50 rounded-lg w-full h-full flex border-3 border-transparent outline-0 outline-transparent hover:outline-2 hover:outline-pop outline-offset-8 transition-colors duration-200 ease-in-out">
+        <div class="w-3/12 rounded-lg h-full flex items-center justify-center">
+          <i class="fa-solid fa-puzzle-piece text-8xl text-white"></i>
+        </div>
+        <div class="w-3/4 rounded-lg h-full flex flex-col gap-4 p-10 justify-center text-white text-right">
+          <p class="font-bold text-2xl font-domine">Plug 'n play!</p>
+          <p>Stakkd integrates with your media apps and centers. Your stack, your rules. Visit our <a href="" class="underline">apps and integrations</a> page to learn more.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-span-1">
+      <div class="bg-pop/25 rounded-lg w-full h-0 pb-[100%] overflow-hidden relative">
+        <div class="absolute w-full h-full flex justify-center items-center">
+          <img src="https://image.tmdb.org/t/p/original/2dzfqmWhqBAvOCVQfg6Zvcfu57w.png" class="w-3/4 h-auto">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="text-4xl font-bold font-domine text-white mt-28 mb-10 text-center">Our values</h3>
+  <div class="grid grid-cols-3 gap-8">
+    <div class="col-span-1">
+      <div class="group border-3 border-pop rounded-lg w-full h-0 pb-[100%] overflow-hidden relative">
+        <div class="absolute w-full h-full flex flex-col gap-4 p-4 text-center justify-center items-center opacity-0 group-hover:opacity-100 bg-pop/50 backdrop-blur-sm z-10 transition duration-300 ease-in-out">
+          <p class="font-domine font-bold text-2xl text-white">Open</p>
+          <p class="text-white">Stakkd is free to use and modify. Check out the code <a href="" class="underline">here</a>.</p>
+        </div>
+        <div class="absolute w-full h-full flex justify-center items-center">
+          <i class="fa-solid fa-code-branch text-white text-9xl group-hover:text-transparent transition duration-300 ease-in-out"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-span-1">
+      <div class="group border-3 border-pop rounded-lg w-full h-0 pb-[100%] overflow-hidden relative">
+        <div class="absolute w-full h-full flex flex-col gap-4 p-4 text-center justify-center items-center opacity-0 group-hover:opacity-100 bg-pop/50 backdrop-blur-sm z-10 transition duration-300 ease-in-out">
+          <p class="font-domine font-bold text-2xl text-white">Elective</p>
+          <p class="text-white">Stakkd is not run like a dictatorship. New content guidelines are submitted and voted on by the community.</p>
+        </div>
+        <div class="absolute w-full h-full flex justify-center items-center">
+          <i class="fa-solid fa-hand-fist text-white text-9xl group-hover:text-transparent transition duration-300 ease-in-out"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-span-1">
+      <div class="group border-3 border-pop rounded-lg w-full h-0 pb-[100%] overflow-hidden relative">
+        <div class="absolute w-full h-full flex flex-col gap-4 p-4 text-center justify-center items-center opacity-0 group-hover:opacity-100 bg-pop/50 backdrop-blur-sm z-10 transition duration-300 ease-in-out">
+          <p class="font-domine font-bold text-2xl text-white">Secure</p>
+          <p class="text-white">Your data stays yours. No ads, no tracking, no third parties.</p>
+        </div>
+        <div class="absolute w-full h-full flex justify-center items-center">
+          <i class="fa-solid fa-lock text-white text-9xl group-hover:text-transparent transition duration-300 ease-in-out"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="text-4xl font-bold font-domine text-white mt-28 mb-10 text-center">How does Stakkd compare?</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Stakkd</th>
+        <th>Trakt</th>
+        <th>TMDB</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Open source</td>
+        <td><i class="fa-solid fa-square-check text-green-300"></i></td>
+        <td><i class="fa-solid fa-square-xmark text-red-400"></i></td>
+        <td><i class="fa-solid fa-square-xmark text-red-400"></i></td>
+      </tr>
+      <tr>
+        <td>Self hostable</td>
+        <td><i class="fa-solid fa-square-check text-green-300"></i></td>
+        <td><i class="fa-solid fa-square-xmark text-red-400"></i></td>
+        <td><i class="fa-solid fa-square-xmark text-red-400"></i></td>
+      </tr>
+      <tr>
+        <td>Community driven</td>
+        <td><i class="fa-solid fa-square-check text-green-300"></i></td>
+        <td><i class="fa-solid fa-square-xmark text-red-400"></i></td>
+        <td><i class="fa-solid fa-square-check text-green-300"></i></td>
+      </tr>
+      <tr>
+        <td>Elective</td>
+        <td><i class="fa-solid fa-square-check text-green-300"></i></td>
+        <td><i class="fa-solid fa-square-xmark text-red-400"></i></td>
+        <td><i class="fa-solid fa-square-xmark text-red-400"></i></td>
+      </tr>
+      <tr>
+        <td>Ad free</td>
+        <td><i class="fa-solid fa-square-check text-green-300"></i></td>
+        <td><i class="fa-solid fa-square-xmark text-red-400"></i></td>
+        <td><i class="fa-solid fa-square-check text-green-300"></i></td>
+      </tr>
+      <tr>
+        <td>Movie and TV tracking</td>
+        <td><i class="fa-solid fa-square-check text-green-300"></i></td>
+        <td><i class="fa-solid fa-square-xmark text-green-300"></i></td>
+        <td><i class="fa-solid fa-square-check text-red-400"></i></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="bg-background-darker py-28 px-6 flex flex-col gap-8 items-center">
+  <h3 class="text-4xl font-bold font-domine text-white text-center">So, what are you waiting for?</h3>
+  <p class="text-xl text-white text-center">Join the community. Build your stack. Watch together.</p>
+  <div class="flex h-16 outline-3 outline-pop divide-x-3 divide-pop">
+    <div class="primary-btn">
+      <%= link_to new_user_path, class: "link-flex h-full px-6" do %>
+        <i class="fa-solid fa-signature text-xl"></i>
+        Join!
+      <% end %>
+    </div>
+    <div class="secondary-btn">
+      <%= link_to "https://github.com/stakkd-tv", class: "link-flex h-full px-6" do %>
+        <i class="fa-brands fa-github text-xl"></i>
+        Github
+      <% end %>
+    </div>
+    <div class="secondary-btn">
+      <%= link_to "https://discord.com", class: "link-flex h-full px-6" do %>
+        <i class="fa-brands fa-discord text-xl"></i>
+        Discord
+      <% end %>
+    </div>
+  </div>
+</div>

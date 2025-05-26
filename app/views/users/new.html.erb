@@ -1,0 +1,31 @@
+<div class="max-w-2xl mx-auto h-full flex justify-center items-center px-6">
+  <div class="flex flex-col w-full">
+    <h3 class="text-4xl font-bold font-domine text-white mt-28 mb-10">Join the club</h3>
+    <%= form_with model: @user, class: "flex flex-col gap-6" do |form| %>
+      <% if @user.errors.any? %>
+        <div class="bg-red-400/50 rounded-lg p-4">
+          <p>Your account could not be created due to the following:</p>
+
+          <ul>
+            <% @user.errors.each do |error| %>
+              <li><%= error.full_message.humanize %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <%= form.text_field :username, required: true, autocomplete: "username", placeholder: "Username", value: params[:username], class: "h-14 px-4 border-b-3 border-white focus:border-pop focus:outline-none data-error:border-red-400" %>
+      <%= form.email_field :email_address, required: true, autocomplete: "email", placeholder: "Email", value: params[:email_address], class: "h-14 px-4 border-b-3 border-white focus:border-pop focus:outline-none data-error:border-red-400" %>
+      <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Password", maxlength: 72, class: "h-14 px-4 border-b-3 border-white focus:border-pop focus:outline-none data-error:border-red-400" %>
+      <%= form.password_field :password_confirmation, required: true, autocomplete: "current-password", placeholder: "Confirm password", maxlength: 72, class: "h-14 px-4 border-b-3 border-white focus:border-pop focus:outline-none data-error:border-red-400" %>
+      <div class="w-fit mt-10">
+        <%= button_to do %>
+          <div class="h-16 outline-3 outline-pop cursor-pointer px-6 flex gap-4 items-center text-white font-bold bg-pop/75 hover:bg-pop w-fit transition-all duration-300 ease-in-out">
+            <i class="fa-solid fa-hand-point-right text-xl"></i>
+            Let's go!
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+<% content_for :title, "Stakkd - Countries" %>
+
+<div class="max-w-6xl mx-auto my-28 px-6">
+  <h3 class="text-4xl font-bold font-domine text-white mt-28 mb-10 text-center">Countries</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Flag</th>
+        <th>Code</th>
+        <th>Name</th>
+        <th>Native</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @countries.each do |country| %>
+        <tr>
+          <td>
+            <img src="<%= country.flag %>" class="w-5 mx-auto">
+          </td>
+          <td>
+            <kbd><%= country.code %><kbd>
+          </td>
+          <td><%= country.translated_name %></td>
+          <td><%= country.original_name %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

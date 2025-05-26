@@ -1,0 +1,138 @@
+<div class="h-20 bg-background/75 w-full fixed top-0 border-b-3 border-pop flex divide-x-3 divide-pop backdrop-blur-sm z-20">
+  <div class="min-w-20 w-20">
+    <%= link_to root_path do %>
+      <%= image_tag "icon.svg", class: "invert-100 brightness-0 hover:filter-none transition duration-300 ease-in-out" %>
+    <% end %>
+  </div>
+  <div class="cursor-text w-full flex gap-4 text-white px-9 items-center" onclick="clickSearch()">
+    <i class="fa-solid fa-magnifying-glass text-xl"></i>
+    <input type="text" id="search" name="search" autocomplete="off" placeholder="Start typing to begin your exploration..." class="w-full h-full text-white font-bold focus:outline-none placeholder:font-normal placeholder:text-white placeholder:opacity-75">
+  </div>
+  <script>
+    function clickSearch() {
+      const search = document.getElementById('search')
+      search.focus()
+    }
+  </script>
+
+  <% if authenticated? %>
+    <div class="secondary-btn">
+      <%= link_to movies_path, class: "link-flex h-full px-9" do %>
+        <i class="fa-solid fa-video text-xl"></i>
+        Movies
+      <% end %>
+    </div>
+    <div class="secondary-btn">
+      <%= link_to "/", class: "link-flex h-full px-9" do %>
+        <i class="fa-solid fa-tv text-xl"></i>
+        Shows
+      <% end %>
+    </div>
+    <div class="group secondary-btn relative">
+      <div class="cursor-pointer link-flex h-full px-9">
+        <i class="fa-solid fa-plus text-xl"></i>
+        More
+        <div class="hover-nav-dropdown">
+          <div class="btn">
+            <%= link_to "/", class: "link-flex p-4" do %>
+              <i class="fa-solid fa-person text-xl w-3/20"></i>
+              <p>People</p>
+            <% end %>
+          </div>
+          <div class="btn">
+            <%= link_to "/", class: "link-flex p-4" do %>
+              <i class="fa-solid fa-building text-xl w-3/20"></i>
+              <p>Companies</p>
+            <% end %>
+          </div>
+          <div class="btn">
+            <%= link_to "/", class: "link-flex p-4" do %>
+              <i class="fa-solid fa-toolbox text-xl w-3/20"></i>
+              <p>Collections</p>
+            <% end %>
+          </div>
+          <div class="btn">
+            <%= link_to "/", class: "link-flex p-4" do %>
+              <i class="fa-solid fa-list-check text-xl w-3/20"></i>
+              <p>Lists</p>
+            <% end %>
+          </div>
+          <hr class="border-pop my-2">
+          <div class="btn">
+            <%= link_to genres_path, class: "link-flex p-4" do %>
+              <i class="fa-solid fa-masks-theater text-xl w-3/20"></i>
+              <p>Genres</p>
+            <% end %>
+          </div>
+          <div class="btn">
+            <%= link_to countries_path, class: "link-flex p-4" do %>
+              <i class="fa-solid fa-earth-europe text-xl w-3/20"></i>
+              <p>Countries</p>
+            <% end %>
+          </div>
+          <div class="btn">
+            <%= link_to languages_path, class: "link-flex p-4" do %>
+              <i class="fa-solid fa-language text-xl w-3/20"></i>
+              <p>Languages</p>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="group min-w-20 w-20 flex items-center justify-center relative">
+      <img src="<%= current_user.avatar %>" class="max-h-3/5 rounded-full">
+      <div class="hover-nav-dropdown">
+        <div class="btn">
+          <%= link_to "/", class: "link-flex p-4" do %>
+            <i class="fa-solid fa-user text-xl w-3/20"></i>
+            <p>Profile</p>
+          <% end %>
+        </div>
+        <div class="btn">
+          <%= link_to "/", class: "link-flex p-4" do %>
+            <i class="fa-solid fa-gear text-xl w-3/20"></i>
+            <p>Settings</p>
+          <% end %>
+        </div>
+        <hr class="border-pop my-2">
+        <div class="btn">
+          <%= link_to session_path, class: "w-full cursor-pointer link-flex p-4", data: {turbo_method: :delete} do %>
+            <i class="fa-solid fa-right-from-bracket text-xl w-3/20"></i>
+            <p>Sign out</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    <div class="secondary-btn">
+      <%= link_to "/", class: "link-flex h-full px-9" do %>
+        <i class="fa-solid fa-circle-question text-xl"></i>
+        About
+      <% end %>
+    </div>
+    <div class="secondary-btn">
+      <%= link_to new_session_path, class: "link-flex h-full px-9" do %>
+        <i class="fa-solid fa-right-to-bracket text-xl"></i>
+        Login
+      <% end %>
+    </div>
+    <div class="primary-btn">
+      <%= link_to new_user_path, class: "link-flex h-full px-9" do %>
+        <i class="fa-solid fa-signature text-xl"></i>
+        Join!
+      <% end %>
+    </div>
+  <% end %>
+</div>
+<% if notice %>
+  <div class="w-full bg-green-300/50 backdrop-blur-sm fixed top-20 z-20 p-4 flex justify-between items-center" data-controller="flash-item">
+    <%= notice %>
+    <i class="fa-solid fa-circle-xmark text-xl cursor-pointer" data-flash-item-target="remove"></i>
+  </div>
+<% end %>
+<% if alert %>
+  <div class="w-full bg-red-500/50 backdrop-blur-sm fixed top-20 z-20 p-4 flex justify-between items-center" data-controller="flash-item">
+    <%= alert %>
+    <i class="fa-solid fa-circle-xmark text-xl cursor-pointer" data-flash-item-target="remove"></i>
+  </div>
+<% end %>

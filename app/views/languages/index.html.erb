@@ -1,0 +1,25 @@
+<% content_for :title, "Stakkd - Languages" %>
+
+<div class="max-w-6xl mx-auto my-28 px-6">
+  <h3 class="text-4xl font-bold font-domine text-white mt-28 mb-10 text-center">Languages</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Code</th>
+        <th>Name</th>
+        <th>Native</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @languages.each do |language| %>
+        <tr>
+          <td>
+            <kbd><%= language.code %><kbd>
+          </td>
+          <td><%= language.translated_name %></td>
+          <td><%= language.original_name %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

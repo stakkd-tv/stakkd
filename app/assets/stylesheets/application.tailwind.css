@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+@theme {
+    --color-pop: #f7567c;
+    --color-background: #232122;
+    --color-background-darker: #1c1a1b;
+
+    --font-fugaz: Fugaz One;
+    --font-domine: Domine;
+}
+
+@layer base {
+    .btn {
+        @apply text-white/75 hover:text-white transition duration-300 ease-in-out;
+    }
+
+    .primary-btn {
+        @apply text-white font-bold bg-pop/75 hover:bg-pop transition-all duration-300 ease-in-out;
+    }
+
+    .secondary-btn {
+        @apply text-white/75 hover:text-white transition-all duration-300 ease-in-out;
+    }
+
+    .link-flex {
+        @apply flex gap-4 items-center;
+    }
+
+    .table {
+        @apply w-full text-white;
+    }
+
+    .table thead tr {
+        @apply font-bold font-domine border-b-3 border-pop;
+    }
+
+    .table thead tr th {
+        @apply py-4;
+    }
+
+    .table tbody tr {
+        @apply cursor-pointer hover:bg-background-darker;
+    }
+
+    .table tbody tr td {
+        @apply text-center py-2;
+    }
+
+    .hover-nav-dropdown {
+        @apply absolute z-30 bg-background-darker top-[77px] right-0 w-xs p-4 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto;
+    }
+}

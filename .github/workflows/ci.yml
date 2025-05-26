@@ -1,0 +1,43 @@
+name: "Ruby on Rails CI"
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      RAILS_ENV: test
+      RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Set up database schema
+        run: bin/rails db:schema:load
+      - name: Precompile assets
+        run: bin/rails assets:precompile
+      - name: Run tests
+        run: bundle exec rspec
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Install Yarn packages
+        run: yarn
+      - name: Lint Ruby using Standard
+        run: bundle exec standardrb
+      - name: Lint ERB using erb-lint
+        run: bundle exec erblint --cache --lint-all
+      - name: Lint Javscript/Typescript using eslint
+        run: yarn lint:js

@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+
+# Lints the codebase using standardrb, eslint, and erb_lint
+# Pass --fix to automatically fix linting errors
+# If any command fails, exit with a non-zero status code
+
+def cmd(command)
+  result = system(command)
+  if result == false
+    puts "Command failed: #{command}"
+    exit 1
+  end
+end
+
+if ARGV.include?("--fix")
+  cmd("bundle exec standardrb --fix app spec lib")
+  cmd("yarn lint:js --fix")
+  cmd("bundle exec erb_lint -a --lint-all")
+else
+  cmd("bundle exec standardrb app spec lib")
+  cmd("yarn lint:js")
+  cmd("bundle exec erb_lint --cache --lint-all")
+end
