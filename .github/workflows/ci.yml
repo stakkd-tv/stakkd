@@ -7,8 +7,18 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:11-alpine
+        ports:
+          - "5432:5432"
+        env:
+          POSTGRES_DB: stakkd_test
+          POSTGRES_USER: rails
+          POSTGRES_PASSWORD: password
     env:
       RAILS_ENV: test
+      DATABASE_URL: "postgres://rails:password@localhost:5432/stakd_test"
       RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
     steps:
       - name: Checkout code
@@ -36,7 +46,7 @@ jobs:
       - name: Install Yarn packages
         run: yarn
       - name: Lint Ruby using Standard
-        run: bundle exec standardrb
+        run: bundle exec standardrb app spec lib
       - name: Lint ERB using erb-lint
         run: bundle exec erblint --cache --lint-all
       - name: Lint Javscript/Typescript using eslint
