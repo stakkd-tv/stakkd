@@ -1,5 +1,9 @@
 module Sync
   class Base
+    def self.sync_all
+      [Genres, Countries, Languages].each { _1.new.start }
+    end
+
     def start
       response.each do |json|
         unique_key = unique_value(json)
