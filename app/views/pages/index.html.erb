@@ -1,19 +1,21 @@
-<div class="p-20 flex flex-col gap-8 items-center justify-center relative">
-  <%= image_tag "wordmark.svg" %>
-  <div class="absolute -bottom-9 -left-1 h-9 w-full bg-contain opacity-75" style="background-image: url('<%= image_path "film.svg" %>');"></div>
-  <p class="text-white text-xl font-domine">The <span class="underline font-bold italic text-2xl decoration-2">open</span> platform for movie and TV tracking</p>
-  <div class="flex h-16 outline-3 outline-pop divide-x-3 divide-pop">
-    <div class="primary-btn">
-      <%= link_to new_user_path, class: "link-flex h-full px-6" do %>
-        <i class="fa-solid fa-signature text-xl"></i>
-        Join!
-      <% end %>
-    </div>
-    <div class="secondary-btn">
-      <%= link_to "/", class: "link-flex h-full px-6" do %>
-        <i class="fa-solid fa-people-group text-xl"></i>
-        Contribute
-      <% end %>
+<div class="relative bg-cover bg-no-repeat bg-center" style="background-image: url('<%= image_path "home-bg.jpg" %>');">
+  <div class="p-20 flex flex-col gap-8 items-center justify-center bg-background/75 backdrop-blur-sm">
+    <%= image_tag "wordmark.svg" %>
+    <div class="absolute -bottom-9 -left-1 h-9 w-full bg-contain opacity-75" style="background-image: url('<%= image_path "film.svg" %>');"></div>
+    <p class="text-white text-xl font-domine">The <span class="underline font-bold italic text-2xl decoration-2">open</span> platform for movie and TV tracking</p>
+    <div class="flex h-16 outline-3 outline-pop divide-x-3 divide-pop">
+      <div class="primary-btn">
+        <%= link_to new_user_path, class: "link-flex h-full px-6" do %>
+          <i class="fa-solid fa-signature text-xl"></i>
+          Join!
+        <% end %>
+      </div>
+      <div class="secondary-btn">
+        <%= link_to contribute_path, class: "link-flex h-full px-6" do %>
+          <i class="fa-solid fa-people-group text-xl"></i>
+          Contribute
+        <% end %>
+      </div>
     </div>
   </div>
 </div>
