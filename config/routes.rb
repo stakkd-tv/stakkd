@@ -21,6 +21,10 @@ Rails.application.routes.draw do
     get :images, on: :member
   end
 
+  resources :companies do
+    get :logos, on: :member
+  end
+
   get "about" => "pages#about", :as => :about
   get "contribute" => "pages#contribute", :as => :contribute
 
