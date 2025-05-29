@@ -37,6 +37,17 @@ RSpec.describe "people/show", type: :view do
     expect(rendered).to match(/Translated Name/)
     assert_select "a[href='#{edit_person_path(@person)}']"
     assert_select "a[href='#{@person.imdb_url}']"
+    assert_select "small", text: "TIP: Double click an image to like it."
+  end
+
+  context "when not authenticated" do
+    before do
+      def view.authenticated? = false
+    end
+
+    it "does not render user specific features" do
+      assert_select "small", text: "TIP: Double click an image to like it.", count: 0
+    end
   end
 
   context "when there is no alias" do
