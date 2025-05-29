@@ -1,12 +1,7 @@
-<% content_for :title, "Editing company" %>
+<% content_for :title, "Stakkd - Edit #{@company.name}" %>
 
-<h1>Editing company</h1>
-
-<%= render "form", company: @company %>
-
-<br>
+<%= render "form_header", company: @company %>
 
 <div>
-  <%= link_to "Show this company", @company %> |
-  <%= link_to "Back to companies", companies_path %>
+  <%= render "form", company: @company %>
 </div>
