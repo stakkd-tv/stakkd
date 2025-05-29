@@ -1,0 +1,37 @@
+<% content_for :title, "Stakkd - Edit #{@person.translated_name}" %>
+
+<%= render "form_header", person: @person %>
+
+<div class="max-w-7xl mx-auto my-8 px-6">
+  <div class="form" data-controller="uploads" data-uploads-record-type-value="Person" data-uploads-record-id-value="<%= @person.id %>" data-uploads-type-value="images">
+    <%= render "form_nav", person: @person %>
+
+    <div data-uploads-target="imageTemplate" class="w-full aspect-2/3 border border-pop rounded-lg overflow-hidden relative hidden">
+      <img src="" class="newImg">
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-8 px-6 mt-6" data-uploads-target="images">
+      <% @person.images.each do |image| %>
+        <div class="w-full aspect-2/3 border border-pop rounded-lg overflow-hidden relative">
+          <%= image_tag image %>
+        </div>
+      <% end %>
+    </div>
+
+    <form>
+      <div>
+        <input type="file" data-uploads-target="input" class="mb-6" multiple accept="image/png,image/jpg,image/jpeg">
+        <div data-uploads-target="statuses" class="flex flex-col gap-4">
+          <div data-uploads-target="template" class="p-2 hidden items-center gap-4 border border-pop rounded-lg">
+            <div class="flex items-center justify-center w-4 h-4">
+              <i class="loading fa-solid fa-spinner animate-spin"></i>
+              <i class="error-icon fa-solid fa-square-xmark text-red-400 !hidden"></i>
+              <i class="success-icon fa-solid fa-square-check text-green-300 !hidden"></i>
+            </div>
+            <p class="fileUploadText">Uploading</p>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

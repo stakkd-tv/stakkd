@@ -1,0 +1,85 @@
+<% content_for :title, "Stakkd - #{@person.translated_name}" %>
+
+<div class="max-w-7xl mx-auto my-8 px-6 pt-10">
+  <div class="grid grid-cols-4 gap-8 min-h-screen">
+    <div class="col-span-1 bg-background-darker rounded-lg p-4 flex flex-col gap-10">
+      <%= image_tag @person.image, class: "w-full rounded-lg" %>
+      <% if @person.alias.present? %>
+        <div>
+          <p class="font-domine"><b>AKA:</b></p>
+          <p><%= @person.alias %></p>
+        </div>
+      <% end %>
+      <% if @person.age.present? %>
+        <div>
+          <p class="font-domine"><b>Age:</b></p>
+          <p><%= @person.age %> years old</p>
+        </div>
+      <% end %>
+      <% if @person.dob.present? %>
+        <div>
+          <p class="font-domine"><b>Date of birth:</b></p>
+          <p><%= @person.dob&.strftime("%B %-d, %Y") %></p>
+        </div>
+      <% end %>
+      <% if @person.dod.present? %>
+        <div>
+          <p class="font-domine"><b>Date of death:</b></p>
+          <p><%= @person.dod&.strftime("%B %-d, %Y") %></p>
+        </div>
+      <% end %>
+      <% if @person.gender.present? %>
+        <div>
+          <p class="font-domine"><b>Gender:</b></p>
+          <p><%= @person.gender.humanize %></p>
+        </div>
+      <% end %>
+      <% if @person.known_for.present? %>
+        <div>
+          <p class="font-domine"><b>Known for:</b></p>
+          <p><%= @person.known_for.humanize %></p>
+        </div>
+      <% end %>
+      <div class="flex gap-4 flex-col">
+        <%= link_to "Edit", edit_person_path(@person), class: "link" %>
+        <%= link_to @person.imdb_url, class: "link link-imdb" do %>
+          <i class="fa-brands fa-imdb text-4xl"></i>
+        <% end %>
+      </div>
+    </div>
+    <div class="col-span-3 flex flex-col gap-10">
+      <h3 class="text-4xl font-bold font-domine text-white mt-4">
+        <i class="fa-solid fa-person text-4xl mr-6"></i>
+        <%= @person.translated_name %>
+        <% unless @person.translated_name == @person.original_name %>
+          <small class="text-sm">(<%= @person.original_name %>)</small>
+        <% end %>
+      </h3>
+      <div class="relative">
+        <input type="checkbox" class="hidden peer" id="read-more" autocomplete="off">
+        <label for="read-more" class="cursor-pointer absolute right-0 bottom-0 w-full text-right bg-gradient-to-l from-background to-transparent peer-checked:hidden">Read more</label>
+        <div class="h-[7.5rem] leading-[1.5rem] peer-checked:h-auto flex flex-col gap-2 overflow-hidden">
+          <%= simple_format @person.biography %>
+        </div>
+      </div>
+      <% if @person.images.any? %>
+        <div>
+          <h4 class="text-2xl font-bold font-domine text-white mt-4 mb-4">Gallery:</h4>
+          <div class="w-full flex gap-8 overflow-x-scroll no-scrollbar">
+            <% @person.images.each do |image| %>
+              <div class="min-w-40 aspect-2/3 border border-pop rounded-lg overflow-hidden">
+                <%= image_tag image, class: "w-full" %>
+              </div>
+            <% end %>
+          </div>
+          <% if authenticated? %>
+            <small class="block pt-4"><b>TIP: Double click an image to like it.</b></small>
+          <% end %>
+        </div>
+      <% end %>
+      <div class="w-full h-44 border border-pop rounded-lg flex justify-center items-center">
+        This is a work in progress. Please check back later.
+      </div>
+    </div>
+  </div>
+</div>

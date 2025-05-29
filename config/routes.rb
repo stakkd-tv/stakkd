@@ -13,7 +13,12 @@ Rails.application.routes.draw do
   resources :genres, only: [:index]
   resources :countries, only: [:index]
   resources :languages, only: [:index]
+  resources :people, except: [:destroy] do
+    get :images, on: :member
+  end
 
   get "about" => "pages#about", :as => :about
   get "contribute" => "pages#contribute", :as => :contribute
+
+  post "uploads" => "images#upload", :as => :upload
 end

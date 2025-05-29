@@ -2,6 +2,9 @@ default: &default
   auto_sync:
     class: AutoSyncJob
     schedule: every hour
+  auto_purge:
+    class: AutoPurgeJob
+    schedule: every hour
 
 development:
   <<: *default

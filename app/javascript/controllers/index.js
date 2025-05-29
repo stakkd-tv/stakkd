@@ -5,4 +5,7 @@
 import { application } from './application'
 
 import FlashItemController from './flash_item_controller'
+import UploadsController from './uploads_controller'
+
+application.register('uploads', UploadsController)
 application.register('flash-item', FlashItemController)

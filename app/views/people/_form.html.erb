@@ -1,0 +1,71 @@
+<div class="form">
+<%= render "form_nav", person: %>
+<%= form_with model: person do |form| %>
+  <% if person.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(person.errors.count, "error") %> prohibited this person from being saved:</h2>
+
+      <ul>
+        <% person.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="flex gap-6">
+    <div class="basis-1/3">
+      <%= form.label :translated_name %>
+      <%= form.text_field :translated_name, required: true %>
+    </div>
+
+    <div class="basis-1/3">
+      <%= form.label :original_name %>
+      <%= form.text_field :original_name, required: true %>
+    </div>
+
+    <div class="basis-1/3">
+      <%= form.label :alias %>
+      <%= form.text_field :alias %>
+    </div>
+  </div>
+
+  <div>
+    <%= form.label :biography %>
+    <%= form.text_area :biography, class: "h-44" %>
+  </div>
+
+  <div class="flex gap-6">
+    <div class="basis-1/2">
+      <%= form.label :dob, "Birthday" %>
+      <%= form.date_field :dob %>
+    </div>
+
+    <div class="basis-1/2">
+      <%= form.label :dod, "Date of Death" %>
+      <%= form.date_field :dod %>
+    </div>
+  </div>
+
+  <div class="flex gap-6">
+    <div class="basis-1/3">
+      <%= form.label :imdb_id, "IMDB" %>
+      <%= form.text_field :imdb_id %>
+    </div>
+
+    <div class="basis-1/3">
+      <%= form.label :known_for %>
+      <%= form.text_field :known_for %>
+    </div>
+
+    <div class="basis-1/3">
+      <%= form.label :gender %>
+      <%= form.text_field :gender %>
+    </div>
+  </div>
+
+  <div>
+    <%= form.submit "Save" %>
+  </div>
+<% end %>
+</div>

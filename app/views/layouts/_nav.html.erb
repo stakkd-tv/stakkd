@@ -34,7 +34,7 @@
         More
         <div class="hover-nav-dropdown">
           <div class="btn">
-            <%= link_to "/", class: "link-flex p-4" do %>
+            <%= link_to people_path, class: "link-flex p-4" do %>
               <i class="fa-solid fa-person text-xl w-3/20"></i>
               <p>People</p>
             <% end %>
@@ -125,13 +125,13 @@
   <% end %>
 </div>
 <% if notice %>
-  <div class="w-full bg-green-300/50 backdrop-blur-sm fixed top-20 z-20 p-4 flex justify-between items-center" data-controller="flash-item">
+  <div class="w-full bg-green-300/50 backdrop-blur-sm fixed bottom-0 z-20 p-4 flex justify-between items-center" data-controller="flash-item">
     <%= notice %>
     <i class="fa-solid fa-circle-xmark text-xl cursor-pointer" data-flash-item-target="remove"></i>
   </div>
 <% end %>
 <% if alert %>
-  <div class="w-full bg-red-500/50 backdrop-blur-sm fixed top-20 z-20 p-4 flex justify-between items-center" data-controller="flash-item">
+  <div class="w-full bg-red-500/50 backdrop-blur-sm fixed bottom-0 z-20 p-4 flex justify-between items-center" data-controller="flash-item">
     <%= alert %>
     <i class="fa-solid fa-circle-xmark text-xl cursor-pointer" data-flash-item-target="remove"></i>
   </div>

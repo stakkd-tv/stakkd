@@ -22,6 +22,14 @@
         @apply text-white/75 hover:text-white transition-all duration-300 ease-in-out;
     }
 
+    .link {
+        @apply font-bold cursor-pointer py-2 px-4 border border-pop rounded-lg text-sm hover:bg-pop/75 transition duration-300 ease-in-out text-center;
+    }
+
+    .link-imdb {
+        @apply border-[#F5C518] hover:bg-[#F5C518]/75 hover:text-black;
+    }
+
     .link-flex {
         @apply flex gap-4 items-center;
     }
@@ -48,5 +56,47 @@
 
     .hover-nav-dropdown {
         @apply absolute z-30 bg-background-darker top-[77px] right-0 w-xs p-4 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto;
+    }
+
+    .form {
+        @apply border rounded-lg border-pop bg-background-darker;
+    }
+
+    .form form {
+        @apply flex flex-col gap-6 p-6;
+    }
+
+    .form form label {
+        @apply block mb-2 capitalize;
+    }
+
+    .form form input,
+    .form form textarea {
+        @apply w-full bg-background p-2 border border-pop rounded-lg focus:outline-pop focus:outline;
+    }
+
+    .form form input[type="submit"] {
+        @apply font-bold cursor-pointer py-2 px-4 border border-pop rounded-lg text-sm hover:bg-pop/75 transition duration-300 ease-in-out w-fit;
+    }
+
+    .form .form-nav {
+        @apply flex gap-4 flex-wrap p-3 border-b border-pop;
+    }
+
+    .form .form-nav a {
+        @apply font-bold cursor-pointer py-2 px-4 border border-pop rounded-lg text-sm hover:bg-pop/75 transition duration-300 ease-in-out w-fit;
+    }
+
+    .form .form-nav a[data-active="true"] {
+        @apply bg-pop/75;
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
     }
 }
