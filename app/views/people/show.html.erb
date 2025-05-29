@@ -67,7 +67,7 @@
           <h4 class="text-2xl font-bold font-domine text-white mt-4 mb-4">Gallery:</h4>
           <div class="w-full flex gap-8 overflow-x-scroll no-scrollbar">
             <% @person.images.each do |image| %>
-              <div class="min-w-40 aspect-2/3 border border-pop rounded-lg overflow-hidden">
+              <div class="min-w-40 max-w-40 aspect-2/3 border border-pop rounded-lg overflow-hidden">
                 <%= image_tag image, class: "w-full" %>
               </div>
             <% end %>
