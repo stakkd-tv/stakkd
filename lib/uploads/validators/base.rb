@@ -22,7 +22,6 @@ module Uploads::Validators
     end
 
     def width_valid? = @width.between?(minimum_width, maximum_width)
-    end
 
     def validate_height
       errors.add(:height, "must be between #{minimum_height}px and #{maximum_height}px") unless height_valid?
