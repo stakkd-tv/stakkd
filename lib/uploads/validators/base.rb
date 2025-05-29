@@ -21,13 +21,17 @@ module Uploads::Validators
       errors.add(:width, "must be between #{minimum_width}px and #{maximum_width}px") unless width_valid?
     end
 
-    def width_valid? = @width.between?(minimum_width, maximum_width)
+    def width_valid?
+      @width.between?(minimum_width, maximum_width)
+    end
 
     def validate_height
       errors.add(:height, "must be between #{minimum_height}px and #{maximum_height}px") unless height_valid?
     end
 
-    def height_valid? = @height.between?(minimum_height, maximum_height)
+    def height_valid?
+      @height.between?(minimum_height, maximum_height)
+    end
 
     def validate_aspect_ratio
       errors.add(:aspect_ratio, "must be #{width_aspect}:#{height_aspect}") unless aspect_ratio_valid?
