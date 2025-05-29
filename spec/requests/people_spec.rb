@@ -148,7 +148,7 @@ RSpec.describe "People", type: :request do
         dod: "01-01-2029",
         gender: "female",
         imdb_id: "nm0000001",
-        known_for: "prod",
+        known_for: "writing",
         original_name: "New OG name",
         translated_name: "New Translated name"
       }
@@ -173,7 +173,7 @@ RSpec.describe "People", type: :request do
           expect(person.dod).to eq Date.new(2029, 1, 1)
           expect(person.gender).to eq "female"
           expect(person.imdb_id).to eq "nm0000001"
-          expect(person.known_for).to eq "prod"
+          expect(person.known_for).to eq "writing"
           expect(person.original_name).to eq "New OG name"
           expect(person.translated_name).to eq "New Translated name"
         end

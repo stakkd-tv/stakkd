@@ -10,12 +10,20 @@ class Person < ApplicationRecord
     SOUND = "sound"
   ]
 
+  GENDERS = [
+    UNKNOWN = "unknown",
+    MALE = "male",
+    FEMALE = "female",
+    NON_BINARY = "non-binary"
+  ]
+
   # Associations
   has_many_attached :images
 
   # Validations
   validates_presence_of :original_name, :translated_name
-  validates_inclusion_of :known_for, in: CREDITS
+  validates_inclusion_of :known_for, in: CREDITS, allow_blank: true, allow_nil: true
+  validates_inclusion_of :gender, in: GENDERS
 
   def image = images.first || "2:3.png"
 

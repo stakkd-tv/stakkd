@@ -114,15 +114,6 @@ RSpec.describe "people/show", type: :view do
     end
   end
 
-  context "when there is no gender" do
-    let(:gender) { "" }
-
-    it "does not render gender" do
-      render
-      assert_select "p.font-domine", text: "Gender:", count: 0
-    end
-  end
-
   context "when there is gender" do
     it "renders gender" do
       render

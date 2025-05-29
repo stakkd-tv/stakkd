@@ -10,7 +10,8 @@ RSpec.describe Person, type: :model do
   describe "validations" do
     it { should validate_presence_of(:original_name) }
     it { should validate_presence_of(:translated_name) }
-    it { should validate_inclusion_of(:known_for).in_array(Person::CREDITS) }
+    it { should validate_inclusion_of(:known_for).in_array(Person::CREDITS).allow_blank.allow_nil }
+    it { should validate_inclusion_of(:gender).in_array(Person::GENDERS) }
   end
 
   describe "#image" do
