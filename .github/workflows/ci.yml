@@ -21,6 +21,8 @@ jobs:
       DATABASE_URL: "postgres://rails:password@localhost:5432/stakkd_test"
       RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
     steps:
+      - name: Setup ImageMagick
+        uses: mfinelli/setup-imagemagick@v6
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Install Ruby and gems
