@@ -1,9 +1,21 @@
 class Person < ApplicationRecord
+  CREDITS = [
+    WRITING = "writing",
+    ACTING = "acting",
+    DIRECTING = "directing",
+    ART = "art",
+    CREATOR = "creator",
+    PRODUCTION = "production",
+    VFX = "visual effects",
+    SOUND = "sound"
+  ]
+
   # Associations
   has_many_attached :images
 
   # Validations
   validates_presence_of :original_name, :translated_name
+  validates_inclusion_of :known_for, in: CREDITS
 
   def image = images.first || "2:3.png"
 

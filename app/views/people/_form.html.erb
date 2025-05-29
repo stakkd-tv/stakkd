@@ -55,7 +55,7 @@
 
     <div class="basis-1/3">
       <%= form.label :known_for %>
-      <%= form.text_field :known_for %>
+      <%= form.collection_select :known_for, Person::CREDITS.sort, :to_s, :humanize %>
     </div>
 
     <div class="basis-1/3">

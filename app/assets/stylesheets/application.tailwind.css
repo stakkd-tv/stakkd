@@ -71,8 +71,13 @@
     }
 
     .form form input,
-    .form form textarea {
+    .form form textarea,
+    .form form select {
         @apply w-full bg-background p-2 border border-pop rounded-lg focus:outline-pop focus:outline;
+    }
+
+    .form form select {
+        @apply p-[0.62rem];
     }
 
     .form form input[type="submit"] {
