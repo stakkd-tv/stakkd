@@ -9,13 +9,18 @@ Rails.application.routes.draw do
   resource :session
   resources :passwords, param: :token
   resources :movies
-  resources :users, only: [:new, :create]
-  resources :genres, only: [:index]
-  resources :countries, only: [:index]
-  resources :languages, only: [:index]
-  resources :people, except: [:destroy] do
+  resources :users, only: [ :new, :create ]
+  resources :genres, only: [ :index ]
+  resources :countries, only: [ :index ]
+  resources :languages, only: [ :index ]
+  resources :people, except: [ :destroy ] do
     get :images, on: :member
   end
+
+  resources :companies do
+    get :logos, on: :member
+  end
+
 
   get "about" => "pages#about", :as => :about
   get "contribute" => "pages#contribute", :as => :contribute
