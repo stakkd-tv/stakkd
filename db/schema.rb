@@ -19,6 +19,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_26_135404) do
     t.string "record_type", null: false
     t.bigint "record_id", null: false
     t.bigint "blob_id", null: false
+    t.text "colours", default: ["#f7567c"], array: true
     t.datetime "created_at", null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
@@ -46,7 +47,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_26_135404) do
     t.string "code"
     t.string "translated_name"
     t.string "original_name"
-    t.string "flag_emoji"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["code"], name: "index_countries_on_code", unique: true
@@ -56,6 +56,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_26_135404) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_genres_on_name", unique: true
   end
 
   create_table "languages", force: :cascade do |t|
@@ -86,7 +87,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_26_135404) do
 
   create_table "people", force: :cascade do |t|
     t.string "alias"
-    t.string "biography"
+    t.text "biography"
     t.date "dob"
     t.date "dod"
     t.string "gender", default: "unknown"
