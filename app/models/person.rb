@@ -12,8 +12,8 @@ class Person < ApplicationRecord
 
   GENDERS = [
     UNKNOWN = "unknown",
-    MALE = "male",
     FEMALE = "female",
+    MALE = "male",
     NON_BINARY = "non-binary"
   ]
 
