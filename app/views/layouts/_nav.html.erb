@@ -1,36 +1,30 @@
-<div class="h-20 bg-background/75 w-full fixed top-0 border-b-3 border-pop flex divide-x-3 divide-pop backdrop-blur-sm z-20">
-  <div class="min-w-20 w-20">
+<div data-controller="nav" class="h-16 md:h-20 bg-background/75 w-full fixed top-0 border-b-3 border-pop flex divide-x-3 divide-pop backdrop-blur-sm z-20">
+  <div class="min-w-16 w-16 md:min-w-20 md:w-20">
     <%= link_to root_path do %>
       <%= image_tag "icon.svg", class: "invert-100 brightness-0 hover:filter-none transition duration-300 ease-in-out" %>
     <% end %>
   </div>
-  <div class="cursor-text w-full flex gap-4 text-white px-9 items-center" onclick="clickSearch()">
+  <div class="cursor-text w-full flex gap-4 text-white px-6 md:px-9 items-center" data-nav-target="searchWrapper">
     <i class="fa-solid fa-magnifying-glass text-xl"></i>
-    <input type="text" id="search" name="search" autocomplete="off" placeholder="Start typing to begin your exploration..." class="w-full h-full text-white font-bold focus:outline-none placeholder:font-normal placeholder:text-white placeholder:opacity-75">
+    <input type="text" id="search" name="search" autocomplete="off" data-nav-target="search" placeholder="Start typing to begin your exploration..." class="peer w-full h-full text-white font-bold focus:outline-none placeholder:font-normal placeholder:text-white placeholder:opacity-75">
   </div>
-  <script>
-    function clickSearch() {
-      const search = document.getElementById('search')
-      search.focus()
-    }
-  </script>
 
   <% if authenticated? %>
-    <div class="secondary-btn">
-      <%= link_to movies_path, class: "link-flex h-full px-9" do %>
-        <i class="fa-solid fa-video text-xl"></i>
+    <div data-nav-target="button" class="secondary-btn hidden md:block">
+      <%= link_to movies_path, class: "link-flex h-full px-6 md:px-9" do %>
+        <i class="!hidden md:!block fa-solid fa-video text-xl"></i>
         Movies
       <% end %>
     </div>
-    <div class="secondary-btn">
-      <%= link_to "/", class: "link-flex h-full px-9" do %>
-        <i class="fa-solid fa-tv text-xl"></i>
+    <div data-nav-target="button" class="secondary-btn hidden md:block">
+      <%= link_to "/", class: "link-flex h-full px-6 md:px-9" do %>
+        <i class="!hidden md:!block fa-solid fa-tv text-xl"></i>
         Shows
       <% end %>
     </div>
-    <div class="group secondary-btn relative">
-      <div class="cursor-pointer link-flex h-full px-9">
-        <i class="fa-solid fa-plus text-xl"></i>
+    <div data-nav-target="button" class="group secondary-btn relative hidden md:block">
+      <div class="cursor-pointer link-flex h-full px-6 md:px-9">
+        <i class="!hidden md:!block fa-solid fa-plus text-xl"></i>
         More
         <div class="hover-nav-dropdown">
           <div class="btn">
@@ -104,21 +98,21 @@
       </div>
     </div>
   <% else %>
-    <div class="secondary-btn">
-      <%= link_to about_path, class: "link-flex h-full px-9" do %>
+    <div class="secondary-btn hidden xs:block" data-nav-target="button">
+      <%= link_to about_path, class: "link-flex h-full px-6 md:px-9" do %>
         <i class="fa-solid fa-circle-question text-xl"></i>
-        About
+        <span class="hidden md:inline">About</span>
       <% end %>
     </div>
-    <div class="secondary-btn">
-      <%= link_to new_session_path, class: "link-flex h-full px-9" do %>
+    <div class="secondary-btn" data-nav-target="button">
+      <%= link_to new_session_path, class: "link-flex h-full px-6 md:px-9" do %>
         <i class="fa-solid fa-right-to-bracket text-xl"></i>
-        Login
+        <span class="hidden md:inline">Login</span>
       <% end %>
     </div>
     <div class="primary-btn">
-      <%= link_to new_user_path, class: "link-flex h-full px-9" do %>
-        <i class="fa-solid fa-signature text-xl"></i>
+      <%= link_to new_user_path, class: "link-flex h-full px-6 md:px-9" do %>
+        <i class="!hidden md:!block fa-solid fa-signature text-xl"></i>
         Join!
       <% end %>
     </div>
