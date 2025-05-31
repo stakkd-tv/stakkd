@@ -1,32 +1,39 @@
-<%= form_with(model: company) do |form| %>
-  <% if company.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(company.errors.count, "error") %> prohibited this company from being saved:</h2>
+<div class="form">
+  <%= render "form_nav", company: %>
+  <%= form_with model: company do |form| %>
+    <% if company.errors.any? %>
+      <div style="color: red">
+        <h2><%= pluralize(company.errors.count, "error") %> prohibited this company from being saved:</h2>
 
-      <ul>
-        <% company.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+        <ul>
+          <% company.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="flex gap-6">
+      <div class="basis-1/3">
+        <%= form.label :name %>
+        <%= form.text_field :name, required: true %>
+      </div>
+    </div>
+
+    <div>
+      <%= form.label :description %>
+      <%= form.text_area :description, class: "h-44" %>
+    </div>
+
+    <div class="flex gap-6">
+      <div class="basis-1/3">
+        <%= form.label :homepage, "Homepage" %>
+        <%= form.url_field :homepage %>
+      </div>
+    </div>
+
+    <div>
+      <%= form.submit "Save" %>
     </div>
   <% end %>
-
-  <div>
-    <%= form.label :description, style: "display: block" %>
-    <%= form.text_field :description %>
-  </div>
-
-  <div>
-    <%= form.label :homepage, style: "display: block" %>
-    <%= form.text_field :homepage %>
-  </div>
-
-  <div>
-    <%= form.label :name, style: "display: block" %>
-    <%= form.text_field :name %>
-  </div>
-
-  <div>
-    <%= form.submit %>
-  </div>
-<% end %>
+</div>
