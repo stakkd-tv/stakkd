@@ -73,7 +73,7 @@
         </div>
       </div>
     </div>
-    <div class="group min-w-20 w-20 flex items-center justify-center relative">
+    <div class="group min-w-20 w-20 flex items-center justify-center relative" data-nav-target="user">
       <img src="<%= current_user.avatar %>" class="max-h-3/5 rounded-full">
       <div class="hover-nav-dropdown">
         <div class="btn">
@@ -118,6 +118,74 @@
     </div>
   <% end %>
 </div>
+<% if authenticated? %>
+  <aside id="sidebar" class="md:!hidden fixed top-0 right-0 max-h-screen h-full w-4/5 bg-background-darker z-30 border-l-3 border-pop hidden flex-col gap-2 p-4 overflow-y-scroll no-scrollbar">
+    <div class="w-full flex gap-4 justify-between mb-6">
+      <img src="<%= current_user.avatar %>" class="w-9 h-9 rounded-full">
+      <div class="flex items-center justify-center w-9 h-9 rounded-full cursor-pointer hover:bg-pop/50" id="close-sidebar">
+        <i class="fa-solid fa-xmark text-xl"></i>
+      </div>
+    </div>
+
+    <%= link_to "/", class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50" do %>
+      <i class="fa-solid fa-user w-2/20"></i>
+      Profile
+    <% end %>
+    <hr class="border-pop my-2">
+    <%= link_to movies_path, class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50" do %>
+      <i class="fa-solid fa-video w-2/20"></i>
+      Movies
+    <% end %>
+    <%= link_to "/", class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50" do %>
+      <i class="fa-solid fa-tv w-2/20"></i>
+      Shows
+    <% end %>
+    <hr class="border-pop my-2">
+    <%= link_to people_path, class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50" do %>
+      <i class="fa-solid fa-person w-2/20"></i>
+      People
+    <% end %>
+    <%= link_to "/", class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50" do %>
+      <i class="fa-solid fa-building w-2/20"></i>
+      Companies
+    <% end %>
+    <%= link_to "/", class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50" do %>
+      <i class="fa-solid fa-toolbox w-2/20"></i>
+      Collections
+    <% end %>
+    <%= link_to "/", class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50" do %>
+      <i class="fa-solid fa-list-check w-2/20"></i>
+      Lists
+    <% end %>
+    <details class="rounded-lg border border-pop group">
+      <summary class="link-flex p-2 rounded-lg outline outline-pop hover:bg-pop/50 cursor-pointer group-open:bg-pop/50">
+        <i class="fa-solid fa-plus w-2/20"></i>
+        More
+      </summary>
+      <%= link_to genres_path, class: "link-flex p-2 border border-transparent hover:bg-pop/50" do %>
+        <i class="fa-solid fa-masks-theater w-2/20"></i>
+        Genres
+      <% end %>
+      <%= link_to countries_path, class: "link-flex p-2 border border-transparent hover:bg-pop/50" do %>
+        <i class="fa-solid fa-earth-europe w-2/20"></i>
+        Countries
+      <% end %>
+      <%= link_to languages_path, class: "link-flex p-2 border border-transparent hover:bg-pop/50" do %>
+        <i class="fa-solid fa-language w-2/20"></i>
+        Languages
+      <% end %>
+    </details>
+    <hr class="border-pop my-2">
+    <%= link_to "/", class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50" do %>
+      <i class="fa-solid fa-gear w-2/20"></i>
+      Settings
+    <% end %>
+    <%= link_to session_path, class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50", data: {turbo_method: :delete} do %>
+      <i class="fa-solid fa-right-from-bracket w-2/20"></i>
+      Sign out
+    <% end %>
+  </aside>
+<% end %>
 <% if notice %>
   <div class="w-full bg-green-300/50 backdrop-blur-sm fixed bottom-0 z-20 p-4 flex justify-between items-center" data-controller="flash-item">
     <%= notice %>
