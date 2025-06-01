@@ -5,5 +5,6 @@ FactoryBot.define do
     known_for { "acting" }
     original_name { "Test Name" }
     translated_name { "Test Name" }
+    name_kebab { "" }
   end
 end

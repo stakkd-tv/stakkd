@@ -40,7 +40,7 @@ class PeopleController < ApplicationController
   private
 
   def set_person
-    @person = Person.find(params.expect(:id))
+    @person = Person.from_slug(params.expect(:id))
   end
 
   def person_params

@@ -10,6 +10,7 @@ class CreatePeople < ActiveRecord::Migration[8.0]
       t.string :known_for
       t.string :original_name, null: false
       t.string :translated_name, null: false
+      t.string :name_kebab, null: false
 
       t.timestamps
     end

@@ -1,4 +1,6 @@
 class Person < ApplicationRecord
+  include Slugify
+
   CREDITS = [
     WRITING = "writing",
     ACTING = "acting",
@@ -21,7 +23,7 @@ class Person < ApplicationRecord
   has_many_attached :images
 
   # Validations
-  validates_presence_of :original_name, :translated_name
+  validates_presence_of :original_name, :translated_name, :name_kebab
   validates_inclusion_of :known_for, in: CREDITS, allow_blank: true, allow_nil: true
   validates_inclusion_of :gender, in: GENDERS
 
@@ -34,4 +36,14 @@ class Person < ApplicationRecord
   end
 
   def imdb_url = "https://www.imdb.com/name/#{imdb_id}/"
+
+  def slug=(value)
+    self.name_kebab = value
+  end
+
+  private
+
+  def slug_source = translated_name
+
+  def _slug = name_kebab
 end

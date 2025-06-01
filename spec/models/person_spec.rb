@@ -1,4 +1,5 @@
 require "rails_helper"
+require_relative "shared_examples/slugify"
 
 RSpec.describe Person, type: :model do
   include ActiveSupport::Testing::TimeHelpers
@@ -10,6 +11,7 @@ RSpec.describe Person, type: :model do
   describe "validations" do
     it { should validate_presence_of(:original_name) }
     it { should validate_presence_of(:translated_name) }
+    it { should validate_presence_of(:name_kebab) }
     it { should validate_inclusion_of(:known_for).in_array(Person::CREDITS).allow_blank.allow_nil }
     it { should validate_inclusion_of(:gender).in_array(Person::GENDERS) }
   end
@@ -68,4 +70,6 @@ RSpec.describe Person, type: :model do
       expect(person.imdb_url).to eq "https://www.imdb.com/name/nm0000000/"
     end
   end
+
+  it_behaves_like "a slugified model", :person, :translated_name
 end

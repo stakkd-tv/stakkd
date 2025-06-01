@@ -95,6 +95,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_26_135404) do
     t.string "known_for"
     t.string "original_name", null: false
     t.string "translated_name", null: false
+    t.string "name_kebab", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
