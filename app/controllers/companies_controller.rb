@@ -1,5 +1,5 @@
 class CompaniesController < ApplicationController
-  before_action :set_company, only: %i[ show edit update destroy ]
+  before_action :set_company, only: %i[ show edit update destroy logos]
 
   # GET /companies or /companies.json
   def index
