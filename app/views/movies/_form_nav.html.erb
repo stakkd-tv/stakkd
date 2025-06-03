@@ -1,0 +1,8 @@
+<% if movie.persisted? %>
+  <div class="form-nav">
+    <%= link_to "Details", edit_movie_path(movie), data: {active: action_name == "edit"} %>
+    <%= link_to "Posters", posters_movie_path(movie), data: {active: action_name == "posters"} %>
+    <%= link_to "Backgrounds", backgrounds_movie_path(movie), data: {active: action_name == "backgrounds"} %>
+    <%= link_to "Logos", logos_movie_path(movie), data: {active: action_name == "logos"} %>
+  </div>
+<% end %>

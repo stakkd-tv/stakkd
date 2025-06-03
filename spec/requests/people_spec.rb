@@ -62,7 +62,7 @@ RSpec.describe "People", type: :request do
     end
   end
 
-  describe "GET /edit" do
+  describe "GET /people/:id/edit" do
     context "when the user is signed in" do
       before do
         user = FactoryBot.create(:user)

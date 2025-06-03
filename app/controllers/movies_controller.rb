@@ -1,71 +1,55 @@
 class MoviesController < ApplicationController
-  before_action :set_movie, only: %i[show edit update destroy]
+  before_action :require_authentication, except: [:index, :show]
+  before_action :set_movie, only: [:show, :edit, :update, :posters, :backgrounds, :logos]
 
-  # GET /movies or /movies.json
   def index
-    @movies = Movie.all
+    @movies = Movie.order(:translated_title)
   end
 
-  # GET /movies/1 or /movies/1.json
   def show
   end
 
-  # GET /movies/new
   def new
     @movie = Movie.new
   end
 
-  # GET /movies/1/edit
   def edit
   end
 
-  # POST /movies or /movies.json
   def create
     @movie = Movie.new(movie_params)
 
-    respond_to do |format|
-      if @movie.save
-        format.html { redirect_to @movie, notice: "Movie was successfully created." }
-        format.json { render :show, status: :created, location: @movie }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @movie.errors, status: :unprocessable_entity }
-      end
+    if @movie.save
+      redirect_to edit_movie_path(@movie), notice: "Movie was successfully created."
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /movies/1 or /movies/1.json
   def update
-    respond_to do |format|
-      if @movie.update(movie_params)
-        format.html { redirect_to @movie, notice: "Movie was successfully updated." }
-        format.json { render :show, status: :ok, location: @movie }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @movie.errors, status: :unprocessable_entity }
-      end
+    if @movie.update(movie_params)
+      redirect_to @movie, notice: "Movie was successfully updated."
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
-  # DELETE /movies/1 or /movies/1.json
-  def destroy
-    @movie.destroy!
+  def posters
+  end
 
-    respond_to do |format|
-      format.html { redirect_to movies_path, status: :see_other, notice: "Movie was successfully destroyed." }
-      format.json { head :no_content }
-    end
+  def backgrounds
+  end
+
+  def logos
   end
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
   def set_movie
-    @movie = Movie.find(params.expect(:id))
+    @movie = Movie.from_slug(params.expect(:id))
   end
 
-  # Only allow a list of trusted parameters through.
   def movie_params
-    params.expect(movie: [:budget, :homepage, :imdb_id, :original_title, :overview, :release_date, :revenue, :runtime, :status, :tagline, :translated_title, :title_kebab])
+    params.expect(movie: [:language_id, :country_id, :original_title, :translated_title, :overview, :status, :runtime, :revenue, :budget, :homepage, :imdb_id])
   end
 end

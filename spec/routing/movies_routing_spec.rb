@@ -30,8 +30,16 @@ RSpec.describe MoviesController, type: :routing do
       expect(patch: "/movies/1").to route_to("movies#update", id: "1")
     end
 
-    it "routes to #destroy" do
-      expect(delete: "/movies/1").to route_to("movies#destroy", id: "1")
+    it "routes to #posters" do
+      expect(get: "/movies/1/posters").to route_to("movies#posters", id: "1")
+    end
+
+    it "routes to #backgrounds" do
+      expect(get: "/movies/1/backgrounds").to route_to("movies#backgrounds", id: "1")
+    end
+
+    it "routes to #logos" do
+      expect(get: "/movies/1/logos").to route_to("movies#logos", id: "1")
     end
   end
 end

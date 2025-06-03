@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_26_135404) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_01_095244) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -69,20 +69,22 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_26_135404) do
   end
 
   create_table "movies", force: :cascade do |t|
-    t.decimal "budget"
+    t.bigint "language_id"
+    t.bigint "country_id"
+    t.string "original_title", null: false
+    t.string "translated_title", null: false
+    t.text "overview"
+    t.string "status"
+    t.integer "runtime", default: 0, null: false
+    t.decimal "revenue", default: "0.0", null: false
+    t.decimal "budget", default: "0.0", null: false
     t.string "homepage"
     t.string "imdb_id"
-    t.string "original_title"
-    t.string "overview"
-    t.date "release_date"
-    t.decimal "revenue"
-    t.integer "runtime"
-    t.string "status"
-    t.string "tagline"
-    t.string "translated_title"
-    t.string "title_kebab"
+    t.string "title_kebab", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["country_id"], name: "index_movies_on_country_id"
+    t.index ["language_id"], name: "index_movies_on_language_id"
   end
 
   create_table "people", force: :cascade do |t|

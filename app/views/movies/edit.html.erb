@@ -1,12 +1,7 @@
-<% content_for :title, "Editing movie" %>
+<% content_for :title, "Stakkd - Edit #{@movie.translated_title}" %>
 
-<h1>Editing movie</h1>
+<%= render "form_header", movie: @movie %>
 
-<%= render "form", movie: @movie %>
-
-<br>
-
-<div>
-  <%= link_to "Show this movie", @movie %> |
-  <%= link_to "Back to movies", movies_path %>
+<div class="max-w-7xl mx-auto my-8 px-6">
+  <%= render "form", movie: @movie %>
 </div>

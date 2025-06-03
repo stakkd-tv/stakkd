@@ -1,5 +1,5 @@
 class PeopleController < ApplicationController
-  before_action :require_authentication, only: [:new, :edit, :create, :update, :images]
+  before_action :require_authentication, except: [:index, :show]
   before_action :set_person, only: [:show, :edit, :update, :images]
 
   def index

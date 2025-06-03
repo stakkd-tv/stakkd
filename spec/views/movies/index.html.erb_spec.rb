@@ -2,49 +2,21 @@ require "rails_helper"
 
 RSpec.describe "movies/index", type: :view do
   before(:each) do
-    assign(:movies, [
-      Movie.create!(
-        budget: "9.99",
-        homepage: "Homepage",
-        imdb_id: "Imdb",
-        original_title: "Original Title",
-        overview: "Overview",
-        revenue: "10.99",
-        runtime: 2,
-        status: "Status",
-        tagline: "Tagline",
-        translated_title: "Translated Title",
-        title_kebab: "Title Kebab"
-      ),
-      Movie.create!(
-        budget: "9.99",
-        homepage: "Homepage",
-        imdb_id: "Imdb",
-        original_title: "Original Title",
-        overview: "Overview",
-        revenue: "10.99",
-        runtime: 2,
-        status: "Status",
-        tagline: "Tagline",
-        translated_title: "Translated Title",
-        title_kebab: "Title Kebab"
-      )
-    ])
+    @m1 = FactoryBot.create(:movie, translated_title: "Back to the Present")
+    @m2 = FactoryBot.create(:movie, translated_title: "Back to the Future")
+    assign(:movies, [@m1, @m2])
+  end
+
+  it "renders a new movie link" do
+    render
+    assert_select "a[href='#{new_movie_path}']"
   end
 
   it "renders a list of movies" do
     render
-    cell_selector = "div>p"
-    assert_select cell_selector, text: Regexp.new("9.99"), count: 2
-    assert_select cell_selector, text: Regexp.new("Homepage"), count: 2
-    assert_select cell_selector, text: Regexp.new("Imdb"), count: 2
-    assert_select cell_selector, text: Regexp.new("Original Title"), count: 2
-    assert_select cell_selector, text: Regexp.new("Overview"), count: 2
-    assert_select cell_selector, text: Regexp.new("10.99"), count: 2
-    assert_select cell_selector, text: Regexp.new(2.to_s), count: 2
-    assert_select cell_selector, text: Regexp.new("Status"), count: 2
-    assert_select cell_selector, text: Regexp.new("Tagline"), count: 2
-    assert_select cell_selector, text: Regexp.new("Translated Title"), count: 2
-    assert_select cell_selector, text: Regexp.new("Title Kebab"), count: 2
+    assert_select "p", text: "Back to the Present"
+    assert_select "p", text: "Back to the Future"
+    assert_select "a[href='#{movie_path(@m1)}']"
+    assert_select "a[href='#{movie_path(@m2)}']"
   end
 end

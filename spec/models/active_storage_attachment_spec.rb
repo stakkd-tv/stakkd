@@ -9,9 +9,16 @@ RSpec.describe ActiveStorage::Attachment, type: :model do
   end
 
   describe "#dominant_colour" do
-    it "returns the dominant colour" do
-      person = FactoryBot.create(:person, images: [Rack::Test::UploadedFile.new("spec/support/assets/300x450.png", "image/png")])
-      expect(person.images.first.dominant_colour).to eq "#f7567c"
+    it "returns the most vibrant, dominant colour" do
+      image = ActiveStorage::Attachment.new(colours: ["#ffffff", "#000000", "#36A2C8"])
+      expect(image.dominant_colour).to eq "#36A2C8"
+    end
+  end
+
+  describe "#filtered_colours" do
+    it "filters out any dull/grey colours" do
+      image = ActiveStorage::Attachment.new(colours: ["#ffffff", "#000000", "#36A2C8"])
+      expect(image.filtered_colours).to eq ["#36A2C8"]
     end
   end
 end

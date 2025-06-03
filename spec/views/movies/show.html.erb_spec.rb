@@ -1,34 +1,121 @@
 require "rails_helper"
 
 RSpec.describe "movies/show", type: :view do
+  let(:posters) { [] }
+  let(:backgrounds) { [] }
+  let(:logos) { [] }
+
   before(:each) do
-    assign(:movie, Movie.create!(
-      budget: "9.99",
-      homepage: "Homepage",
-      imdb_id: "Imdb",
+    def view.authenticated? = false
+    assign(:movie, FactoryBot.create(
+      :movie,
       original_title: "Original Title",
-      overview: "Overview",
-      revenue: "9.99",
-      runtime: 2,
-      status: "Status",
-      tagline: "Tagline",
       translated_title: "Translated Title",
-      title_kebab: "Title Kebab"
+      overview: "This is overview",
+      status: "released",
+      runtime: 2,
+      revenue: 99999999,
+      budget: 100000000,
+      homepage: "https://google.com",
+      imdb_id: "tt0000000",
+      posters:,
+      backgrounds:,
+      logos:
     ))
   end
 
   it "renders attributes in <p>" do
     render
-    expect(rendered).to match(/9.99/)
-    expect(rendered).to match(/Homepage/)
-    expect(rendered).to match(/Imdb/)
-    expect(rendered).to match(/Original Title/)
-    expect(rendered).to match(/Overview/)
-    expect(rendered).to match(/9.99/)
-    expect(rendered).to match(/2/)
-    expect(rendered).to match(/Status/)
-    expect(rendered).to match(/Tagline/)
     expect(rendered).to match(/Translated Title/)
-    expect(rendered).to match(/Title Kebab/)
+    expect(rendered).to match(/This is overview/)
+    expect(rendered).to match(/Released/)
+    expect(rendered).to match(/2 minutes/)
+    expect(rendered).to match(/99,999,999/)
+    expect(rendered).to match(/100,000,000/)
+    assert_select "a[href='https://www.imdb.com/name/tt0000000/']"
+    assert_select "a[href='https://google.com']"
+  end
+
+  context "when the movie has a background" do
+    let(:backgrounds) { [Rack::Test::UploadedFile.new("spec/support/assets/300x450.png", "image/png")] }
+
+    it "renders the background header" do
+      render
+      assert_select "img[class='w-full min-h-96 object-cover blur-xs'][src*='300x450.png']"
+    end
+
+    it "renders the backgrounds section" do
+      render
+      expect(rendered).to match(/Backgrounds/)
+      assert_select "img[src*='300x450.png']", count: 2
+    end
+
+    it "does not render the tip" do
+      render
+      expect(rendered).not_to match(/TIP: Double click an image to like it./)
+    end
+
+    context "user is authenticated" do
+      before do
+        def view.authenticated? = true
+      end
+
+      it "renders the tip" do
+        render
+        expect(rendered).to match(/TIP: Double click an image to like it./)
+      end
+    end
+  end
+
+  context "when the movie has a poster" do
+    let(:posters) { [Rack::Test::UploadedFile.new("spec/support/assets/300x450.png", "image/png")] }
+
+    it "renders the posters section" do
+      render
+      expect(rendered).to match(/Posters/)
+      assert_select "img[src*='300x450.png']", count: 2 # One for poster, the other in the gallery section
+    end
+
+    it "does not render the tip" do
+      render
+      expect(rendered).not_to match(/TIP: Double click an image to like it./)
+    end
+
+    context "user is authenticated" do
+      before do
+        def view.authenticated? = true
+      end
+
+      it "renders the tip" do
+        render
+        expect(rendered).to match(/TIP: Double click an image to like it./)
+      end
+    end
+  end
+
+  context "when the movie has a logo" do
+    let(:logos) { [Rack::Test::UploadedFile.new("spec/support/assets/300x450.png", "image/png")] }
+
+    it "renders the posters section" do
+      render
+      expect(rendered).to match(/Logos/)
+      assert_select "img[src*='300x450.png']", count: 1
+    end
+
+    it "does not render the tip" do
+      render
+      expect(rendered).not_to match(/TIP: Double click an image to like it./)
+    end
+
+    context "user is authenticated" do
+      before do
+        def view.authenticated? = true
+      end
+
+      it "renders the tip" do
+        render
+        expect(rendered).to match(/TIP: Double click an image to like it./)
+      end
+    end
   end
 end

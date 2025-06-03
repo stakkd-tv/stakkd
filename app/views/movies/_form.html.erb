@@ -1,4 +1,6 @@
-<%= form_with(model: movie) do |form| %>
+<div class="form">
+<%= render "form_nav", movie: %>
+<%= form_with model: movie do |form| %>
   <% if movie.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(movie.errors.count, "error") %> prohibited this movie from being saved:</h2>
@@ -11,67 +13,73 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :budget, style: "display: block" %>
-    <%= form.text_field :budget %>
+  <div class="flex flex-col xs:flex-row gap-6">
+    <div class="basis-1/2">
+      <%= form.label :translated_title %>
+      <%= form.text_field :translated_title, required: true %>
+    </div>
+
+    <div class="basis-1/2">
+      <%= form.label :original_title %>
+      <%= form.text_field :original_title, required: true %>
+    </div>
+  </div>
+
+  <div class="flex flex-col md:flex-row gap-6">
+    <div class="basis-1/2">
+      <%= form.label :language_id %>
+      <%= form.collection_select :language_id, Language.order(:code), :id, :translated_name %>
+    </div>
+
+    <div class="basis-1/2">
+      <%= form.label :country_id %>
+      <%= form.collection_select :country_id, Country.order(:code), :id, :translated_name %>
+    </div>
   </div>
 
   <div>
-    <%= form.label :homepage, style: "display: block" %>
-    <%= form.text_field :homepage %>
+    <%= form.label :overview %>
+    <%= form.text_area :overview, class: "h-60" %>
+  </div>
+
+  <div class="flex flex-col xs:flex-row gap-6">
+    <div class="basis-1/2">
+      <%= form.label :status %>
+      <%= form.collection_select :status, Movie::STATUSES.sort, :to_s, :humanize %>
+    </div>
+
+    <div class="basis-1/2">
+      <%= form.label :runtime %>
+      <%= form.number_field :runtime, required: true %>
+    </div>
+  </div>
+
+  <div class="flex flex-col xs:flex-row gap-6">
+    <div class="basis-1/2">
+      <%= form.label :revenue %>
+      <%= form.number_field :revenue, required: true %>
+    </div>
+
+    <div class="basis-1/2">
+      <%= form.label :budget %>
+      <%= form.number_field :budget, required: true %>
+    </div>
+  </div>
+
+  <div class="flex flex-col xs:flex-row gap-6">
+    <div class="basis-1/2">
+      <%= form.label :imdb_id, "IMDB" %>
+      <%= form.text_field :imdb_id %>
+    </div>
+
+    <div class="basis-1/2">
+      <%= form.label :homepage %>
+      <%= form.text_field :homepage %>
+    </div>
   </div>
 
   <div>
-    <%= form.label :imdb_id, style: "display: block" %>
-    <%= form.text_field :imdb_id %>
-  </div>
-
-  <div>
-    <%= form.label :original_title, style: "display: block" %>
-    <%= form.text_field :original_title %>
-  </div>
-
-  <div>
-    <%= form.label :overview, style: "display: block" %>
-    <%= form.text_field :overview %>
-  </div>
-
-  <div>
-    <%= form.label :release_date, style: "display: block" %>
-    <%= form.date_field :release_date %>
-  </div>
-
-  <div>
-    <%= form.label :revenue, style: "display: block" %>
-    <%= form.text_field :revenue %>
-  </div>
-
-  <div>
-    <%= form.label :runtime, style: "display: block" %>
-    <%= form.number_field :runtime %>
-  </div>
-
-  <div>
-    <%= form.label :status, style: "display: block" %>
-    <%= form.text_field :status %>
-  </div>
-
-  <div>
-    <%= form.label :tagline, style: "display: block" %>
-    <%= form.text_field :tagline %>
-  </div>
-
-  <div>
-    <%= form.label :translated_title, style: "display: block" %>
-    <%= form.text_field :translated_title %>
-  </div>
-
-  <div>
-    <%= form.label :title_kebab, style: "display: block" %>
-    <%= form.text_field :title_kebab %>
-  </div>
-
-  <div>
-    <%= form.submit %>
+    <%= form.submit "Save" %>
   </div>
 <% end %>
+</div>
