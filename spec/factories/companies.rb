@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :company do
-    description { "MyString" }
-    homepage { "MyString" }
-    name { "MyString" }
+    description { "The sussy corporation" }
+    homepage { "https://example.com" }
+    name { "Amogus Inc" }
   end
 end
