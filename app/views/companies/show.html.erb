@@ -1,5 +1,7 @@
 <% content_for :title, "Stakkd - #{@company.name}" %>
 
+<%= render "shared/colour_from_image", image: @company.logo %>
+
 <div class="max-w-7xl mx-auto my-8 px-6 pt-10">
   <div class="grid grid-cols-4 gap-8 min-h-screen">
     <div class="col-span-1 bg-background-darker rounded-lg p-4 flex flex-col gap-10">
