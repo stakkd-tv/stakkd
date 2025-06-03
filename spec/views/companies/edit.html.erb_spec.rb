@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "companies/edit", type: :view do
   let(:company) {
@@ -17,7 +17,6 @@ RSpec.describe "companies/edit", type: :view do
     render
 
     assert_select "form[action=?][method=?]", company_path(company), "post" do
-
       assert_select "input[name=?]", "company[description]"
 
       assert_select "input[name=?]", "company[homepage]"

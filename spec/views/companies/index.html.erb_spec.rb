@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "companies/index", type: :view do
   before(:each) do
@@ -18,9 +18,9 @@ RSpec.describe "companies/index", type: :view do
 
   it "renders a list of companies" do
     render
-    cell_selector = 'div>p'
-    assert_select cell_selector, text: Regexp.new("Description".to_s), count: 2
-    assert_select cell_selector, text: Regexp.new("Homepage".to_s), count: 2
-    assert_select cell_selector, text: Regexp.new("Name".to_s), count: 2
+    cell_selector = "div>p"
+    assert_select cell_selector, text: Regexp.new("Description"), count: 2
+    assert_select cell_selector, text: Regexp.new("Homepage"), count: 2
+    assert_select cell_selector, text: Regexp.new("Name"), count: 2
   end
 end

@@ -1,6 +1,6 @@
 <% if company.persisted? %>
   <div class="form-nav">
     <%= link_to "Details", edit_company_path(company), data: {active: action_name == "edit"} %>
-    <%= link_to "Logos", logos_company_path(company), data: {active: action_name == "logos"} %> 
+    <%= link_to "Logos", logos_company_path(company), data: {active: action_name == "logos"} %>
   </div>
 <% end %>
