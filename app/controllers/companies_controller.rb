@@ -1,4 +1,5 @@
 class CompaniesController < ApplicationController
+  before_action :require_authentication, except: [:index, :show]
   before_action :set_company, only: [:show, :edit, :update, :logos]
 
   def index
