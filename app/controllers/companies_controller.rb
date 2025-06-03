@@ -36,15 +36,6 @@ class CompaniesController < ApplicationController
   def logos
   end
 
-  def destroy
-    @company.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to companies_path, status: :see_other, notice: "Company was successfully destroyed." }
-      format.json { head :no_content }
-    end
-  end
-
   private
 
   def set_company
