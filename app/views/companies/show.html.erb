@@ -3,16 +3,16 @@
 <%= render "shared/colour_from_image", image: @company.logo %>
 
 <div class="max-w-7xl mx-auto my-8 px-6 pt-10">
-  <div class="grid grid-cols-4 gap-8 min-h-screen">
-    <div class="col-span-1 bg-background-darker rounded-lg p-4 flex flex-col gap-10">
-      <%= image_tag @company.logo, class: "w-full rounded-lg" %>
+  <div class="grid grid-cols-1 md:grid-cols-4 md:gap-8 md:min-h-screen">
+    <div class="col-span-1 bg-background-darker rounded-lg p-4 flex flex-col gap-10 items-center md:items-start">
+      <%= image_tag @company.logo, class: "max-h-40 w-fit md:w-full md:max-h-none rounded-lg" %>
       <% if @company.name.present? %>
         <div>
           <p class="font-domine"><b>Name:</b></p>
           <p><%= @company.name %></p>
         </div>
       <% end %>
-      <div class="flex gap-4 flex-col">
+      <div class="flex gap-4 flex-col w-full">
         <%= link_to "Edit", edit_company_path(@company), class: "link" %>
         <% if @company.homepage.present? %>
           <%= link_to @company.homepage, class: "link link-flex justify-center w-full" do %>
@@ -22,17 +22,13 @@
       </div>
     </div>
     <div class="col-span-3 flex flex-col gap-10">
-      <h3 class="text-4xl font-bold font-domine text-white mt-4">
-        <i class="fa-solid fa-person text-4xl mr-6"></i>
+      <h3 class="text-4xl font-bold font-domine text-white mt-10 md:mt-4">
+        <i class="fa-solid fa-building text-4xl mr-6"></i>
         <%= @company.name %>
       </h3>
       <% if @company.description.present? %>
-        <div class="relative">
-          <input type="checkbox" class="hidden peer" id="read-more" autocomplete="off">
-          <label for="read-more" class="cursor-pointer absolute right-0 bottom-0 w-full text-right bg-gradient-to-l from-background to-transparent peer-checked:hidden">Read more</label>
-          <div class="h-[7.5rem] leading-[1.5rem] peer-checked:h-auto flex flex-col gap-2 overflow-hidden">
-            <%= simple_format @company.description %>
-          </div>
+        <div class="leading-[1.5rem] text-sm md:text-base flex flex-col gap-6">
+          <%= simple_format @company.description %>
         </div>
       <% end %>
       <% if @company.logos.any? %>
