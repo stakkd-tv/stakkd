@@ -2,16 +2,16 @@ module Uploads::Validators
   class CompanyLogosValidator < Base
     private
 
-    def minimum_width = 300
+    def minimum_width = 400
 
-    def maximum_width = 2000
+    def maximum_width = 3000
 
-    def minimum_height = 450
+    def minimum_height = 400
 
     def maximum_height = 3000
 
-    def width_aspect = 2
+    def width_aspect = 1
 
-    def height_aspect = 3
+    def height_aspect = 1
   end
 end

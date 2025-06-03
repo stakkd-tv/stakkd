@@ -20,7 +20,6 @@ Rails.application.routes.draw do
   resources :people, except: [:destroy] do
     get :images, on: :member
   end
-
   resources :companies do
     get :logos, on: :member
   end
