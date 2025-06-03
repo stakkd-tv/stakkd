@@ -2,5 +2,8 @@ class Company < ApplicationRecord
   # Associations
   has_many_attached :logos
 
-  def logo = logos.first || "2:3.png"
+  # Validations
+  validates_presence_of :name
+
+  def logo = logos.first || "1:1.png"
 end
