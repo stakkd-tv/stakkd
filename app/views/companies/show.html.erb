@@ -12,8 +12,10 @@
       <% end %>
       <div class="flex gap-4 flex-col">
         <%= link_to "Edit", edit_company_path(@company), class: "link" %>
-        <%= link_to @company.homepage, class: "link link-imdb" do %>
-          <i class="fa-brands fa-imdb text-4xl"></i>
+        <% if @company.homepage.present? %>
+          <%= link_to @company.homepage, class: "link link-flex justify-center w-full" do %>
+            <i class="fa-solid fa-globe text-2xl"></i>
+          <% end %>
         <% end %>
       </div>
     </div>
@@ -33,10 +35,10 @@
       <% end %>
       <% if @company.logos.any? %>
         <div>
-          <h4 class="text-2xl font-bold font-domine text-white mt-4 mb-4">Gallery:</h4>
+          <h4 class="text-2xl font-bold font-domine text-white mt-4 mb-4">Logos:</h4>
           <div class="w-full flex gap-8 overflow-x-scroll no-scrollbar">
             <% @company.logos.each do |logo| %>
-              <div class="min-w-40 max-w-40 aspect-2/3 border border-pop rounded-lg overflow-hidden">
+              <div class="min-w-40 max-w-40 aspect-square border border-pop rounded-lg overflow-hidden">
                 <%= image_tag logo, class: "w-full" %>
               </div>
             <% end %>
