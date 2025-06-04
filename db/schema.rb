@@ -47,8 +47,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_01_095244) do
     t.string "description"
     t.string "homepage"
     t.string "name"
+    t.bigint "country_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["country_id"], name: "index_companies_on_country_id"
   end
 
   create_table "countries", force: :cascade do |t|
@@ -82,7 +84,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_01_095244) do
     t.string "original_title", null: false
     t.string "translated_title", null: false
     t.text "overview"
-    t.string "status"
+    t.string "status", default: "in production", null: false
     t.integer "runtime", default: 0, null: false
     t.decimal "revenue", default: "0.0", null: false
     t.decimal "budget", default: "0.0", null: false

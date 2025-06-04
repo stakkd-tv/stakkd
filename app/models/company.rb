@@ -1,5 +1,6 @@
 class Company < ApplicationRecord
   # Associations
+  belongs_to :country
   has_many_attached :logos
 
   # Validations

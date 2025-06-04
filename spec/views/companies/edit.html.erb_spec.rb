@@ -14,6 +14,7 @@ RSpec.describe "companies/edit", type: :view do
       assert_select "input[name='company[name]']"
       assert_select "textarea[name='company[description]']"
       assert_select "input[name='company[homepage]']"
+      assert_select "select[name='company[country_id]']"
     end
   end
 end

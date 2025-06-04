@@ -1,17 +1,20 @@
 require "rails_helper"
 
 RSpec.describe "Companies", type: :request do
+  let(:country) { FactoryBot.create(:country) }
   let(:valid_attributes) {
     {
       description: "The sussy corporation",
       homepage: "https://example.com",
-      name: "Amogus Inc"
+      name: "Amogus Inc",
+      country_id: country.id
     }
   }
 
   let(:invalid_attributes) {
     valid_attributes.merge({
-      name: nil
+      name: nil,
+      country_id: nil
     })
   }
 

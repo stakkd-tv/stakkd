@@ -4,6 +4,7 @@ class CreateCompanies < ActiveRecord::Migration[8.0]
       t.string :description
       t.string :homepage
       t.string :name
+      t.references :country
 
       t.timestamps
     end

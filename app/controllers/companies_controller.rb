@@ -44,6 +44,6 @@ class CompaniesController < ApplicationController
   end
 
   def company_params
-    params.expect(company: [:description, :homepage, :name])
+    params.expect(company: [:description, :homepage, :name, :country_id])
   end
 end
