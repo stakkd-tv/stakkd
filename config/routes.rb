@@ -20,6 +20,9 @@ Rails.application.routes.draw do
   resources :people, except: [:destroy] do
     get :images, on: :member
   end
+  resources :companies, except: [:destroy] do
+    get :logos, on: :member
+  end
 
   get "about" => "pages#about", :as => :about
   get "contribute" => "pages#contribute", :as => :contribute
