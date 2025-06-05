@@ -66,6 +66,10 @@ group :development, :test do
 
   # Easily create test records with FactoryBot
   gem "factory_bot_rails"
+
+  # Adds support for Capybara system testing and selenium driver
+  gem "capybara", "~> 3.38"
+  gem "selenium-webdriver"
 end
 
 group :development do
