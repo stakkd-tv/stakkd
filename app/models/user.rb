@@ -5,6 +5,7 @@ class User < ApplicationRecord
   has_many :sessions, dependent: :destroy
 
   # Validations
+  validates_presence_of :username
   validates_uniqueness_of :email_address
   validates_uniqueness_of :username, case_sensitive: true
   validates :email_address, format: {with: URI::MailTo::EMAIL_REGEXP}
