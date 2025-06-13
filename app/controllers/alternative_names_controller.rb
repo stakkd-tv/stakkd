@@ -14,7 +14,7 @@ class AlternativeNamesController < ApplicationController
     if @alternative_name.save
       redirect_to nested_path_for(relatable: @relatable)
     else
-      redirect_to nested_path_for(relatable: @relatable), alert: "Could not add that name. A name and country must be specified"
+      redirect_to nested_path_for(relatable: @relatable), alert: "Could not add that name. A name and country must be specified."
     end
   end
 
