@@ -60,7 +60,8 @@
         @apply border rounded-lg border-pop bg-background-darker;
     }
 
-    .form form {
+    .form form,
+    .form .inner-form {
         @apply flex flex-col gap-6 p-6;
     }
 

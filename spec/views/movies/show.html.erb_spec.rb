@@ -4,6 +4,7 @@ RSpec.describe "movies/show", type: :view do
   let(:posters) { [] }
   let(:backgrounds) { [] }
   let(:logos) { [] }
+  let(:alternative_names) { {} }
 
   before(:each) do
     def view.authenticated? = false
@@ -22,6 +23,7 @@ RSpec.describe "movies/show", type: :view do
       backgrounds:,
       logos:
     ))
+    assign(:alternative_names, alternative_names)
   end
 
   it "renders attributes in <p>" do
@@ -34,6 +36,27 @@ RSpec.describe "movies/show", type: :view do
     expect(rendered).to match(/100,000,000/)
     assert_select "a[href='https://www.imdb.com/name/tt0000000/']"
     assert_select "a[href='https://google.com']"
+  end
+
+  context "when there are alternative names" do
+    let(:country) { FactoryBot.create(:country) }
+    let(:names) { FactoryBot.build_list(:alternative_name, 1, type: "Test type") }
+    let(:alternative_names) { {country => names} }
+
+    it "renders the alternative names" do
+      render
+      assert_select "summary", text: "Alternative names:"
+      assert_select "p", text: country.translated_name
+      assert_select "p", text: names.first.name
+      assert_select "p", text: names.first.type
+    end
+  end
+
+  context "when the are no alternative names" do
+    it "does not render the alternative names section" do
+      render
+      assert_select "summary", text: "Alternative names:", count: 0
+    end
   end
 
   context "when the movie has a background" do

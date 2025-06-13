@@ -53,6 +53,13 @@
       <div class="leading-[1.5rem] text-sm md:text-base flex flex-col gap-6">
         <%= simple_format @movie.overview %>
       </div>
+
+      <div class="w-full h-44 border border-pop rounded-lg flex justify-center items-center">
+        This is a work in progress. Please check back later.
+      </div>
+
+      <%= render "shared/alternative_names", names_grouped_by_country: @alternative_names %>
+
       <% if @movie.posters.any? %>
         <div>
           <h4 class="text-2xl font-bold font-domine text-white mt-4 mb-4">Posters:</h4>
@@ -98,9 +105,6 @@
           <% end %>
         </div>
       <% end %>
-      <div class="w-full h-44 border border-pop rounded-lg flex justify-center items-center">
-        This is a work in progress. Please check back later.
-      </div>
     </div>
   </div>
 </div>

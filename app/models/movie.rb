@@ -13,6 +13,7 @@ class Movie < ApplicationRecord
   # Associations
   belongs_to :country
   belongs_to :language
+  has_many :alternative_names, as: :record, dependent: :delete_all
   has_many_attached :posters
   has_many_attached :backgrounds
   has_many_attached :logos
@@ -32,6 +33,8 @@ class Movie < ApplicationRecord
   def slug=(value)
     self.title_kebab = value
   end
+
+  def to_s = translated_title
 
   private
 

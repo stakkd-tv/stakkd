@@ -1,0 +1,27 @@
+<% if names_grouped_by_country.any? %>
+  <details>
+    <summary class="cursor-pointer text-2xl font-bold font-domine text-white mt-4 mb-4">Alternative names:</summary>
+    <div class="flex flex-col gap-4">
+      <% names_grouped_by_country.each do |country, names| %>
+        <div class="rounded-lg border-2 border-pop bg-background overflow-hidden">
+          <div class="flex gap-4 p-4 border-b-2 border-pop bg-background-darker">
+            <img src="<%= country.flag %>" class="w-5 min-w-5">
+            <p><%= country.translated_name %></p>
+          </div>
+          <div class="flex flex-col gap-4">
+            <% names.each do |alt| %>
+              <div class="w-full flex gap-2 p-4">
+                <p class="basis-1/2">
+                  <%= alt.name %>
+                </p>
+                <p class="basis-1/2">
+                  <%= alt.type %>
+                </p>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </details>
+<% end %>

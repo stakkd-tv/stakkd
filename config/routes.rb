@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   resource :session
   resources :passwords, param: :token
   resources :movies, except: [:destroy] do
+    resources :alternative_names, only: [:index, :create, :update]
+
     get :posters, on: :member
     get :backgrounds, on: :member
     get :logos, on: :member
