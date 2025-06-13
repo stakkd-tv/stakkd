@@ -1,3 +1,7 @@
+<%= content_for :head do %>
+  <%= stylesheet_link_tag "tabulator", "data-turbo-track": "reload" %>
+<% end %>
+
 <div data-controller="table-editor"
      data-table-editor-table-data-value="<%= table_presenter.table_data.to_json %>"
      <% if table_presenter.column_defs %>data-table-editor-table-columns-value="<%= table_presenter.column_defs.to_json %>"<% end %>

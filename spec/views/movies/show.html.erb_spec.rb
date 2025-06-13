@@ -4,6 +4,7 @@ RSpec.describe "movies/show", type: :view do
   let(:posters) { [] }
   let(:backgrounds) { [] }
   let(:logos) { [] }
+  let(:alternative_names) { {} }
 
   before(:each) do
     def view.authenticated? = false
@@ -22,6 +23,7 @@ RSpec.describe "movies/show", type: :view do
       backgrounds:,
       logos:
     ))
+    assign(:alternative_names, alternative_names)
   end
 
   it "renders attributes in <p>" do
