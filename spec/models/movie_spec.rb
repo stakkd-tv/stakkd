@@ -4,6 +4,7 @@ RSpec.describe Movie, type: :model do
   describe "associations" do
     it { should belong_to(:country) }
     it { should belong_to(:language) }
+    it { should have_many(:alternative_names).dependent(:delete_all) }
     it { should have_many_attached(:posters) }
     it { should have_many_attached(:backgrounds) }
     it { should have_many_attached(:logos) }
@@ -87,6 +88,12 @@ RSpec.describe Movie, type: :model do
       movie = Movie.new
       movie.slug = "test"
       expect(movie.title_kebab).to eq "test"
+    end
+  end
+
+  describe "#to_s" do
+    it "returns the translated title" do
+      expect(Movie.new(translated_title: "Test name").to_s).to eq "Test name"
     end
   end
 end
