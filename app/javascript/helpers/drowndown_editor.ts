@@ -79,7 +79,7 @@ export class DropdownEditor {
     Array.from(this.editorParams.values).forEach(data => {
       const { label, value } = data
       const elm = document.createElement('div')
-      elm.classList.add('px-[10px]', 'py-[20px]', 'hover:bg-pop/50')
+      elm.classList.add('px-[10px]', 'py-[20px]', 'hover:bg-pop/50', 'dropdown-option')
       if (label === currentLabel) {
         elm.classList.add('bg-pop/50')
       }

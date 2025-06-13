@@ -15,13 +15,13 @@ module Polymorphism
     end
 
     def relatable_model
-      klass, param = relatable_class_from_params
+      _, param = relatable_class_from_params
       param.sub("_id", "")
     end
 
     def relatable
       klass, param = relatable_class_from_params
-      klass.from_slug(params[param.to_sym]) if klass
+      klass&.from_slug(params[param.to_sym])
     end
 
     def relatable_class_from_params
