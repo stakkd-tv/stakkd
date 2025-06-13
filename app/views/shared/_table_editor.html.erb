@@ -1,0 +1,7 @@
+<div data-controller="table-editor"
+     data-table-editor-table-data-value="<%= table_presenter.table_data.to_json %>"
+     <% if table_presenter.column_defs %>data-table-editor-table-columns-value="<%= table_presenter.column_defs.to_json %>"<% end %>
+     data-table-editor-path-prefix-value="<%= table_presenter.path_prefix %>"
+     data-table-editor-model-name-value="<%= table_presenter.model_table_name %>">
+  <div data-table-editor-target="tableContainer"></div>
+</div>

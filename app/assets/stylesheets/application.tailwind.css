@@ -60,7 +60,8 @@
         @apply border rounded-lg border-pop bg-background-darker;
     }
 
-    .form form {
+    .form form,
+    .form .inner-form {
         @apply flex flex-col gap-6 p-6;
     }
 
@@ -128,4 +129,64 @@
             pointer-events: auto;
         }
     }
+}
+
+.tabulator {
+    background-color: var(--color-background-darker);
+    border: none;
+    border-bottom: 1px solid var(--color-pop);
+}
+
+.tabulator .tabulator-header {
+    border-color: var(--color-pop);
+}
+
+.tabulator .tabulator-header .tabulator-col {
+    background-color: var(--color-background-darker);
+    color: white;
+    border-color: var(--color-pop);
+    padding: 5px 10px;
+}
+
+.tabulator-row,
+.tabulator-row.tabulator-selectable.tabulator-row-even {
+    background-color: var(--color-background);
+    color: white;
+}
+
+.tabulator-row.tabulator-selectable.tabulator-row-even {
+    border-top: 1px solid var(--color-pop);
+}
+
+.tabulator-row.tabulator-selectable:hover {
+    background-color: var(--color-background-darker);
+    color: white;
+}
+
+.tabulator-row .tabulator-cell {
+    padding: 20px 10px;
+    border-color: var(--color-pop);
+}
+
+.tabulator .tabulator-header .tabulator-col:last-of-type,
+.tabulator-row .tabulator-cell:last-of-type {
+    border: none;
+}
+
+.tabulator
+    .tabulator-header
+    .tabulator-col.tabulator-sortable.tabulator-col-sorter-element:hover {
+    background-color: var(--color-background-darker);
+}
+
+.tabulator .tabulator-col-resize-handle:last-of-type {
+    display: none;
+}
+
+.tabulator-cell.tabulator-editable.tabulator-editing > input:focus {
+    outline: 1px solid var(--color-pop);
+}
+
+.tabulator-cell.tabulator-editable.tabulator-editing:focus {
+    border: 1px solid var(--color-pop);
 }

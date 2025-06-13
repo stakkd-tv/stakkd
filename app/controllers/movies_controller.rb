@@ -1,6 +1,6 @@
 class MoviesController < ApplicationController
   before_action :require_authentication, except: [:index, :show]
-  before_action :set_movie, only: [:show, :edit, :update, :posters, :backgrounds, :logos]
+  before_action :set_movie, except: [:index, :new, :create]
 
   def index
     @movies = Movie.order(:translated_title)
@@ -41,6 +41,10 @@ class MoviesController < ApplicationController
   end
 
   def logos
+  end
+
+  def alternative_names
+    @table_presenter = Tabulator::AlternativeNamesPresenter.new(@movie.alternative_names.order(id: :asc))
   end
 
   private
