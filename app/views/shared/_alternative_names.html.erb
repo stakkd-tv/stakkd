@@ -8,9 +8,9 @@
             <img src="<%= country.flag %>" class="w-5 min-w-5">
             <p><%= country.translated_name %></p>
           </div>
-          <div class="flex flex-col gap-4">
+          <div class="flex flex-col gap-4 p-4">
             <% names.each do |alt| %>
-              <div class="w-full flex gap-2 p-4">
+              <div class="w-full flex gap-2">
                 <p class="basis-1/2">
                   <%= alt.name %>
                 </p>
