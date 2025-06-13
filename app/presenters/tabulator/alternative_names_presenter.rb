@@ -10,8 +10,6 @@ module Tabulator
       ]
     end
 
-    def path_prefix = alternative_names_path
-
     def model_table_name = "alternative_name"
 
     private

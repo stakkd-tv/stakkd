@@ -1,13 +1,20 @@
 class AlternativeNamesController < ApplicationController
+  include Polymorphism::NestedRoutes
+  include Polymorphism::Relatable
+
   before_action :require_authentication
   before_action :set_alternative_name, only: [:update]
 
+  def index
+    @table_presenter = Tabulator::AlternativeNamesPresenter.new(@relatable.alternative_names.order(id: :asc))
+  end
+
   def create
-    @alternative_name = AlternativeName.new(alternative_name_params)
+    @alternative_name = @relatable.alternative_names.new(alternative_name_params)
     if @alternative_name.save
-      render json: {success: true}, status: 200
+      redirect_to nested_path_for(relatable: @relatable)
     else
-      render json: {success: false}, status: 422
+      redirect_to nested_path_for(relatable: @relatable), alert: "Could not add that name. A name and country must be specified"
     end
   end
 
@@ -27,6 +34,6 @@ class AlternativeNamesController < ApplicationController
   end
 
   def set_alternative_name
-    @alternative_name = AlternativeName.find(params.expect(:id))
+    @alternative_name = @relatable.alternative_names.find(params.expect(:id))
   end
 end

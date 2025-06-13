@@ -1,7 +1,5 @@
 module Tabulator
   class Base
-    include Rails.application.routes.url_helpers
-
     def initialize(records)
       @records = records
     end

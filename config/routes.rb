@@ -9,10 +9,11 @@ Rails.application.routes.draw do
   resource :session
   resources :passwords, param: :token
   resources :movies, except: [:destroy] do
+    resources :alternative_names, only: [:index, :create, :update]
+
     get :posters, on: :member
     get :backgrounds, on: :member
     get :logos, on: :member
-    get :alternative_names, on: :member
   end
   resources :users, only: [:new, :create]
   resources :genres, only: [:index]
@@ -24,7 +25,6 @@ Rails.application.routes.draw do
   resources :companies, except: [:destroy] do
     get :logos, on: :member
   end
-  resources :alternative_names, only: [:create, :update]
 
   get "about" => "pages#about", :as => :about
   get "contribute" => "pages#contribute", :as => :contribute

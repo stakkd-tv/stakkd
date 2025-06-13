@@ -154,8 +154,13 @@
     color: white;
 }
 
-.tabulator-row.tabulator-selectable.tabulator-row-even {
+.tabulator-row.tabulator-selectable.tabulator-row-even,
+.tabulator-row.tabulator-selectable.tabulator-row-odd {
     border-top: 1px solid var(--color-pop);
+}
+
+.tabulator-row.tabulator-selectable:first-of-type {
+    border: none;
 }
 
 .tabulator-row.tabulator-selectable:hover {

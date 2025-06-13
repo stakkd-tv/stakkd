@@ -7,6 +7,7 @@ class MoviesController < ApplicationController
   end
 
   def show
+    @alternative_names = @movie.alternative_names.includes(:country).group_by(&:country)
   end
 
   def new
@@ -41,10 +42,6 @@ class MoviesController < ApplicationController
   end
 
   def logos
-  end
-
-  def alternative_names
-    @table_presenter = Tabulator::AlternativeNamesPresenter.new(@movie.alternative_names.order(id: :asc))
   end
 
   private
