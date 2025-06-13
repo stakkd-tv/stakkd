@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :alternative_name do
     name { "MyString" }
     type { "" }
-    country { nil }
-    record { nil }
+    country
+    association :record, factory: :movie
   end
 end
