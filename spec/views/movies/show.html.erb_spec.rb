@@ -36,6 +36,27 @@ RSpec.describe "movies/show", type: :view do
     assert_select "a[href='https://google.com']"
   end
 
+  context "when there are alternative names" do
+    let(:country) { FactoryBot.create(:country) }
+    let(:names) { FactoryBot.build_list(:alternative_name, 1, type: "Test type") }
+    let(:alternative_names) { {country => names} }
+
+    it "renders the alternative names" do
+      render
+      assert_select "summary", text: "Alternative names:"
+      assert_select "p", text: country.translated_name
+      assert_select "p", text: names.first.name
+      assert_select "p", text: names.first.type
+    end
+  end
+
+  context "when the are no alternative names" do
+    it "does not render the alternative names section" do
+      render
+      assert_select "summary", text: "Alternative names:", count: 0
+    end
+  end
+
   context "when the movie has a background" do
     let(:backgrounds) { [Rack::Test::UploadedFile.new("spec/support/assets/300x450.png", "image/png")] }
 
