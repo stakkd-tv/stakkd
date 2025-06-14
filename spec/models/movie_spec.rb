@@ -4,7 +4,9 @@ RSpec.describe Movie, type: :model do
   describe "associations" do
     it { should belong_to(:country) }
     it { should belong_to(:language) }
-    it { should have_many(:alternative_names).dependent(:delete_all) }
+    it { should have_many(:alternative_names).dependent(:destroy) }
+    it { should have_many(:genre_assignments).dependent(:destroy) }
+    it { should have_many(:genres).through(:genre_assignments) }
     it { should have_many_attached(:posters) }
     it { should have_many_attached(:backgrounds) }
     it { should have_many_attached(:logos) }

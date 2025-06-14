@@ -13,7 +13,9 @@ class Movie < ApplicationRecord
   # Associations
   belongs_to :country
   belongs_to :language
-  has_many :alternative_names, as: :record, dependent: :delete_all
+  has_many :alternative_names, as: :record, dependent: :destroy
+  has_many :genre_assignments, as: :record, dependent: :destroy
+  has_many :genres, through: :genre_assignments
   has_many_attached :posters
   has_many_attached :backgrounds
   has_many_attached :logos

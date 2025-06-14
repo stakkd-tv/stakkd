@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_07_093815) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_14_101509) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -72,6 +72,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_07_093815) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["code"], name: "index_countries_on_code", unique: true
+  end
+
+  create_table "genre_assignments", force: :cascade do |t|
+    t.bigint "genre_id", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["genre_id", "record_type", "record_id"], name: "index_unique_genre_assignments", unique: true
+    t.index ["genre_id"], name: "index_genre_assignments_on_genre_id"
+    t.index ["record_type", "record_id"], name: "index_genre_assignments_on_record"
   end
 
   create_table "genres", force: :cascade do |t|
@@ -146,5 +157,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_07_093815) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "alternative_names", "countries"
+  add_foreign_key "genre_assignments", "genres"
   add_foreign_key "sessions", "users"
 end
