@@ -11,6 +11,7 @@ RSpec.describe "movies/_form_nav", type: :view do
       assert_select "a[href='#{backgrounds_movie_path(movie)}'][data-active='false']"
       assert_select "a[href='#{logos_movie_path(movie)}'][data-active='false']"
       assert_select "a[href='#{movie_alternative_names_path(movie)}'][data-active='false']"
+      assert_select "a[href='#{movie_genre_assignments_path(movie)}'][data-active='false']"
     end
   end
 

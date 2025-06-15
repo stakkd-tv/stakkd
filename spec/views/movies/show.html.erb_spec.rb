@@ -21,7 +21,8 @@ RSpec.describe "movies/show", type: :view do
       imdb_id: "tt0000000",
       posters:,
       backgrounds:,
-      logos:
+      logos:,
+      genres: [FactoryBot.create(:genre, name: "Action")]
     ))
     assign(:alternative_names, alternative_names)
   end
@@ -36,6 +37,11 @@ RSpec.describe "movies/show", type: :view do
     expect(rendered).to match(/100,000,000/)
     assert_select "a[href='https://www.imdb.com/name/tt0000000/']"
     assert_select "a[href='https://google.com']"
+  end
+
+  it "renders the genres" do
+    render
+    assert_select "p.rounded-full", text: "Action"
   end
 
   context "when there are alternative names" do

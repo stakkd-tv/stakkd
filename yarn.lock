@@ -2345,6 +2345,11 @@ side-channel@^1.1.0:
     side-channel-map "^1.0.1"
     side-channel-weakmap "^1.0.2"
 
+slim-select@^2.11.0:
+  version "2.11.0"
+  resolved "https://registry.yarnpkg.com/slim-select/-/slim-select-2.11.0.tgz#a98e42ac048fa4ebe23c3cbc3d7ce3b8fd898851"
+  integrity sha512-Y0FEJKIPBy8ax7jArUxICxtKAnhX8GH7ydaFhcrYH7OznfpvxCe8uU2etyuRPKhE23c2LhT2GROFvZzGVplA0g==
+
 source-map-js@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/source-map-js/-/source-map-js-1.2.1.tgz#1ce5650fddd87abc099eda37dcff024c2667ae46"

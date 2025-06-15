@@ -31,9 +31,11 @@ export class DropdownEditor {
       'cursor-pointer',
       'h-screen',
       'sm:h-96',
-      'bg-background-darker',
+      'bg-background',
       'overflow-y-scroll',
-      'z-50'
+      'z-50',
+      'border-b',
+      'border-pop'
     )
 
     this.setupPositioning()
@@ -75,12 +77,13 @@ export class DropdownEditor {
   }
 
   buildOptions () {
-    const currentLabel = this.cell.getValue()
+    const { label: currentLabel } = this.cell.getValue()
     Array.from(this.editorParams.values).forEach(data => {
       const { label, value } = data
       const elm = document.createElement('div')
-      elm.classList.add('px-[10px]', 'py-[20px]', 'hover:bg-pop/50', 'dropdown-option')
+      elm.classList.add('px-[10px]', 'py-[20px]', 'hover:bg-background-darker', 'dropdown-option')
       if (label === currentLabel) {
+        elm.classList.remove('hover:bg-background-darker')
         elm.classList.add('bg-pop/50')
       }
       elm.innerText = label

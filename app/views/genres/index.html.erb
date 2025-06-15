@@ -14,7 +14,7 @@
       <% @genres.each do |genre| %>
         <tr>
           <td><%= genre.name %></td>
-          <td>0</td>
+          <td><%= genre.movies.count %></td>
           <td>0</td>
         </tr>
       <% end %>

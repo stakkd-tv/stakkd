@@ -1,6 +1,6 @@
 import { Controller } from '@hotwired/stimulus'
 import { CellComponent, ColumnDefinition, EmptyCallback, TabulatorFull as Tabulator, ValueBooleanCallback, ValueVoidCallback } from 'tabulator-tables'
-import { DropdownEditor, EditorParams } from '../helpers/drowndown_editor'
+import { DropdownEditor, EditorParams } from '../helpers/dropdown_editor'
 
 interface RowData {
   [key: string]: object;
@@ -57,6 +57,20 @@ export default class extends Controller {
     return dropdown.getDisplayElement()
   }
 
+  async removeRow (_event: UIEvent, cell: CellComponent): Promise<void> {
+    const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? ''
+    const { id } = cell.getRow().getData()
+    const url = `${this.pathPrefixValue}/${id}`
+    const response = await fetch(url, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': token }
+    })
+    if (response.ok) {
+      const row = cell.getRow()
+      row.delete()
+    }
+  }
+
   translateColumnsValue (): ColumnDefinition[] {
     return this.tableColumnsValue.map((columnData) => {
       if (columnData.editor === 'list') {
@@ -65,7 +79,10 @@ export default class extends Controller {
           const val = cell.getValue()
           return typeof val === 'object' ? val.label : val
         }
+      } else if (columnData.formatter === 'buttonCross') {
+        columnData.cellClick = this.removeRow.bind(this)
       }
+
       return columnData
     })
   }
