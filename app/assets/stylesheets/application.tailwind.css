@@ -83,12 +83,18 @@
         @apply font-bold cursor-pointer py-2 px-4 border border-pop rounded-lg text-sm hover:bg-pop/75 transition duration-300 ease-in-out w-fit;
     }
 
+    .form .form-nav::-webkit-scrollbar {
+        display: none;
+    }
+
     .form .form-nav {
-        @apply flex gap-4 flex-wrap p-3 border-b border-pop;
+        @apply flex gap-4 p-3 border-b border-pop overflow-x-scroll relative;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
     }
 
     .form .form-nav a {
-        @apply font-bold cursor-pointer py-2 px-4 border border-pop rounded-lg text-sm hover:bg-pop/75 transition duration-300 ease-in-out w-fit;
+        @apply font-bold cursor-pointer py-2 px-4 border border-pop rounded-lg text-sm hover:bg-pop/75 transition duration-300 ease-in-out w-fit min-w-fit;
     }
 
     .form .form-nav a[data-active="true"] {
@@ -97,6 +103,14 @@
 
     .form .form-nav a[data-disabled="true"] {
         @apply cursor-default border-gray-300 text-gray-300 hover:bg-transparent;
+    }
+
+    div[data-controller="form-nav"] div[data-form-nav-target="leftGrad"] {
+        @apply opacity-0 absolute pointer-events-none left-0 top-0 h-full w-10 rounded-t-lg bg-gradient-to-r from-pop/75 to-transparent z-10 transition-opacity duration-300 ease-in-out;
+    }
+
+    div[data-controller="form-nav"] div[data-form-nav-target="rightGrad"] {
+        @apply opacity-0 absolute pointer-events-none right-0 top-0 h-full w-10 rounded-t-lg bg-gradient-to-l from-pop/75 to-transparent z-10 transition-opacity duration-300 ease-in-out;
     }
 
     .no-scrollbar::-webkit-scrollbar {
