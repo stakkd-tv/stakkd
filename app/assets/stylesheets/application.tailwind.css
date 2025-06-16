@@ -95,6 +95,10 @@
         @apply bg-pop/75;
     }
 
+    .form .form-nav a[data-disabled="true"] {
+        @apply cursor-default border-gray-300 text-gray-300 hover:bg-transparent;
+    }
+
     .no-scrollbar::-webkit-scrollbar {
         display: none;
     }
