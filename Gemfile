@@ -45,6 +45,9 @@ gem "image_processing", "~> 1.2"
 # Extract colours from images, plus other image operations
 gem "mini_magick", "~> 5.2"
 
+# ActiveRecord tagging
+gem "acts-as-taggable-on", "~> 12.0"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[mri windows], require: "debug/prelude"

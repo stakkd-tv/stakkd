@@ -116,5 +116,24 @@ RSpec.feature "Movie form", type: :system, js: true do
       expect(page).not_to have_css "div.tabulator-cell", text: "Suspense"
       expect(movie.reload.genres).to eq []
     end
+
+    # Keywords
+    click_link "Keywords"
+    expect(page).to have_css("a[data-active='true']", text: "Keywords")
+    find("div.ss-main").click
+    find("div.ss-search>input").send_keys("Hello there")
+    expect(page).to have_content("Press \"Enter\" to add Hello there")
+    find("div.ss-addable").click
+    expect(page).to have_css("div.ss-single", text: "Hello there")
+    find("button[role='submit']").click
+    using_wait_time 5 do
+      expect(page).to have_css "div.tabulator-cell", text: "Hello there"
+      expect(movie.reload.keyword_list).to eq ["Hello there"]
+    end
+    find("div.tabulator-cell>svg").click
+    using_wait_time 5 do
+      expect(page).not_to have_css "div.tabulator-cell", text: "Hello there"
+      expect(movie.reload.keyword_list).to eq []
+    end
   end
 end

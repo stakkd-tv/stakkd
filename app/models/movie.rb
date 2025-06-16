@@ -1,6 +1,8 @@
 class Movie < ApplicationRecord
   include Slugify
 
+  acts_as_taggable_on :keywords
+
   STATUSES = [
     RUMORED = "rumored",
     PLANNED = "planned",
