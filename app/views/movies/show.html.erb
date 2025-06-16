@@ -104,7 +104,7 @@
           <h4 class="text-2xl font-bold font-domine text-white mt-4 mb-4">Logos:</h4>
           <div class="w-full flex gap-8 overflow-x-scroll no-scrollbar">
             <% @movie.logos.each do |image| %>
-              <div class="min-h-40 max-h-40 aspect-square border border-pop rounded-lg overflow-hidden">
+              <div class="min-h-40 max-h-40 min-w-40 max-w-40 aspect-square border border-pop rounded-lg overflow-hidden">
                 <%= image_tag image, class: "w-full" %>
               </div>
             <% end %>
