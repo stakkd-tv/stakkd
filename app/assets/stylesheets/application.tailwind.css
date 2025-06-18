@@ -88,9 +88,13 @@
     }
 
     .form .form-nav {
-        @apply flex gap-4 p-3 border-b border-pop overflow-x-scroll relative;
+        @apply flex gap-4 p-3 border-b border-pop flex-wrap relative;
         -ms-overflow-style: none;
         scrollbar-width: none;
+    }
+
+    .form div[data-controller="form-nav"] .form-nav {
+        @apply flex-nowrap overflow-x-scroll;
     }
 
     .form .form-nav a {

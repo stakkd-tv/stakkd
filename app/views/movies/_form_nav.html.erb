@@ -1,21 +1,17 @@
 <% if movie.persisted? %>
-  <div class="relative" data-controller="form-nav">
-    <div data-form-nav-target="leftGrad"></div>
-    <div data-form-nav-target="rightGrad"></div>
-    <div class="form-nav" id="form-nav" data-form-nav-target="formNav">
-      <%= link_to "Details", edit_movie_path(movie), data: {active: action_name == "edit"} %>
-      <%= link_to "Posters", posters_movie_path(movie), data: {active: action_name == "posters"} %>
-      <%= link_to "Backgrounds", backgrounds_movie_path(movie), data: {active: action_name == "backgrounds"} %>
-      <%= link_to "Logos", logos_movie_path(movie), data: {active: action_name == "logos"} %>
-      <%= link_to "Alternative Names", movie_alternative_names_path(movie), data: {active: controller_name == "alternative_names"} %>
-      <%= link_to "Cast", "#", data: {disabled: true} %>
-      <%= link_to "Crew", "#", data: {disabled: true} %>
-      <%= link_to "Genres", movie_genre_assignments_path(movie), data: {active: controller_name == "genre_assignments"} %>
-      <%= link_to "Keywords", movie_keywords_path(movie), data: {active: controller_name == "keywords"} %>
-      <%= link_to "Companies", "#", data: {disabled: true} %>
-      <%= link_to "Releases", "#", data: {disabled: true} %>
-      <%= link_to "Taglines", "#", data: {disabled: true} %>
-      <%= link_to "Videos", "#", data: {disabled: true} %>
-    </div>
+  <div class="form-nav" id="form-nav">
+    <%= link_to "Details", edit_movie_path(movie), data: {active: action_name == "edit"} %>
+    <%= link_to "Posters", posters_movie_path(movie), data: {active: action_name == "posters"} %>
+    <%= link_to "Backgrounds", backgrounds_movie_path(movie), data: {active: action_name == "backgrounds"} %>
+    <%= link_to "Logos", logos_movie_path(movie), data: {active: action_name == "logos"} %>
+    <%= link_to "Alternative Names", movie_alternative_names_path(movie), data: {active: controller_name == "alternative_names"} %>
+    <%= link_to "Cast", "#", data: {disabled: true} %>
+    <%= link_to "Crew", "#", data: {disabled: true} %>
+    <%= link_to "Genres", movie_genre_assignments_path(movie), data: {active: controller_name == "genre_assignments"} %>
+    <%= link_to "Keywords", movie_keywords_path(movie), data: {active: controller_name == "keywords"} %>
+    <%= link_to "Companies", "#", data: {disabled: true} %>
+    <%= link_to "Releases", "#", data: {disabled: true} %>
+    <%= link_to "Taglines", "#", data: {disabled: true} %>
+    <%= link_to "Videos", "#", data: {disabled: true} %>
   </div>
 <% end %>
