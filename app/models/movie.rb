@@ -41,7 +41,7 @@ class Movie < ApplicationRecord
 
   def to_s = translated_title
 
-  def tagline = taglines.first
+  def tagline = taglines.first&.tagline
 
   private
 

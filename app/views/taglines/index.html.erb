@@ -1,0 +1,25 @@
+<% content_for :title, "Stakkd - #{@relatable} taglines" %>
+<% model_params = {relatable_model.to_sym => @relatable} %>
+
+<%= render "#{relatable_model_plural}/form_header", model_params %>
+
+<div class="max-w-7xl mx-auto my-8 px-6">
+  <div class="form">
+    <%= render "#{relatable_model_plural}/form_nav", model_params %>
+
+    <%= render "shared/table_editor", table_presenter: @table_presenter, path_prefix: nested_path_for(relatable: @relatable) %>
+
+    <%= form_with model: [@relatable, Tagline.new] do |form| %>
+      <h4 class="font-bold text-2xl">Add a new tagline</h4>
+
+      <div>
+        <%= form.label :tagline %>
+        <%= form.text_field :tagline, required: true, autocomplete: "off" %>
+      </div>
+
+      <div>
+        <%= form.submit "Save" %>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -11,7 +11,7 @@
     <%= link_to "Keywords", movie_keywords_path(movie), data: {active: controller_name == "keywords"} %>
     <%= link_to "Companies", "#", data: {disabled: true} %>
     <%= link_to "Releases", "#", data: {disabled: true} %>
-    <%= link_to "Taglines", "#", data: {disabled: true} %>
+    <%= link_to "Taglines", movie_taglines_path(movie), data: {active: controller_name == "taglines"} %>
     <%= link_to "Videos", "#", data: {disabled: true} %>
   </div>
 <% end %>

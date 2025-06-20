@@ -15,6 +15,8 @@ module Tabulator
 
     def model_table_name = raise "Implement in subclass"
 
+    def movable = false
+
     private
 
     def to_hash(record) = raise "Implement in subclass"

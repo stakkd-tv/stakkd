@@ -1,5 +1,5 @@
 import { Controller } from '@hotwired/stimulus'
-import { CellComponent, ColumnDefinition, EmptyCallback, TabulatorFull as Tabulator, ValueBooleanCallback, ValueVoidCallback } from 'tabulator-tables'
+import { CellComponent, ColumnDefinition, EmptyCallback, Options, RowComponent, TabulatorFull as Tabulator, ValueBooleanCallback, ValueVoidCallback } from 'tabulator-tables'
 import { DropdownEditor, EditorParams } from '../helpers/dropdown_editor'
 
 interface RowData {
@@ -14,7 +14,7 @@ interface Response {
 // Connects to data-controller="table-editor"
 export default class extends Controller {
   static targets = ['tableContainer']
-  static values = { tableData: Array, tableColumns: Array, pathPrefix: String, modelName: String }
+  static values = { tableData: Array, tableColumns: Array, pathPrefix: String, modelName: String, movable: Boolean }
 
   declare readonly tableContainerTarget: HTMLElement
 
@@ -22,6 +22,7 @@ export default class extends Controller {
   declare tableColumnsValue: ColumnDefinition[]
   declare pathPrefixValue: string
   declare modelNameValue: string
+  declare movableValue: boolean
 
   async saveRecord (rowData: RowData): Promise<Response> {
     const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? ''
@@ -52,11 +53,6 @@ export default class extends Controller {
     return json
   }
 
-  listEditor (cell: CellComponent, _onRendered: EmptyCallback, success: ValueBooleanCallback, _cancel: ValueVoidCallback, editorParams: EditorParams): HTMLElement {
-    const dropdown = new DropdownEditor(cell, editorParams, success, this.element)
-    return dropdown.getDisplayElement()
-  }
-
   async removeRow (_event: UIEvent, cell: CellComponent): Promise<void> {
     const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? ''
     const { id } = cell.getRow().getData()
@@ -69,6 +65,23 @@ export default class extends Controller {
       const row = cell.getRow()
       row.delete()
     }
+  }
+
+  async moveRow (row: RowComponent) {
+    const newPosition = row.getPosition()
+    const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? ''
+    const { id } = row.getData()
+    const url = `${this.pathPrefixValue}/${id}/move`
+    await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': token },
+      body: JSON.stringify({ position: newPosition })
+    })
+  }
+
+  listEditor (cell: CellComponent, _onRendered: EmptyCallback, success: ValueBooleanCallback, _cancel: ValueVoidCallback, editorParams: EditorParams): HTMLElement {
+    const dropdown = new DropdownEditor(cell, editorParams, success, this.element)
+    return dropdown.getDisplayElement()
   }
 
   translateColumnsValue (): ColumnDefinition[] {
@@ -99,17 +112,31 @@ export default class extends Controller {
   }
 
   connect () {
-    const table = new Tabulator(this.tableContainerTarget, {
-      data: this.tableDataValue,
-      layout: 'fitColumns',
-      resizableColumnFit: true,
-      columns: this.translateColumnsValue()
-    })
+    const table = new Tabulator(this.tableContainerTarget, this.buildOptions())
     table.on('cellEdited', (cell) => {
       const data = cell.getRow().getData()
       this.saveRecord(data)
         .then(data => console.log('Saved:', data))
         .catch((data: Response) => this.handleError(data, cell))
     })
+    table.on('rowMoved', (row) => {
+      this.moveRow(row)
+        .then(() => console.log('Row moved'))
+        .catch(() => console.error('Could not move row'))
+    })
+  }
+
+  buildOptions (): Options {
+    const options: Options = {
+      data: this.tableDataValue,
+      layout: 'fitColumns',
+      resizableColumnFit: true,
+      columns: this.translateColumnsValue()
+    }
+    if (this.movableValue) {
+      options.movableRows = true
+      options.rowHeader = { rowHandle: true, width: 40, minWidth: 40, headerSort: false, resizable: false, formatter: 'handle' }
+    }
+    return options
   }
 }

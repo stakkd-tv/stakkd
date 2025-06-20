@@ -12,6 +12,9 @@ Rails.application.routes.draw do
     resources :alternative_names, only: [:index, :create, :update]
     resources :genre_assignments, only: [:index, :create, :destroy]
     resources :keywords, only: [:index, :create, :destroy]
+    resources :taglines, only: [:index, :create, :update, :destroy] do
+      post :move, on: :member
+    end
 
     get :posters, on: :member
     get :backgrounds, on: :member

@@ -104,10 +104,10 @@ RSpec.describe Movie, type: :model do
   describe "#tagline" do
     it "returns the first tagline ordered by position" do
       movie = FactoryBot.create(:movie)
-      FactoryBot.create(:tagline, record: movie)
-      tagline2 = FactoryBot.create(:tagline, record: movie)
+      FactoryBot.create(:tagline, record: movie, tagline: "Tagline 1")
+      tagline2 = FactoryBot.create(:tagline, record: movie, tagline: "Tagline 2")
       tagline2.insert_at(1)
-      expect(movie.tagline).to eq tagline2
+      expect(movie.tagline).to eq "Tagline 2"
     end
 
     it "returns nil when there are no taglines" do

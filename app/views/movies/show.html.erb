@@ -58,6 +58,9 @@
             <% end %>
           </div>
         <% end %>
+        <% if @movie.tagline %>
+          <p class="text-sm mt-4 italic"><%= @movie.tagline %></p>
+        <% end %>
       </div>
       <div class="leading-[1.5rem] text-sm md:text-base flex flex-col gap-6">
         <%= simple_format @movie.overview %>

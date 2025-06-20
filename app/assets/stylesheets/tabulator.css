@@ -71,3 +71,17 @@
 .tabulator-cell > svg > path {
     fill: var(--color-pop);
 }
+
+.tabulator-row .tabulator-cell.tabulator-row-handle {
+    background-color: var(--color-background-darker);
+    border-color: var(--color-pop);
+    border-bottom: none;
+}
+
+.tabulator-row
+    .tabulator-cell.tabulator-row-handle
+    .tabulator-row-handle-box
+    .tabulator-row-handle-bar {
+    background-color: white;
+    height: 2px;
+}
