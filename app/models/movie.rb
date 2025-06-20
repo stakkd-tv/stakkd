@@ -33,7 +33,7 @@ class Movie < ApplicationRecord
 
   def logo = logos.first || "1:1.png"
 
-  def imdb_url = "https://www.imdb.com/name/#{imdb_id}/"
+  def imdb_url = "https://www.imdb.com/title/#{imdb_id}/"
 
   def slug=(value)
     self.title_kebab = value
