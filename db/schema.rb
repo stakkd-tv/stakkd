@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_15_135421) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_20_095551) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -165,6 +165,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_15_135421) do
     t.index ["tagger_id"], name: "index_taggings_on_tagger_id"
     t.index ["tagger_type", "tagger_id"], name: "index_taggings_on_tagger_type_and_tagger_id"
     t.index ["tenant"], name: "index_taggings_on_tenant"
+  end
+
+  create_table "taglines", force: :cascade do |t|
+    t.string "tagline", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.integer "position", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["record_type", "record_id"], name: "index_taglines_on_record"
   end
 
   create_table "tags", force: :cascade do |t|

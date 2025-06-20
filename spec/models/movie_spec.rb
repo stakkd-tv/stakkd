@@ -8,6 +8,7 @@ RSpec.describe Movie, type: :model do
     it { should have_many(:genre_assignments).dependent(:destroy) }
     it { should have_many(:genres).through(:genre_assignments) }
     it { should have_many(:keyword_taggings).dependent(:destroy) }
+    it { should have_many(:taglines).dependent(:destroy) }
     it { should have_many_attached(:posters) }
     it { should have_many_attached(:backgrounds) }
     it { should have_many_attached(:logos) }
@@ -97,6 +98,21 @@ RSpec.describe Movie, type: :model do
   describe "#to_s" do
     it "returns the translated title" do
       expect(Movie.new(translated_title: "Test name").to_s).to eq "Test name"
+    end
+  end
+
+  describe "#tagline" do
+    it "returns the first tagline ordered by position" do
+      movie = FactoryBot.create(:movie)
+      FactoryBot.create(:tagline, record: movie)
+      tagline2 = FactoryBot.create(:tagline, record: movie)
+      tagline2.insert_at(1)
+      expect(movie.tagline).to eq tagline2
+    end
+
+    it "returns nil when there are no taglines" do
+      movie = FactoryBot.create(:movie)
+      expect(movie.tagline).to be_nil
     end
   end
 end

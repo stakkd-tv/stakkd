@@ -48,6 +48,9 @@ gem "mini_magick", "~> 5.2"
 # ActiveRecord tagging
 gem "acts-as-taggable-on", "~> 12.0"
 
+# ActiveRecord positioning
+gem "acts_as_list", "~> 1.2"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[mri windows], require: "debug/prelude"
