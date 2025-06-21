@@ -35,7 +35,7 @@ RSpec.describe "movies/show", type: :view do
     expect(rendered).to match(/2 minutes/)
     expect(rendered).to match(/99,999,999/)
     expect(rendered).to match(/100,000,000/)
-    assert_select "a[href='https://www.imdb.com/name/tt0000000/']"
+    assert_select "a[href='https://www.imdb.com/title/tt0000000/']"
     assert_select "a[href='https://google.com']"
   end
 
