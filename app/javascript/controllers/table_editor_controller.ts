@@ -79,8 +79,8 @@ export default class extends Controller {
     })
   }
 
-  listEditor (cell: CellComponent, _onRendered: EmptyCallback, success: ValueBooleanCallback, _cancel: ValueVoidCallback, editorParams: EditorParams): HTMLElement {
-    const dropdown = new DropdownEditor(cell, editorParams, success, this.element)
+  listEditor (cell: CellComponent, onRendered: EmptyCallback, success: ValueBooleanCallback, _cancel: ValueVoidCallback, editorParams: EditorParams): HTMLElement {
+    const dropdown = new DropdownEditor(cell, editorParams, success, this.element, onRendered)
     return dropdown.getDisplayElement()
   }
 

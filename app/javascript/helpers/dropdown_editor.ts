@@ -1,4 +1,4 @@
-import { CellComponent, ValueBooleanCallback } from 'tabulator-tables'
+import { CellComponent, EmptyCallback, ValueBooleanCallback } from 'tabulator-tables'
 
 export interface EditorParams {
   values: {
@@ -14,15 +14,19 @@ export class DropdownEditor {
   declare success: ValueBooleanCallback
   declare parent: Element
   declare editor: HTMLElement
+  declare input: HTMLInputElement
   declare resizeObserver: ResizeObserver
   declare onMouseDown: (this: Document, ev: MouseEvent) => void
+  declare selectedOption: HTMLDivElement | null
+  declare options: HTMLDivElement[]
 
-  constructor (cell: CellComponent, editorParams: EditorParams, success: ValueBooleanCallback, parent: Element) {
+  constructor (cell: CellComponent, editorParams: EditorParams, success: ValueBooleanCallback, parent: Element, onRendered: EmptyCallback) {
     this.cell = cell
     this.cellElement = cell.getElement()
     this.editorParams = editorParams
     this.success = success
     this.parent = parent
+    this.options = []
 
     this.editor = document.createElement('div')
     this.editor.classList.add(
@@ -35,8 +39,39 @@ export class DropdownEditor {
       'overflow-y-scroll',
       'z-50',
       'border-b',
+      'border-t',
+      'border-r',
+      'sm:border-r-0',
       'border-pop'
     )
+
+    this.input = document.createElement('input')
+    this.input.placeholder = 'Search'
+    this.input.classList.add(
+      'bg-background-darker',
+      'py-[20px]',
+      'px-[10px]',
+      'w-full',
+      'focus:outline-none',
+      'border-b',
+      'border-pop',
+      'sticky',
+      'top-0'
+    )
+    this.input.addEventListener('input', () => {
+      this.options.forEach((option) => {
+        option.classList.remove('hidden')
+      })
+
+      if (this.input.value.trim() === '') { return }
+
+      this.options.forEach((option) => {
+        if (!option.innerText.toLowerCase().includes(this.input.value.toLowerCase())) {
+          option.classList.add('hidden')
+        }
+      })
+    })
+    this.editor.appendChild(this.input)
 
     this.setupPositioning()
     this.buildOptions()
@@ -48,6 +83,10 @@ export class DropdownEditor {
 
     window.addEventListener('resize', () => {
       this.setupPositioning()
+    })
+
+    onRendered(() => {
+      this.input.focus()
     })
   }
 
@@ -85,12 +124,14 @@ export class DropdownEditor {
       if (label === currentLabel) {
         elm.classList.remove('hover:bg-background-darker')
         elm.classList.add('bg-pop/50')
+        this.selectedOption = elm
       }
       elm.innerText = label
       elm.addEventListener('click', () => {
         this.success({ label, value })
         this.destroy()
       })
+      this.options.push(elm)
       this.editor.appendChild(elm)
     })
   }

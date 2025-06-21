@@ -84,6 +84,10 @@ RSpec.feature "Movie form", type: :system, js: true do
     find("input:focus").send_keys("Updated alt type")
     country_cell = find("div.tabulator-cell", text: "Saudi Arabia")
     country_cell.click
+    find("input:focus").send_keys([:control, "a"], :backspace)
+    find("input:focus").send_keys("United Kingdom")
+    expect(page).to have_css("div.dropdown-option", text: "United Kingdom")
+    expect(page).not_to have_css("div.dropdown-option", text: "Saudi Arabia")
     find("div.dropdown-option", text: "United Kingdom").click
     using_wait_time 5 do
       expect(page).to have_css "div.tabulator-cell", text: "Updated alt name"
