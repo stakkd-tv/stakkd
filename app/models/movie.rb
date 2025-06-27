@@ -19,6 +19,8 @@ class Movie < ApplicationRecord
   has_many :genre_assignments, as: :record, dependent: :destroy
   has_many :genres, through: :genre_assignments
   has_many :taglines, -> { order(position: :asc) }, as: :record, dependent: :destroy
+  has_many :company_assignments, as: :record, dependent: :destroy
+  has_many :companies, through: :company_assignments
   has_many :releases, dependent: :destroy
   has_many_attached :posters
   has_many_attached :backgrounds
