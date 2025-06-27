@@ -1,7 +1,8 @@
 import { Controller } from '@hotwired/stimulus'
-import { CellComponent, ColumnDefinition, EmptyCallback, Options, RowComponent, TabulatorFull as Tabulator, ValueBooleanCallback, ValueVoidCallback } from 'tabulator-tables'
-import { DropdownEditor, EditorParams } from '../helpers/dropdown_editor'
+import { CellComponent, ColumnDefinition, EmptyCallback, Options, RowComponent, TabulatorFull as Tabulator, ValueBooleanCallback } from 'tabulator-tables'
 import flatpickr from 'flatpickr'
+import { listEditor } from '../helpers/tabulator/list_editor';
+import { dateEditor } from '../helpers/tabulator/date_editor';
 
 interface RowData {
   [key: string]: object;
@@ -83,50 +84,16 @@ export default class extends Controller {
     })
   }
 
-  listEditor (cell: CellComponent, onRendered: EmptyCallback, success: ValueBooleanCallback, _cancel: ValueVoidCallback, editorParams: EditorParams): HTMLElement {
-    const dropdown = new DropdownEditor(cell, editorParams, success, this.element, onRendered)
-    return dropdown.getDisplayElement()
-  }
-
-  dateEditor (cell: CellComponent, onRendered: EmptyCallback, success: ValueBooleanCallback): HTMLElement {
-    const editor = document.createElement('input')
-    editor.classList.add(
-      'py-[20px]',
-      'px-[10px]'
-    )
-    editor.value = cell.getValue()
-
-    flatpickr(editor, {
-      enableTime: false,
-      dateFormat: 'd-m-Y',
-      disableMobile: true,
-      onClose: (selectedDates, dateStr, instance) => {
-        success(dateStr)
-        instance.destroy()
-      },
-      onChange: (selectedDates, dateStr, instance) => {
-        success(dateStr)
-        instance.destroy()
-      }
-    })
-
-    onRendered(() => {
-      editor.focus()
-    })
-
-    return editor
-  }
-
   translateColumnsValue (): ColumnDefinition[] {
     return this.tableColumnsValue.map((columnData) => {
       if (columnData.editor === 'list') {
-        columnData.editor = this.listEditor.bind(this)
+        columnData.editor = listEditor.bind(this)
         columnData.formatter = function (cell) {
           const val = cell.getValue()
           return typeof val === 'object' ? val.label : val
         }
       } else if (columnData.editor === 'date') {
-        columnData.editor = this.dateEditor.bind(this)
+        columnData.editor = dateEditor.bind(this)
       } else if (columnData.formatter === 'buttonCross') {
         columnData.cellClick = this.removeRow.bind(this)
       }
