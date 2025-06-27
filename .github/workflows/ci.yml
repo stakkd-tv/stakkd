@@ -41,10 +41,9 @@ jobs:
       - name: Precompile assets
         run: bin/rails assets:precompile
       - name: Run tests
-        run: bundle exec rspec
-        continue-on-error: true
+        run: bundle exec rspec || echo "rspec_failed=true" >> $GITHUB_ENV
       - name: Upload screenshots on fail
-        if: failure()
+        if: env.rspec_failed == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: system-spec-screenshots
