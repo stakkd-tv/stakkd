@@ -48,6 +48,9 @@ jobs:
         with:
           name: system-spec-screenshots
           path: /home/runner/work/stakkd/stakkd/tmp/capybara/
+      - name: Mark failure if needed
+        if: env.rspec_failed == 'true'
+        run: exit 1
 
   lint:
     runs-on: ubuntu-latest
