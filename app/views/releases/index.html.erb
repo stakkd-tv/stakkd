@@ -1,0 +1,52 @@
+<% content_for :title, "Stakkd - #{@movie} releases" %>
+
+<%= render "movies/form_header", {movie: @movie} %>
+
+<div class="max-w-7xl mx-auto my-8 px-6">
+  <div class="form">
+    <%= render "movies/form_nav", {movie: @movie} %>
+
+    <%= render "shared/table_editor", table_presenter: @table_presenter, path_prefix: movie_releases_path(@movie) %>
+
+    <%= form_with model: [@movie, Release.new] do |form| %>
+      <h4 class="font-bold text-2xl">Add a new release</h4>
+
+      <div class="flex flex-col sm:flex-row gap-6">
+        <div class="basis-full sm:basis-1/2">
+          <%= form.label :date %>
+          <%= form.date_field :date, required: true, autocomplete: "off" %>
+        </div>
+
+        <div class="basis-full sm:basis-1/2">
+          <%= form.label :type %>
+          <%= form.collection_select :type, Release::TYPES, :to_s, :to_s, {}, {autocomplete: "off"} %>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-6">
+        <div class="basis-full sm:basis-1/2">
+          <%= form.label :certification_id %>
+          <%= form.grouped_collection_select(
+                :certification_id,
+                Country.includes(:certifications).where(certifications: {media_type: "Movie"}),
+                :certifications,
+                :translated_name,
+                :id,
+                :to_s,
+                {prompt: "Select a Certification", required: true},           # options
+                {data: {controller: "slim-select"}, autocomplete: "off"}
+              ) %>
+        </div>
+
+        <div class="basis-full sm:basis-1/2">
+          <%= form.label :note %>
+          <%= form.text_field :note, autocomplete: "off" %>
+        </div>
+      </div>
+
+      <div>
+        <%= form.submit "Save" %>
+      </div>
+    <% end %>
+  </div>
+</div>

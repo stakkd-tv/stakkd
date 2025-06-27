@@ -18,6 +18,3 @@ Sync::Countries.new.start
 
 puts "=== Importing languages ==="
 Sync::Languages.new.start
-
-puts "=== Creating companies ==="
-FactoryBot.create(:company, country: Country.first)

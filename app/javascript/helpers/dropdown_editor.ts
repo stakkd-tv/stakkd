@@ -4,7 +4,9 @@ export interface EditorParams {
   values: {
     label: string
     value: unknown
+    scope: string | undefined
   }[]
+  valuesLookupField: string | undefined
 }
 
 export class DropdownEditor {
@@ -38,10 +40,7 @@ export class DropdownEditor {
       'bg-background',
       'overflow-y-scroll',
       'z-50',
-      'border-b',
-      'border-t',
-      'border-r',
-      'sm:border-r-0',
+      'border',
       'border-pop'
     )
 
@@ -116,9 +115,12 @@ export class DropdownEditor {
   }
 
   buildOptions () {
-    const { label: currentLabel } = this.cell.getValue()
+    const { label: currentLabel, scope: currentScope } = this.cell.getValue()
     Array.from(this.editorParams.values).forEach(data => {
-      const { label, value } = data
+      const { label, value, scope } = data
+
+      if (scope !== currentScope) return
+
       const elm = document.createElement('div')
       elm.classList.add('px-[10px]', 'py-[20px]', 'hover:bg-background-darker', 'dropdown-option')
       if (label === currentLabel) {

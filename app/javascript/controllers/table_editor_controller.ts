@@ -1,6 +1,7 @@
 import { Controller } from '@hotwired/stimulus'
 import { CellComponent, ColumnDefinition, EmptyCallback, Options, RowComponent, TabulatorFull as Tabulator, ValueBooleanCallback, ValueVoidCallback } from 'tabulator-tables'
 import { DropdownEditor, EditorParams } from '../helpers/dropdown_editor'
+import flatpickr from 'flatpickr'
 
 interface RowData {
   [key: string]: object;
@@ -14,7 +15,7 @@ interface Response {
 // Connects to data-controller="table-editor"
 export default class extends Controller {
   static targets = ['tableContainer']
-  static values = { tableData: Array, tableColumns: Array, pathPrefix: String, modelName: String, movable: Boolean }
+  static values = { tableData: Array, tableColumns: Array, pathPrefix: String, modelName: String, movable: Boolean, groupBy: String }
 
   declare readonly tableContainerTarget: HTMLElement
 
@@ -23,6 +24,9 @@ export default class extends Controller {
   declare pathPrefixValue: string
   declare modelNameValue: string
   declare movableValue: boolean
+  declare groupByValue: string
+
+  declare hasGroupByValue: boolean
 
   async saveRecord (rowData: RowData): Promise<Response> {
     const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? ''
@@ -84,6 +88,35 @@ export default class extends Controller {
     return dropdown.getDisplayElement()
   }
 
+  dateEditor (cell: CellComponent, onRendered: EmptyCallback, success: ValueBooleanCallback): HTMLElement {
+    const editor = document.createElement('input')
+    editor.classList.add(
+      'py-[20px]',
+      'px-[10px]'
+    )
+    editor.value = cell.getValue()
+
+    flatpickr(editor, {
+      enableTime: false,
+      dateFormat: 'd-m-Y',
+      disableMobile: true,
+      onClose: (selectedDates, dateStr, instance) => {
+        success(dateStr)
+        instance.destroy()
+      },
+      onChange: (selectedDates, dateStr, instance) => {
+        success(dateStr)
+        instance.destroy()
+      }
+    })
+
+    onRendered(() => {
+      editor.focus()
+    })
+
+    return editor
+  }
+
   translateColumnsValue (): ColumnDefinition[] {
     return this.tableColumnsValue.map((columnData) => {
       if (columnData.editor === 'list') {
@@ -92,6 +125,8 @@ export default class extends Controller {
           const val = cell.getValue()
           return typeof val === 'object' ? val.label : val
         }
+      } else if (columnData.editor === 'date') {
+        columnData.editor = this.dateEditor.bind(this)
       } else if (columnData.formatter === 'buttonCross') {
         columnData.cellClick = this.removeRow.bind(this)
       }
@@ -136,6 +171,12 @@ export default class extends Controller {
     if (this.movableValue) {
       options.movableRows = true
       options.rowHeader = { rowHandle: true, width: 40, minWidth: 40, headerSort: false, resizable: false, formatter: 'handle' }
+    }
+    if (this.hasGroupByValue) {
+      options.groupBy = (data) => {
+        const valOrObj = data[this.groupByValue]
+        return typeof valOrObj === 'object' ? valOrObj.label : valOrObj
+      }
     }
     return options
   }

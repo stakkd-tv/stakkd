@@ -166,7 +166,7 @@ RSpec.describe "Movies Taglines", type: :request do
         allow(Current).to receive(:user).and_return(user)
       end
 
-      it "removes the keyword" do
+      it "removes the tagline" do
         movie.taglines.create!(valid_attributes)
         tagline = movie.taglines.first
         delete movie_tagline_path(tagline, movie_id: movie)

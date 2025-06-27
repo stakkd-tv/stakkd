@@ -149,14 +149,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_21_190203) do
   create_table "releases", force: :cascade do |t|
     t.bigint "movie_id", null: false
     t.bigint "certification_id", null: false
-    t.bigint "language_id", null: false
     t.string "type", null: false
     t.string "note"
     t.date "date", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["certification_id"], name: "index_releases_on_certification_id"
-    t.index ["language_id"], name: "index_releases_on_language_id"
     t.index ["movie_id"], name: "index_releases_on_movie_id"
   end
 
@@ -226,7 +224,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_21_190203) do
   add_foreign_key "certifications", "countries"
   add_foreign_key "genre_assignments", "genres"
   add_foreign_key "releases", "certifications"
-  add_foreign_key "releases", "languages"
   add_foreign_key "releases", "movies"
   add_foreign_key "sessions", "users"
   add_foreign_key "taggings", "tags"

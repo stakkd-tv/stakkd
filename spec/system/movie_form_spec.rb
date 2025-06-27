@@ -9,6 +9,8 @@ RSpec.feature "Movie form", type: :system, js: true do
     @saudi = FactoryBot.create(:country, code: "KS", translated_name: "Saudi Arabia")
     @action = FactoryBot.create(:genre, name: "Action")
     @suspense = FactoryBot.create(:genre, name: "Suspense")
+    @certification = FactoryBot.create(:certification, country: @uk, code: "PG", description: "Parental Guidance")
+    FactoryBot.create(:certification, country: @saudi, code: "ABC")
     user = FactoryBot.create(:user)
     sign_in(user)
   end
@@ -27,6 +29,7 @@ RSpec.feature "Movie form", type: :system, js: true do
 
     # Posters
     click_link "Posters"
+    expect(page).to have_css("a[data-active='true']", text: "Posters")
     expect(page).to have_content("Width must be between 300px and 2000px")
     attach_file "upload_input", [Rails.root.join("spec/support/assets/299x449.png"), Rails.root.join("spec/support/assets/300x450.png")]
     using_wait_time 5 do
@@ -38,6 +41,7 @@ RSpec.feature "Movie form", type: :system, js: true do
 
     # Backgrounds
     click_link "Backgrounds"
+    expect(page).to have_css("a[data-active='true']", text: "Backgrounds")
     expect(page).to have_content("Width must be between 1280px and 3840px")
     attach_file "upload_input", [Rails.root.join("spec/support/assets/1279x719.png"), Rails.root.join("spec/support/assets/1280x720.png")]
     using_wait_time 5 do
@@ -49,6 +53,7 @@ RSpec.feature "Movie form", type: :system, js: true do
 
     # Logos
     click_link "Logos"
+    expect(page).to have_css("a[data-active='true']", text: "Logos")
     expect(page).to have_content("Width must be between 400px and 3000px")
     attach_file "upload_input", [Rails.root.join("spec/support/assets/400x400.png"), Rails.root.join("spec/support/assets/399x399.png")]
     using_wait_time 5 do
@@ -60,6 +65,7 @@ RSpec.feature "Movie form", type: :system, js: true do
 
     # Alternative Names
     click_link "Alternative Names"
+    expect(page).to have_css("a[data-active='true']", text: "Alternative Names")
     expect(page).to have_content("Add a new alternative name")
     fill_in "alternative_name_name", with: "New alt name"
     fill_in "alternative_name_type", with: "New alt type"
@@ -138,6 +144,40 @@ RSpec.feature "Movie form", type: :system, js: true do
     using_wait_time 5 do
       expect(page).not_to have_css "div.tabulator-cell", text: "Hello there"
       expect(movie.reload.keyword_list).to eq []
+    end
+
+    # Releases
+    click_link "Releases"
+    expect(page).to have_css("a[data-active='true']", text: "Releases")
+    fill_in "release_date", with: "01/02/2025"
+    select "Theatrical", from: "release_type"
+    find("div.ss-main").click
+    find("div.ss-option", text: "GB - PG").click
+    fill_in "release_note", with: "Test release note"
+    click_button "Save"
+    using_wait_time 5 do
+      expect(page).to have_css "div.tabulator-cell", text: "01-02-2025"
+      expect(page).to have_css "div.tabulator-cell", text: "Theatrical"
+      expect(page).to have_css "div.tabulator-cell", text: "PG"
+      expect(page).to have_css "div.tabulator-cell", text: "Test release note"
+      expect(movie.reload.releases.count).to eq 1
+    end
+    date_cell = find("div.tabulator-cell", text: "01-02-2025")
+    date_cell.click
+    expect(page).to have_css(".flatpickr-calendar")
+    expect(page).to have_css(".flatpickr-day.selected", text: "1")
+    selected_month = find("select.flatpickr-monthDropdown-months").value
+    expect(selected_month).to eq("1") # 0 based index, so February
+    selected_year = find("input.numInput.cur-year").value
+    expect(selected_year).to eq("2025")
+    certification_cell = find("div.tabulator-cell", text: "PG")
+    certification_cell.click
+    expect(page).to have_css(".dropdown-option", text: "PG")
+    expect(page).not_to have_css(".dropdown-option", text: "ABC") # Does not show other country certification
+    find("div.tabulator-cell>svg").click
+    using_wait_time 5 do
+      expect(page).not_to have_css "div.tabulator-cell", text: "01-02-2025"
+      expect(movie.reload.releases).to eq []
     end
 
     # Taglines

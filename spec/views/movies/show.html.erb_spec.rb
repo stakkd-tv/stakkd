@@ -1,15 +1,18 @@
 require "rails_helper"
 
 RSpec.describe "movies/show", type: :view do
+  let(:country) { FactoryBot.create(:country) }
   let(:posters) { [] }
   let(:backgrounds) { [] }
   let(:logos) { [] }
   let(:alternative_names) { {} }
+  let(:release) { FactoryBot.create(:release, date: Date.new(2022, 1, 1)) }
 
   before(:each) do
     def view.authenticated? = false
     assign(:movie, FactoryBot.create(
       :movie,
+      country:,
       original_title: "Original Title",
       translated_title: "Translated Title",
       overview: "This is overview",
@@ -22,7 +25,8 @@ RSpec.describe "movies/show", type: :view do
       posters:,
       backgrounds:,
       logos:,
-      genres: [FactoryBot.create(:genre, name: "Action")]
+      genres: [FactoryBot.create(:genre, name: "Action")],
+      releases: [release]
     ))
     assign(:alternative_names, alternative_names)
   end
@@ -42,6 +46,22 @@ RSpec.describe "movies/show", type: :view do
   it "renders the genres" do
     render
     assert_select "p.rounded-full", text: "Action"
+  end
+
+  context "when there is no release for the country" do
+    it "does not render the release date" do
+      render
+      assert_select "p", text: "January 01, 2022", count: 0
+    end
+  end
+
+  context "when there is a release for the country" do
+    let(:release) { FactoryBot.create(:release, date: Date.new(2022, 1, 1), country:) }
+
+    it "renders the release date" do
+      render
+      assert_select "p", text: "January 01, 2022"
+    end
   end
 
   context "when there are alternative names" do

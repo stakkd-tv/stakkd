@@ -14,6 +14,12 @@
     <div class="col-span-1 bg-background-darker rounded-lg p-4 flex flex-col gap-10 items-center md:items-start">
       <%= image_tag @movie.poster, class: "max-h-40 w-fit md:w-full md:max-h-none rounded-lg" %>
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-1 gap-10">
+        <% if @movie.release %>
+          <div>
+            <p class="font-domine"><b>Release Date:</b></p>
+            <p><%= @movie.release.date.strftime("%B %d, %Y") %></p>
+          </div>
+        <% end %>
         <div>
           <p class="font-domine"><b>Status:</b></p>
           <p><%= @movie.status.titleize %></p>

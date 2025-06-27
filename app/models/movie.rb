@@ -19,6 +19,7 @@ class Movie < ApplicationRecord
   has_many :genre_assignments, as: :record, dependent: :destroy
   has_many :genres, through: :genre_assignments
   has_many :taglines, -> { order(position: :asc) }, as: :record, dependent: :destroy
+  has_many :releases, dependent: :destroy
   has_many_attached :posters
   has_many_attached :backgrounds
   has_many_attached :logos
@@ -42,6 +43,8 @@ class Movie < ApplicationRecord
   def to_s = translated_title
 
   def tagline = taglines.first&.tagline
+
+  def release = @release ||= releases.includes(certification: :country).where(certification: {country:}, type: Release::THEATRICAL).first
 
   private
 

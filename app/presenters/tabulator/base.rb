@@ -17,6 +17,8 @@ module Tabulator
 
     def movable = false
 
+    def group_by = nil
+
     private
 
     def to_hash(record) = raise "Implement in subclass"

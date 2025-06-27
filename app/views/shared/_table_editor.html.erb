@@ -7,6 +7,7 @@
      <% if table_presenter.column_defs %> data-table-editor-table-columns-value="<%= table_presenter.column_defs.to_json %>"<% end %>
      data-table-editor-path-prefix-value="<%= path_prefix %>"
      data-table-editor-model-name-value="<%= table_presenter.model_table_name %>"
-     data-table-editor-movable-value="<%= table_presenter.movable %>">
+     data-table-editor-movable-value="<%= table_presenter.movable %>"
+     <% if table_presenter.group_by %> data-table-editor-group-by-value="<%= table_presenter.group_by %>"<% end %>>
   <div data-table-editor-target="tableContainer"></div>
 </div>

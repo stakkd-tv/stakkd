@@ -9,6 +9,7 @@ RSpec.describe Movie, type: :model do
     it { should have_many(:genres).through(:genre_assignments) }
     it { should have_many(:keyword_taggings).dependent(:destroy) }
     it { should have_many(:taglines).dependent(:destroy) }
+    it { should have_many(:releases).dependent(:destroy) }
     it { should have_many_attached(:posters) }
     it { should have_many_attached(:backgrounds) }
     it { should have_many_attached(:logos) }
@@ -113,6 +114,37 @@ RSpec.describe Movie, type: :model do
     it "returns nil when there are no taglines" do
       movie = FactoryBot.create(:movie)
       expect(movie.tagline).to be_nil
+    end
+  end
+
+  describe "#release" do
+    it "returns nil when there are no releases" do
+      movie = FactoryBot.create(:movie)
+      expect(movie.release).to be_nil
+    end
+
+    it "returns nil when there is no theatrical release for the country" do
+      uk = FactoryBot.create(:country, code: "UK")
+
+      us = FactoryBot.create(:country, code: "US")
+      cert_us = FactoryBot.create(:certification, country: us)
+
+      movie = FactoryBot.create(:movie, country: uk)
+      FactoryBot.create(:release, movie:, type: Release::THEATRICAL, certification: cert_us)
+      expect(movie.release).to be_nil
+    end
+
+    it "returns the theatrical release for the country" do
+      uk = FactoryBot.create(:country, code: "UK")
+      cert_uk = FactoryBot.create(:certification, country: uk)
+
+      us = FactoryBot.create(:country, code: "US")
+      cert_us = FactoryBot.create(:certification, country: us)
+
+      movie = FactoryBot.create(:movie, country: uk)
+      FactoryBot.create(:release, movie:, type: Release::THEATRICAL, certification: cert_us)
+      release = FactoryBot.create(:release, movie:, type: Release::THEATRICAL, certification: cert_uk)
+      expect(movie.release).to eq release
     end
   end
 end

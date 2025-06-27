@@ -7,6 +7,19 @@
     color: white;
 }
 
+.form > form .ss-main {
+    width: 100%;
+    height: auto;
+    background-color: var(--color-background);
+    padding: 0.5rem;
+    border: 1px solid var(--color-pop);
+    border-radius: var(--radius-lg);
+}
+
+.form > form .ss-main:focus {
+    outline: 1px solid var(--color-pop);
+}
+
 .ss-main:focus {
     box-shadow: none;
 }
@@ -37,6 +50,7 @@
     box-shadow: none;
 }
 
+.ss-content .ss-list .ss-optgroup .ss-option,
 .ss-content .ss-list .ss-option {
     background-color: var(--color-background);
     padding: 20px 10px;
@@ -73,4 +87,9 @@
 .ss-content.ss-open-below {
     border-bottom-left-radius: 0.5rem;
     border-bottom-right-radius: 0.5rem;
+}
+
+.ss-content .ss-list .ss-optgroup .ss-optgroup-label .ss-optgroup-label-text {
+    color: white;
+    font-family: var(--font-domine);
 }

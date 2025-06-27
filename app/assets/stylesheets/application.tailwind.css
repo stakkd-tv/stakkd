@@ -71,7 +71,8 @@
 
     .form > form input,
     .form > form textarea,
-    .form > form select {
+    .form > form select,
+    .form > form .ss-main {
         @apply w-full bg-background p-2 border border-pop rounded-lg focus:outline-pop focus:outline;
     }
 
