@@ -37,6 +37,15 @@
           <p>$<%= number_with_delimiter @movie.revenue.to_i %></p>
         </div>
       </div>
+      <% if @movie.companies.any? %>
+        <div class="grid grid-cols-5 gap-2">
+          <% @movie.companies.each do |company| %>
+            <%= link_to company do %>
+              <%= image_tag company.logo, alt: company.name, title: company.name, class: "bg-pop/25 rounded-sm border border-pop aspect-square" %>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
       <div class="flex gap-4 flex-col w-full">
         <%= link_to "Edit", edit_movie_path(@movie), class: "link" %>
         <div class="flex gap-4 w-full">

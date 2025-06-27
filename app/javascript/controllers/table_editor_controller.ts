@@ -83,6 +83,26 @@ export default class extends Controller {
     })
   }
 
+  imageFormatter (cell: CellComponent) {
+    const cellValue = cell.getValue()
+    if (typeof cellValue !== 'object') { return '' }
+    const { value: imgSrc, label } = cellValue
+    const parent = document.createElement('div')
+    parent.classList.add('flex', 'h-full', 'items-center', 'gap-4')
+
+    if (imgSrc) {
+      const img = document.createElement('img')
+      img.src = imgSrc
+      img.classList.add('w-auto', 'h-full', 'max-h-[20px]', 'rounded-sm', 'bg-pop/50')
+      parent.appendChild(img)
+    }
+
+    const labelElm = document.createElement('span')
+    labelElm.textContent = label
+    parent.appendChild(labelElm)
+    return parent
+  }
+
   translateColumnsValue (): ColumnDefinition[] {
     return this.tableColumnsValue.map((columnData) => {
       if (columnData.editor === 'list') {
@@ -93,8 +113,12 @@ export default class extends Controller {
         }
       } else if (columnData.editor === 'date') {
         columnData.editor = dateEditor.bind(this)
-      } else if (columnData.formatter === 'buttonCross') {
+      }
+
+      if (columnData.formatter === 'buttonCross') {
         columnData.cellClick = this.removeRow.bind(this)
+      } else if (columnData.formatter === 'image') {
+        columnData.formatter = this.imageFormatter.bind(this)
       }
 
       return columnData

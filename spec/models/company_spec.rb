@@ -28,4 +28,23 @@ RSpec.describe Company, type: :model do
       end
     end
   end
+
+  describe "#logo_url" do
+    context "when there are no logos" do
+      it "returns nil" do
+        company = Company.new
+        expect(company.logo_url).to be_nil
+      end
+    end
+
+    context "when there are logos" do
+      it "returns a logo URL" do
+        company = FactoryBot.create(
+          :company,
+          logos: [Rack::Test::UploadedFile.new("spec/support/assets/300x450.png", "image/png")]
+        )
+        expect(company.logo_url).to be_a(String)
+      end
+    end
+  end
 end
