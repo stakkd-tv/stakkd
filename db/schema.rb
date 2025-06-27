@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_21_190203) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_27_151837) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -74,6 +74,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_21_190203) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["country_id"], name: "index_companies_on_country_id"
+  end
+
+  create_table "company_assignments", force: :cascade do |t|
+    t.bigint "company_id", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id", "record_type", "record_id"], name: "index_unique_company_assignments", unique: true
+    t.index ["company_id"], name: "index_company_assignments_on_company_id"
+    t.index ["record_type", "record_id"], name: "index_company_assignments_on_record"
   end
 
   create_table "countries", force: :cascade do |t|
@@ -222,6 +233,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_21_190203) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "alternative_names", "countries"
   add_foreign_key "certifications", "countries"
+  add_foreign_key "company_assignments", "companies"
   add_foreign_key "genre_assignments", "genres"
   add_foreign_key "releases", "certifications"
   add_foreign_key "releases", "movies"

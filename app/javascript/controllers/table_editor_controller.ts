@@ -1,8 +1,7 @@
 import { Controller } from '@hotwired/stimulus'
-import { CellComponent, ColumnDefinition, EmptyCallback, Options, RowComponent, TabulatorFull as Tabulator, ValueBooleanCallback } from 'tabulator-tables'
-import flatpickr from 'flatpickr'
-import { listEditor } from '../helpers/tabulator/list_editor';
-import { dateEditor } from '../helpers/tabulator/date_editor';
+import { CellComponent, ColumnDefinition, Options, RowComponent, TabulatorFull as Tabulator } from 'tabulator-tables'
+import { listEditor } from '../helpers/tabulator/list_editor'
+import { dateEditor } from '../helpers/tabulator/date_editor'
 
 interface RowData {
   [key: string]: object;
