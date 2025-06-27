@@ -149,7 +149,7 @@ RSpec.feature "Movie form", type: :system, js: true do
     # Releases
     click_link "Releases"
     expect(page).to have_css("a[data-active='true']", text: "Releases")
-    fill_in "release_date", with: "01/02/2025"
+    fill_in "release_date", with: Date.new(2025, 2, 1)
     select "Theatrical", from: "release_type"
     find("div.ss-main").click
     find("div.ss-option", text: "GB - PG").click
