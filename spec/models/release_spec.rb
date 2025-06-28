@@ -15,7 +15,7 @@ RSpec.describe Release, type: :model do
 
   describe ".inheritance_column" do
     it "should be empty" do
-      expect(AlternativeName.inheritance_column).to eq ""
+      expect(Release.inheritance_column).to be_nil
     end
   end
 end

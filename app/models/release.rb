@@ -17,5 +17,5 @@ class Release < ApplicationRecord
   validates_presence_of :type, :date
   validates_inclusion_of :type, in: TYPES
 
-  self.inheritance_column = nil
+  def self.inheritance_column = nil
 end

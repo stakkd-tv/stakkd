@@ -6,5 +6,5 @@ class AlternativeName < ApplicationRecord
   # Validations
   validates_presence_of :name
 
-  self.inheritance_column = nil
+  def self.inheritance_column = nil
 end

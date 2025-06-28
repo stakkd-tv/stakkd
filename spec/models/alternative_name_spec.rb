@@ -12,7 +12,7 @@ RSpec.describe AlternativeName, type: :model do
 
   describe ".inheritance_column" do
     it "should be empty" do
-      expect(AlternativeName.inheritance_column).to eq ""
+      expect(AlternativeName.inheritance_column).to be_nil
     end
   end
 end
