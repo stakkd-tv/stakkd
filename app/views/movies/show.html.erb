@@ -132,6 +132,25 @@
           <% end %>
         </div>
       <% end %>
+      <% if @movie.videos.any? %>
+        <div>
+          <h4 class="text-2xl font-bold font-domine text-white mt-4 mb-4">Videos:</h4>
+          <div class="w-full flex gap-8 overflow-x-scroll no-scrollbar">
+            <% @movie.videos.each do |video| %>
+              <div class="group min-h-60 max-h-60 min-w-[425px] aspect-16/9 border border-pop rounded-lg overflow-hidden relative">
+                <%= link_to video.url do %>
+                  <%= image_tag video.thumbnail_url, class: "min-w-[425px]" %>
+                  <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                    <div class="bg-gray-500/50 px-8 py-4 rounded-lg group-hover:bg-red-500">
+                      <i class="fa-solid fa-play"></i>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>

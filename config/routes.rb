@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     resources :taglines, only: [:index, :create, :update, :destroy] do
       post :move, on: :member
     end
+    resources :videos, only: [:index, :create, :destroy]
 
     get :posters, on: :member
     get :backgrounds, on: :member

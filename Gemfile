@@ -51,6 +51,10 @@ gem "acts-as-taggable-on", "~> 12.0"
 # ActiveRecord positioning
 gem "acts_as_list", "~> 1.2"
 
+# Video metadata extraction
+gem "google-api-client", "~> 0.53.0"
+gem "vimeo", "~> 1.5"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[mri windows], require: "debug/prelude"

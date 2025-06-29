@@ -12,6 +12,6 @@
     <%= link_to "Companies", movie_company_assignments_path(movie), data: {active: controller_name == "company_assignments"} %>
     <%= link_to "Releases", movie_releases_path(movie), data: {active: controller_name == "releases"} %>
     <%= link_to "Taglines", movie_taglines_path(movie), data: {active: controller_name == "taglines"} %>
-    <%= link_to "Videos", "#", data: {disabled: true} %>
+    <%= link_to "Videos", movie_videos_path(movie), data: {active: controller_name == "videos"} %>
   </div>
 <% end %>
