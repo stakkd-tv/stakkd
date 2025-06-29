@@ -69,7 +69,7 @@ group :development, :test do
   gem "standard"
 
   # RSpec testing framework
-  gem "rspec-rails", "~> 8.0.0"
+  gem "rspec-rails", "~> 8.0.1"
 
   # Shoulda Matchers gem for testing
   gem "shoulda-matchers"
