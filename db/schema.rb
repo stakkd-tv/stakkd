@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_27_200500) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_30_172019) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -53,6 +53,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_27_200500) do
     t.datetime "updated_at", null: false
     t.index ["country_id"], name: "index_alternative_names_on_country_id"
     t.index ["record_type", "record_id"], name: "index_alternative_names_on_record"
+  end
+
+  create_table "cast_members", force: :cascade do |t|
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "person_id", null: false
+    t.string "character", null: false
+    t.integer "position", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["person_id"], name: "index_cast_members_on_person_id"
+    t.index ["record_type", "record_id"], name: "index_cast_members_on_record"
   end
 
   create_table "certifications", force: :cascade do |t|
@@ -245,6 +257,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_27_200500) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "alternative_names", "countries"
+  add_foreign_key "cast_members", "people"
   add_foreign_key "certifications", "countries"
   add_foreign_key "company_assignments", "companies"
   add_foreign_key "genre_assignments", "genres"
