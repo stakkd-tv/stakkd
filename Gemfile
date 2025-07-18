@@ -43,7 +43,7 @@ gem "thruster", require: false
 gem "image_processing", "~> 1.2"
 
 # Extract colours from images, plus other image operations
-gem "mini_magick", "~> 5.2"
+gem "mini_magick", "~> 5.3"
 
 # ActiveRecord tagging
 gem "acts-as-taggable-on", "~> 12.0"
