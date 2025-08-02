@@ -93,7 +93,7 @@ export default class extends Controller {
     if (imgSrc) {
       const img = document.createElement('img')
       img.src = imgSrc
-      img.classList.add('w-auto', 'h-full', 'max-h-[20px]', 'rounded-sm', 'bg-pop/50')
+      img.classList.add('w-auto', 'h-34', 'rounded-sm')
       parent.appendChild(img)
     }
 

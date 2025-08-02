@@ -55,6 +55,9 @@ gem "acts_as_list", "~> 1.2"
 gem "google-api-client", "~> 0.53.0"
 gem "vimeo", "~> 1.5"
 
+# Adds full text search to ActiveRecord models
+gem "pg_search", "~> 2.3"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[mri windows], require: "debug/prelude"

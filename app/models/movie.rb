@@ -16,6 +16,7 @@ class Movie < ApplicationRecord
   belongs_to :country
   belongs_to :language
   has_many :alternative_names, as: :record, dependent: :destroy
+  has_many :cast_members, -> { order(position: :asc) }, as: :record, dependent: :destroy
   has_many :genre_assignments, as: :record, dependent: :destroy
   has_many :genres, through: :genre_assignments
   has_many :company_assignments, as: :record, dependent: :destroy

@@ -4,9 +4,11 @@ class CreateCastMembers < ActiveRecord::Migration[8.0]
       t.references :record, polymorphic: true, null: false
       t.references :person, null: false, foreign_key: true
       t.string :character, null: false
-      t.integer :position, null: false
+      t.integer :position, null: false, default: 0
 
       t.timestamps
     end
+
+    add_index :cast_members, [:person_id, :record_type, :record_id], unique: true, name: "index_unique_cast_members"
   end
 end

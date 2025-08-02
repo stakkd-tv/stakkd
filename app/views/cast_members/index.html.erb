@@ -1,0 +1,32 @@
+<% content_for :title, "Stakkd - #{@relatable} cast members" %>
+<% model_params = {relatable_model.to_sym => @relatable} %>
+
+<%= render "#{relatable_model_plural}/form_header", model_params %>
+
+<div class="max-w-7xl mx-auto my-8 px-6">
+  <div class="form">
+    <%= render "#{relatable_model_plural}/form_nav", model_params %>
+
+    <%= render "shared/table_editor", table_presenter: @table_presenter, path_prefix: nested_path_for(relatable: @relatable) %>
+
+    <%= form_with model: [@relatable, CastMember.new] do |form| %>
+      <h4 class="font-bold text-2xl">Add a cast member</h4>
+
+      <div class="flex flex-col sm:flex-row gap-6">
+        <div class="basis-full sm:basis-1/2 relative">
+          <%= form.label :person_id %>
+          <%= form.text_field :person_id, required: true, autocomplete: "off", data: {controller: "ajax-search", ajax_search_search_url_value: people_path} %>
+        </div>
+
+        <div class="basis-full sm:basis-1/2">
+          <%= form.label :character %>
+          <%= form.text_field :character, required: true, autocomplete: "off" %>
+        </div>
+      </div>
+
+      <div>
+        <%= form.submit "Save" %>
+      </div>
+    <% end %>
+  </div>
+</div>

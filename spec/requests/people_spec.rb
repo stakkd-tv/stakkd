@@ -29,6 +29,21 @@ RSpec.describe "People", type: :request do
       get people_url
       expect(response).to be_successful
     end
+
+    context "when there is a query" do
+      it "returns a successful response" do
+        get people_url(query: "query")
+        expect(response).to be_successful
+      end
+
+      it "searches for people" do
+        person = FactoryBot.create(:person, translated_name: "Random")
+        person2 = FactoryBot.create(:person, translated_name: "Another")
+        get people_url(query: person.translated_name)
+        assert_select "p", text: person.translated_name
+        assert_select "p", text: person2.translated_name, count: 0
+      end
+    end
   end
 
   describe "GET /people/:id" do

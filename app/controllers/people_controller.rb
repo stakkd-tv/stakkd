@@ -3,7 +3,11 @@ class PeopleController < ApplicationController
   before_action :set_person, only: [:show, :edit, :update, :images]
 
   def index
-    @people = Person.all.order(:translated_name)
+    @people = if params[:query]
+      Person.search(params[:query]).order(:translated_name)
+    else
+      Person.all.order(:translated_name)
+    end
   end
 
   def show

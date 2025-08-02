@@ -5,7 +5,7 @@
     <%= link_to "Backgrounds", backgrounds_movie_path(movie), data: {active: action_name == "backgrounds"} %>
     <%= link_to "Logos", logos_movie_path(movie), data: {active: action_name == "logos"} %>
     <%= link_to "Alternative Names", movie_alternative_names_path(movie), data: {active: controller_name == "alternative_names"} %>
-    <%= link_to "Cast", "#", data: {disabled: true} %>
+    <%= link_to "Cast", movie_cast_members_path(movie), data: {active: controller_name == "cast_members"} %>
     <%= link_to "Crew", "#", data: {disabled: true} %>
     <%= link_to "Genres", movie_genre_assignments_path(movie), data: {active: controller_name == "genre_assignments"} %>
     <%= link_to "Keywords", movie_keywords_path(movie), data: {active: controller_name == "keywords"} %>

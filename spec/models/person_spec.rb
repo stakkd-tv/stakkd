@@ -35,6 +35,25 @@ RSpec.describe Person, type: :model do
     end
   end
 
+  describe "#image_url" do
+    context "when there are no images" do
+      it "returns nil" do
+        person = Person.new
+        expect(person.image_url).to be_nil
+      end
+    end
+
+    context "when there are images" do
+      it "returns an image URL" do
+        person = FactoryBot.create(
+          :person,
+          images: [Rack::Test::UploadedFile.new("spec/support/assets/300x450.png", "image/png")]
+        )
+        expect(person.image_url).to be_a(String)
+      end
+    end
+  end
+
   describe "#age" do
     context "when there is no dob" do
       it "returns nil" do

@@ -3,7 +3,7 @@
     border: none;
     border-radius: 0;
     background-color: transparent;
-    padding: 20px 10px;
+    padding: 15px 10px;
     color: white;
 }
 
@@ -42,7 +42,7 @@
     background-color: var(--color-background-darker);
     border: none;
     border-radius: 0;
-    padding: 20px 10px;
+    padding: 15px 10px;
     border-bottom: 1px solid var(--color-pop);
 }
 
@@ -53,7 +53,7 @@
 .ss-content .ss-list .ss-optgroup .ss-option,
 .ss-content .ss-list .ss-option {
     background-color: var(--color-background);
-    padding: 20px 10px;
+    padding: 15px 10px;
     color: white;
 }
 
@@ -81,7 +81,7 @@
 }
 
 .ss-content .ss-list .ss-search {
-    padding: 20px 10px;
+    padding: 15px 10px;
 }
 
 .ss-content.ss-open-below {

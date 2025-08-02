@@ -36,7 +36,8 @@ export class DropdownEditor {
       'sm:absolute',
       'cursor-pointer',
       'h-screen',
-      'sm:h-96',
+      'sm:max-h-96',
+      'sm:h-fit',
       'bg-background',
       'overflow-y-scroll',
       'z-50',
@@ -48,7 +49,7 @@ export class DropdownEditor {
     this.input.placeholder = 'Search'
     this.input.classList.add(
       'bg-background-darker',
-      'py-[20px]',
+      'py-[15px]',
       'px-[10px]',
       'w-full',
       'focus:outline-none',
@@ -122,7 +123,7 @@ export class DropdownEditor {
       if (scope !== currentScope) return
 
       const elm = document.createElement('div')
-      elm.classList.add('px-[10px]', 'py-[20px]', 'hover:bg-background-darker', 'dropdown-option')
+      elm.classList.add('px-[10px]', 'py-[15px]', 'hover:bg-background-darker', 'dropdown-option')
       if (label === currentLabel) {
         elm.classList.remove('hover:bg-background-darker')
         elm.classList.add('bg-pop/50')
