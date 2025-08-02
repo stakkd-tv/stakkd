@@ -1,5 +1,8 @@
 class Person < ApplicationRecord
+  include PgSearch::Model
   include Slugify
+
+  pg_search_scope :search, against: [:alias, :original_name, :translated_name], using: {trigram: {threshold: 0.2}}
 
   CREDITS = [
     WRITING = "writing",
@@ -28,6 +31,11 @@ class Person < ApplicationRecord
   validates_inclusion_of :gender, in: GENDERS
 
   def image = images.first || "2:3.png"
+
+  def image_url
+    ActiveStorage::Current.url_options = Rails.application.config.action_mailer.default_url_options
+    image.try(:url)
+  end
 
   def age
     return unless dob.present?

@@ -4,7 +4,7 @@ import { CellComponent, EmptyCallback, ValueBooleanCallback } from 'tabulator-ta
 export function dateEditor (cell: CellComponent, onRendered: EmptyCallback, success: ValueBooleanCallback): HTMLElement {
   const editor = document.createElement('input')
   editor.classList.add(
-    'py-[20px]',
+    'py-[15px]',
     'px-[10px]'
   )
   editor.value = cell.getValue()

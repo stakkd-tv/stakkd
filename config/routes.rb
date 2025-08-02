@@ -10,6 +10,9 @@ Rails.application.routes.draw do
   resources :passwords, param: :token
   resources :movies, except: [:destroy] do
     resources :alternative_names, only: [:index, :create, :update]
+    resources :cast_members, only: [:index, :create, :update, :destroy] do
+      post :move, on: :member
+    end
     resources :genre_assignments, only: [:index, :create, :destroy]
     resources :keywords, only: [:index, :create, :destroy]
     resources :company_assignments, only: [:index, :create, :destroy]

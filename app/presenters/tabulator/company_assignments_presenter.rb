@@ -1,7 +1,5 @@
 module Tabulator
   class CompanyAssignmentsPresenter < Base
-    include ActionView::Helpers::AssetUrlHelper
-
     def column_defs
       [
         {title: "Company", field: "company", formatter: "image", headerSort: false, editor: false},
