@@ -69,6 +69,7 @@ export default class extends Controller {
         (this.element as HTMLInputElement).value = ''
         this.clearSearchResults()
         if (results.length > 0) { this.searchResults.classList.remove('hidden') }
+        this.searchResults.style.width = this.element.parentElement?.clientWidth + 'px'
         results.forEach((result, idx) => {
           this.createResult(result, idx)
         })

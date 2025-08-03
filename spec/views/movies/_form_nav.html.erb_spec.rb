@@ -12,6 +12,7 @@ RSpec.describe "movies/_form_nav", type: :view do
       assert_select "a[href='#{logos_movie_path(movie)}'][data-active='false']"
       assert_select "a[href='#{movie_alternative_names_path(movie)}'][data-active='false']"
       assert_select "a[href='#{movie_cast_members_path(movie)}'][data-active='false']"
+      assert_select "a[href='#{movie_crew_members_path(movie)}'][data-active='false']"
       assert_select "a[href='#{movie_genre_assignments_path(movie)}'][data-active='false']"
       assert_select "a[href='#{movie_keywords_path(movie)}'][data-active='false']"
       assert_select "a[href='#{movie_company_assignments_path(movie)}'][data-active='false']"

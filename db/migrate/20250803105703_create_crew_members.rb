@@ -7,5 +7,7 @@ class CreateCrewMembers < ActiveRecord::Migration[8.0]
 
       t.timestamps
     end
+
+    add_index :crew_members, [:person_id, :record_type, :record_id], unique: true, name: "index_unique_crew_members"
   end
 end

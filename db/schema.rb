@@ -64,6 +64,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_03_105703) do
     t.integer "position", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["person_id", "record_type", "record_id"], name: "index_unique_cast_members", unique: true
     t.index ["person_id"], name: "index_cast_members_on_person_id"
     t.index ["record_type", "record_id"], name: "index_cast_members_on_record"
   end
@@ -117,6 +118,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_03_105703) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["job_id"], name: "index_crew_members_on_job_id"
+    t.index ["person_id", "record_type", "record_id"], name: "index_unique_crew_members", unique: true
     t.index ["person_id"], name: "index_crew_members_on_person_id"
     t.index ["record_type", "record_id"], name: "index_crew_members_on_record"
   end

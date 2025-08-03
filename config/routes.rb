@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get "jobs/index"
+  get "crew_members/index"
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", :as => :rails_health_check
@@ -13,6 +15,7 @@ Rails.application.routes.draw do
     resources :cast_members, only: [:index, :create, :update, :destroy] do
       post :move, on: :member
     end
+    resources :crew_members, only: [:index, :create, :update, :destroy]
     resources :genre_assignments, only: [:index, :create, :destroy]
     resources :keywords, only: [:index, :create, :destroy]
     resources :company_assignments, only: [:index, :create, :destroy]
@@ -36,6 +39,7 @@ Rails.application.routes.draw do
   resources :companies, except: [:destroy] do
     get :logos, on: :member
   end
+  resources :jobs, only: [:index]
 
   get "about" => "pages#about", :as => :about
   get "contribute" => "pages#contribute", :as => :contribute

@@ -6,6 +6,7 @@ RSpec.describe Movie, type: :model do
     it { should belong_to(:language) }
     it { should have_many(:alternative_names).dependent(:destroy) }
     it { should have_many(:cast_members).dependent(:destroy) }
+    it { should have_many(:crew_members).dependent(:destroy) }
     it { should have_many(:genre_assignments).dependent(:destroy) }
     it { should have_many(:genres).through(:genre_assignments) }
     it { should have_many(:keyword_taggings).dependent(:destroy) }

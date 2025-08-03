@@ -20,6 +20,9 @@ RSpec.feature "Movie form", type: :system, js: true do
     FactoryBot.create(:person, translated_name: "John Doe")
     FactoryBot.create(:person, translated_name: "Obi Wan")
 
+    FactoryBot.create(:job, name: "Actor")
+    FactoryBot.create(:job, name: "Producer")
+
     user = FactoryBot.create(:user)
     sign_in(user)
   end
@@ -142,6 +145,38 @@ RSpec.feature "Movie form", type: :system, js: true do
       expect(page).not_to have_css "div.tabulator-cell", text: "Obi Wan"
       expect(page).not_to have_css "div.tabulator-cell", text: "New character"
       expect(movie.reload.cast_members).to eq []
+    end
+
+    # Crew Members
+    click_link "Crew"
+    expect(page).to have_css("a[data-active='true']", text: "Crew")
+    expect(page).to have_content("Add a crew member")
+    fill_in "person", with: "obi wan"
+    expect(page).to have_css("div.p-2", text: "Obi Wan")
+    expect(page).not_to have_css("div.p-2", text: "John Doe") # Applies searching
+    find("div.p-2", text: "Obi Wan").click
+    fill_in "job", with: "producer"
+    expect(page).to have_css("div.p-2", text: "Producer")
+    expect(page).not_to have_css("div.p-2", text: "Actor") # Applies searching
+    find("div.p-2", text: "Producer").click
+    click_button "Save"
+    using_wait_time 5 do
+      expect(page).to have_css "div.tabulator-cell", text: "Obi Wan"
+      expect(page).to have_css "div.tabulator-cell", text: "Producer"
+      expect(movie.reload.crew_members.count).to eq 1
+    end
+    job_cell = find("div.tabulator-cell", text: "Producer")
+    job_cell.click
+    find("div.dropdown-option", text: "Actor").click
+    using_wait_time 5 do
+      expect(page).to have_css "div.tabulator-cell", text: "Obi Wan"
+      expect(page).to have_css "div.tabulator-cell", text: "Actor"
+    end
+    find("div.tabulator-cell>svg").click
+    using_wait_time 5 do
+      expect(page).not_to have_css "div.tabulator-cell", text: "Obi Wan"
+      expect(page).not_to have_css "div.tabulator-cell", text: "Actor"
+      expect(movie.reload.crew_members).to eq []
     end
 
     # Genres

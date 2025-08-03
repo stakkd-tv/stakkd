@@ -139,7 +139,7 @@
             <% @movie.videos.each do |video| %>
               <div class="group min-h-60 max-h-60 min-w-[425px] aspect-16/9 border border-pop rounded-lg overflow-hidden relative">
                 <%= link_to video.url do %>
-                  <%= image_tag video.thumbnail_url, class: "min-w-[425px]" %>
+                  <%= image_tag video.thumbnail_url || "16:9.png", class: "min-w-[425px]" %>
                   <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                     <div class="bg-gray-500/50 px-8 py-4 rounded-lg group-hover:bg-red-500">
                       <i class="fa-solid fa-play"></i>
