@@ -573,10 +573,10 @@
   resolved "https://registry.yarnpkg.com/@types/json5/-/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
   integrity sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==
 
-"@types/tabulator-tables@^6.2.6":
-  version "6.2.6"
-  resolved "https://registry.yarnpkg.com/@types/tabulator-tables/-/tabulator-tables-6.2.6.tgz#580ee6d01a8cc439b4936543e749bbbc00babf99"
-  integrity sha512-A+2VrqDluI6hNw5dQl1Z7b8pjQfAE62+3Kj0cFfenWzj0T0ewMicPrpPINHL7ASqz9u9FTDn1Mz1Ige2tF4Wlw==
+"@types/tabulator-tables@^6.2.9":
+  version "6.2.9"
+  resolved "https://registry.yarnpkg.com/@types/tabulator-tables/-/tabulator-tables-6.2.9.tgz#500a7cf64c6366d696d903bef3113ff26f1d4b1f"
+  integrity sha512-u4AlO6z54njaeeLFSlwuqpKSCdUko0O0x47UolLNmwA8AhamSl9x7wziN+mo6Q0ca4g/V0FuhqIO9yXvaBh69A==
 
 "@typescript-eslint/eslint-plugin@^8.35.1":
   version "8.35.1"
