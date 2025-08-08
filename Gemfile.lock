@@ -323,7 +323,13 @@ GEM
     parser (3.3.8.0)
       ast (~> 2.4.1)
       racc
-    pg (1.5.9)
+    pg (1.6.1)
+    pg (1.6.1-aarch64-linux)
+    pg (1.6.1-aarch64-linux-musl)
+    pg (1.6.1-arm64-darwin)
+    pg (1.6.1-x86_64-darwin)
+    pg (1.6.1-x86_64-linux)
+    pg (1.6.1-x86_64-linux-musl)
     pg_search (2.3.7)
       activerecord (>= 6.1)
       activesupport (>= 6.1)
@@ -581,7 +587,7 @@ DEPENDENCIES
   jsbundling-rails
   kamal
   mini_magick (~> 5.3)
-  pg (~> 1.1)
+  pg (~> 1.6)
   pg_search (~> 2.3)
   propshaft
   puma (>= 5.0)
