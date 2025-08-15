@@ -91,4 +91,11 @@ RSpec.describe Person, type: :model do
   end
 
   it_behaves_like "a slugified model", :person, :translated_name
+
+  describe "#available_galleries" do
+    it "returns the available galleries" do
+      person = Person.new
+      expect(person.available_galleries).to eq [:images]
+    end
+  end
 end

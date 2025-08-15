@@ -11,6 +11,7 @@ class PeopleController < ApplicationController
   end
 
   def show
+    @gallery_presenter = Galleries::Presenter.new(@person)
   end
 
   def new

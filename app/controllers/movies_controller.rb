@@ -8,6 +8,7 @@ class MoviesController < ApplicationController
 
   def show
     @alternative_names = @movie.alternative_names.includes(:country).group_by(&:country)
+    @gallery_presenter = Galleries::Presenter.new(@movie)
   end
 
   def new

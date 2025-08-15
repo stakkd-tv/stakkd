@@ -12,4 +12,11 @@ class Company < ApplicationRecord
     ActiveStorage::Current.url_options = Rails.application.config.action_mailer.default_url_options
     logo.try(:url)
   end
+
+  def available_galleries = [:logos]
+
+  # TODO: Add slug to companies
+  def self.from_slug(id)
+    find(id)
+  end
 end

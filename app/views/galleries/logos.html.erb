@@ -1,0 +1,14 @@
+<% content_for :title, "Stakkd - #{@relatable} logos" %>
+<% model_params = {relatable_model.to_sym => @relatable} %>
+
+<%= render "#{relatable_model_plural}/header", model_params %>
+
+<div class="max-w-7xl mx-auto my-8 px-6">
+  <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+    <% @logos.each do |logo| %>
+      <div class="w-full aspect-square border border-pop rounded-lg overflow-hidden relative">
+        <%= image_tag logo %>
+      </div>
+    <% end %>
+  </div>
+</div>

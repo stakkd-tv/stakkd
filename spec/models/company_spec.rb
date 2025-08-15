@@ -47,4 +47,19 @@ RSpec.describe Company, type: :model do
       end
     end
   end
+
+  describe "#available_galleries" do
+    it "returns the available galleries" do
+      company = Company.new
+      expect(company.available_galleries).to eq [:logos]
+    end
+  end
+
+  # TODO: Remove this when adding slugs to company
+  describe ".from_slug" do
+    it "returns the company" do
+      company = FactoryBot.create(:company)
+      expect(Company.from_slug(company.id)).to eq company
+    end
+  end
 end

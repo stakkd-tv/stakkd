@@ -64,24 +64,11 @@
           <%= simple_format @person.biography %>
         </div>
       </div>
-      <% if @person.images.any? %>
-        <div>
-          <h4 class="text-2xl font-bold font-domine text-white mt-4 mb-4">Gallery:</h4>
-          <div class="w-full flex gap-8 overflow-x-scroll no-scrollbar">
-            <% @person.images.each do |image| %>
-              <div class="min-w-40 max-w-40 aspect-2/3 border border-pop rounded-lg overflow-hidden">
-                <%= image_tag image, class: "w-full" %>
-              </div>
-            <% end %>
-          </div>
-          <% if authenticated? %>
-            <small class="block pt-4"><b>TIP: Double click an image to like it.</b></small>
-          <% end %>
-        </div>
-      <% end %>
       <div class="w-full h-44 border border-pop rounded-lg flex justify-center items-center">
         This is a work in progress. Please check back later.
       </div>
+
+      <%= render "shared/galleries", presenter: @gallery_presenter %>
     </div>
   </div>
 </div>

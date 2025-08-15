@@ -49,6 +49,8 @@ class Person < ApplicationRecord
     self.name_kebab = value
   end
 
+  def available_galleries = [:images]
+
   private
 
   def slug_source = translated_name

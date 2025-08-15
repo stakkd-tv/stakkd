@@ -1,0 +1,21 @@
+<% if tab[:images].any? %>
+  <div class="py-4">
+    <div class="w-full flex gap-8 overflow-x-scroll">
+      <% tab[:images].each do |image| %>
+        <div class="group <%= tab[:aspect] %> border border-pop rounded-lg overflow-hidden relative">
+          <%= link_to image.url do %>
+            <%= image_tag image.thumbnail_url || "16:9.png", class: "min-w-[425px]" %>
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+              <div class="bg-gray-500/50 px-8 py-4 rounded-lg group-hover:bg-red-500">
+                <i class="fa-solid fa-play"></i>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+      <% if tab[:show_view_more] %>
+        <%= link_to "View More", tab[:view_more_path], class: "min-w-40 max-w-40 aspect-2/3 border border-pop rounded-lg overflow-hidden bg-pop/50 flex items-center justify-center mr-8" %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

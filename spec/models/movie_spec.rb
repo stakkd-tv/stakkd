@@ -128,7 +128,7 @@ RSpec.describe Movie, type: :model do
       expect(movie.release).to be_nil
     end
 
-    it "returns nil when there is no theatrical release for the country" do
+    it "returns nil when there is no theatrical or digital release for the country" do
       uk = FactoryBot.create(:country, code: "UK")
 
       us = FactoryBot.create(:country, code: "US")
@@ -136,10 +136,24 @@ RSpec.describe Movie, type: :model do
 
       movie = FactoryBot.create(:movie, country: uk)
       FactoryBot.create(:release, movie:, type: Release::THEATRICAL, certification: cert_us)
+      FactoryBot.create(:release, movie:, type: Release::DIGITAL, certification: cert_us)
       expect(movie.release).to be_nil
     end
 
-    it "returns the theatrical release for the country" do
+    it "returns the digital when there is no theatrical release for the country" do
+      uk = FactoryBot.create(:country, code: "UK")
+      cert_uk = FactoryBot.create(:certification, country: uk)
+
+      us = FactoryBot.create(:country, code: "US")
+      cert_us = FactoryBot.create(:certification, country: us)
+
+      movie = FactoryBot.create(:movie, country: uk)
+      FactoryBot.create(:release, movie:, type: Release::THEATRICAL, certification: cert_us)
+      release = FactoryBot.create(:release, movie:, type: Release::DIGITAL, certification: cert_uk)
+      expect(movie.release).to eq release
+    end
+
+    it "returns the theatrical release for the country even when there is a digital release" do
       uk = FactoryBot.create(:country, code: "UK")
       cert_uk = FactoryBot.create(:certification, country: uk)
 
@@ -149,7 +163,15 @@ RSpec.describe Movie, type: :model do
       movie = FactoryBot.create(:movie, country: uk)
       FactoryBot.create(:release, movie:, type: Release::THEATRICAL, certification: cert_us)
       release = FactoryBot.create(:release, movie:, type: Release::THEATRICAL, certification: cert_uk)
+      FactoryBot.create(:release, movie:, type: Release::DIGITAL, certification: cert_uk)
       expect(movie.release).to eq release
+    end
+  end
+
+  describe "#available_galleries" do
+    it "returns the available galleries" do
+      movie = Movie.new
+      expect(movie.available_galleries).to eq [:posters, :backgrounds, :logos, :videos]
     end
   end
 end

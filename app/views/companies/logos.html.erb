@@ -1,6 +1,6 @@
 <% content_for :title, "Stakkd - Edit #{@company.name}" %>
 
-<%= render "form_header", company: @company %>
+<%= render "header", company: @company %>
 
 <div class="max-w-7xl mx-auto my-8 px-6">
   <div class="form" data-controller="uploads" data-uploads-record-type-value="Company" data-uploads-record-id-value="<%= @company.id %>" data-uploads-type-value="logos">

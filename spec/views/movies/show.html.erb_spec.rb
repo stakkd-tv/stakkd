@@ -5,12 +5,13 @@ RSpec.describe "movies/show", type: :view do
   let(:posters) { [] }
   let(:backgrounds) { [] }
   let(:logos) { [] }
+  let(:videos) { [] }
   let(:alternative_names) { {} }
   let(:release) { FactoryBot.create(:release, date: Date.new(2022, 1, 1)) }
 
   before(:each) do
     def view.authenticated? = false
-    assign(:movie, FactoryBot.create(
+    movie = FactoryBot.create(
       :movie,
       country:,
       original_title: "Original Title",
@@ -25,10 +26,14 @@ RSpec.describe "movies/show", type: :view do
       posters:,
       backgrounds:,
       logos:,
+      videos:,
       genres: [FactoryBot.create(:genre, name: "Action")],
       releases: [release]
-    ))
+    )
+    assign(:movie, movie)
+    gallery_presenter = Galleries::Presenter.new(movie)
     assign(:alternative_names, alternative_names)
+    assign(:gallery_presenter, gallery_presenter)
   end
 
   it "renders attributes in <p>" do
@@ -95,24 +100,8 @@ RSpec.describe "movies/show", type: :view do
 
     it "renders the backgrounds section" do
       render
-      expect(rendered).to match(/Backgrounds/)
+      assert_select "label", text: "Backgrounds"
       assert_select "img[src*='300x450.png']", count: 2
-    end
-
-    it "does not render the tip" do
-      render
-      expect(rendered).not_to match(/TIP: Double click an image to like it./)
-    end
-
-    context "user is authenticated" do
-      before do
-        def view.authenticated? = true
-      end
-
-      it "renders the tip" do
-        render
-        expect(rendered).to match(/TIP: Double click an image to like it./)
-      end
     end
   end
 
@@ -121,24 +110,8 @@ RSpec.describe "movies/show", type: :view do
 
     it "renders the posters section" do
       render
-      expect(rendered).to match(/Posters/)
+      assert_select "label", text: "Posters"
       assert_select "img[src*='300x450.png']", count: 2 # One for poster, the other in the gallery section
-    end
-
-    it "does not render the tip" do
-      render
-      expect(rendered).not_to match(/TIP: Double click an image to like it./)
-    end
-
-    context "user is authenticated" do
-      before do
-        def view.authenticated? = true
-      end
-
-      it "renders the tip" do
-        render
-        expect(rendered).to match(/TIP: Double click an image to like it./)
-      end
     end
   end
 
@@ -147,24 +120,18 @@ RSpec.describe "movies/show", type: :view do
 
     it "renders the posters section" do
       render
-      expect(rendered).to match(/Logos/)
+      assert_select "label", text: "Logos"
       assert_select "img[src*='300x450.png']", count: 1
     end
+  end
 
-    it "does not render the tip" do
+  context "when the movie has a video" do
+    let(:videos) { [FactoryBot.build(:video, thumbnail_url: "/example.png").tap { _1.save(validate: false) }] }
+
+    it "renders the posters section" do
       render
-      expect(rendered).not_to match(/TIP: Double click an image to like it./)
-    end
-
-    context "user is authenticated" do
-      before do
-        def view.authenticated? = true
-      end
-
-      it "renders the tip" do
-        render
-        expect(rendered).to match(/TIP: Double click an image to like it./)
-      end
+      assert_select "label", text: "Videos"
+      assert_select "img[src='/example.png']", count: 1
     end
   end
 end

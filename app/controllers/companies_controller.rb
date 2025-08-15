@@ -7,6 +7,7 @@ class CompaniesController < ApplicationController
   end
 
   def show
+    @gallery_presenter = Galleries::Presenter.new(@company)
   end
 
   def new

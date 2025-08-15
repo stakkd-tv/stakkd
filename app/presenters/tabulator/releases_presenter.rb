@@ -4,7 +4,7 @@ module Tabulator
       [
         {title: "Date", field: "date", sorter: "date", editor: "date", minWidth: 120, width: 120},
         {title: "Certification", field: "certification_id", sorter: "string", editor: "list", minWidth: 150, width: 150, editorParams: {
-          values: Certification.for_movies.order(:position).map { {label: _1.code, value: _1.id, scope: _1.country.id} }
+          values: Certification.for_movies.includes(:country).order(:position).map { {label: _1.code, value: _1.id, scope: _1.country.id} }
         }},
         {title: "Type", field: "type", sorter: "string", editor: "list", minWidth: 200, width: 200, editorParams: {
           values: Release::TYPES.map { {label: _1, value: _1} }

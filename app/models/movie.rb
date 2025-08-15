@@ -49,9 +49,19 @@ class Movie < ApplicationRecord
 
   def tagline = taglines.first&.tagline
 
-  def release = @release ||= releases.includes(certification: :country).where(certification: {country:}, type: Release::THEATRICAL).first
+  def release = @release ||= theatrical_release || digital_release
+
+  def available_galleries = [:posters, :backgrounds, :logos, :videos]
 
   private
+
+  def theatrical_release
+    @theatrical_release ||= releases.includes(certification: :country).where(certification: {country:}, type: Release::THEATRICAL).first
+  end
+
+  def digital_release
+    @digital_release ||= releases.includes(certification: :country).where(certification: {country:}, type: Release::DIGITAL).first
+  end
 
   def slug_source = translated_title
 

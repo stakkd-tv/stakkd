@@ -1,0 +1,20 @@
+<div class="bg-background-darker h-[420px] overflow-hidden -ml-8 -mr-6 mb-8 pl-8 py-4">
+  <h4 class="text-2xl font-bold font-domine text-white mt-4 mb-4">Gallery:</h4>
+
+  <%# Tabs %>
+  <div class="flex relative flex-wrap">
+    <% presenter.tabs.each_with_index do |tab, index| %>
+      <div class="whitespace-nowrap mt-4 sm:mt-0">
+        <input type="radio" name="gallery_tabs" id="tab<%= index %>" class="hidden peer" <%= (index == 0) ? "checked" : "" %>>
+        <label for="tab<%= index %>" class="text-sm sm:text-md bg-background-darker inline-block cursor-pointer py-2 px-4 rounded-t-lg border-b border-b-pop border-transparent peer-checked:border-pop peer-checked:border-b-0 peer-checked:border-r peer-checked:border-l peer-checked:border-t">
+          <%= tab[:name] %>
+        </label>
+        <div class="hidden peer-checked:block absolute left-0 top-full bg-background-darker w-full">
+          <%= render tab[:partial], tab: %>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="hidden sm:block w-full max-w-10 border-b border-pop"></div>
+  </div>
+</div>
