@@ -30,7 +30,7 @@ module Tabulator
             values: [{label: cert.code, value: cert.id, scope: cert.country.id}]
           }},
           {title: "Type", field: "type", sorter: "string", editor: "list", minWidth: 200, width: 200, editorParams: {
-            values: Release::TYPES.map { {label: _1, value: _1} }
+            values: Release::TYPES.map { {label: it, value: it} }
           }},
           {title: "Note", field: "note", sorter: "string", editor: true, minWidth: 200},
           {title: "", field: "actions", headerSort: false, formatter: "buttonCross", resizable: false, width: "0"}

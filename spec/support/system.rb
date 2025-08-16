@@ -16,7 +16,7 @@ def assert_no_console_errors(page, excludes = [])
     .browser
     .logs
     .get(:browser)
-    .select { _1.level == "SEVERE" }
+    .select { it.level == "SEVERE" }
     .reject { |error| excludes.any? { |exclude| error.message.include?(exclude) } }
   if errors.present?
     message = errors.map(&:message).join("\n")

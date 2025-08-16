@@ -114,7 +114,7 @@ RSpec.describe "Companies", type: :request do
 
         it "renders a response with 422 status (i.e. to display the 'new' template)" do
           post companies_url, params: {company: invalid_attributes}
-          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to have_http_status(:unprocessable_content)
         end
       end
     end
@@ -166,7 +166,7 @@ RSpec.describe "Companies", type: :request do
         it "renders a response with 422 status (i.e. to display the 'edit' template)" do
           company = Company.create! valid_attributes
           patch company_url(company), params: {company: invalid_attributes}
-          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to have_http_status(:unprocessable_content)
         end
       end
     end

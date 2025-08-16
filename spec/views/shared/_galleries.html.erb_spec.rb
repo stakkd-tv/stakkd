@@ -22,7 +22,7 @@ RSpec.describe "shared/_galleries", type: :view do
       posters: [Rack::Test::UploadedFile.new("spec/support/assets/300x450.png", "image/png")],
       backgrounds: [Rack::Test::UploadedFile.new("spec/support/assets/300x450.png", "image/png")],
       logos: [Rack::Test::UploadedFile.new("spec/support/assets/300x450.png", "image/png")],
-      videos: [FactoryBot.build(:video, thumbnail_url: "/example.png").tap { _1.save(validate: false) }]
+      videos: [FactoryBot.build(:video, thumbnail_url: "/example.png").tap { it.save(validate: false) }]
     )
     presenter = Galleries::Presenter.new(movie)
     render "shared/galleries", presenter: presenter

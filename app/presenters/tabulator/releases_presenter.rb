@@ -4,10 +4,10 @@ module Tabulator
       [
         {title: "Date", field: "date", sorter: "date", editor: "date", minWidth: 120, width: 120},
         {title: "Certification", field: "certification_id", sorter: "string", editor: "list", minWidth: 150, width: 150, editorParams: {
-          values: Certification.for_movies.includes(:country).order(:position).map { {label: _1.code, value: _1.id, scope: _1.country.id} }
+          values: Certification.for_movies.includes(:country).order(:position).map { {label: it.code, value: it.id, scope: it.country.id} }
         }},
         {title: "Type", field: "type", sorter: "string", editor: "list", minWidth: 200, width: 200, editorParams: {
-          values: Release::TYPES.map { {label: _1, value: _1} }
+          values: Release::TYPES.map { {label: it, value: it} }
         }},
         {title: "Note", field: "note", sorter: "string", editor: true, minWidth: 200},
         {title: "", field: "actions", headerSort: false, formatter: "buttonCross", resizable: false, width: "0"}

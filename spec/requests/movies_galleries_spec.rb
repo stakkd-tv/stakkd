@@ -30,7 +30,7 @@ RSpec.describe "Movies Galleries", type: :request do
 
   describe "GET /movies/:id/galleries/videos" do
     it "returns http success and renders the videos" do
-      movie = FactoryBot.create(:movie, videos: [FactoryBot.build(:video, thumbnail_url: "/example.png").tap { _1.save(validate: false) }])
+      movie = FactoryBot.create(:movie, videos: [FactoryBot.build(:video, thumbnail_url: "/example.png").tap { it.save(validate: false) }])
       get videos_movie_galleries_path(movie)
       expect(response).to have_http_status(:success)
       assert_select "img[src*='example.png']"

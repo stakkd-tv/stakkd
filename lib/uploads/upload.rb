@@ -39,7 +39,7 @@ module Uploads
         io: image.tempfile,
         filename: image.original_filename,
         content_type: image.content_type
-      ).tap { _1.analyze }
+      ).tap { it.analyze }
     end
   end
 end

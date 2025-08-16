@@ -14,7 +14,7 @@ module Galleries
             Rack::Test::UploadedFile.new("spec/support/assets/300x450.png", "image/png")
           ],
           logos: [Rack::Test::UploadedFile.new("spec/support/assets/300x450.png", "image/png")],
-          videos: [FactoryBot.build(:video, thumbnail_url: "/example.png").tap { _1.save(validate: false) }]
+          videos: [FactoryBot.build(:video, thumbnail_url: "/example.png").tap { it.save(validate: false) }]
         )
         presenter = Presenter.new(movie)
         expect(presenter.tabs).to eq([

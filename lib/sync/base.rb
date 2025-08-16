@@ -2,7 +2,7 @@ module Sync
   class Base
     def self.sync_all
       Rails.application.eager_load!
-      subclasses.each { _1.new.start }
+      subclasses.each { it.new.start }
     end
 
     def start

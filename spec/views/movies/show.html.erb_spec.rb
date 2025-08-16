@@ -126,7 +126,7 @@ RSpec.describe "movies/show", type: :view do
   end
 
   context "when the movie has a video" do
-    let(:videos) { [FactoryBot.build(:video, thumbnail_url: "/example.png").tap { _1.save(validate: false) }] }
+    let(:videos) { [FactoryBot.build(:video, thumbnail_url: "/example.png").tap { it.save(validate: false) }] }
 
     it "renders the posters section" do
       render

@@ -5,7 +5,7 @@ module Tabulator
         {title: "Name", field: "name", sorter: "string", editor: true},
         {title: "Type", field: "type", sorter: "string", editor: true},
         {title: "Country", field: "country_id", sorter: "string", editor: "list", editorParams: {
-          values: Country.order(:translated_name).map { {label: _1.translated_name, value: _1.id} }
+          values: Country.order(:translated_name).map { {label: it.translated_name, value: it.id} }
         }}
       ]
     end

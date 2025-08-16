@@ -35,7 +35,7 @@ module Uploads
     end
 
     def sort_output(parsed_output)
-      parsed_output.sort_by { _1[:size] }.map { _1[:hex] }
+      parsed_output.sort_by { it[:size] }.map { it[:hex] }
     end
   end
 end

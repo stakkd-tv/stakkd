@@ -22,7 +22,7 @@ module Tabulator
         expect(presenter.column_defs).to eq([
           {title: "Person", field: "person", formatter: "image", headerSort: false, editor: false},
           {title: "Job", field: "job_id", headerSort: false, editor: "list", editorParams: {
-            values: Job.order(:department, :name).map { {label: _1.name, value: _1.id} }
+            values: Job.order(:department, :name).map { {label: it.name, value: it.id} }
           }},
           {title: "", field: "actions", headerSort: false, formatter: "buttonCross", resizable: false, width: "0"}
         ])

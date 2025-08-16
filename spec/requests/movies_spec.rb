@@ -136,7 +136,7 @@ RSpec.describe "Movies", type: :request do
 
         it "renders a response with 422 status (i.e. to display the 'new' template)" do
           post movies_path, params: {movie: invalid_attributes}
-          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to have_http_status(:unprocessable_content)
         end
       end
     end
@@ -199,7 +199,7 @@ RSpec.describe "Movies", type: :request do
         it "renders a response with 422 status (i.e. to display the 'edit' template)" do
           movie = Movie.create! valid_attributes
           patch movie_url(movie), params: {movie: invalid_attributes}
-          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to have_http_status(:unprocessable_content)
         end
       end
     end
