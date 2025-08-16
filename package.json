@@ -25,7 +25,7 @@
     "@tailwindcss/cli": "^4.1.11",
     "@types/tabulator-tables": "^6.2.9",
     "flatpickr": "^4.6.13",
-    "slim-select": "^2.11.0",
+    "slim-select": "^2.12.1",
     "tabulator-tables": "^6.3.1",
     "tailwindcss": "^4.1.8"
   }
