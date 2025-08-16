@@ -11,11 +11,12 @@
     "eslint-plugin-n": "^17.21.3",
     "eslint-plugin-promise": "^7.2.1",
     "tsc-watch": "^7.1.1",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "ynpx": "^2.1.6"
   },
   "scripts": {
     "build": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets",
-    "build:css": "npx @tailwindcss/cli -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css --minify",
+    "build:css": "ynpx @tailwindcss/cli -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css --minify",
     "lint:js": "yarn run eslint app/javascript"
   },
   "dependencies": {
