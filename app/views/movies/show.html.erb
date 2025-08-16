@@ -81,8 +81,21 @@
         <%= simple_format @movie.overview %>
       </div>
 
-      <div class="w-full h-44 border border-pop rounded-lg flex justify-center items-center">
-        This is a work in progress. Please check back later.
+      <div>
+        <div class="w-full flex gap-4 overflow-x-scroll p-2 mb-4">
+          <% @movie.cast_members.includes(:person).take(20).each do |cast_member| %>
+            <%= link_to cast_member.person do %>
+              <div class="flex flex-col">
+                <%= image_tag cast_member.person.image, class: "aspect-2/3 w-40 min-w-40 object-cover object-top rounded-lg" %>
+                <div>
+                  <p class="text-lg font-bold mt-2 mb-1"><%= cast_member.person.translated_name %></p>
+                  <small><%= cast_member.character %></small>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+        <%= link_to "View full cast and crew", cast_movie_path(@movie), class: "link" %>
       </div>
 
       <%= render "shared/alternative_names", names_grouped_by_country: @alternative_names %>

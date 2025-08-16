@@ -11,7 +11,7 @@ RSpec.describe "movies/show", type: :view do
 
   before(:each) do
     def view.authenticated? = false
-    movie = FactoryBot.create(
+    @movie = FactoryBot.create(
       :movie,
       country:,
       original_title: "Original Title",
@@ -30,8 +30,9 @@ RSpec.describe "movies/show", type: :view do
       genres: [FactoryBot.create(:genre, name: "Action")],
       releases: [release]
     )
-    assign(:movie, movie)
-    gallery_presenter = Galleries::Presenter.new(movie)
+    FactoryBot.create(:cast_member, record: @movie, person: FactoryBot.build(:person, translated_name: "John Doe"), character: "Bob")
+    assign(:movie, @movie)
+    gallery_presenter = Galleries::Presenter.new(@movie)
     assign(:alternative_names, alternative_names)
     assign(:gallery_presenter, gallery_presenter)
   end
@@ -51,6 +52,13 @@ RSpec.describe "movies/show", type: :view do
   it "renders the genres" do
     render
     assert_select "p.rounded-full", text: "Action"
+  end
+
+  it "renders the cast members" do
+    render
+    assert_select "p", text: "John Doe"
+    assert_select "small", text: "Bob"
+    assert_select "a[href='#{cast_movie_path(@movie)}']"
   end
 
   context "when there is no release for the country" do

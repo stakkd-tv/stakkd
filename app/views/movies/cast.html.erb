@@ -1,0 +1,40 @@
+<% content_for :title, "Stakkd - #{@movie.translated_title} full cast and crew" %>
+
+<%= render "header", movie: @movie %>
+
+<div class="max-w-7xl mx-auto my-8 px-6">
+  <div class="grid grid-cols-2 gap-8">
+    <div class="col-span-1">
+      <h4 class="text-2xl font-bold mb-8">Cast</h4>
+      <div class="flex flex-col gap-6">
+        <% @cast_members.each do |cast_member| %>
+          <%= link_to cast_member.person, class: "flex items-center gap-4 rounded-lg hover:bg-background-darker transition duration-300 ease-in-out" do %>
+            <%= image_tag cast_member.person.image, class: "w-16 h-16 rounded-lg object-cover" %>
+            <div>
+              <h5 class="text-lg font-bold"><%= cast_member.person.translated_name %></h5>
+              <p class="text-pop"><%= cast_member.character %></p>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+    <div class="col-span-1">
+      <% @crew_members.each_pair do |department, crew_members| %>
+        <div class="mb-8">
+          <h4 class="text-2xl font-bold mb-8"><%= department %></h4>
+          <div class="flex flex-col gap-6">
+            <% crew_members.each do |crew_member| %>
+              <%= link_to crew_member.person, class: "flex items-center gap-4 rounded-lg hover:bg-background-darker transition duration-300 ease-in-out" do %>
+                <%= image_tag crew_member.person.image, class: "w-16 h-16 rounded-lg object-cover" %>
+                <div>
+                  <h5 class="text-lg font-bold"><%= crew_member.person.translated_name %></h5>
+                  <p class="text-pop"><%= crew_member.job.name %></p>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

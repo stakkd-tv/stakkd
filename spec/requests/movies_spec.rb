@@ -213,7 +213,7 @@ RSpec.describe "Movies", type: :request do
     end
   end
 
-  describe "GET /people/:id/posters" do
+  describe "GET /movies/:id/posters" do
     context "when the user is signed in" do
       before do
         user = FactoryBot.create(:user)
@@ -238,7 +238,7 @@ RSpec.describe "Movies", type: :request do
     end
   end
 
-  describe "GET /people/:id/backgrounds" do
+  describe "GET /movies/:id/backgrounds" do
     context "when the user is signed in" do
       before do
         user = FactoryBot.create(:user)
@@ -263,7 +263,7 @@ RSpec.describe "Movies", type: :request do
     end
   end
 
-  describe "GET /people/:id/logos" do
+  describe "GET /movies/:id/logos" do
     context "when the user is signed in" do
       before do
         user = FactoryBot.create(:user)
@@ -285,6 +285,22 @@ RSpec.describe "Movies", type: :request do
         get logos_movie_url(movie)
         expect(response).to redirect_to new_session_path
       end
+    end
+  end
+
+  describe "GET /movies/:id/cast" do
+    it "renders the cast and crew members" do
+      movie = FactoryBot.create(:movie)
+      FactoryBot.create(:cast_member, record: movie, person: FactoryBot.build(:person, translated_name: "John Doe"), character: "Bob")
+      FactoryBot.create(:crew_member, record: movie, person: FactoryBot.build(:person, translated_name: "Charlie Doe"), job: FactoryBot.build(:job, department: "Art", name: "Painter"))
+      get cast_movie_path(movie)
+      assert_select "h4", text: "Cast"
+      assert_select "h5", text: "John Doe"
+      assert_select "p", text: "Bob"
+
+      assert_select "h4", text: "Art"
+      assert_select "h5", text: "Charlie Doe"
+      assert_select "p", text: "Painter"
     end
   end
 end

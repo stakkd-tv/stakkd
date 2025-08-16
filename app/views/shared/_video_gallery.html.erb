@@ -1,6 +1,6 @@
 <% if tab[:images].any? %>
   <div class="py-4">
-    <div class="w-full flex gap-8 overflow-x-scroll">
+    <div class="w-full flex gap-4 overflow-x-scroll pb-2">
       <% tab[:images].each do |image| %>
         <div class="group <%= tab[:aspect] %> border border-pop rounded-lg overflow-hidden relative">
           <%= link_to image.url do %>
