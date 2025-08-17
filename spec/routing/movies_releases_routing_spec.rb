@@ -6,6 +6,10 @@ RSpec.describe ReleasesController, type: :routing do
       expect(get: "/movies/1/releases").to route_to("releases#index", movie_id: "1")
     end
 
+    it "routes to #editor" do
+      expect(get: "/movies/1/releases/editor").to route_to("releases#editor", movie_id: "1")
+    end
+
     it "routes to #create" do
       expect(post: "/movies/1/releases").to route_to("releases#create", movie_id: "1")
     end

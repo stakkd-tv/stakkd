@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Releases", type: :request do
+RSpec.describe "Movie Releases", type: :request do
   let(:country) { FactoryBot.create(:country) }
   let(:movie) { FactoryBot.create(:movie, country:) }
   let(:certification) { FactoryBot.create(:certification, country:) }
@@ -21,10 +21,10 @@ RSpec.describe "Releases", type: :request do
     })
   }
 
-  describe "GET /movies/:movie_id/releases" do
+  describe "GET /movies/:movie_id/releases/editor" do
     context "when user is not signed in" do
       it "redirects to the user sign in page" do
-        get movie_releases_path(movie_id: movie)
+        get editor_movie_releases_path(movie_id: movie)
         expect(response).to redirect_to new_session_path
       end
     end
@@ -38,7 +38,7 @@ RSpec.describe "Releases", type: :request do
       end
 
       it "renders a successful response" do
-        get movie_releases_path(movie_id: movie)
+        get editor_movie_releases_path(movie_id: movie)
         expect(response).to be_successful
       end
     end
@@ -73,7 +73,7 @@ RSpec.describe "Releases", type: :request do
 
         it "redirects to the releases index path" do
           post movie_releases_path(movie_id: movie), params: {release: valid_attributes}
-          expect(response).to redirect_to movie_releases_path(movie_id: movie)
+          expect(response).to redirect_to editor_movie_releases_path(movie_id: movie)
         end
       end
 
@@ -85,7 +85,7 @@ RSpec.describe "Releases", type: :request do
 
         it "redirects to the releases index path with a flash alert" do
           post movie_releases_path(movie_id: movie), params: {release: invalid_attributes}
-          expect(response).to redirect_to movie_releases_path(movie_id: movie)
+          expect(response).to redirect_to editor_movie_releases_path(movie_id: movie)
           expect(flash[:alert]).to eq "Release could not be added."
         end
       end

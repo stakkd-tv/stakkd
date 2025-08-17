@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "releases/index", type: :view do
+RSpec.describe "releases/editor", type: :view do
   let(:movie) { FactoryBot.create(:movie) }
 
   before(:each) do

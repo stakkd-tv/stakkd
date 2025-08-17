@@ -17,7 +17,9 @@ Rails.application.routes.draw do
     resources :genre_assignments, only: [:index, :create, :destroy]
     resources :keywords, only: [:index, :create, :destroy]
     resources :company_assignments, only: [:index, :create, :destroy]
-    resources :releases, only: [:index, :create, :update, :destroy]
+    resources :releases, only: [:index, :create, :update, :destroy] do
+      get :editor, on: :collection
+    end
     resources :taglines, only: [:index, :create, :update, :destroy] do
       post :move, on: :member
     end

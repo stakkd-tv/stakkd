@@ -1,18 +1,21 @@
 class ReleasesController < ApplicationController
-  before_action :require_authentication
+  before_action :require_authentication, except: [:index]
   before_action :set_movie
   before_action :set_release, only: [:update, :destroy]
 
   def index
+  end
+
+  def editor
     @table_presenter = Tabulator::ReleasesPresenter.new(@movie.releases.includes(certification: :country))
   end
 
   def create
     @release = @movie.releases.new(release_params)
     if @release.save
-      redirect_to movie_releases_path(@movie)
+      redirect_to editor_movie_releases_path(@movie)
     else
-      redirect_to movie_releases_path(@movie), alert: "Release could not be added."
+      redirect_to editor_movie_releases_path(@movie), alert: "Release could not be added."
     end
   end
 
