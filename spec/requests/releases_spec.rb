@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Movie Releases", type: :request do
+RSpec.describe "Releases", type: :request do
   let(:country) { FactoryBot.create(:country) }
   let(:movie) { FactoryBot.create(:movie, country:) }
   let(:certification) { FactoryBot.create(:certification, country:) }
