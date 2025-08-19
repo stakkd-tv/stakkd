@@ -1,0 +1,47 @@
+<% content_for :title, "Stakkd - #{@movie} releases" %>
+
+<%= render "movies/header", {movie: @movie} %>
+
+<div class="max-w-7xl mx-auto my-8 px-6">
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <div class="col-span-1 bg-background-darker rounded-lg p-4 flex flex-col gap-10 items-center md:items-start">
+      <h2 class="text-xl font-bold">Releases</h2>
+      <div class="flex flex-col gap-4 w-full">
+        <a href="<%= movie_releases_path(@movie) %>" class="w-full px-2 py-1 rounded-lg" data-sidetab-active="<%= params[:country] == nil %>">All <small>(<%= @overall_count %>)</small></a>
+        <% @countries_with_counts.each do |hash| %>
+          <a href="<%= movie_releases_path(@movie, country: hash[:code]) %>" class="w-full px-2 py-1 rounded-lg" data-sidetab-active="<%= params[:country] == hash[:code] %>"><%= hash[:name] %> <small>(<%= hash[:count] %>)</small></a>
+        <% end %>
+      </div>
+    </div>
+    <div class="col-span-3 flex flex-col gap-8">
+      <% @releases_grouped_by_country.each_pair do |country, releases| %>
+        <div class="rounded-lg border-2 border-pop bg-background overflow-hidden">
+          <div class="flex gap-4 p-4 border-b-2 border-pop bg-background-darker">
+            <%= image_tag country.flag, class: "w-5 min-w-5" %>
+            <p><%= country.translated_name %></p>
+          </div>
+          <div class="flex flex-col gap-4">
+            <table class="w-full">
+              <% releases.each do |release| %>
+                <tr class="overflow-x-scroll">
+                  <td class="p-4 w-0">
+                    <%= release.date %>
+                  </td>
+                  <td class="p-4">
+                    <%= release.type %>
+                  </td>
+                  <td class="p-4 w-0">
+                    <%= release.certification.code %>
+                  </td>
+                  <td class="p-4">
+                    <%= release.note %>
+                  </td>
+                </tr>
+              <% end %>
+            </table>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

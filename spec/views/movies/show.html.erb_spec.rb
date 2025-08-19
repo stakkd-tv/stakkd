@@ -31,10 +31,13 @@ RSpec.describe "movies/show", type: :view do
       releases: [release]
     )
     FactoryBot.create(:cast_member, record: @movie, person: FactoryBot.build(:person, translated_name: "John Doe"), character: "Bob")
-    assign(:movie, @movie)
+    cert = FactoryBot.create(:certification, country: @movie.country, code: "ABCODE")
+    release1 = FactoryBot.create(:release, movie: @movie, type: Release::THEATRICAL, certification: cert, date: Date.new(2022, 2, 1), note: "This is a note")
     gallery_presenter = Galleries::Presenter.new(@movie)
+    assign(:movie, @movie)
     assign(:alternative_names, alternative_names)
     assign(:gallery_presenter, gallery_presenter)
+    assign(:release_dates_for_country, [release1])
   end
 
   it "renders attributes in <p>" do
@@ -66,6 +69,14 @@ RSpec.describe "movies/show", type: :view do
       render
       assert_select "p", text: "January 01, 2022", count: 0
     end
+  end
+
+  it "displays releases for the country" do
+    render
+    assert_select "td", text: "2022-02-01"
+    assert_select "td", text: "Theatrical"
+    assert_select "td", text: "ABCODE"
+    assert_select "td", text: "This is a note"
   end
 
   context "when there is a release for the country" do

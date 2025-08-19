@@ -51,6 +51,10 @@ class Movie < ApplicationRecord
 
   def release = @release ||= theatrical_release || digital_release
 
+  def release_dates_for_country
+    @release_dates_for_country ||= releases.includes(certification: :country).where(certification: {country:}).order(date: :asc)
+  end
+
   def available_galleries = [:posters, :backgrounds, :logos, :videos]
 
   private

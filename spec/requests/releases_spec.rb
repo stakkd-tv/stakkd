@@ -21,6 +21,13 @@ RSpec.describe "Releases", type: :request do
     })
   }
 
+  describe "GET /movies/:movie_id/releases" do
+    it "renders a successful response" do
+      get movie_releases_path(movie_id: movie)
+      expect(response).to be_successful
+    end
+  end
+
   describe "GET /movies/:movie_id/releases/editor" do
     context "when user is not signed in" do
       it "redirects to the user sign in page" do

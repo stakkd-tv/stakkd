@@ -100,6 +100,38 @@
 
       <%= render "shared/alternative_names", names_grouped_by_country: @alternative_names %>
 
+      <% if @release_dates_for_country.any? %>
+        <div class="rounded-lg border-2 border-pop bg-background overflow-hidden">
+          <div class="flex gap-4 p-4 border-b-2 border-pop bg-background-darker">
+            <%= image_tag @movie.country.flag, class: "w-5 min-w-5" %>
+            <p><%= @movie.country.translated_name %></p>
+          </div>
+          <div class="flex flex-col gap-4">
+            <table class="w-full">
+              <% @release_dates_for_country.each do |release| %>
+                <tr class="overflow-x-scroll">
+                  <td class="p-4 w-0">
+                    <%= release.date %>
+                  </td>
+                  <td class="p-4">
+                    <%= release.type %>
+                  </td>
+                  <td class="p-4 w-0">
+                    <%= release.certification.code %>
+                  </td>
+                  <td class="p-4">
+                    <%= release.note %>
+                  </td>
+                </tr>
+              <% end %>
+            </table>
+            <div class="p-4 pt-0 w-full">
+              <%= link_to "View all releases", movie_releases_path(@movie), class: "link block w-full" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
       <%= render "shared/galleries", presenter: @gallery_presenter %>
     </div>
   </div>

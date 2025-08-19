@@ -126,6 +126,10 @@
         -ms-overflow-style: none;
         scrollbar-width: none;
     }
+
+    *[data-sidetab-active="true"] {
+        @apply bg-pop/50;
+    }
 }
 
 @layer components {

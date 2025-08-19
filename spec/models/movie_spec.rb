@@ -168,6 +168,22 @@ RSpec.describe Movie, type: :model do
     end
   end
 
+  describe "#release_dates_for_country" do
+    it "returns the release dates for that country ordered by date" do
+      uk = FactoryBot.create(:country, code: "UK")
+      cert_uk = FactoryBot.create(:certification, country: uk)
+
+      us = FactoryBot.create(:country, code: "US")
+      cert_us = FactoryBot.create(:certification, country: us)
+
+      movie = FactoryBot.create(:movie, country: uk)
+      FactoryBot.create(:release, movie:, type: Release::THEATRICAL, certification: cert_us)
+      release1 = FactoryBot.create(:release, movie:, type: Release::THEATRICAL, certification: cert_uk, date: Date.new(2022, 2, 1))
+      release2 = FactoryBot.create(:release, movie:, type: Release::DIGITAL, certification: cert_uk, date: Date.new(2022, 1, 1))
+      expect(movie.release_dates_for_country).to eq [release2, release1]
+    end
+  end
+
   describe "#available_galleries" do
     it "returns the available galleries" do
       movie = Movie.new

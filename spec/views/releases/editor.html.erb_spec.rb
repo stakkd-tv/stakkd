@@ -16,7 +16,7 @@ RSpec.describe "releases/editor", type: :view do
     assert_select "div[data-table-editor-group-by-value='country_id']"
   end
 
-  it "renders the new alternative name form" do
+  it "renders the new release form" do
     render
     assert_select "form[action='#{movie_releases_path(movie)}']" do
       assert_select "input[name='release[date]']"

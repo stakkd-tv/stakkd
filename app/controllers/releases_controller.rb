@@ -4,6 +4,10 @@ class ReleasesController < ApplicationController
   before_action :set_release, only: [:update, :destroy]
 
   def index
+    releases = @movie.releases.includes(certification: :country).group_by { it.certification.country }
+    @countries_with_counts = releases.keys.map { {name: it.translated_name, code: it.code, count: releases[it].size} }
+    @overall_count = releases.values.sum(&:size)
+    @releases_grouped_by_country = params[:country] ? releases.select { |country, releases| country.code == params[:country] } : releases
   end
 
   def editor
