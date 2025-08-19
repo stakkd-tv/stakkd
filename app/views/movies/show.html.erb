@@ -41,7 +41,7 @@
         <div class="grid grid-cols-5 gap-2">
           <% @movie.companies.each do |company| %>
             <%= link_to company do %>
-              <%= image_tag company.logo, alt: company.name, title: company.name, class: "bg-pop/25 rounded-sm border border-pop aspect-square" %>
+              <%= image_tag company.logo, alt: company.name, title: company.name, class: "bg-pop/25 rounded-lg border border-pop aspect-square" %>
             <% end %>
           <% end %>
         </div>
