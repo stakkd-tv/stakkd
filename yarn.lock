@@ -3216,10 +3216,10 @@ signal-exit@^3.0.2:
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.7.tgz#a9a1767f8af84155114eaabd73f99273c8f59ad9"
   integrity sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==
 
-slim-select@^2.11.0:
-  version "2.11.0"
-  resolved "https://registry.yarnpkg.com/slim-select/-/slim-select-2.11.0.tgz#a98e42ac048fa4ebe23c3cbc3d7ce3b8fd898851"
-  integrity sha512-Y0FEJKIPBy8ax7jArUxICxtKAnhX8GH7ydaFhcrYH7OznfpvxCe8uU2etyuRPKhE23c2LhT2GROFvZzGVplA0g==
+slim-select@^2.12.1:
+  version "2.12.1"
+  resolved "https://registry.yarnpkg.com/slim-select/-/slim-select-2.12.1.tgz#9f82ccb5b8c5ff9a868a18ad5b04db653103f11e"
+  integrity sha512-6Ad4M/UZ/xJUOjoNSvYuS9qWoLcEfZj28/Wpkc+fZMi3psZGZvReRU0DmvegFijfTh6Bxhi3wJWUFgNzjXksIQ==
 
 source-map-js@^1.2.1:
   version "1.2.1"
