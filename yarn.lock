@@ -636,10 +636,10 @@
   resolved "https://registry.yarnpkg.com/@types/semver/-/semver-7.7.0.tgz#64c441bdae033b378b6eef7d0c3d77c329b9378e"
   integrity sha512-k107IF4+Xr7UHjwDc7Cfd6PRQfbdkiRabXGRjo07b4WyPahFBZCZ1sE+BNxYIJPPg73UkfOsVOLwqVc/6ETrIA==
 
-"@types/tabulator-tables@^6.2.9":
-  version "6.2.9"
-  resolved "https://registry.yarnpkg.com/@types/tabulator-tables/-/tabulator-tables-6.2.9.tgz#500a7cf64c6366d696d903bef3113ff26f1d4b1f"
-  integrity sha512-u4AlO6z54njaeeLFSlwuqpKSCdUko0O0x47UolLNmwA8AhamSl9x7wziN+mo6Q0ca4g/V0FuhqIO9yXvaBh69A==
+"@types/tabulator-tables@^6.2.10":
+  version "6.2.10"
+  resolved "https://registry.yarnpkg.com/@types/tabulator-tables/-/tabulator-tables-6.2.10.tgz#5a9fcde6b1ea379abd5ee6790cc095ebcae1e769"
+  integrity sha512-g6o0gG3lu/ozmxPw9rLY1p57T6rvV8OhbJKyzWwPwjdnN3JuSQ3gWxb06v2+dl2tdoqNXTvlylipSSKpS8UzzQ==
 
 "@typescript-eslint/eslint-plugin@^8.35.1":
   version "8.35.1"
