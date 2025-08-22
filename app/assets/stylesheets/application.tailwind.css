@@ -72,11 +72,13 @@
     .form > form input,
     .form > form textarea,
     .form > form select,
-    .form > form .ss-main {
+    .form > form .ss-main,
+    .input {
         @apply w-full bg-background p-2 border border-pop rounded-lg focus:outline-pop focus:outline;
     }
 
-    .form > form select {
+    .form > form select,
+    select.input {
         @apply p-[0.62rem];
     }
 

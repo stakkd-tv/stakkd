@@ -28,6 +28,12 @@
           <p class="font-domine"><b>Runtime:</b></p>
           <p><%= @movie.runtime %> minutes</p>
         </div>
+        <% if @movie.director %>
+          <div>
+            <p class="font-domine"><b>Director:</b></p>
+            <%= link_to @movie.director.person.translated_name, person_path(@movie.director.person), class: "underline" %>
+          </div>
+        <% end %>
         <div>
           <p class="font-domine"><b>Budget:</b></p>
           <p>$<%= number_with_delimiter @movie.budget.to_i %></p>

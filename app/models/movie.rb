@@ -57,6 +57,8 @@ class Movie < ApplicationRecord
 
   def available_galleries = [:posters, :backgrounds, :logos, :videos]
 
+  def director = @director ||= crew_members.includes(:job, :person).where(job: {name: Job::DIRECTOR}).first
+
   private
 
   def theatrical_release

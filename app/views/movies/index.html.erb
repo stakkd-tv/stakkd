@@ -7,16 +7,78 @@
     <h3 class="text-4xl font-bold font-domine text-white text-center">Movies</h3>
     <%= link_to "Add a movie", new_movie_path, class: "link" %>
   </div>
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-    <% @movies.each do |movie| %>
-      <%= link_to movie do %>
-        <div class="group w-full aspect-2/3 border border-pop rounded-lg overflow-hidden relative">
-          <div class="absolute w-full h-full flex flex-col gap-4 p-4 justify-center items-center opacity-0 group-hover:opacity-100 bg-pop/50 backdrop-blur-sm z-10 transition duration-300 ease-in-out">
-            <p class="font-domine font-bold text-2xl text-white text-center"><%= movie.translated_title %></p>
-          </div>
-          <%= image_tag movie.poster %>
+  <div class="grid grid-cols-1 md:grid-cols-4 md:gap-8 md:min-h-screen">
+    <div class="col-span-1 flex flex-col gap-5 items-center md:items-start">
+      <details class="bg-background-darker w-full rounded-lg">
+        <summary class="p-4 cursor-pointer border-b-2 border-background">Sort</summary>
+        <div class="p-4">
+          <select class="input">
+            <option value="popularity">Popularity</option>
+            <option value="rating">Rating</option>
+            <option value="release_date">Release Date</option>
+            <option value="title">Title</option>
+          </select>
         </div>
+      </details>
+
+      <details class="bg-background-darker w-full rounded-lg mb-4" open>
+        <summary class="p-4 cursor-pointer border-b-2 border-background">Filters</summary>
+        <div class="flex flex-col">
+          <div class="p-4 border-b-2 border-background">
+            <label>
+              <input type="checkbox" name="genre" value="action" class="mr-2 checked:bg-pop">
+              Hide movies I've watched
+            </label>
+          </div>
+
+          <div class="p-4 border-b-2 border-background flex flex-col gap-4">
+            <p><b>Release dates</b></p>
+            <%= collection_select(:movie, :release_type, Release::TYPES, :to_s, :to_s, {prompt: "All releases"}, class: "input") %>
+            <div class="flex flex-col gap-1">
+              <label for="release_date_from" class="basis-1/4">From</label>
+              <input type="date" name="release_date_from" class="input">
+            </div>
+            <div class="flex flex-col gap-1">
+              <label for="release_date_to" class="basis-1/4">To</label>
+              <input type="date" name="release_date_to" class="input">
+            </div>
+          </div>
+
+          <div class="p-4 border-b-2 border-background">
+            <p class="mb-4"><b>Genres</b></p>
+            <div class="flex flex-wrap gap-2">
+              <% Genre.all.order(:name).each do |genre| %>
+                <div class="border border-pop rounded-lg overflow-hidden">
+                  <input type="checkbox" id="genre_<%= genre.id %>" class="hidden peer ">
+                  <label for="genre_<%= genre.id %>" class="cursor-pointer block px-2 py-1 peer-checked:bg-pop/50"><%= genre.name %></label>
+                </div>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="p-4 border-b-2 border-background">
+            <p class="mb-4"><b>Country</b></p>
+            <%= collection_select(:movie, :country_id, Country.all.order(:translated_name), :id, :translated_name, {prompt: "None selected"}, class: "input") %>
+          </div>
+        </div>
+      </details>
+    </div>
+    <div class="col-span-3">
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+      <% @movies.each do |movie| %>
+        <%= link_to movie, class: "h-fit border border-pop rounded-lg overflow-hidden relative" do %>
+          <%= image_tag movie.poster, class: "w-full aspect-2/3 object-cover" %>
+          <div class="absolute w-full p-2 sm:p-4 bottom-0 left-0 bg-background/75 border-t border-pop">
+            <div class="flex flex-col gap-2">
+              <h3 class="text-sm sm:text-lg font-bold"><%= movie.translated_title %></h3>
+              <% if movie.release %>
+                <span class="text-sm"><%= movie.release.date.strftime("%B %d, %Y") %></span>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
       <% end %>
-    <% end %>
+      </div>
+    </div>
   </div>
 </div>

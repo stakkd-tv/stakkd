@@ -14,8 +14,8 @@ RSpec.describe "movies/index", type: :view do
 
   it "renders a list of movies" do
     render
-    assert_select "p", text: "Back to the Present"
-    assert_select "p", text: "Back to the Future"
+    assert_select "h3", text: "Back to the Present"
+    assert_select "h3", text: "Back to the Future"
     assert_select "a[href='#{movie_path(@m1)}']"
     assert_select "a[href='#{movie_path(@m2)}']"
   end

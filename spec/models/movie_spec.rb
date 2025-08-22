@@ -190,4 +190,21 @@ RSpec.describe Movie, type: :model do
       expect(movie.available_galleries).to eq [:posters, :backgrounds, :logos, :videos]
     end
   end
+
+  describe "#director" do
+    context "when the movie has a director" do
+      it "returns the director" do
+        director = FactoryBot.build(:crew_member, job: FactoryBot.build(:job, name: Job::DIRECTOR))
+        movie = FactoryBot.create(:movie, crew_members: [director])
+        expect(movie.director).to eq director
+      end
+    end
+
+    context "when the movie does not have a director" do
+      it "returns nil" do
+        movie = FactoryBot.create(:movie)
+        expect(movie.director).to be_nil
+      end
+    end
+  end
 end
