@@ -3,7 +3,9 @@ class MoviesController < ApplicationController
   before_action :set_movie, except: [:index, :new, :create]
 
   def index
-    @movies = ::Filters::Movies.new(params).filter
+    movie_filter = ::Filters::Movies.new(params)
+    @movies = movie_filter.filter.paginate(page: params[:page], per_page: 12)
+    @filter_params = movie_filter.to_params
   end
 
   def show

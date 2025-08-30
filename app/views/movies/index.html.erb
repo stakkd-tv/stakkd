@@ -83,22 +83,14 @@
       </details>
     <% end %>
     <div class="col-span-3">
-      <%= turbo_frame_tag "movies" do %>
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-          <% @movies.each do |movie| %>
-            <%= link_to movie, class: "h-fit border border-pop rounded-lg overflow-hidden relative", data: {turbo: false} do %>
-              <%= image_tag movie.poster, class: "w-full aspect-2/3 object-cover" %>
-              <div class="absolute w-full p-2 sm:p-4 bottom-0 left-0 bg-background/75 border-t border-pop">
-                <div class="flex flex-col gap-2">
-                  <h3 class="text-sm sm:text-lg font-bold"><%= movie.translated_title %></h3>
-                  <% if movie.release %>
-                    <span class="text-sm"><%= movie.release.date.strftime("%B %d, %Y") %></span>
-                  <% end %>
-                </div>
-              </div>
-            <% end %>
-          <% end %>
-        </div>
+      <%= turbo_frame_tag "movies", class: "grid grid-cols-2 md:grid-cols-3 gap-4" do %>
+        <% @movies.each do |movie| %>
+          <%= render movie %>
+        <% end %>
+
+        <% if @movies.any? && @movies.next_page.present? %>
+          <%= render "load_more" %>
+        <% end %>
       <% end %>
     </div>
   </div>

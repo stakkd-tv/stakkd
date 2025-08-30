@@ -234,5 +234,100 @@ module Filters
         end
       end
     end
+
+    describe "#to_params" do
+      let(:instance) { Movies.new(options) }
+      let(:options) {
+        {
+          country_id:,
+          genre_ids:,
+          release_date_from:,
+          release_date_to:,
+          release_type:
+        }
+      }
+      let(:country_id) { 1 }
+      let(:genre_ids) { [1] }
+      let(:release_date_from) { "2025-01-01" }
+      let(:release_date_to) { "2025-01-02" }
+      let(:release_type) { Release::DIGITAL }
+
+      subject { instance.to_params }
+
+      it "converts the options to params" do
+        expect(subject).to eq({
+          country_id:,
+          genre_ids:,
+          release_date_from:,
+          release_date_to:,
+          release_type:
+        })
+      end
+
+      context "when country id is not present" do
+        let(:country_id) { nil }
+
+        it "does not include the country id" do
+          expect(subject).to eq({
+            genre_ids:,
+            release_date_from:,
+            release_date_to:,
+            release_type:
+          })
+        end
+      end
+
+      context "when genre ids are not present" do
+        let(:genre_ids) { nil }
+
+        it "does not include the country id" do
+          expect(subject).to eq({
+            country_id:,
+            release_date_from:,
+            release_date_to:,
+            release_type:
+          })
+        end
+      end
+
+      context "when release date from is not present" do
+        let(:release_date_from) { nil }
+
+        it "does not include the country id" do
+          expect(subject).to eq({
+            country_id:,
+            genre_ids:,
+            release_date_to:,
+            release_type:
+          })
+        end
+      end
+
+      context "when release date to is not present" do
+        let(:release_date_to) { nil }
+
+        it "does not include the country id" do
+          expect(subject).to eq({
+            country_id:,
+            genre_ids:,
+            release_date_from:,
+            release_type:
+          })
+        end
+      end
+
+      context "when release type is not present" do
+        let(:release_type) { nil }
+
+        it "does not include the country id" do
+          expect(subject).to eq({
+            country_id:,
+            genre_ids:,
+            release_date_from:,
+            release_date_to:
+          })
+        end
+      end
+    end
   end
 end

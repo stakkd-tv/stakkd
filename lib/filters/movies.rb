@@ -29,6 +29,16 @@ module Filters
       movies.distinct
     end
 
+    def to_params
+      params = {}
+      params[:country_id] = country_id if country_id.present?
+      params[:genre_ids] = genre_ids if genre_ids.present?
+      params[:release_date_from] = release_date_from.to_s if release_date_from.present?
+      params[:release_date_to] = release_date_to.to_s if release_date_to.present?
+      params[:release_type] = options[:release_type] if options[:release_type].present?
+      params
+    end
+
     private
 
     def release_types

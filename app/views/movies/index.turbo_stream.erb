@@ -1,0 +1,13 @@
+<%= turbo_stream.append "movies" do %>
+  <% @movies.each do |movie| %>
+    <%= render movie %>
+  <% end %>
+<% end %>
+
+<% if @movies.next_page.present? %>
+  <%= turbo_stream.replace "load_more" do %>
+    <%= render "load_more" %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.remove "load_more" %>
+<% end %>

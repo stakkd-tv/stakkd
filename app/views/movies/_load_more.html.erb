@@ -1,0 +1,1 @@
+<%= turbo_frame_tag "load_more", src: movies_path(**@filter_params, page: @movies.next_page, format: :turbo_stream), loading: :lazy %>
