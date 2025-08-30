@@ -19,7 +19,7 @@ class Movie < ApplicationRecord
   has_many :cast_members, -> { order(position: :asc) }, as: :record, dependent: :destroy
   has_many :crew_members, as: :record, dependent: :destroy
   has_many :genre_assignments, as: :record, dependent: :destroy
-  has_many :genres, through: :genre_assignments
+  has_many :genres, -> { order(name: :asc) }, through: :genre_assignments
   has_many :company_assignments, as: :record, dependent: :destroy
   has_many :companies, through: :company_assignments
   has_many :releases, dependent: :destroy

@@ -75,7 +75,7 @@
         <% if @movie.genres.any? %>
           <div class="flex gap-3 flex-wrap mt-4">
             <% @movie.genres.each do |genre| %>
-              <p class="rounded-full bg-pop/65 px-3 py-1 text-sm border-2 border-pop"><%= genre.name %></p>
+              <%= link_to genre.name, movies_path(genre_ids: [genre.id]), class: "rounded-full bg-pop/65 px-3 py-1 text-sm border-2 border-pop" %>
             <% end %>
           </div>
         <% end %>
