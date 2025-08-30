@@ -3,7 +3,7 @@ class MoviesController < ApplicationController
   before_action :set_movie, except: [:index, :new, :create]
 
   def index
-    @movies = Movie.order(:translated_title)
+    @movies = ::Filters::Movies.new(params).filter
   end
 
   def show

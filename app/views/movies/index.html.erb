@@ -8,14 +8,13 @@
     <%= link_to "Add a movie", new_movie_path, class: "link" %>
   </div>
   <div class="grid grid-cols-1 md:grid-cols-4 md:gap-8 md:min-h-screen">
-    <div class="col-span-1 flex flex-col gap-5 items-center md:items-start">
+    <%= form_with(url: movies_path, method: "get", class: "col-span-1 flex flex-col gap-5 items-center md:items-start", data: {turbo_frame: "movies"}) do %>
       <details class="bg-background-darker w-full rounded-lg">
         <summary class="p-4 cursor-pointer border-b-2 border-background">Sort</summary>
         <div class="p-4">
-          <select class="input">
+          <select class="input" name="sort" autocomplete="off">
             <option value="popularity">Popularity</option>
             <option value="rating">Rating</option>
-            <option value="release_date">Release Date</option>
             <option value="title">Title</option>
           </select>
         </div>
@@ -26,21 +25,26 @@
         <div class="flex flex-col">
           <div class="p-4 border-b-2 border-background">
             <label>
-              <input type="checkbox" name="genre" value="action" class="mr-2 checked:bg-pop">
+              <input type="checkbox" name="hide_watched" class="mr-2 checked:bg-pop" autocomplete="off">
               Hide movies I've watched
             </label>
           </div>
 
           <div class="p-4 border-b-2 border-background flex flex-col gap-4">
             <p><b>Release dates</b></p>
-            <%= collection_select(:movie, :release_type, Release::TYPES, :to_s, :to_s, {prompt: "All releases"}, class: "input") %>
+            <select name="release_type" class="input" autocomplete="off">
+              <option value="All" <%= (params[:release_type] == "All") ? "selected" : "" %>>All Releases</option>
+              <% Release::TYPES.each do |type| %>
+                <option value="<%= type %>" <%= (params[:release_type] == type) ? "selected" : "" %>><%= type %></option>
+              <% end %>
+            </select>
             <div class="flex flex-col gap-1">
               <label for="release_date_from" class="basis-1/4">From</label>
-              <input type="date" name="release_date_from" class="input">
+              <input type="date" name="release_date_from" class="input" autocomplete="off" value="<%= params[:release_date_from] || "" %>">
             </div>
             <div class="flex flex-col gap-1">
               <label for="release_date_to" class="basis-1/4">To</label>
-              <input type="date" name="release_date_to" class="input">
+              <input type="date" name="release_date_to" class="input" autocomplete="off" value="<%= params[:release_date_to] || "" %>">
             </div>
           </div>
 
@@ -49,7 +53,13 @@
             <div class="flex flex-wrap gap-2">
               <% Genre.all.order(:name).each do |genre| %>
                 <div class="border border-pop rounded-lg overflow-hidden">
-                  <input type="checkbox" id="genre_<%= genre.id %>" class="hidden peer ">
+                  <input type="checkbox"
+                    name="genre_ids[]"
+                    value="<%= genre.id %>"
+                    id="genre_<%= genre.id %>"
+                    class="hidden peer"
+                    autocomplete="off"
+                    <%= params[:genre_ids]&.include?(genre.id.to_s) ? "checked" : "" %>>
                   <label for="genre_<%= genre.id %>" class="cursor-pointer block px-2 py-1 peer-checked:bg-pop/50"><%= genre.name %></label>
                 </div>
               <% end %>
@@ -58,27 +68,38 @@
 
           <div class="p-4 border-b-2 border-background">
             <p class="mb-4"><b>Country</b></p>
-            <%= collection_select(:movie, :country_id, Country.all.order(:translated_name), :id, :translated_name, {prompt: "None selected"}, class: "input") %>
+            <select name="country_id" class="input" autocomplete="off">
+              <option value="" <%= params[:country_id].blank? ? "selected" : "" %>>None selected</option>
+              <% Country.all.order(:translated_name).each do |country| %>
+                <option value="<%= country.id %>" <%= (params[:country_id].to_i == country.id) ? "selected" : "" %>><%= country.translated_name %></option>
+              <% end %>
+            </select>
+          </div>
+
+          <div class="p-4 border-b-2 border-background">
+            <%= submit_tag "Apply filter", class: "link w-full" %>
           </div>
         </div>
       </details>
-    </div>
+    <% end %>
     <div class="col-span-3">
-      <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-      <% @movies.each do |movie| %>
-        <%= link_to movie, class: "h-fit border border-pop rounded-lg overflow-hidden relative" do %>
-          <%= image_tag movie.poster, class: "w-full aspect-2/3 object-cover" %>
-          <div class="absolute w-full p-2 sm:p-4 bottom-0 left-0 bg-background/75 border-t border-pop">
-            <div class="flex flex-col gap-2">
-              <h3 class="text-sm sm:text-lg font-bold"><%= movie.translated_title %></h3>
-              <% if movie.release %>
-                <span class="text-sm"><%= movie.release.date.strftime("%B %d, %Y") %></span>
-              <% end %>
-            </div>
-          </div>
-        <% end %>
+      <%= turbo_frame_tag "movies" do %>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <% @movies.each do |movie| %>
+            <%= link_to movie, class: "h-fit border border-pop rounded-lg overflow-hidden relative", data: {turbo: false} do %>
+              <%= image_tag movie.poster, class: "w-full aspect-2/3 object-cover" %>
+              <div class="absolute w-full p-2 sm:p-4 bottom-0 left-0 bg-background/75 border-t border-pop">
+                <div class="flex flex-col gap-2">
+                  <h3 class="text-sm sm:text-lg font-bold"><%= movie.translated_title %></h3>
+                  <% if movie.release %>
+                    <span class="text-sm"><%= movie.release.date.strftime("%B %d, %Y") %></span>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
       <% end %>
-      </div>
     </div>
   </div>
 </div>
