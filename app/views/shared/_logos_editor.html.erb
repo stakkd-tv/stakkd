@@ -1,0 +1,44 @@
+<% obj_name = object.class.to_s.downcase %>
+
+<div class="max-w-7xl mx-auto my-8 px-6">
+  <div class="form" data-controller="uploads" data-uploads-record-type-value="<%= object.class.to_s %>" data-uploads-record-id-value="<%= object.id %>" data-uploads-type-value="logos">
+    <%= render "form_nav", {obj_name.to_sym => object} %>
+
+    <form>
+      <div>
+        <div class="border border-pop bg-pop/50 p-2 rounded-lg mb-6">
+          <h4 class="font-domine font-bold text-xl mb-2">Image requirements:</h4>
+          <ul class="list-disc list-inside">
+            <li>Only JPGs and PNGs are supported</li>
+            <li>Width must be between 400px and 3000px</li>
+            <li>Height must be between 400px and 3000px</li>
+            <li>Aspect ratio must be 1:1</li>
+          </ul>
+        </div>
+        <input type="file" data-uploads-target="input" name="upload_input" class="mb-6" multiple accept="image/png,image/jpg,image/jpeg">
+        <div data-uploads-target="statuses" class="flex flex-col gap-4">
+          <div data-uploads-target="template" class="p-2 hidden items-center gap-4 border border-pop rounded-lg">
+            <div class="flex items-center justify-center w-4 h-4">
+              <i class="loading fa-solid fa-spinner animate-spin"></i>
+              <i class="error-icon fa-solid fa-square-xmark text-red-400 !hidden"></i>
+              <i class="success-icon fa-solid fa-square-check text-green-300 !hidden"></i>
+            </div>
+            <p class="fileUploadText">Uploading</p>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div data-uploads-target="imageTemplate" class="w-full aspect-square border border-pop rounded-lg overflow-hidden relative hidden">
+      <img src="" class="newImg">
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 px-6 mb-6" data-uploads-target="images">
+      <% object.logos.each do |image| %>
+        <div class="w-full aspect-square border border-pop rounded-lg overflow-hidden relative">
+          <%= image_tag image %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_03_105703) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_31_095951) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -212,6 +212,24 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_03_105703) do
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
+  create_table "shows", force: :cascade do |t|
+    t.bigint "language_id", null: false
+    t.bigint "country_id", null: false
+    t.string "homepage"
+    t.string "imdb_id"
+    t.string "original_title"
+    t.string "overview"
+    t.integer "runtime"
+    t.string "status"
+    t.string "translated_title"
+    t.string "title_kebab"
+    t.string "type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["country_id"], name: "index_shows_on_country_id"
+    t.index ["language_id"], name: "index_shows_on_language_id"
+  end
+
   create_table "taggings", force: :cascade do |t|
     t.bigint "tag_id"
     t.string "taggable_type"
@@ -288,5 +306,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_03_105703) do
   add_foreign_key "releases", "certifications"
   add_foreign_key "releases", "movies"
   add_foreign_key "sessions", "users"
+  add_foreign_key "shows", "countries"
+  add_foreign_key "shows", "languages"
   add_foreign_key "taggings", "tags"
 end

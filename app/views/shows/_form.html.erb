@@ -1,0 +1,78 @@
+<div class="form">
+  <%= render "form_nav", show: %>
+  <%= form_with model: show do |form| %>
+    <% if show.errors.any? %>
+      <div style="color: red">
+        <h2><%= pluralize(show.errors.count, "error") %> prohibited this show from being saved:</h2>
+
+        <ul>
+          <% show.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="flex flex-col xs:flex-row gap-6">
+      <div class="basis-1/2">
+        <%= form.label :translated_title %>
+        <%= form.text_field :translated_title, required: true %>
+      </div>
+
+      <div class="basis-1/2">
+        <%= form.label :original_title %>
+        <%= form.text_field :original_title, required: true %>
+      </div>
+    </div>
+
+    <div class="flex flex-col md:flex-row gap-6">
+      <div class="basis-1/2">
+        <%= form.label :language_id %>
+        <%= form.collection_select :language_id, Language.order(:code), :id, :translated_name %>
+      </div>
+
+      <div class="basis-1/2">
+        <%= form.label :country_id %>
+        <%= form.collection_select :country_id, Country.order(:code), :id, :translated_name %>
+      </div>
+    </div>
+
+    <div>
+      <%= form.label :overview %>
+      <%= form.text_area :overview, class: "h-60" %>
+    </div>
+
+    <div>
+      <%= form.label :type %>
+      <%= form.collection_select :type, Show::TYPES, :to_s, :humanize %>
+    </div>
+
+    <div class="flex flex-col xs:flex-row gap-6">
+      <div class="basis-1/2">
+        <%= form.label :status %>
+        <%= form.collection_select :status, Show::STATUSES.sort, :to_s, :humanize %>
+      </div>
+
+      <div class="basis-1/2">
+        <%= form.label :runtime %>
+        <%= form.number_field :runtime %>
+      </div>
+    </div>
+
+    <div class="flex flex-col xs:flex-row gap-6">
+      <div class="basis-1/2">
+        <%= form.label :imdb_id, "IMDB" %>
+        <%= form.text_field :imdb_id %>
+      </div>
+
+      <div class="basis-1/2">
+        <%= form.label :homepage %>
+        <%= form.text_field :homepage %>
+      </div>
+    </div>
+
+    <div>
+      <%= form.submit "Save" %>
+    </div>
+  <% end %>
+</div>

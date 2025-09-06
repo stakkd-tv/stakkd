@@ -1,4 +1,5 @@
 require "rails_helper"
+require_relative "shared_examples/slugify"
 
 RSpec.describe Movie, type: :model do
   describe "associations" do
@@ -28,6 +29,8 @@ RSpec.describe Movie, type: :model do
     it { should validate_presence_of(:budget) }
     it { should validate_inclusion_of(:status).in_array(Movie::STATUSES) }
   end
+
+  it_behaves_like "a slugified model", :movie, :translated_title
 
   describe "#poster" do
     context "when there are no posters" do

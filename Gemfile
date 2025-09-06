@@ -86,6 +86,9 @@ group :development, :test do
   # Adds support for Capybara system testing and selenium driver
   gem "capybara", "~> 3.38"
   gem "selenium-webdriver"
+
+  # Add support for save_and_open_*
+  gem "launchy"
 end
 
 group :development do

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Movies", type: :request do
+RSpec.describe "/shows", type: :request do
   let(:country) { FactoryBot.create(:country) }
   let(:language) { FactoryBot.create(:language) }
   let(:valid_attributes) {
@@ -10,12 +10,11 @@ RSpec.describe "Movies", type: :request do
       original_title: "Back to the Future",
       translated_title: "Back to the Future",
       overview: "This is an overview",
-      status: "released",
+      status: Show::RETURNING,
       runtime: 100,
-      revenue: 100000000,
-      budget: 100000000,
       homepage: "https://google.com",
-      imdb_id: "tt0000000"
+      imdb_id: "tt0000000",
+      type: Show::SERIES
     }
   }
 
@@ -25,29 +24,28 @@ RSpec.describe "Movies", type: :request do
       country_id: nil,
       translated_title: nil,
       original_title: nil,
-      runtime: nil,
-      revenue: nil,
-      budget: nil,
-      status: "invalid"
+      status: "invalid",
+      type: "invalid"
     })
   }
 
-  describe "GET /movies" do
+  describe "GET /shows" do
     it "renders a successful response" do
-      get movies_url
+      Show.create! valid_attributes
+      get shows_url
       expect(response).to be_successful
     end
   end
 
-  describe "GET /movies/:id" do
+  describe "GET /shows/:id" do
     it "renders a successful response" do
-      movie = FactoryBot.create(:movie)
-      get movie_url(movie)
+      show = FactoryBot.create(:show)
+      get show_url(show)
       expect(response).to be_successful
     end
   end
 
-  describe "GET /movies/new" do
+  describe "GET /shows/new" do
     context "when the user is signed in" do
       before do
         user = FactoryBot.create(:user)
@@ -57,20 +55,20 @@ RSpec.describe "Movies", type: :request do
       end
 
       it "renders a successful response" do
-        get new_movie_url
+        get new_show_url
         expect(response).to be_successful
       end
     end
 
     context "when the user is not signed in" do
       it "redirects to the sign in page" do
-        get new_movie_url
+        get new_show_url
         expect(response).to redirect_to new_session_path
       end
     end
   end
 
-  describe "GET /movies/:id/edit" do
+  describe "GET /shows/:id/edit" do
     context "when the user is signed in" do
       before do
         user = FactoryBot.create(:user)
@@ -80,22 +78,22 @@ RSpec.describe "Movies", type: :request do
       end
 
       it "renders a successful response" do
-        movie = FactoryBot.create(:movie)
-        get edit_movie_url(movie)
+        show = FactoryBot.create(:show)
+        get edit_show_url(show)
         expect(response).to be_successful
       end
     end
 
     context "when the user is not signed in" do
       it "redirects to the sign in page" do
-        movie = FactoryBot.create(:movie)
-        get edit_movie_url(movie)
+        show = FactoryBot.create(:show)
+        get edit_show_url(show)
         expect(response).to redirect_to new_session_path
       end
     end
   end
 
-  describe "POST /movies" do
+  describe "POST /shows" do
     context "when the user is signed in" do
       before do
         user = FactoryBot.create(:user)
@@ -105,37 +103,36 @@ RSpec.describe "Movies", type: :request do
       end
 
       context "with valid parameters" do
-        it "creates a new Movie" do
-          post movies_url, params: {movie: valid_attributes}
-          movie = Movie.last
-          expect(movie.language).to eq language
-          expect(movie.country).to eq country
-          expect(movie.original_title).to eq "Back to the Future"
-          expect(movie.translated_title).to eq "Back to the Future"
-          expect(movie.overview).to eq "This is an overview"
-          expect(movie.status).to eq "released"
-          expect(movie.runtime).to eq 100
-          expect(movie.revenue).to eq 100000000
-          expect(movie.budget).to eq 100000000
-          expect(movie.homepage).to eq "https://google.com"
-          expect(movie.imdb_id).to eq "tt0000000"
+        it "creates a new Show" do
+          post shows_url, params: {show: valid_attributes}
+          show = Show.last
+          expect(show.language).to eq language
+          expect(show.country).to eq country
+          expect(show.original_title).to eq "Back to the Future"
+          expect(show.translated_title).to eq "Back to the Future"
+          expect(show.overview).to eq "This is an overview"
+          expect(show.status).to eq Show::RETURNING
+          expect(show.runtime).to eq 100
+          expect(show.type).to eq Show::SERIES
+          expect(show.homepage).to eq "https://google.com"
+          expect(show.imdb_id).to eq "tt0000000"
         end
 
-        it "redirects to the created movie's edit page" do
-          post movies_url, params: {movie: valid_attributes}
-          expect(response).to redirect_to(edit_movie_url(Movie.last))
+        it "redirects to the created show's edit page" do
+          post shows_url, params: {show: valid_attributes}
+          expect(response).to redirect_to(edit_show_url(Show.last))
         end
       end
 
       context "with invalid parameters" do
-        it "does not create a new movie" do
+        it "does not create a new show" do
           expect {
-            post movies_path, params: {movie: invalid_attributes}
-          }.to change(Movie, :count).by(0)
+            post shows_path, params: {show: invalid_attributes}
+          }.to change(Show, :count).by(0)
         end
 
         it "renders a response with 422 status (i.e. to display the 'new' template)" do
-          post movies_path, params: {movie: invalid_attributes}
+          post shows_path, params: {show: invalid_attributes}
           expect(response).to have_http_status(:unprocessable_content)
         end
       end
@@ -143,22 +140,21 @@ RSpec.describe "Movies", type: :request do
 
     context "when the user is not signed in" do
       it "redirects to the sign in page" do
-        post movies_path, params: {movie: valid_attributes}
+        post shows_path, params: {show: valid_attributes}
         expect(response).to redirect_to new_session_path
       end
     end
   end
 
-  describe "PATCH /movies/:id" do
+  describe "PATCH /shows/:id" do
     let(:new_attributes) {
       {
         original_title: "Berk to the Future",
         translated_title: "Berk to the Future",
         overview: "This is a new overview",
-        status: "cancelled",
+        status: "ended",
         runtime: 110,
-        revenue: 150000000,
-        budget: 140000000,
+        type: "documentary",
         homepage: "https://github.com",
         imdb_id: "tt0000001"
       }
@@ -173,32 +169,31 @@ RSpec.describe "Movies", type: :request do
       end
 
       context "with valid parameters" do
-        it "updates the requested movie" do
-          movie = Movie.create! valid_attributes
-          patch movie_url(movie), params: {movie: new_attributes}
-          movie.reload
-          expect(movie.original_title).to eq "Berk to the Future"
-          expect(movie.translated_title).to eq "Berk to the Future"
-          expect(movie.overview).to eq "This is a new overview"
-          expect(movie.status).to eq "cancelled"
-          expect(movie.runtime).to eq 110
-          expect(movie.revenue).to eq 150000000
-          expect(movie.budget).to eq 140000000
-          expect(movie.homepage).to eq "https://github.com"
-          expect(movie.imdb_id).to eq "tt0000001"
+        it "updates the requested show" do
+          show = Show.create! valid_attributes
+          patch show_url(show), params: {show: new_attributes}
+          show.reload
+          expect(show.original_title).to eq "Berk to the Future"
+          expect(show.translated_title).to eq "Berk to the Future"
+          expect(show.overview).to eq "This is a new overview"
+          expect(show.status).to eq "ended"
+          expect(show.runtime).to eq 110
+          expect(show.type).to eq "documentary"
+          expect(show.homepage).to eq "https://github.com"
+          expect(show.imdb_id).to eq "tt0000001"
         end
 
-        it "redirects to the movie" do
-          movie = Movie.create! valid_attributes
-          patch movie_url(movie), params: {movie: new_attributes}
-          expect(response).to redirect_to(movie_url(movie))
+        it "redirects to the show" do
+          show = Show.create! valid_attributes
+          patch show_url(show), params: {show: new_attributes}
+          expect(response).to redirect_to(show_url(show))
         end
       end
 
       context "with invalid parameters" do
         it "renders a response with 422 status (i.e. to display the 'edit' template)" do
-          movie = Movie.create! valid_attributes
-          patch movie_url(movie), params: {movie: invalid_attributes}
+          show = Show.create! valid_attributes
+          patch show_url(show), params: {show: invalid_attributes}
           expect(response).to have_http_status(:unprocessable_content)
         end
       end
@@ -206,14 +201,14 @@ RSpec.describe "Movies", type: :request do
 
     context "when the user is not signed in" do
       it "redirects to the sign in page" do
-        movie = FactoryBot.create(:movie)
-        patch movie_url(movie), params: {movie: new_attributes}
+        show = FactoryBot.create(:show)
+        patch show_url(show), params: {show: new_attributes}
         expect(response).to redirect_to new_session_path
       end
     end
   end
 
-  describe "GET /movies/:id/posters" do
+  describe "GET /shows/:id/posters" do
     context "when the user is signed in" do
       before do
         user = FactoryBot.create(:user)
@@ -223,22 +218,22 @@ RSpec.describe "Movies", type: :request do
       end
 
       it "renders a successful response" do
-        movie = FactoryBot.create(:movie)
-        get posters_movie_url(movie)
+        show = FactoryBot.create(:show)
+        get posters_show_url(show)
         expect(response).to be_successful
       end
     end
 
     context "when the user is not signed in" do
       it "redirects to the sign in page" do
-        movie = FactoryBot.create(:movie)
-        get posters_movie_url(movie)
+        show = FactoryBot.create(:show)
+        get posters_show_url(show)
         expect(response).to redirect_to new_session_path
       end
     end
   end
 
-  describe "GET /movies/:id/backgrounds" do
+  describe "GET /shows/:id/backgrounds" do
     context "when the user is signed in" do
       before do
         user = FactoryBot.create(:user)
@@ -248,22 +243,22 @@ RSpec.describe "Movies", type: :request do
       end
 
       it "renders a successful response" do
-        movie = FactoryBot.create(:movie)
-        get backgrounds_movie_url(movie)
+        show = FactoryBot.create(:show)
+        get backgrounds_show_url(show)
         expect(response).to be_successful
       end
     end
 
     context "when the user is not signed in" do
       it "redirects to the sign in page" do
-        movie = FactoryBot.create(:movie)
-        get backgrounds_movie_url(movie)
+        show = FactoryBot.create(:show)
+        get backgrounds_show_url(show)
         expect(response).to redirect_to new_session_path
       end
     end
   end
 
-  describe "GET /movies/:id/logos" do
+  describe "GET /shows/:id/logos" do
     context "when the user is signed in" do
       before do
         user = FactoryBot.create(:user)
@@ -273,34 +268,18 @@ RSpec.describe "Movies", type: :request do
       end
 
       it "renders a successful response" do
-        movie = FactoryBot.create(:movie)
-        get logos_movie_url(movie)
+        show = FactoryBot.create(:show)
+        get logos_show_url(show)
         expect(response).to be_successful
       end
     end
 
     context "when the user is not signed in" do
       it "redirects to the sign in page" do
-        movie = FactoryBot.create(:movie)
-        get logos_movie_url(movie)
+        show = FactoryBot.create(:show)
+        get logos_show_url(show)
         expect(response).to redirect_to new_session_path
       end
-    end
-  end
-
-  describe "GET /movies/:id/cast" do
-    it "renders the cast and crew members" do
-      movie = FactoryBot.create(:movie)
-      FactoryBot.create(:cast_member, record: movie, person: FactoryBot.build(:person, translated_name: "John Doe"), character: "Bob")
-      FactoryBot.create(:crew_member, record: movie, person: FactoryBot.build(:person, translated_name: "Charlie Doe"), job: FactoryBot.build(:job, department: "Art", name: "Painter"))
-      get cast_movie_path(movie)
-      assert_select "h4", text: "Cast"
-      assert_select "h5", text: "John Doe"
-      assert_select "p", text: "Bob"
-
-      assert_select "h4", text: "Art"
-      assert_select "h5", text: "Charlie Doe"
-      assert_select "p", text: "Painter"
     end
   end
 end

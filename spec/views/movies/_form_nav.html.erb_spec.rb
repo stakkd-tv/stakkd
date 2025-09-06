@@ -22,7 +22,7 @@ RSpec.describe "movies/_form_nav", type: :view do
     end
   end
 
-  context "when person is not persisted" do
+  context "when show is not persisted" do
     it "does not render the nav" do
       movie = FactoryBot.build(:movie)
       render "movies/form_nav", movie: movie

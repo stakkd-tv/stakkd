@@ -54,7 +54,7 @@ RSpec.describe "movies/show", type: :view do
 
   it "renders the genres" do
     render
-    assert_select "p.rounded-full", text: "Action"
+    assert_select "a.rounded-full", text: "Action"
   end
 
   it "renders the cast members" do
