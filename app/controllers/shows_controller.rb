@@ -7,6 +7,7 @@ class ShowsController < ApplicationController
   end
 
   def show
+    @alternative_names = @show.alternative_names.includes(:country).group_by(&:country)
   end
 
   def new

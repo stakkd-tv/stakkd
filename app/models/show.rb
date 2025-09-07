@@ -56,6 +56,8 @@ class Show < ApplicationRecord
 
   def to_s = translated_title
 
+  def tagline = taglines.first&.tagline
+
   def available_galleries = [:posters, :backgrounds, :logos, :videos]
 
   private

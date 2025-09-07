@@ -111,6 +111,21 @@ RSpec.describe Show, type: :model do
     end
   end
 
+  describe "#tagline" do
+    it "returns the first tagline ordered by position" do
+      show = FactoryBot.create(:show)
+      FactoryBot.create(:tagline, record: show, tagline: "Tagline 1")
+      tagline2 = FactoryBot.create(:tagline, record: show, tagline: "Tagline 2")
+      tagline2.insert_at(1)
+      expect(show.tagline).to eq "Tagline 2"
+    end
+
+    it "returns nil when there are no taglines" do
+      show = FactoryBot.create(:show)
+      expect(show.tagline).to be_nil
+    end
+  end
+
   describe "#available_galleries" do
     it "returns the available galleries" do
       show = Show.new
