@@ -14,6 +14,7 @@ RSpec.describe "shows/_form_nav", type: :view do
       assert_select "a[href='#{show_genre_assignments_path(show)}'][data-active='false']"
       assert_select "a[href='#{show_keywords_path(show)}'][data-active='false']"
       assert_select "a[href='#{show_company_assignments_path(show)}'][data-active='false']"
+      assert_select "a[href='#{show_taglines_path(show)}'][data-active='false']"
     end
   end
 

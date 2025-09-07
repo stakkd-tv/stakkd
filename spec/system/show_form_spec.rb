@@ -172,5 +172,31 @@ RSpec.feature "Show form", type: :system, js: true do
       expect(page).not_to have_css "img[src*='400x400']"
       expect(show.reload.companies).to eq []
     end
+
+    # Taglines
+    click_link "Taglines"
+    expect(page).to have_css("a[data-active='true']", text: "Taglines")
+    fill_in "tagline_tagline", with: "Test tagline"
+    click_button "Save"
+    using_wait_time 5 do
+      expect(page).to have_css "div.tabulator-cell", text: "Test tagline"
+    end
+    tagline = Tagline.first
+    expect(tagline.tagline).to eq "Test tagline"
+    expect(tagline.position).to eq 1
+    tagline_cell = find("div.tabulator-cell", text: "Test tagline")
+    tagline_cell.click
+    find("input:focus").send_keys([:control, "a"], :backspace)
+    find("input:focus").send_keys("Updated tagline", :enter)
+    using_wait_time 5 do
+      expect(page).to have_css "div.tabulator-cell", text: "Updated tagline"
+    end
+    tagline.reload
+    expect(tagline.tagline).to eq "Updated tagline"
+    fill_in "tagline_tagline", with: "Another tagline"
+    click_button "Save"
+    using_wait_time 5 do
+      expect(page).to have_css "div.tabulator-cell", text: "Another tagline"
+    end
   end
 end

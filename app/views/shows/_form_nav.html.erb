@@ -8,7 +8,7 @@
     <%= link_to "Genres", show_genre_assignments_path(show), data: {active: controller_name == "genre_assignments"} %>
     <%= link_to "Keywords", show_keywords_path(show), data: {active: controller_name == "keywords"} %>
     <%= link_to "Companies", show_company_assignments_path(show), data: {active: controller_name == "company_assignments"} %>
-    <%= link_to "Taglines", "#", data: {active: controller_name == "taglines"} %>
+    <%= link_to "Taglines", show_taglines_path(show), data: {active: controller_name == "taglines"} %>
     <%= link_to "Videos", "~", data: {active: controller_name == "videos"} %>
   </div>
 <% end %>
