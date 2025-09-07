@@ -37,6 +37,8 @@ Rails.application.routes.draw do
     get :cast, on: :member
   end
   resources :shows, except: [:destroy] do
+    resources :alternative_names, only: [:index, :create, :update]
+
     get :posters, on: :member
     get :backgrounds, on: :member
     get :logos, on: :member

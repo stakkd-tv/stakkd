@@ -5,7 +5,8 @@ require "rails_helper"
 RSpec.feature "Show form", type: :system, js: true do
   before do
     FactoryBot.create(:language)
-    FactoryBot.create(:country, code: "GB", translated_name: "United Kingdom")
+    @uk = FactoryBot.create(:country, code: "GB", translated_name: "United Kingdom")
+    @saudi = FactoryBot.create(:country, code: "KS", translated_name: "Saudi Arabia")
 
     user = FactoryBot.create(:user)
     sign_in(user)
@@ -57,5 +58,47 @@ RSpec.feature "Show form", type: :system, js: true do
     end
     expect(page).to have_css("img[src*='400x400.png']")
     expect(page).not_to have_css("img[src*='399x399.png']")
+
+    # Alternative Names
+    click_link "Alternative Names"
+    expect(page).to have_css("a[data-active='true']", text: "Alternative Names")
+    expect(page).to have_content("Add a new alternative name")
+    fill_in "alternative_name_name", with: "New alt name"
+    fill_in "alternative_name_type", with: "New alt type"
+    select "Saudi Arabia", from: "alternative_name_country_id"
+    click_button "Save"
+    using_wait_time 5 do
+      expect(page).to have_css "div.tabulator-cell", text: "New alt name"
+      expect(page).to have_css "div.tabulator-cell", text: "New alt type"
+      expect(page).to have_css "div.tabulator-cell", text: "Saudi Arabia"
+    end
+    alternative_name = AlternativeName.first
+    expect(alternative_name.name).to eq "New alt name"
+    expect(alternative_name.type).to eq "New alt type"
+    expect(alternative_name.country).to eq @saudi
+    name_cell = find("div.tabulator-cell", text: "New alt name")
+    name_cell.click
+    find("input:focus").send_keys([:control, "a"], :backspace)
+    find("input:focus").send_keys("Updated alt name")
+    type_cell = find("div.tabulator-cell", text: "New alt type")
+    type_cell.click
+    find("input:focus").send_keys([:control, "a"], :backspace)
+    find("input:focus").send_keys("Updated alt type")
+    country_cell = find("div.tabulator-cell", text: "Saudi Arabia")
+    country_cell.click
+    find("input:focus").send_keys([:control, "a"], :backspace)
+    find("input:focus").send_keys("United Kingdom")
+    expect(page).to have_css("div.dropdown-option", text: "United Kingdom")
+    expect(page).not_to have_css("div.dropdown-option", text: "Saudi Arabia")
+    find("div.dropdown-option", text: "United Kingdom").click
+    using_wait_time 5 do
+      expect(page).to have_css "div.tabulator-cell", text: "Updated alt name"
+      expect(page).to have_css "div.tabulator-cell", text: "Updated alt type"
+      expect(page).to have_css "div.tabulator-cell", text: "United Kingdom"
+    end
+    alternative_name.reload
+    expect(alternative_name.name).to eq "Updated alt name"
+    expect(alternative_name.type).to eq "Updated alt type"
+    expect(alternative_name.country).to eq @uk
   end
 end

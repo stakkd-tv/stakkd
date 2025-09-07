@@ -4,7 +4,7 @@
     <%= link_to "Posters", posters_show_path(show), data: {active: action_name == "posters"} %>
     <%= link_to "Backgrounds", backgrounds_show_path(show), data: {active: action_name == "backgrounds"} %>
     <%= link_to "Logos", logos_show_path(show), data: {active: action_name == "logos"} %>
-    <%= link_to "Alternative Names", "#", data: {active: controller_name == "alternative_names"} %>
+    <%= link_to "Alternative Names", show_alternative_names_path(show), data: {active: controller_name == "alternative_names"} %>
     <%= link_to "Genres", "#", data: {active: controller_name == "genre_assignments"} %>
     <%= link_to "Keywords", "#", data: {active: controller_name == "keywords"} %>
     <%= link_to "Companies", "#", data: {active: controller_name == "company_assignments"} %>
