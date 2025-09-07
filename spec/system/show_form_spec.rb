@@ -11,6 +11,9 @@ RSpec.feature "Show form", type: :system, js: true do
     @action = FactoryBot.create(:genre, name: "Action")
     @suspense = FactoryBot.create(:genre, name: "Suspense")
 
+    @company1 = FactoryBot.create(:company, country: @uk, name: "Company 1", logos: [Rack::Test::UploadedFile.new("spec/support/assets/399x399.png", "image/png")])
+    @company2 = FactoryBot.create(:company, country: @uk, name: "Company 2", logos: [Rack::Test::UploadedFile.new("spec/support/assets/400x400.png", "image/png")])
+
     user = FactoryBot.create(:user)
     sign_in(user)
   end
@@ -144,6 +147,30 @@ RSpec.feature "Show form", type: :system, js: true do
     using_wait_time 5 do
       expect(page).not_to have_css "div.tabulator-cell", text: "Hello there"
       expect(show.reload.keyword_list).to eq []
+    end
+
+    # Companies
+    click_link "Companies"
+    expect(page).to have_css("a[data-active='true']", text: "Companies")
+    find("div.ss-main").click
+    expect(page).to have_css("div.ss-option", text: "Company 1")
+    expect(page).to have_css("div.ss-option", text: "Company 2")
+    find("div.ss-search>input").send_keys("ny 2")
+    expect(page).not_to have_css("div.ss-option", text: "Company 1")
+    expect(page).to have_css("div.ss-option", text: "Company 2")
+    find("div.ss-option", text: "Company 2").click
+    expect(page).to have_css("div.ss-single", text: "Company 2")
+    find("button[role='submit']").click
+    using_wait_time 5 do
+      expect(page).to have_css "div.tabulator-cell", text: "Company 2"
+      expect(page).to have_css "img[src*='400x400']"
+      expect(show.reload.companies).to eq [@company2]
+    end
+    find("div.tabulator-cell>svg").click
+    using_wait_time 5 do
+      expect(page).not_to have_css "div.tabulator-cell", text: "Company 2"
+      expect(page).not_to have_css "img[src*='400x400']"
+      expect(show.reload.companies).to eq []
     end
   end
 end
