@@ -8,6 +8,9 @@ RSpec.feature "Show form", type: :system, js: true do
     @uk = FactoryBot.create(:country, code: "GB", translated_name: "United Kingdom")
     @saudi = FactoryBot.create(:country, code: "KS", translated_name: "Saudi Arabia")
 
+    @action = FactoryBot.create(:genre, name: "Action")
+    @suspense = FactoryBot.create(:genre, name: "Suspense")
+
     user = FactoryBot.create(:user)
     sign_in(user)
   end
@@ -22,6 +25,7 @@ RSpec.feature "Show form", type: :system, js: true do
     fill_in "show_original_title", with: "Original title"
     click_button "Save"
     expect(page).to have_content("Show was successfully created.")
+    show = Show.last
 
     # Posters
     click_link "Posters"
@@ -100,5 +104,27 @@ RSpec.feature "Show form", type: :system, js: true do
     expect(alternative_name.name).to eq "Updated alt name"
     expect(alternative_name.type).to eq "Updated alt type"
     expect(alternative_name.country).to eq @uk
+
+    # Genres
+    click_link "Genres"
+    expect(page).to have_css("a[data-active='true']", text: "Genres")
+    find("div.ss-main").click
+    expect(page).to have_css("div.ss-option", text: "Action")
+    expect(page).to have_css("div.ss-option", text: "Suspense")
+    find("div.ss-search>input").send_keys("Sus")
+    expect(page).not_to have_css("div.ss-option", text: "Action")
+    expect(page).to have_css("div.ss-option", text: "Suspense")
+    find("div.ss-option", text: "Suspense").click
+    expect(page).to have_css("div.ss-single", text: "Suspense")
+    find("button[role='submit']").click
+    using_wait_time 5 do
+      expect(page).to have_css "div.tabulator-cell", text: "Suspense"
+      expect(show.reload.genres).to eq [@suspense]
+    end
+    find("div.tabulator-cell>svg").click
+    using_wait_time 5 do
+      expect(page).not_to have_css "div.tabulator-cell", text: "Suspense"
+      expect(show.reload.genres).to eq []
+    end
   end
 end

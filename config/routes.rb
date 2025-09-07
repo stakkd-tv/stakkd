@@ -38,6 +38,7 @@ Rails.application.routes.draw do
   end
   resources :shows, except: [:destroy] do
     resources :alternative_names, only: [:index, :create, :update]
+    resources :genre_assignments, only: [:index, :create, :destroy]
 
     get :posters, on: :member
     get :backgrounds, on: :member
