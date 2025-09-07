@@ -8,6 +8,7 @@ class ShowsController < ApplicationController
 
   def show
     @alternative_names = @show.alternative_names.includes(:country).group_by(&:country)
+    @gallery_presenter = Galleries::Presenter.new(@show)
   end
 
   def new

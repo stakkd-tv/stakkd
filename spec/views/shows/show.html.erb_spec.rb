@@ -27,10 +27,10 @@ RSpec.describe "shows/show", type: :view do
       videos:,
       genres: [FactoryBot.create(:genre, name: "Action")]
     )
-    # gallery_presenter = Galleries::Presenter.new(@show)
+    gallery_presenter = Galleries::Presenter.new(@show)
     assign(:show, @show)
     assign(:alternative_names, alternative_names)
-    # assign(:gallery_presenter, gallery_presenter)
+    assign(:gallery_presenter, gallery_presenter)
   end
 
   it "renders attributes in <p>" do
@@ -79,7 +79,6 @@ RSpec.describe "shows/show", type: :view do
     end
 
     it "renders the backgrounds section" do
-      skip "TODO: Implement show galleries"
       render
       assert_select "label", text: "Backgrounds"
       assert_select "img[src*='300x450.png']", count: 2
@@ -90,7 +89,6 @@ RSpec.describe "shows/show", type: :view do
     let(:posters) { [Rack::Test::UploadedFile.new("spec/support/assets/300x450.png", "image/png")] }
 
     it "renders the posters section" do
-      skip "TODO: Implement show galleries"
       render
       assert_select "label", text: "Posters"
       assert_select "img[src*='300x450.png']", count: 2 # One for poster, the other in the gallery section
@@ -101,7 +99,6 @@ RSpec.describe "shows/show", type: :view do
     let(:logos) { [Rack::Test::UploadedFile.new("spec/support/assets/300x450.png", "image/png")] }
 
     it "renders the posters section" do
-      skip "TODO: Implement show galleries"
       render
       assert_select "label", text: "Logos"
       assert_select "img[src*='300x450.png']", count: 1
@@ -112,7 +109,6 @@ RSpec.describe "shows/show", type: :view do
     let(:videos) { [FactoryBot.build(:video, thumbnail_url: "/example.png").tap { it.save(validate: false) }] }
 
     it "renders the posters section" do
-      skip "TODO: Implement show galleries"
       render
       assert_select "label", text: "Videos"
       assert_select "img[src='/example.png']", count: 1

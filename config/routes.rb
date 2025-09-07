@@ -45,6 +45,12 @@ Rails.application.routes.draw do
       post :move, on: :member
     end
     resources :videos, only: [:index, :create, :destroy]
+    resources :galleries, only: [] do
+      get :posters, on: :collection
+      get :backgrounds, on: :collection
+      get :logos, on: :collection
+      get :videos, on: :collection
+    end
 
     get :posters, on: :member
     get :backgrounds, on: :member
