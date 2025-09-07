@@ -14,7 +14,7 @@
     <%= render "shared/table_editor", table_presenter: @table_presenter, path_prefix: nested_path_for(relatable: @relatable) %>
 
     <div>
-      <%= form_with url: movie_keywords_path(@relatable), method: "post", class: "flex border-b border-pop bg-background" do |form| %>
+      <%= form_with url: nested_path_for(relatable: @relatable), method: "post", class: "flex border-b border-pop bg-background" do |form| %>
         <div class="w-full border-r border-pop">
           <%= form.collection_select :tag, @tags, :name, :name, {include_blank: "Add a keyword"}, {class: "text-sm w-full py-5 px-2.5", data: {controller: "slim-select", slim_select_addable_value: true}, autocomplete: "off"} %>
         </div>
