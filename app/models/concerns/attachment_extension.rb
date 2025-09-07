@@ -7,16 +7,20 @@ module AttachmentExtension
 
   def dominant_colour
     return "#f7567c" unless filtered_colours.any?
+
     filtered_colours.max_by do |hex|
       r, g, b = hex_to_rgb(hex)
-      brightness(r, g, b)
+      # Find the most saturated colour
+      ([r, g, b].max - [r, g, b].min)
     end
   end
 
   def filtered_colours
     colours.reject do |hex|
       r, g, b = hex_to_rgb(hex)
-      is_dull_or_gray?(r, g, b)
+      br = brightness(r, g, b)
+
+      is_dull_or_gray?(r, g, b, threshold: 5) || br < 80 || br > 210
     end
   end
 
