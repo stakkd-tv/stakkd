@@ -1,0 +1,35 @@
+<% content_for :title, "Stakkd - #{@show} content ratings" %>
+
+<%= render "shows/header", show: @show %>
+
+<div class="max-w-7xl mx-auto my-8 px-6">
+  <div class="form">
+    <%= render "shows/form_nav", show: @show %>
+
+    <%= render "shared/table_editor", table_presenter: @table_presenter, path_prefix: show_content_ratings_path(@show) %>
+
+    <%= form_with model: [@show, ContentRating.new] do |form| %>
+      <h4 class="font-bold text-2xl">Add a new content rating</h4>
+
+      <div class="flex flex-col sm:flex-row gap-6">
+        <div class="basis-full">
+          <%= form.label :certification_id %>
+          <%= form.grouped_collection_select(
+                :certification_id,
+                Country.includes(:certifications).where(certifications: {media_type: "Show"}),
+                :certifications,
+                :translated_name,
+                :id,
+                :to_s,
+                {prompt: "Select a Certification", required: true},
+                {data: {controller: "slim-select"}, autocomplete: "off"}
+              ) %>
+        </div>
+      </div>
+
+      <div>
+        <%= form.submit "Save" %>
+      </div>
+    <% end %>
+  </div>
+</div>

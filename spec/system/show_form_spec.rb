@@ -8,6 +8,8 @@ RSpec.feature "Show form", type: :system, js: true do
     @uk = FactoryBot.create(:country, code: "GB", translated_name: "United Kingdom")
     @saudi = FactoryBot.create(:country, code: "KS", translated_name: "Saudi Arabia")
 
+    @pg = FactoryBot.create(:certification, code: "PG", country: @uk, media_type: "Show")
+
     @action = FactoryBot.create(:genre, name: "Action")
     @suspense = FactoryBot.create(:genre, name: "Suspense")
 
@@ -107,6 +109,24 @@ RSpec.feature "Show form", type: :system, js: true do
     expect(alternative_name.name).to eq "Updated alt name"
     expect(alternative_name.type).to eq "Updated alt type"
     expect(alternative_name.country).to eq @uk
+
+    # Content Ratings
+    click_link "Content Ratings"
+    expect(page).to have_css("a[data-active='true']", text: "Content Ratings")
+    find("div.ss-main").click
+    expect(page).to have_css("div.ss-option", text: "GB - PG")
+    find("div.ss-search>input").send_keys("GB")
+    find("div.ss-option", text: "GB - PG").click
+    click_button "Save"
+    using_wait_time 5 do
+      expect(page).to have_css "div.tabulator-cell", text: "PG"
+      expect(show.reload.content_ratings.map(&:certification)).to eq [@pg]
+    end
+    find("div.tabulator-cell>svg").click
+    using_wait_time 5 do
+      expect(page).not_to have_css "div.tabulator-cell", text: "PG"
+      expect(show.reload.content_ratings).to eq []
+    end
 
     # Genres
     click_link "Genres"

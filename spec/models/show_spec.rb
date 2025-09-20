@@ -6,6 +6,7 @@ RSpec.describe Show, type: :model do
     it { should belong_to(:country) }
     it { should belong_to(:language) }
     it { should have_many(:alternative_names).dependent(:destroy) }
+    it { should have_many(:content_ratings).dependent(:destroy) }
     it { should have_many(:genre_assignments).dependent(:destroy) }
     it { should have_many(:genres).through(:genre_assignments) }
     it { should have_many(:keyword_taggings).dependent(:destroy) }

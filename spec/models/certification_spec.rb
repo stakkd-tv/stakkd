@@ -20,6 +20,14 @@ RSpec.describe Certification, type: :model do
     end
   end
 
+  describe ".for_shows" do
+    it "returns certifications for shows" do
+      certification = FactoryBot.create(:certification, media_type: "Show")
+      FactoryBot.create(:certification, media_type: "Movie")
+      expect(Certification.for_shows).to eq [certification]
+    end
+  end
+
   describe "#to_s" do
     it "returns the country code and certification" do
       certification = FactoryBot.create(:certification, code: "ABC", country: FactoryBot.create(:country, code: "UK"))

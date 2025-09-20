@@ -25,6 +25,7 @@ class Show < ApplicationRecord
   belongs_to :language
   belongs_to :country
   has_many :alternative_names, as: :record, dependent: :destroy
+  has_many :content_ratings, dependent: :destroy
   has_many :genre_assignments, as: :record, dependent: :destroy
   has_many :genres, -> { order(name: :asc) }, through: :genre_assignments
   has_many :company_assignments, as: :record, dependent: :destroy

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_31_095951) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_20_090818) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -99,6 +99,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_31_095951) do
     t.index ["company_id", "record_type", "record_id"], name: "index_unique_company_assignments", unique: true
     t.index ["company_id"], name: "index_company_assignments_on_company_id"
     t.index ["record_type", "record_id"], name: "index_company_assignments_on_record"
+  end
+
+  create_table "content_ratings", force: :cascade do |t|
+    t.bigint "show_id", null: false
+    t.bigint "certification_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["certification_id"], name: "index_content_ratings_on_certification_id"
+    t.index ["show_id", "certification_id"], name: "index_unique_content_ratings", unique: true
+    t.index ["show_id"], name: "index_content_ratings_on_show_id"
   end
 
   create_table "countries", force: :cascade do |t|
@@ -300,6 +310,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_31_095951) do
   add_foreign_key "cast_members", "people"
   add_foreign_key "certifications", "countries"
   add_foreign_key "company_assignments", "companies"
+  add_foreign_key "content_ratings", "certifications"
+  add_foreign_key "content_ratings", "shows"
   add_foreign_key "crew_members", "jobs"
   add_foreign_key "crew_members", "people"
   add_foreign_key "genre_assignments", "genres"

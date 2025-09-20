@@ -10,6 +10,7 @@ class Certification < ApplicationRecord
 
   # Scopes
   scope :for_movies, -> { where(media_type: "Movie") }
+  scope :for_shows, -> { where(media_type: "Show") }
 
   def to_s = "#{country.code} - #{code}"
 end

@@ -5,6 +5,7 @@
     <%= link_to "Backgrounds", backgrounds_show_path(show), data: {active: action_name == "backgrounds"} %>
     <%= link_to "Logos", logos_show_path(show), data: {active: action_name == "logos"} %>
     <%= link_to "Alternative Names", show_alternative_names_path(show), data: {active: controller_name == "alternative_names"} %>
+    <%= link_to "Content Ratings", show_content_ratings_path(show), data: {active: controller_name == "content_ratings"} %>
     <%= link_to "Genres", show_genre_assignments_path(show), data: {active: controller_name == "genre_assignments"} %>
     <%= link_to "Keywords", show_keywords_path(show), data: {active: controller_name == "keywords"} %>
     <%= link_to "Companies", show_company_assignments_path(show), data: {active: controller_name == "company_assignments"} %>
