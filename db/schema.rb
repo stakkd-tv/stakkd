@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_20_090818) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_05_140342) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -213,6 +213,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_20_090818) do
     t.index ["movie_id"], name: "index_releases_on_movie_id"
   end
 
+  create_table "seasons", force: :cascade do |t|
+    t.bigint "show_id", null: false
+    t.integer "number"
+    t.string "translated_name", null: false
+    t.string "original_name", null: false
+    t.string "overview"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["show_id", "number"], name: "index_unique_seasons_number_show", unique: true
+    t.index ["show_id"], name: "index_seasons_on_show_id"
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "ip_address"
@@ -317,6 +329,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_20_090818) do
   add_foreign_key "genre_assignments", "genres"
   add_foreign_key "releases", "certifications"
   add_foreign_key "releases", "movies"
+  add_foreign_key "seasons", "shows"
   add_foreign_key "sessions", "users"
   add_foreign_key "shows", "countries"
   add_foreign_key "shows", "languages"
