@@ -44,7 +44,7 @@ jobs:
         run: bundle exec rspec || echo "rspec_failed=true" >> $GITHUB_ENV
       - name: Upload screenshots on fail
         if: env.rspec_failed == 'true'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: system-spec-screenshots
           path: /home/runner/work/stakkd/stakkd/tmp/capybara/
