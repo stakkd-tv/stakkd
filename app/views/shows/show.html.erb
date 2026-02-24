@@ -80,13 +80,13 @@
           <%= "#{season_count} #{"Season".pluralize(season_count)}" %>
         </h4>
         <div class="grid grid-cols-5 gap-4">
-          <% @show.seasons.each do |season| %>
-            <div class="flex flex-col gap-2 items-center">
+          <% @show.ordered_seasons.each do |season| %>
+            <div class="flex flex-col gap-2">
                <div class="h-full aspect-[2/3] border border-pop rounded-lg overflow-hidden">
                  <%= image_tag season.poster, class: "w-full" %>
                </div>
-               <p><%= season.translated_name %></p>
-               <small>0 episodes</small>
+               <p class="text-center whitespace-nowrap overflow-hidden text-ellipsis"><%= season.translated_name %></p>
+               <small class="text-center">0 episodes</small>
             </div>
           <% end %>
         </div>

@@ -33,6 +33,7 @@ class Show < ApplicationRecord
   has_many :taglines, -> { order(position: :asc) }, as: :record, dependent: :destroy
   has_many :videos, as: :record, dependent: :destroy
   has_many :seasons, dependent: :destroy
+  has_many :ordered_seasons, -> { ordered }, class_name: "Season"
   has_many_attached :posters
   has_many_attached :backgrounds
   has_many_attached :logos

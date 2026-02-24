@@ -25,4 +25,14 @@ RSpec.describe Season, type: :model do
       expect(Season.without_specials).not_to include(special)
     end
   end
+
+  describe ".ordered" do
+    it "returns the seasons in order of number" do
+      show = FactoryBot.create(:show)
+      season2 = FactoryBot.create(:season, number: 2, show:)
+      season1 = FactoryBot.create(:season, number: 1, show:)
+      special = show.seasons.where(number: 0).first
+      expect(Season.ordered).to eq [special, season1, season2]
+    end
+  end
 end

@@ -10,6 +10,7 @@ class Season < ApplicationRecord
 
   # Scopes
   scope :without_specials, -> { where.not(number: 0) }
+  scope :ordered, -> { order(number: :asc) }
 
   def poster = posters.first || "2:3.png"
 end
