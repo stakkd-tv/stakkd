@@ -49,6 +49,15 @@ RSpec.describe "shows/show", type: :view do
     assert_select "a.rounded-full", text: "Action"
   end
 
+  it "renders the seasons" do
+    FactoryBot.create(:season, show: @show, number: 1, translated_name: "Season 1")
+    render
+    assert_select "#seasons" do
+      assert_select "p", text: "Specials"
+      assert_select "p", text: "Season 1"
+    end
+  end
+
   context "when there are alternative names" do
     let(:country) { FactoryBot.create(:country) }
     let(:names) { FactoryBot.build_list(:alternative_name, 1, type: "Test type") }

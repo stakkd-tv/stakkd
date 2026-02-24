@@ -74,6 +74,24 @@
         <%= simple_format @show.overview %>
       </div>
 
+      <div class="flex flex-col gap-4" id="seasons">
+        <h4 class="text-2xl font-bold font-domine text-white mt-10 md:mt-4">
+          <% season_count = @show.seasons.without_specials.count %>
+          <%= "#{season_count} #{"Season".pluralize(season_count)}" %>
+        </h4>
+        <div class="grid grid-cols-5 gap-4">
+          <% @show.seasons.each do |season| %>
+            <div class="flex flex-col gap-2 items-center">
+               <div class="h-full aspect-[2/3] border border-pop rounded-lg overflow-hidden">
+                 <%= image_tag season.poster, class: "w-full" %>
+               </div>
+               <p><%= season.translated_name %></p>
+               <small>0 episodes</small>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
       <%= render "shared/alternative_names", names_grouped_by_country: @alternative_names %>
 
       <%= render "shared/galleries", presenter: @gallery_presenter %>
