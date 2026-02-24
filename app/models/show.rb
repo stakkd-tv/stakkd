@@ -32,6 +32,7 @@ class Show < ApplicationRecord
   has_many :companies, through: :company_assignments
   has_many :taglines, -> { order(position: :asc) }, as: :record, dependent: :destroy
   has_many :videos, as: :record, dependent: :destroy
+  has_many :seasons, dependent: :destroy
   has_many_attached :posters
   has_many_attached :backgrounds
   has_many_attached :logos
@@ -40,6 +41,9 @@ class Show < ApplicationRecord
   validates_presence_of :translated_title, :original_title
   validates_inclusion_of :status, in: STATUSES
   validates_inclusion_of :type, in: TYPES
+
+  # Callbacks
+  after_create :create_specials_season
 
   def self.inheritance_column = nil
 
@@ -66,4 +70,8 @@ class Show < ApplicationRecord
   def slug_source = translated_title
 
   def _slug = title_kebab
+
+  def create_specials_season
+    Season.create(show: self, number: 0, translated_name: "Specials", original_name: "Specials")
+  end
 end

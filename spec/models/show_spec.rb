@@ -14,6 +14,7 @@ RSpec.describe Show, type: :model do
     it { should have_many(:companies).through(:company_assignments) }
     it { should have_many(:taglines).dependent(:destroy) }
     it { should have_many(:videos).dependent(:destroy) }
+    it { should have_many(:seasons).dependent(:destroy) }
     it { should have_many_attached(:posters) }
     it { should have_many_attached(:backgrounds) }
     it { should have_many_attached(:logos) }
@@ -24,6 +25,20 @@ RSpec.describe Show, type: :model do
     it { should validate_presence_of(:original_title) }
     it { should validate_inclusion_of(:status).in_array(Show::STATUSES) }
     it { should validate_inclusion_of(:type).in_array(Show::TYPES) }
+  end
+
+  describe "callbacks" do
+    describe "after_create :create_specials_season" do
+      it "creates a new season related to the show with a season number of 0" do
+        show = FactoryBot.build(:show)
+        show.save!
+        expect(show.seasons.count).to eq 1
+        season = show.seasons.first
+        expect(season.number).to eq 0
+        expect(season.translated_name).to eq "Specials"
+        expect(season.original_name).to eq "Specials"
+      end
+    end
   end
 
   it_behaves_like "a slugified model", :show, :translated_title
