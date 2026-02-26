@@ -4,6 +4,7 @@ RSpec.describe Genre, type: :model do
   describe "associations" do
     it { should have_many(:genre_assignments).dependent(:destroy) }
     it { should have_many(:movies).through(:genre_assignments) }
+    it { should have_many(:shows).through(:genre_assignments) }
   end
 
   describe "validations" do
