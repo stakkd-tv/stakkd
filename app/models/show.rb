@@ -66,6 +66,8 @@ class Show < ApplicationRecord
 
   def available_galleries = [:posters, :backgrounds, :logos, :videos]
 
+  def runtime = nil # TODO: Calculate show runtime based on each episode length
+
   private
 
   def slug_source = translated_title

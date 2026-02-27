@@ -7,7 +7,6 @@ class CreateShows < ActiveRecord::Migration[8.0]
       t.string :imdb_id
       t.string :original_title, null: false
       t.string :overview
-      t.integer :runtime
       t.string :status, null: false
       t.string :translated_title, null: false
       t.string :title_kebab

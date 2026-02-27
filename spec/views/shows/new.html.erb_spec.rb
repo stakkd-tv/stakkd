@@ -18,7 +18,6 @@ RSpec.describe "shows/edit", type: :view do
       assert_select "textarea[name='show[overview]']"
       assert_select "select[name='show[status]']"
       assert_select "select[name='show[type]']"
-      assert_select "input[name='show[runtime]']"
       assert_select "input[name='show[homepage]']"
       assert_select "input[name='show[imdb_id]']"
     end

@@ -52,6 +52,6 @@ class ShowsController < ApplicationController
   end
 
   def show_params
-    params.expect(show: [:language_id, :country_id, :homepage, :imdb_id, :original_title, :overview, :runtime, :status, :translated_title, :type])
+    params.expect(show: [:language_id, :country_id, :homepage, :imdb_id, :original_title, :overview, :status, :translated_title, :type])
   end
 end

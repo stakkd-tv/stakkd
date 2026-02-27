@@ -17,7 +17,6 @@ RSpec.describe "shows/show", type: :view do
       translated_title: "Translated Title",
       overview: "This is overview",
       status: "ended",
-      runtime: 2,
       type: "series",
       homepage: "https://google.com",
       imdb_id: "tt0000000",
@@ -38,7 +37,6 @@ RSpec.describe "shows/show", type: :view do
     expect(rendered).to match(/Translated Title/)
     expect(rendered).to match(/This is overview/)
     expect(rendered).to match(/Ended/)
-    expect(rendered).to match(/2 minutes/)
     expect(rendered).to match(/Series/)
     assert_select "a[href='https://www.imdb.com/title/tt0000000/']"
     assert_select "a[href='https://google.com']"

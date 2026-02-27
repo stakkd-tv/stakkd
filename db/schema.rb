@@ -239,13 +239,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_05_140342) do
     t.bigint "country_id", null: false
     t.string "homepage"
     t.string "imdb_id"
-    t.string "original_title"
+    t.string "original_title", null: false
     t.string "overview"
-    t.integer "runtime"
-    t.string "status"
-    t.string "translated_title"
+    t.string "status", null: false
+    t.string "translated_title", null: false
     t.string "title_kebab"
-    t.string "type"
+    t.string "type", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["country_id"], name: "index_shows_on_country_id"

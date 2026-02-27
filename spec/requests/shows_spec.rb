@@ -11,7 +11,6 @@ RSpec.describe "/shows", type: :request do
       translated_title: "Back to the Future",
       overview: "This is an overview",
       status: Show::RETURNING,
-      runtime: 100,
       homepage: "https://google.com",
       imdb_id: "tt0000000",
       type: Show::SERIES
@@ -112,7 +111,6 @@ RSpec.describe "/shows", type: :request do
           expect(show.translated_title).to eq "Back to the Future"
           expect(show.overview).to eq "This is an overview"
           expect(show.status).to eq Show::RETURNING
-          expect(show.runtime).to eq 100
           expect(show.type).to eq Show::SERIES
           expect(show.homepage).to eq "https://google.com"
           expect(show.imdb_id).to eq "tt0000000"
@@ -153,7 +151,6 @@ RSpec.describe "/shows", type: :request do
         translated_title: "Berk to the Future",
         overview: "This is a new overview",
         status: "ended",
-        runtime: 110,
         type: "documentary",
         homepage: "https://github.com",
         imdb_id: "tt0000001"
@@ -177,7 +174,6 @@ RSpec.describe "/shows", type: :request do
           expect(show.translated_title).to eq "Berk to the Future"
           expect(show.overview).to eq "This is a new overview"
           expect(show.status).to eq "ended"
-          expect(show.runtime).to eq 110
           expect(show.type).to eq "documentary"
           expect(show.homepage).to eq "https://github.com"
           expect(show.imdb_id).to eq "tt0000001"
