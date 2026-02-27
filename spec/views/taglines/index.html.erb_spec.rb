@@ -6,7 +6,6 @@ RSpec.describe "taglines/index", type: :view do
   before(:each) do
     assign(:relatable, relatable)
     assign(:table_presenter, Tabulator::TaglinesPresenter.new(relatable.taglines))
-    def view.relatable_model = "movie"
 
     def view.relatable_model_plural = "movies"
 

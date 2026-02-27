@@ -1,0 +1,8 @@
+<% if season.persisted? %>
+  <div class="form-nav" id="form-nav">
+    <%= link_to "Details", edit_show_season_path(season, show_id: season.show), data: {active: action_name == "edit"} %>
+    <%= link_to "Posters", "#", data: {active: action_name == "posters"} %>
+    <%= link_to "Season Regulars", "#", data: {active: controller_name == "cast_members"} %>
+    <%= link_to "Crew", "#", data: {active: controller_name == "crew_members"} %>
+  </div>
+<% end %>

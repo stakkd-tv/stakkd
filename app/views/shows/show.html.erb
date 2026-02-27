@@ -75,18 +75,25 @@
       </div>
 
       <div class="flex flex-col gap-4" id="seasons">
-        <h4 class="text-2xl font-bold font-domine text-white mt-10 md:mt-4">
-          <% season_count = @show.seasons.without_specials.count %>
-          <%= "#{season_count} #{"Season".pluralize(season_count)}" %>
-        </h4>
+        <div class="flex justify-between mt-10 md:mt-4">
+          <h4 class="text-2xl font-bold font-domine text-white">
+            <% season_count = @show.seasons.without_specials.count %>
+            <%= "#{season_count} #{"Season".pluralize(season_count)}" %>
+          </h4>
+          <%= link_to new_show_season_path(@show), class: "link h-fit", title: "Add Season" do %>
+            <i class="fa-solid fa-plus"></i>
+          <% end %>
+        </div>
         <div class="grid grid-cols-5 gap-4">
           <% @show.ordered_seasons.each do |season| %>
             <div class="flex flex-col gap-2">
-               <div class="h-full aspect-[2/3] border border-pop rounded-lg overflow-hidden">
-                 <%= image_tag season.poster, class: "w-full" %>
-               </div>
-               <p class="text-center whitespace-nowrap overflow-hidden text-ellipsis"><%= season.translated_name %></p>
-               <small class="text-center">0 episodes</small>
+              <%= link_to show_season_path(season, show_id: @show) do %>
+                <div class="h-full aspect-[2/3] border border-pop rounded-lg overflow-hidden">
+                  <%= image_tag season.poster, class: "w-full" %>
+                </div>
+              <% end %>
+              <p class="text-center whitespace-nowrap overflow-hidden text-ellipsis"><%= season.translated_name %></p>
+              <small class="text-center">0 episodes</small>
             </div>
           <% end %>
         </div>

@@ -52,6 +52,11 @@ Rails.application.routes.draw do
       get :logos, on: :collection
       get :videos, on: :collection
     end
+    resources :seasons, except: [:index, :destroy] do
+      resources :galleries, only: [] do
+        get :posters, on: :collection
+      end
+    end
 
     get :posters, on: :member
     get :backgrounds, on: :member

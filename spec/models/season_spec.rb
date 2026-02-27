@@ -35,4 +35,72 @@ RSpec.describe Season, type: :model do
       expect(Season.ordered).to eq [special, season1, season2]
     end
   end
+
+  describe ".nested" do
+    it "returns the seasons with the number" do
+      season1 = FactoryBot.create(:season, number: 1)
+      FactoryBot.create(:season, number: 2)
+      expect(Season.nested(1)).to eq [season1]
+    end
+  end
+
+  describe "#poster" do
+    context "when there are no posters" do
+      it "returns the 2:3 asset" do
+        season = Season.new
+        expect(season.poster).to eq "2:3.png"
+      end
+    end
+
+    context "when there are posters" do
+      it "returns an image" do
+        season = FactoryBot.create(
+          :season,
+          posters: [Rack::Test::UploadedFile.new("spec/support/assets/300x450.png", "image/png")]
+        )
+        expect(season.poster).to be_a(ActiveStorage::Attachment)
+      end
+    end
+  end
+
+  describe "#available_galleries" do
+    it "returns the galleries available" do
+      expect(Season.new.available_galleries).to eq [:posters]
+    end
+  end
+
+  describe "#to_param" do
+    it "returns the season number as a string" do
+      expect(Season.new(number: 2).to_param).to eq "2"
+    end
+  end
+
+  describe "#specials?" do
+    context "when season number is 0" do
+      it "returns true" do
+        special = Season.new(number: 0)
+        expect(special.specials?).to be true
+      end
+    end
+
+    context "when the season number is not 0" do
+      it "returns false" do
+        season = Season.new(number: 1)
+        expect(season.specials?).to be false
+      end
+    end
+  end
+
+  describe "#related_records" do
+    it "includes the show in the hash" do
+      season = FactoryBot.create(:season)
+      expect(season.related_records).to eq({show: season.show, season:})
+    end
+  end
+
+  describe "#to_s" do
+    it "returns the season number as a string" do
+      expect(Season.new(number: 2, show: Show.new(translated_title: "Testing")).to_s).to eq "Testing - Season 2"
+    end
+  end
 end

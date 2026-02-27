@@ -6,7 +6,6 @@ RSpec.describe "cast_members/index", type: :view do
   before(:each) do
     assign(:relatable, relatable)
     assign(:table_presenter, Tabulator::CastMembersPresenter.new(relatable.cast_members))
-    def view.relatable_model = "movie"
 
     def view.relatable_model_plural = "movies"
 

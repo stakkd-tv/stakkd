@@ -1,0 +1,58 @@
+<% content_for :title, "#{@show.translated_title} - Season #{@season.number}" %>
+
+<%= render "shared/colour_from_image", image: @season.poster %>
+
+<% if @show.background %>
+  <div class="absolute -z-10 w-full h-96 overflow-hidden flex items-center justify-center">
+    <%= image_tag @show.background, class: "w-full min-h-96 object-cover blur-xs" %>
+    <div class="absolute w-full h-full bg-gradient-to-t from-background to-background/35"></div>
+  </div>
+<% end %>
+
+<div class="max-w-7xl mx-auto my-8 px-6 pt-10">
+  <div class="grid grid-cols-1 md:grid-cols-4 md:gap-8 md:min-h-screen">
+    <div class="col-span-1 bg-background-darker rounded-lg p-4 flex flex-col gap-10 items-center md:items-start">
+      <%= image_tag @season.poster, class: "max-h-40 w-fit md:w-full md:max-h-none rounded-lg" %>
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-1 gap-10">
+        <div>
+          <p class="font-domine"><b>Premiered:</b></p>
+          <p>TODO: First episode air date</p>
+        </div>
+        <div>
+          <p class="font-domine"><b>Runtime:</b></p>
+          <p>TODO: Sum of all episode in season</p>
+        </div>
+      </div>
+      <% if @show.companies.any? %>
+        <div class="grid grid-cols-5 gap-2">
+          <% @show.companies.each do |company| %>
+            <%= link_to company do %>
+              <%= image_tag company.logo, alt: company.name, title: company.name, class: "bg-pop/25 rounded-lg border border-pop aspect-square" %>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+      <div class="flex gap-4 flex-col w-full">
+        <%= link_to "Edit", edit_show_season_path(@season, show_id: @show), class: "link" %>
+      </div>
+    </div>
+
+    <div class="col-span-3 flex flex-col gap-10">
+      <div>
+        <% potential_name = "Season #{@season.number}" %>
+        <h3 class="text-4xl font-bold font-domine text-white mt-10 md:mt-4">
+          <i class="fa-solid fa-tv text-4xl mr-6"></i>
+          <%= link_to @show.translated_title, @show, class: "underline" %> - <%= potential_name %>
+        </h3>
+        <% if @season.translated_name != potential_name %>
+          <p class="text-xl mt-4 italic font-bold"><%= @season.translated_name %></p>
+        <% end %>
+      </div>
+      <div class="leading-[1.5rem] text-sm md:text-base flex flex-col gap-6">
+        <%= simple_format(@season.overview.presence || @show.overview.presence) %>
+      </div>
+
+      <%= render "shared/galleries", presenter: @gallery_presenter %>
+    </div>
+  </div>
+</div>

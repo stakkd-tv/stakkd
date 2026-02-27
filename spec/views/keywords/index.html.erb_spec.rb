@@ -7,7 +7,6 @@ RSpec.describe "keywords/index", type: :view do
     assign(:relatable, relatable)
     assign(:table_presenter, Tabulator::KeywordTaggingsPresenter.new(relatable.keyword_taggings))
     assign(:tags, [])
-    def view.relatable_model = "movie"
 
     def view.relatable_model_plural = "movies"
 

@@ -6,7 +6,6 @@ RSpec.describe "genre_assignments/index", type: :view do
   before(:each) do
     assign(:relatable, relatable)
     assign(:table_presenter, Tabulator::GenreAssignmentsPresenter.new(relatable.genre_assignments))
-    def view.relatable_model = "movie"
 
     def view.relatable_model_plural = "movies"
 

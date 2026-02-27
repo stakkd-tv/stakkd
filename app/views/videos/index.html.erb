@@ -1,11 +1,10 @@
 <% content_for :title, "Stakkd - #{@relatable} videos" %>
-<% model_params = {relatable_model.to_sym => @relatable} %>
 
-<%= render "#{relatable_model_plural}/header", model_params %>
+<%= render "#{relatable_model_plural}/header", @relatable.related_records %>
 
 <div class="max-w-7xl mx-auto my-8 px-6">
   <div class="form">
-    <%= render "#{relatable_model_plural}/form_nav", model_params %>
+    <%= render "#{relatable_model_plural}/form_nav", @relatable.related_records %>
 
     <%= render "shared/table_editor", table_presenter: @table_presenter, path_prefix: nested_path_for(relatable: @relatable) %>
 

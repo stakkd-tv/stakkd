@@ -11,7 +11,19 @@ class Season < ApplicationRecord
   # Scopes
   scope :without_specials, -> { where.not(number: 0) }
   scope :ordered, -> { order(number: :asc) }
+  scope :nested, ->(number) { where(number:) }
 
-  # TODO: Unit test
   def poster = posters.first || "2:3.png"
+
+  def available_galleries = [:posters]
+
+  def to_param = number.to_s
+
+  def specials? = number.zero?
+
+  def related_records
+    super.merge(show:)
+  end
+
+  def to_s = "#{show} - Season #{number}"
 end
