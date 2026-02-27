@@ -1,0 +1,5 @@
+<% content_for :title, "Stakkd - Edit #{@show.translated_title} - Season #{@season.number}" %>
+
+<%= render "header", season: @season, show: @show %>
+
+<%= render "shared/posters_editor", object: @season %>

@@ -56,6 +56,8 @@ Rails.application.routes.draw do
       resources :galleries, only: [] do
         get :posters, on: :collection
       end
+
+      get :posters, on: :member
     end
 
     get :posters, on: :member

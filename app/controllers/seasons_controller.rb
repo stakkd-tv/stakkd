@@ -34,6 +34,9 @@ class SeasonsController < ApplicationController
     end
   end
 
+  def posters
+  end
+
   private
 
   def set_show

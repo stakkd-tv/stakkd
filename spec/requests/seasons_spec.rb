@@ -200,4 +200,29 @@ RSpec.describe "/shows/:show_id/seasons", type: :request do
       end
     end
   end
+
+  describe "GET /shows/:show_id/seasons/:id/posters" do
+    context "when the user is signed in" do
+      before do
+        user = FactoryBot.create(:user)
+        session = Session.new(user:)
+        allow(Current).to receive(:session).and_return(session)
+        allow(Current).to receive(:user).and_return(user)
+      end
+
+      it "renders a successful response" do
+        show = FactoryBot.create(:show)
+        get posters_show_season_path(show.seasons.first, show_id: show)
+        expect(response).to be_successful
+      end
+    end
+
+    context "when the user is not signed in" do
+      it "redirects to the sign in page" do
+        show = FactoryBot.create(:show)
+        get posters_show_season_path(show.seasons.first, show_id: show)
+        expect(response).to redirect_to new_session_path
+      end
+    end
+  end
 end
