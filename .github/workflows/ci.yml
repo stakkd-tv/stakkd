@@ -63,9 +63,5 @@ jobs:
           bundler-cache: true
       - name: Install Yarn packages
         run: yarn
-      - name: Lint Ruby using Standard
-        run: bundle exec standardrb app spec lib
-      - name: Lint ERB using erb-lint
-        run: bundle exec erblint --cache --lint-all
-      - name: Lint Javscript/Typescript using eslint
-        run: yarn lint:js
+      - name: Lint all files
+        run: bin/lint
