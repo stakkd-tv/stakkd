@@ -49,6 +49,11 @@ export default class extends Controller {
     })
   }
 
+  disconnect(): void {
+    this.searchInput.remove()
+    this.searchResults.remove()
+  }
+
   clearSearchResults () {
     this.searchResults.classList.add('hidden')
     this.searchResults.innerHTML = ''
