@@ -36,7 +36,7 @@
     <% if @show.season_regulars.any? %>
       <div class="border-t border-t-pop p-6">
         <h4 class="font-bold text-xl mb-4">Recurring season regulars</h4>
-        <p class="mb-4">These cast members have been added to every season of <%= @show %>. If you would like to edit these, you can do so on <%= @show %>'s main edit form.</p>
+        <p class="mb-4">These cast members have been added to every season of <%= @show %>. If you would like to edit these, you can do so on <%= @show %>'s <%= link_to "main edit form", show_cast_members_path(@show), class: "underline" %>.</p>
         <div class="grid grid-cols-1 sm:grid-cols-5 md:grid-cols-10 gap-4">
           <% @show.season_regulars.each do |regular| %>
             <%# TODO: Should be able to remove recurring season regulars from this page %>
