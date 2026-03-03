@@ -49,7 +49,7 @@ export default class extends Controller {
     })
   }
 
-  disconnect(): void {
+  disconnect (): void {
     this.searchInput.remove()
     this.searchResults.remove()
   }
