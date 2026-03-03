@@ -16,6 +16,7 @@ RSpec.describe Show, type: :model do
     it { should have_many(:videos).dependent(:destroy) }
     it { should have_many(:seasons).dependent(:destroy) }
     it { should have_many(:ordered_seasons).class_name("Season") }
+    it { should have_many(:season_regulars).class_name("CastMember").dependent(:destroy) }
     it { should have_many_attached(:posters) }
     it { should have_many_attached(:backgrounds) }
     it { should have_many_attached(:logos) }

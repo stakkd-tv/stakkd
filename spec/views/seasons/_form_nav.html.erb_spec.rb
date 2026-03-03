@@ -9,9 +9,7 @@ RSpec.describe "seasons/_form_nav", type: :view do
       render "seasons/form_nav", season: season
       assert_select "a[href='#{edit_show_season_path(season, show_id: show)}'][data-active='true']"
       assert_select "a[href='#{posters_show_season_path(season, show_id: show)}'][data-active='false']"
-      # TODO: Other stuff
-      # assert_select "a[href='#'][data-active='false']"
-      # assert_select "a[href='#'][data-active='false']"
+      assert_select "a[href='#{show_season_season_regulars_path(season, show_id: show)}'][data-active='false']"
     end
   end
 

@@ -53,6 +53,9 @@ Rails.application.routes.draw do
       get :videos, on: :collection
     end
     resources :seasons, except: [:index, :destroy] do
+      resources :season_regulars, only: [:index, :create, :update, :destroy] do
+        post :move, on: :member
+      end
       resources :galleries, only: [] do
         get :posters, on: :collection
       end

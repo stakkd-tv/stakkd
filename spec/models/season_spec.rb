@@ -3,6 +3,7 @@ require "rails_helper"
 RSpec.describe Season, type: :model do
   describe "associations" do
     it { should belong_to(:show) }
+    it { should have_many(:season_regulars).class_name("CastMember").dependent(:destroy) }
     it { should have_many_attached(:posters) }
   end
 

@@ -1,0 +1,55 @@
+<% content_for :title, "Stakkd - #{@season} regulars" %>
+
+<%= render "seasons/header", @season.related_records %>
+
+<div class="max-w-7xl mx-auto my-8 px-6">
+  <div class="form">
+    <%= render "seasons/form_nav", @season.related_records %>
+
+    <%= render "shared/table_editor", table_presenter: @table_presenter, path_prefix: show_season_season_regulars_path(@season, show_id: @show) %>
+
+    <%= form_with model: CastMember.new, url: show_season_season_regulars_path(@season, show_id: @show) do |form| %>
+      <h4 class="font-bold text-2xl">Add a season regular</h4>
+
+      <div class="flex flex-col sm:flex-row gap-6">
+        <div class="basis-full sm:basis-1/2 relative">
+          <%= form.label :person_id %>
+          <%= form.text_field :person_id, required: true, autocomplete: "off", data: {controller: "ajax-search", ajax_search_search_url_value: people_path} %>
+        </div>
+
+        <div class="basis-full sm:basis-1/2">
+          <%= form.label :character %>
+          <%= form.text_field :character, required: true, autocomplete: "off" %>
+        </div>
+      </div>
+
+      <div class="flex flex-row items-center gap-4">
+        <input type="checkbox" name="add_to_all_seasons" id="add_to_all_seasons" class="w-4 h-4" autocomplete="off">
+        <label for="add_to_all_seasons" class="mb-0 normal-case">Add to all seasons</label>
+      </div>
+
+      <div>
+        <%= form.submit "Save" %>
+      </div>
+    <% end %>
+
+    <% if @show.season_regulars.any? %>
+      <div class="border-t border-t-pop p-6">
+        <h4 class="font-bold text-xl mb-4">Recurring season regulars</h4>
+        <p class="mb-4">These cast members have been added to every season of <%= @show %>. If you would like to edit these, you can do so on <%= @show %>'s main edit form.</p>
+        <div class="grid grid-cols-1 sm:grid-cols-5 md:grid-cols-10 gap-4">
+          <% @show.season_regulars.each do |regular| %>
+            <%# TODO: Should be able to remove recurring season regulars from this page %>
+            <div class="flex flex-row sm:flex-col gap-2">
+              <div class="h-20 sm:h-fit aspect-[2/3] border border-pop rounded-lg overflow-hidden">
+                <%= image_tag regular.person.image, class: "w-full" %>
+              </div>
+              <p class="text-center"><%= regular.person.translated_name %></p>
+              <small class="text-center"><%= regular.character %></small>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
