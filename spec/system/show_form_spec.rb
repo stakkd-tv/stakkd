@@ -16,6 +16,9 @@ RSpec.feature "Show form", type: :system, js: true do
     @company1 = FactoryBot.create(:company, country: @uk, name: "Company 1", logos: [Rack::Test::UploadedFile.new("spec/support/assets/399x399.png", "image/png")])
     @company2 = FactoryBot.create(:company, country: @uk, name: "Company 2", logos: [Rack::Test::UploadedFile.new("spec/support/assets/400x400.png", "image/png")])
 
+    FactoryBot.create(:person, translated_name: "John Doe")
+    FactoryBot.create(:person, translated_name: "Obi Wan")
+
     user = FactoryBot.create(:user)
     sign_in(user)
   end
@@ -109,6 +112,36 @@ RSpec.feature "Show form", type: :system, js: true do
     expect(alternative_name.name).to eq "Updated alt name"
     expect(alternative_name.type).to eq "Updated alt type"
     expect(alternative_name.country).to eq @uk
+
+    # Recurring Season Regulars
+    click_link "Recurring Season Regulars"
+    expect(page).to have_css("a[data-active='true']", text: "Recurring Season Regulars")
+    expect(page).to have_content("Add a cast member")
+    fill_in "person", with: "obi wan"
+    expect(page).to have_css("div.p-2", text: "Obi Wan")
+    expect(page).not_to have_css("div.p-2", text: "John Doe") # Applies searching
+    find("div.p-2", text: "Obi Wan").click
+    fill_in "cast_member_character", with: "Test character"
+    click_button "Save"
+    using_wait_time 5 do
+      expect(page).to have_css "div.tabulator-cell", text: "Obi Wan"
+      expect(page).to have_css "div.tabulator-cell", text: "Test character"
+      expect(show.reload.season_regulars.count).to eq 1
+    end
+    character_cell = find("div.tabulator-cell", text: "Test character")
+    character_cell.click
+    find("input:focus").send_keys([:control, "a"], :backspace)
+    find("input:focus").send_keys("New character", :enter)
+    using_wait_time 5 do
+      expect(page).to have_css "div.tabulator-cell", text: "Obi Wan"
+      expect(page).to have_css "div.tabulator-cell", text: "New character"
+    end
+    find("div.tabulator-cell>svg").click
+    using_wait_time 5 do
+      expect(page).not_to have_css "div.tabulator-cell", text: "Obi Wan"
+      expect(page).not_to have_css "div.tabulator-cell", text: "New character"
+      expect(show.reload.season_regulars).to eq []
+    end
 
     # Content Ratings
     click_link "Content Ratings"

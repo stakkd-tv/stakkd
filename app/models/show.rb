@@ -69,6 +69,8 @@ class Show < ApplicationRecord
 
   def runtime = nil # TODO: Calculate show runtime based on each episode length
 
+  def cast_members = season_regulars # Duck typing for cast members controller
+
   private
 
   def slug_source = translated_title

@@ -6,6 +6,16 @@
   <div class="form">
     <%= render "#{relatable_model_plural}/form_nav", @relatable.related_records %>
 
+    <%# TODO: Come up with a better way of doing this. %>
+    <% if @relatable.is_a?(Show) %>
+      <div class="border-b border-b-pop">
+        <div class="border border-pop bg-pop/50 p-2 rounded-lg m-6">
+          <h4 class="font-domine font-bold text-xl mb-2">A note on recurring season regulars:</h4>
+          <p>These are cast members that appear in every season. If a cast member does not appear in all seasons of this show, add them to each individual season instead.</p>
+        </div>
+      </div>
+    <% end %>
+
     <%= render "shared/table_editor", table_presenter: @table_presenter, path_prefix: nested_path_for(relatable: @relatable) %>
 
     <%= form_with model: [@relatable, CastMember.new] do |form| %>

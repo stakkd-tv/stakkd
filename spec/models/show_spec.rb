@@ -150,4 +150,12 @@ RSpec.describe Show, type: :model do
       expect(show.available_galleries).to eq [:posters, :backgrounds, :logos, :videos]
     end
   end
+
+  describe "#cast_members" do
+    it "returns season regulars" do
+      show = FactoryBot.create(:show)
+      regulars = [FactoryBot.create(:cast_member, record: show)]
+      expect(show.cast_members).to eq regulars
+    end
+  end
 end

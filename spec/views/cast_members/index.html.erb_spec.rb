@@ -26,4 +26,24 @@ RSpec.describe "cast_members/index", type: :view do
       assert_select "input[name='cast_member[character]']"
     end
   end
+
+  it "does not render sections that are not needed" do
+    render
+    expect(rendered).not_to include("A note on recurring season regulars:")
+    expect(rendered).not_to include("These are cast members that appear in every season. If a cast member does not appear in all seasons of this show, add them to each individual season instead.")
+  end
+
+  context "when relatable is a show" do
+    let(:relatable) { FactoryBot.create(:show) }
+
+    before do
+      def view.relatable_model_plural = "shows"
+    end
+
+    it "renders a note about recurring regulars" do
+      render
+      expect(rendered).to include("A note on recurring season regulars:")
+      expect(rendered).to include("These are cast members that appear in every season. If a cast member does not appear in all seasons of this show, add them to each individual season instead.")
+    end
+  end
 end
