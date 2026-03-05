@@ -3,5 +3,6 @@
     <%= link_to "Details", edit_show_season_path(season, show_id: season.show), data: {active: action_name == "edit"} %>
     <%= link_to "Posters", posters_show_season_path(season, show_id: season.show), data: {active: action_name == "posters"} %>
     <%= link_to "Season Regulars", show_season_season_regulars_path(season, show_id: season.show), data: {active: controller_name == "season_regulars"} %>
+    <%= link_to "Videos", show_season_videos_path(season, show_id: season.show), data: {active: controller_name == "videos"} %>
   </div>
 <% end %>

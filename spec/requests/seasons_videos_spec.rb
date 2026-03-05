@@ -1,7 +1,7 @@
 require "rails_helper"
 
-RSpec.describe "Show Videos", type: :request do
-  let(:show) { FactoryBot.create(:show) }
+RSpec.describe "Season Videos", type: :request do
+  let(:season) { FactoryBot.create(:season) }
   let(:valid_attributes) {
     {
       source: "YouTube",
@@ -23,10 +23,10 @@ RSpec.describe "Show Videos", type: :request do
     allow_any_instance_of(Videos::YouTube).to receive(:thumbnail_url).and_return("Test Title URL")
   end
 
-  describe "GET /shows/:show_id/videos" do
+  describe "GET /shows/:show_id/seasons/:season_id/videos" do
     context "when user is not signed in" do
       it "redirects to the user sign in page" do
-        get show_videos_path(show_id: show)
+        get show_season_videos_path(season_id: season, show_id: season.show)
         expect(response).to redirect_to new_session_path
       end
     end
@@ -40,16 +40,16 @@ RSpec.describe "Show Videos", type: :request do
       end
 
       it "renders a successful response" do
-        get show_videos_path(show_id: show)
+        get show_season_videos_path(season_id: season, show_id: season.show)
         expect(response).to be_successful
       end
     end
   end
 
-  describe "POST /shows/:show_id/videos" do
+  describe "POST /shows/:show_id/seasons/:season_id/videos" do
     context "when user is not signed in" do
       it "redirects to the user sign in page" do
-        post show_videos_path(show_id: show), params: {video: valid_attributes}
+        post show_season_videos_path(season_id: season, show_id: season.show), params: {video: valid_attributes}
         expect(response).to redirect_to new_session_path
       end
     end
@@ -64,9 +64,9 @@ RSpec.describe "Show Videos", type: :request do
 
       context "with valid params" do
         it "creates a video" do
-          post show_videos_path(show_id: show), params: {video: valid_attributes}
+          post show_season_videos_path(season_id: season, show_id: season.show), params: {video: valid_attributes}
           video = Video.last
-          expect(video.record).to eq show
+          expect(video.record).to eq season
           expect(video.source).to eq "YouTube"
           expect(video.type).to eq "Trailer"
           expect(video.source_key).to eq "test_key"
@@ -75,31 +75,31 @@ RSpec.describe "Show Videos", type: :request do
         end
 
         it "redirects to the videos index path" do
-          post show_videos_path(show_id: show), params: {video: valid_attributes}
-          expect(response).to redirect_to show_videos_path(show_id: show)
+          post show_season_videos_path(season_id: season, show_id: season.show), params: {video: valid_attributes}
+          expect(response).to redirect_to show_season_videos_path(season_id: season, show_id: season.show)
         end
       end
 
       context "with invalid params" do
         it "does not create an video" do
-          post show_videos_path(show_id: show), params: {video: invalid_attributes}
+          post show_season_videos_path(season_id: season, show_id: season.show), params: {video: invalid_attributes}
           expect(Video.count).to eq 0
         end
 
         it "redirects to the videos index path with a flash alert" do
-          post show_videos_path(show_id: show), params: {video: invalid_attributes}
-          expect(response).to redirect_to show_videos_path(show_id: show)
+          post show_season_videos_path(season_id: season, show_id: season.show), params: {video: invalid_attributes}
+          expect(response).to redirect_to show_season_videos_path(season_id: season, show_id: season.show)
           expect(flash[:alert]).to eq "Could not add that video. Please check that the video details are correct."
         end
       end
     end
   end
 
-  describe "DELETE /shows/:show_id/videos/:id" do
+  describe "DELETE /shows/:show_id/seasons/:season_id/videos/:id" do
     context "when user is not signed in" do
       it "redirects to the user sign in page" do
-        video = show.videos.create!(valid_attributes)
-        delete show_video_path(video, show_id: show)
+        video = season.videos.create!(valid_attributes)
+        delete show_season_video_path(video, season_id: season, show_id: season.show)
         expect(response).to redirect_to new_session_path
       end
     end
@@ -113,14 +113,14 @@ RSpec.describe "Show Videos", type: :request do
       end
 
       it "deletes the video" do
-        video = show.videos.create!(valid_attributes)
-        delete show_video_path(video, show_id: show)
+        video = season.videos.create!(valid_attributes)
+        delete show_season_video_path(video, season_id: season, show_id: season.show)
         expect(Video.count).to eq 0
       end
 
       it "renders no content" do
-        video = show.videos.create!(valid_attributes)
-        delete show_video_path(video, show_id: show)
+        video = season.videos.create!(valid_attributes)
+        delete show_season_video_path(video, season_id: season, show_id: season.show)
         expect(response).to be_no_content
       end
     end

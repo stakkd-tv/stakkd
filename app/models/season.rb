@@ -2,6 +2,7 @@ class Season < ApplicationRecord
   # Associations
   belongs_to :show
   has_many :season_regulars, -> { order(position: :asc) }, as: :record, class_name: "CastMember", dependent: :destroy
+  has_many :videos, as: :record, dependent: :destroy
   has_many_attached :posters
 
   # Validations
@@ -16,7 +17,7 @@ class Season < ApplicationRecord
 
   def poster = posters.first || "2:3.png"
 
-  def available_galleries = [:posters]
+  def available_galleries = [:posters, :videos]
 
   def to_param = number.to_s
 

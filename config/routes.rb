@@ -59,8 +59,10 @@ Rails.application.routes.draw do
       resources :season_regulars, only: [:index, :create, :update, :destroy] do
         post :move, on: :member
       end
+      resources :videos, only: [:index, :create, :destroy]
       resources :galleries, only: [] do
         get :posters, on: :collection
+        get :videos, on: :collection
       end
 
       get :posters, on: :member

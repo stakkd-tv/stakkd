@@ -4,6 +4,7 @@ RSpec.describe Season, type: :model do
   describe "associations" do
     it { should belong_to(:show) }
     it { should have_many(:season_regulars).class_name("CastMember").dependent(:destroy) }
+    it { should have_many(:videos).dependent(:destroy) }
     it { should have_many_attached(:posters) }
   end
 
@@ -66,7 +67,7 @@ RSpec.describe Season, type: :model do
 
   describe "#available_galleries" do
     it "returns the galleries available" do
-      expect(Season.new.available_galleries).to eq [:posters]
+      expect(Season.new.available_galleries).to eq [:posters, :videos]
     end
   end
 

@@ -82,5 +82,33 @@ RSpec.feature "Show form", type: :system, js: true do
       expect(@show.reload.season_regulars.count).to eq 1
       expect(season.reload.season_regulars.count).to eq 0
     end
+
+    # Videos
+    click_link "Videos"
+    expect(page).to have_css("a[data-active='true']", text: "Videos")
+    select "YouTube", from: "video_source"
+    fill_in "video_source_key", with: "abc123"
+    select "Trailer", from: "video_type"
+    allow_any_instance_of(Videos::YouTube).to receive(:title).and_return("YouTube Trailer")
+    allow_any_instance_of(Videos::YouTube).to receive(:thumbnail_url).and_return("https://example.com/thumbnail.jpg")
+    click_button "Save"
+    using_wait_time 5 do
+      expect(page).to have_css "div.tabulator-cell", text: "abc123"
+      expect(page).to have_css "div.tabulator-cell", text: "YouTube Trailer"
+      expect(season.videos.count).to eq 1
+    end
+    video = Video.first
+    expect(video.source).to eq "YouTube"
+    expect(video.source_key).to eq "abc123"
+    expect(video.type).to eq "Trailer"
+    expect(video.name).to eq "YouTube Trailer"
+    expect(video.thumbnail_url).to eq "https://example.com/thumbnail.jpg"
+    expect(video.record).to eq season
+    find("div.tabulator-cell>svg").click
+    using_wait_time 5 do
+      expect(page).not_to have_css "div.tabulator-cell", text: "abc123"
+      expect(page).not_to have_css "div.tabulator-cell", text: "YouTube Trailer"
+      expect(season.videos).to eq []
+    end
   end
 end
