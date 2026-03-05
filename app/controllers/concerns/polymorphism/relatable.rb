@@ -32,7 +32,7 @@ module Polymorphism
     # So with this information we can traverse through the relations and get the actual record we need.
     def relatable_from_nested_params
       parent_record_param = id_keys_from_params.keys.first
-      parent_record_klass = parent_record_param.match(%r{([^\/.]*)_id$})[1].classify.constantize
+      parent_record_klass = parent_record_param.match(%r{([^/.]*)_id$})[1].classify.constantize
       parent_record = parent_record_klass&.from_slug(params[parent_record_param])
       return unless parent_record
 
@@ -57,7 +57,7 @@ module Polymorphism
     # In the above example, seasons belong to shows. In any case, the actual param that we want is the LAST param that has _id in it.
     def relatable_class_from_params
       id_keys_from_params.keys.reverse_each do |key|
-        model = key.match(%r{([^\/.]*)_id$})
+        model = key.match(%r{([^/.]*)_id$})
         return model[1].classify.constantize, key
       end
       nil

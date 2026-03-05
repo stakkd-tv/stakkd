@@ -26,7 +26,7 @@ module Slugify
     return if _slug.present?
     self.slug = slug_source # e.g. " Cote  d'Ivoire "
       &.downcase # Downcase the string e.g. " cote  d'ivoire "
-      &.gsub(/[\p{^Alnum}]/, " ") # Replace all alphanumeric characters e.g. " cote  d ivoire "
+      &.gsub(/\p{^Alnum}/, " ") # Replace all alphanumeric characters e.g. " cote  d ivoire "
       &.strip # Strip any leading or trailing spaces e.g. "cote  d ivoire"
       &.gsub(/\s+/, " ") # Replace multiple spaces with one space e.g. "cote d ivoire"
       &.tr(" ", "-") # Replace all spaces with a hyphen e.g. "cote-d-ivoire"
