@@ -11,7 +11,7 @@
     "eslint-plugin-n": "^17.24.0",
     "eslint-plugin-promise": "^7.2.1",
     "tsc-watch": "^7.2.0",
-    "typescript": "^5.7.3"
+    "typescript": "^5.9.3"
   },
   "scripts": {
     "build": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets",
