@@ -2,7 +2,7 @@ name: "Ruby on Rails CI"
 on:
   pull_request:
   push:
-    branches: [ main ]
+    branches: [main]
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -22,6 +22,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 25
+      - name: Enable corepack
+        run: |
+          corepack enable
       - name: Install system dependencies
         run: |
           sudo apt-get update
@@ -60,7 +67,13 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 25
       - name: Install Yarn packages
-        run: yarn
+        run: |
+          corepack enable
+          yarn
       - name: Lint all files
         run: bin/lint
