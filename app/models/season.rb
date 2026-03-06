@@ -3,6 +3,8 @@ class Season < ApplicationRecord
   belongs_to :show
   has_many :season_regulars, -> { order(position: :asc) }, as: :record, class_name: "CastMember", dependent: :destroy
   has_many :videos, as: :record, dependent: :destroy
+  has_many :episodes, dependent: :destroy
+  has_many :ordered_episodes, -> { ordered }, class_name: "Episode"
   has_many_attached :posters
 
   # Validations

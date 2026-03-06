@@ -5,6 +5,8 @@ RSpec.describe Season, type: :model do
     it { should belong_to(:show) }
     it { should have_many(:season_regulars).class_name("CastMember").dependent(:destroy) }
     it { should have_many(:videos).dependent(:destroy) }
+    it { should have_many(:episodes).dependent(:destroy) }
+    it { should have_many(:ordered_episodes) }
     it { should have_many_attached(:posters) }
   end
 
