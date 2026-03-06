@@ -1138,7 +1138,7 @@ __metadata:
     eslint-plugin-n: "npm:^17.24.0"
     eslint-plugin-promise: "npm:^7.2.1"
     flatpickr: "npm:^4.6.13"
-    slim-select: "npm:^2.12.1"
+    slim-select: "npm:^3.4.3"
     tabulator-tables: "npm:^6.3.1"
     tailwindcss: "npm:^4.1.8"
     tsc-watch: "npm:^7.2.0"
@@ -3721,10 +3721,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"slim-select@npm:^2.12.1":
-  version: 2.12.1
-  resolution: "slim-select@npm:2.12.1"
-  checksum: 10c0/45ad9bf4745badcc394b625e855a53314dd268a5b72d93c869bbbb88ce0d332aa9626bc7ac53206f96a7cc1fa72559f4b63a74f5e01c7cbbe348b3f7b161f2e3
+"slim-select@npm:^3.4.3":
+  version: 3.4.3
+  resolution: "slim-select@npm:3.4.3"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    vue: ^3.0.0
+  peerDependenciesMeta:
+    react:
+      optional: true
+    react-dom:
+      optional: true
+    vue:
+      optional: true
+  checksum: 10c0/cdc9a683884deff9f731f2a969e91cae37d139a4342a525511d56ead6956cbcb4e96b5e2ffc459e55934582a95f587058a6b17fe1c567c6bc3e19e5dd2eabcd4
   languageName: node
   linkType: hard
 
