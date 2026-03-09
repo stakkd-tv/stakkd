@@ -8,8 +8,8 @@ RSpec.describe "episodes/_form_nav", type: :view do
       render "episodes/form_nav", episode: episode
       assert_select "a[href='#{edit_show_season_episode_path(episode, season_id: episode.season, show_id: episode.show)}'][data-active='true']"
       assert_select "a[href='#{backgrounds_show_season_episode_path(episode, season_id: episode.season, show_id: episode.show)}'][data-active='false']"
+      assert_select "a[href='#{show_season_episode_guest_stars_path(episode, season_id: episode.season, show_id: episode.show)}'][data-active='false']"
       assert_select "a[href='#{show_season_episode_videos_path(episode, season_id: episode.season, show_id: episode.show)}'][data-active='false']"
-      # TODO: Add more
     end
   end
 

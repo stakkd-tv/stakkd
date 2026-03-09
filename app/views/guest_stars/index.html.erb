@@ -1,0 +1,31 @@
+<% content_for :title, "Stakkd - #{@season} - #{@episode.translated_name} guest stars" %>
+
+<%= render "episodes/header", @episode.related_records %>
+
+<div class="max-w-7xl mx-auto my-8 px-6">
+  <div class="form">
+    <%= render "episodes/form_nav", @episode.related_records %>
+
+    <%= render "shared/table_editor", table_presenter: @table_presenter, path_prefix: show_season_episode_guest_stars_path(@episode, season_id: @season, show_id: @show) %>
+
+    <%= form_with model: CastMember.new, url: show_season_episode_guest_stars_path(@episode, season_id: @season, show_id: @show) do |form| %>
+      <h4 class="font-bold text-2xl">Add a guest star</h4>
+
+      <div class="flex flex-col sm:flex-row gap-6">
+        <div class="basis-full sm:basis-1/2 relative">
+          <%= form.label :person_id %>
+          <%= form.text_field :person_id, required: true, autocomplete: "off", data: {controller: "ajax-search", ajax_search_search_url_value: people_path} %>
+        </div>
+
+        <div class="basis-full sm:basis-1/2">
+          <%= form.label :character %>
+          <%= form.text_field :character, required: true, autocomplete: "off" %>
+        </div>
+      </div>
+
+      <div>
+        <%= form.submit "Save" %>
+      </div>
+    <% end %>
+  </div>
+</div>

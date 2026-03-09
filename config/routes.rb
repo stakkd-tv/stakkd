@@ -65,6 +65,9 @@ Rails.application.routes.draw do
         get :videos, on: :collection
       end
       resources :episodes, except: [:index, :destroy] do
+        resources :guest_stars, only: [:index, :create, :update, :destroy] do
+          post :move, on: :member
+        end
         resources :videos, only: [:index, :create, :destroy]
 
         get :backgrounds, on: :member
