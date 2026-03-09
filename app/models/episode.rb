@@ -9,6 +9,8 @@ class Episode < ApplicationRecord
 
   # Assocations
   belongs_to :season
+  has_many :guest_stars, -> { order(position: :asc) }, as: :record, class_name: "CastMember", dependent: :destroy
+  has_many :videos, as: :record, dependent: :destroy
   has_one :show, through: :season
   has_many_attached :backgrounds
 
@@ -21,10 +23,11 @@ class Episode < ApplicationRecord
 
   # Scopes
   scope :ordered, -> { order(number: :asc) }
+  scope :nested, ->(number) { where(number:) }
 
   def background = backgrounds.first || "16:9.png"
 
-  def to_param = number
+  def to_param = number.to_s
 
   # TODO: If the episode is the last episode in the season, check if there is a next season and
   # if there is, get the first episode of that season as the next episode.
@@ -33,6 +36,8 @@ class Episode < ApplicationRecord
   # TODO: If the episode is the first episode in the season, check if there is a previous season and
   # if there is, get the last episode of that season as the previous episode.
   def previous_episode = @previous_episode ||= season.episodes.where(number: number - 1).first
+
+  def related_records = super.merge(season:, show:)
 
   TYPES.each do |type|
     define_method "#{type}?" do

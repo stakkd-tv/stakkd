@@ -65,6 +65,8 @@ Rails.application.routes.draw do
         get :videos, on: :collection
       end
       resources :episodes, except: [:index, :destroy] do
+        resources :videos, only: [:index, :create, :destroy]
+
         get :backgrounds, on: :member
       end
 

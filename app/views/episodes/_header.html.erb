@@ -11,8 +11,7 @@
       <% e = local_assigns[:episode] %>
       <% if e %>
         <p>-</p>
-        <%# TODO: WHY? Spec fails unless we EXPLICITLY call to_param %>
-        <%= link_to e.translated_name, show_season_episode_path(show.to_param, season.to_param, e.to_param), class: "underline text-xl font-bold font-domine text-white text-center" %>
+        <%= link_to e.translated_name, show_season_episode_path(show, season, e), class: "underline text-xl font-bold font-domine text-white text-center" %>
       <% else %>
         <p>-</p>
         <p class="text-xl font-bold font-domine text-white text-center">New episode</p>

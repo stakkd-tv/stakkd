@@ -2,7 +2,7 @@
   <div class="form-nav" id="form-nav">
     <%= link_to "Details", edit_show_season_episode_path(episode, season_id: episode.season, show_id: episode.show), data: {active: action_name == "edit"} %>
     <%= link_to "Backgrounds", backgrounds_show_season_episode_path(episode, season_id: episode.season, show_id: episode.show), data: {active: action_name == "backgrounds"} %>
-    <%= link_to "Guest Stars", "#", data: {active: controller_name == "season_regulars"} %>
-    <%= link_to "Videos", "#", data: {active: controller_name == "videos"} %>
+    <%= link_to "Guest Stars", "#", data: {active: controller_name == "guest_stars"} %>
+    <%= link_to "Videos", show_season_episode_videos_path(episode, season_id: episode.season, show_id: episode.show), data: {active: controller_name == "videos"} %>
   </div>
 <% end %>

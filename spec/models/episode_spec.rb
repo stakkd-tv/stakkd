@@ -4,6 +4,8 @@ require_relative "shared_examples/has_imdb"
 RSpec.describe Episode, type: :model do
   describe "associations" do
     it { should belong_to(:season) }
+    it { should have_many(:guest_stars).class_name("CastMember") }
+    it { should have_many(:videos).dependent(:destroy) }
     it { should have_one(:show).through(:season) }
     it { should have_many_attached(:backgrounds) }
   end
@@ -26,6 +28,14 @@ RSpec.describe Episode, type: :model do
     end
   end
 
+  describe ".nested" do
+    it "returns the episodes with the number" do
+      episode1 = FactoryBot.create(:episode, number: 1)
+      FactoryBot.create(:episode, number: 2)
+      expect(Episode.nested(1)).to eq [episode1]
+    end
+  end
+
   it_behaves_like "a model with imdb_id", Episode
 
   describe "#background" do
@@ -44,6 +54,12 @@ RSpec.describe Episode, type: :model do
         )
         expect(episode.background).to be_a(ActiveStorage::Attachment)
       end
+    end
+  end
+
+  describe "#to_param" do
+    it "returns the episode number as a string" do
+      expect(Episode.new(number: 2).to_param).to eq "2"
     end
   end
 
@@ -74,6 +90,13 @@ RSpec.describe Episode, type: :model do
       season = FactoryBot.create(:season)
       episode = FactoryBot.create(:episode, season: season, number: 1)
       expect(episode.previous_episode).to be_nil
+    end
+  end
+
+  describe "#related_records" do
+    it "includes the show and season in the hash" do
+      episode = FactoryBot.create(:episode)
+      expect(episode.related_records).to eq({show: episode.show, season: episode.season, episode:})
     end
   end
 
