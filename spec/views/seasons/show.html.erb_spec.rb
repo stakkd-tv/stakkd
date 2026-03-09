@@ -46,7 +46,7 @@ RSpec.describe "seasons/show", type: :view do
     expect(rendered).to match(/The OG season/)
     expect(rendered).to match(/This is overview/)
     expect(rendered).to match(/January 01, 2023/)
-    expect(rendered).to match(/1.0 hour/)
+    expect(rendered).to match(/1h 0m/)
   end
 
   context "when name matches the potential name" do

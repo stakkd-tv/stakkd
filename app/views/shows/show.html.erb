@@ -22,12 +22,10 @@
           <p class="font-domine"><b>Type:</b></p>
           <p><%= @show.type.titleize %></p>
         </div>
-        <% if @show.runtime.present? %>
-          <div>
-            <p class="font-domine"><b>Runtime:</b></p>
-            <p><%= @show.runtime %> minutes</p>
-          </div>
-        <% end %>
+        <div>
+          <p class="font-domine"><b>Total runtime (excl specials):</b></p>
+          <p><%= format_runtime(@show) %></p>
+        </div>
       </div>
       <% if @show.companies.any? %>
         <div class="grid grid-cols-5 gap-2">

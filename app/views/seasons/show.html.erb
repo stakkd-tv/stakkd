@@ -21,7 +21,7 @@
         <div>
           <p class="font-domine"><b>Runtime:</b></p>
           <%# TODO: Extract to class/model and show relavent unit e.g. 1 hour and 24 minutes %>
-          <p><%= (@season.runtime / 60.0).round(2) %> <%= "hour".pluralize(@season.runtime / 60.0) %></p>
+          <p><%= format_runtime(@season) %></p>
         </div>
       </div>
       <% if @show.companies.any? %>
@@ -92,7 +92,7 @@
                 <% end %>
               </div>
               <p class="px-4 pt-2 text-sm line-clamp-2 sm:line-clamp-3 md:line-clamp-4"><%= episode.overview %></p>
-              <p class="px-4 pt-2 text-sm"><%= episode.original_air_date&.strftime("%B %d, %Y") || "Unknown air date" %> - <%= episode.runtime %> <%= "minute".pluralize(episode.runtime) %></p>
+              <p class="px-4 pt-2 text-sm"><%= episode.original_air_date&.strftime("%B %d, %Y") || "Unknown air date" %> - <%= format_runtime(episode) %></p>
             </div>
           </div>
         <% end %>

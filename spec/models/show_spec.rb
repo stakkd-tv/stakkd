@@ -17,6 +17,8 @@ RSpec.describe Show, type: :model do
     it { should have_many(:videos).dependent(:destroy) }
     it { should have_many(:seasons).dependent(:destroy) }
     it { should have_many(:ordered_seasons).class_name("Season") }
+    it { should have_many(:seasons_without_specials).class_name("Season") }
+    it { should have_many(:non_special_episodes).through(:seasons_without_specials) }
     it { should have_many(:season_regulars).class_name("CastMember").dependent(:destroy) }
     it { should have_many_attached(:posters) }
     it { should have_many_attached(:backgrounds) }
@@ -144,6 +146,17 @@ RSpec.describe Show, type: :model do
     it "returns the available galleries" do
       show = Show.new
       expect(show.available_galleries).to eq [:posters, :backgrounds, :logos, :videos]
+    end
+  end
+
+  describe "#runtime" do
+    it "calculates the runtime excluding special episodes" do
+      show = FactoryBot.create(:show)
+      season = FactoryBot.create(:season, show: show)
+      FactoryBot.create(:episode, number: 1, season: season, runtime: 40)
+      FactoryBot.create(:episode, number: 2, season: season, runtime: 20)
+      special_episode = FactoryBot.create(:episode, season: show.ordered_seasons.first, runtime: 30)
+      expect(show.runtime).to eq 60
     end
   end
 

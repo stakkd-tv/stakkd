@@ -20,7 +20,7 @@
     <% end %>
   </div>
   <div class="inline-flex gap-3 mb-8 text-sm">
-    <span><%= "#{@episode.runtime} #{"minute".pluralize(@episode.runtime)}" %></span>
+    <span><%= format_runtime(@episode) %></span>
     <span>-</span>
     <span><%= @episode.original_air_date.strftime("%B %d, %Y") %></span>
     <% unless @episode.standard? %>

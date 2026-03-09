@@ -35,6 +35,8 @@ class Show < ApplicationRecord
   has_many :videos, as: :record, dependent: :destroy
   has_many :seasons, dependent: :destroy
   has_many :ordered_seasons, -> { ordered }, class_name: "Season"
+  has_many :seasons_without_specials, -> { without_specials }, class_name: "Season"
+  has_many :non_special_episodes, through: :seasons_without_specials, source: :episodes
   has_many :season_regulars, -> { order(position: :asc) }, as: :record, class_name: "CastMember", dependent: :destroy
   has_many_attached :posters
   has_many_attached :backgrounds
@@ -66,7 +68,7 @@ class Show < ApplicationRecord
 
   def available_galleries = [:posters, :backgrounds, :logos, :videos]
 
-  def runtime = nil # TODO: Calculate show runtime based on each episode length
+  def runtime = non_special_episodes.sum(:runtime)
 
   def cast_members = season_regulars # Duck typing for cast members controller
 

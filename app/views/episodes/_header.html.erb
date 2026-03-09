@@ -6,7 +6,7 @@
     <%= link_to show do %>
       <h3 class="text-4xl font-bold font-domine text-white text-center"><%= show.translated_title %></h3>
     <% end %>
-    <div class="flex gap-2">
+    <div class="inline-flex gap-2">
       <%= link_to season.translated_name, show_season_path(season, show_id: show), class: "underline text-xl font-bold font-domine text-white text-center" %>
       <% e = local_assigns[:episode] %>
       <% if e %>
