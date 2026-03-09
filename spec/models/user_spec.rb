@@ -20,4 +20,11 @@ RSpec.describe User, type: :model do
       expect(user.reload.email_address).to eq "hello@there.com"
     end
   end
+
+  describe "#avatar" do
+    it "returns a temporary avatar" do
+      user = User.new(username: "hehe", password: "hehe")
+      expect(user.avatar).to eq "https://github.com/stakkd-tv.png"
+    end
+  end
 end

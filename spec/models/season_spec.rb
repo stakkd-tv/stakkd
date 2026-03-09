@@ -107,4 +107,47 @@ RSpec.describe Season, type: :model do
       expect(Season.new(number: 2, show: Show.new(translated_title: "Testing")).to_s).to eq "Testing - Season 2"
     end
   end
+
+  describe "#runtime" do
+    it "returns the sum of all episodes" do
+      season = FactoryBot.create(:season)
+      FactoryBot.create(:episode, number: 1, season:, runtime: 20)
+      FactoryBot.create(:episode, number: 2, season:, runtime: 20)
+      expect(season.runtime).to eq 40
+    end
+
+    it "returns 0 when no episodes" do
+      season = FactoryBot.create(:season)
+      expect(season.runtime).to eq 0
+    end
+  end
+
+  describe "#next_season" do
+    it "returns the next season" do
+      season = FactoryBot.create(:season)
+      next_season = FactoryBot.create(:season, number: season.number + 1, show: season.show)
+      expect(season.next_season).to eq next_season
+    end
+
+    it "returns nil when there is no next season" do
+      show = FactoryBot.create(:show)
+      season = show.seasons.first
+      expect(season.next_season).to be_nil
+    end
+  end
+
+  describe "#previous_season" do
+    it "returns the previous season" do
+      show = FactoryBot.create(:show)
+      special = show.seasons.first
+      season = FactoryBot.create(:season, number: 1, show: show)
+      expect(season.previous_season).to eq special
+    end
+
+    it "returns nil when there is no previous season" do
+      show = FactoryBot.create(:show)
+      season = show.seasons.first
+      expect(season.previous_season).to be_nil
+    end
+  end
 end

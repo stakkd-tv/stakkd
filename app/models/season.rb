@@ -30,4 +30,10 @@ class Season < ApplicationRecord
   end
 
   def to_s = "#{show} - Season #{number}"
+
+  def runtime = episodes.sum(&:runtime)
+
+  def next_season = @next_season ||= show.seasons.where(number: number + 1).first
+
+  def previous_season = @previous_season ||= show.seasons.where(number: number - 1).first
 end

@@ -7,6 +7,7 @@ class Episode < ApplicationRecord
 
   # Assocations
   belongs_to :season
+  has_many_attached :backgrounds
 
   # Validations
   validates :translated_name, :original_name, presence: true
@@ -17,4 +18,12 @@ class Episode < ApplicationRecord
 
   # Scopes
   scope :ordered, -> { order(number: :asc) }
+
+  def background = backgrounds.first || "16:9.png"
+
+  TYPES.each do |type|
+    define_method "#{type}?" do
+      episode_type == type
+    end
+  end
 end

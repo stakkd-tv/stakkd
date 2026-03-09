@@ -5,7 +5,7 @@
 <% if @show.background %>
   <div class="absolute -z-10 w-full h-96 overflow-hidden flex items-center justify-center">
     <%= image_tag @show.background, class: "w-full min-h-96 object-cover blur-xs" %>
-    <div class="absolute w-full h-full bg-gradient-to-t from-background to-background/35"></div>
+    <div class="absolute w-full h-full bg-linear-to-t from-background to-background/35"></div>
   </div>
 <% end %>
 
@@ -70,7 +70,7 @@
           <p class="text-sm mt-4 italic"><%= @show.tagline %></p>
         <% end %>
       </div>
-      <div class="leading-[1.5rem] text-sm md:text-base flex flex-col gap-6">
+      <div class="leading-6 text-sm md:text-base flex flex-col gap-6">
         <%= simple_format @show.overview %>
       </div>
 
@@ -85,15 +85,16 @@
           <% end %>
         </div>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-          <% @show.ordered_seasons.each do |season| %>
+          <%# TODO: Test ordering of all views %>
+          <% @show.ordered_seasons.includes(:episodes).each do |season| %>
             <div class="flex flex-col gap-2">
               <%= link_to show_season_path(season, show_id: @show) do %>
-                <div class="h-full aspect-[2/3] border border-pop rounded-lg overflow-hidden">
+                <div class="h-full aspect-2/3 border border-pop rounded-lg overflow-hidden">
                   <%= image_tag season.poster, class: "w-full" %>
                 </div>
               <% end %>
               <p class="text-center whitespace-nowrap overflow-hidden text-ellipsis"><%= season.translated_name %></p>
-              <small class="text-center">0 episodes</small>
+              <small class="text-center"><%= season.episodes.size %> <%= "episode".pluralize(season.episodes.size) %></small>
             </div>
           <% end %>
         </div>

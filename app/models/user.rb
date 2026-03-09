@@ -12,7 +12,7 @@ class User < ApplicationRecord
 
   before_validation :normalize_email
 
-  def avatar = "https://images-ext-1.discordapp.net/external/OLDoJ_5ghf4ERpLvexzWkavmoWH24ec56Dp_CCmLrFw/%3Fsize%3D512/https/cdn.discordapp.com/avatars/450284404481327105/a1c683e2de3734c41ea77ff710aaad2a.png?format=webp&quality=lossless"
+  def avatar = "https://github.com/stakkd-tv.png"
 
   private
 

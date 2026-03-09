@@ -10,6 +10,7 @@ class CreateEpisodes < ActiveRecord::Migration[8.0]
       t.string :episode_type, null: false, default: Episode::STANDARD
       t.integer :runtime, null: false, default: 0
       t.string :production_code
+      t.string :imdb_id
 
       t.timestamps
     end

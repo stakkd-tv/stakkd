@@ -49,12 +49,15 @@ RSpec.describe "shows/show", type: :view do
 
   it "renders the seasons" do
     season = FactoryBot.create(:season, show: @show, number: 1, translated_name: "Season 1")
+    FactoryBot.create(:episode, season:)
     render
     assert_select "#seasons" do
       assert_select "h4", text: "1 Season"
       assert_select "p", text: "Specials"
+      assert_select "small", text: "0 episodes"
       assert_select "a[href='#{show_season_path(@show.ordered_seasons.first, show_id: @show)}']"
       assert_select "p", text: "Season 1"
+      assert_select "small", text: "1 episode"
       assert_select "a[href='#{show_season_path(season, show_id: @show)}']"
     end
   end

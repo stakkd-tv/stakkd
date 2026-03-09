@@ -143,6 +143,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_06_144326) do
     t.string "episode_type", default: "standard", null: false
     t.integer "runtime", default: 0, null: false
     t.string "production_code"
+    t.string "imdb_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["season_id", "number"], name: "index_unique_episodes_number_season", unique: true
