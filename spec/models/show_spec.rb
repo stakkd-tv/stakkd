@@ -1,5 +1,6 @@
 require "rails_helper"
 require_relative "shared_examples/slugify"
+require_relative "shared_examples/has_imdb"
 
 RSpec.describe Show, type: :model do
   describe "associations" do
@@ -108,12 +109,7 @@ RSpec.describe Show, type: :model do
     end
   end
 
-  describe "#imdb_url" do
-    it "returns the link to imdb" do
-      show = Show.new(imdb_id: "tt0000000")
-      expect(show.imdb_url).to eq "https://www.imdb.com/title/tt0000000/"
-    end
-  end
+  it_behaves_like "a model with imdb_id", Show
 
   describe "#slug=" do
     it "sets the title_kebab" do

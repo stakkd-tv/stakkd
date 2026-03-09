@@ -79,8 +79,8 @@ RSpec.describe "seasons/show", type: :view do
 
   it "renders all episodes" do
     render
-    assert_select "p.font-domine", text: "Episode 1 - Pilot"
-    assert_select "p.font-domine", text: "Episode 2 - Ringtoneers"
+    assert_select "a.font-domine", text: "Episode 1 - Pilot"
+    assert_select "a.font-domine", text: "Episode 2 - Ringtoneers"
   end
 
   context "when there is a previous season" do
@@ -106,14 +106,14 @@ RSpec.describe "seasons/show", type: :view do
       FactoryBot.create(:season, show: @show, number: 2, posters:, overview: "This is overview", translated_name:)
     end
 
-    it "renders the previous season link" do
+    it "renders the next season link" do
       render
       assert_select "a[href='#{show_season_path(2, show_id: @show)}']", text: "Next", count: 2
     end
   end
 
   context "when there is no next season" do
-    it "does not render perevious season link" do
+    it "does not render next season link" do
       render
       assert_select "a", text: "Next", count: 0
     end

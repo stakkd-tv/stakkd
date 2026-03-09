@@ -64,16 +64,31 @@
       </div>
 
       <div class="flex flex-col gap-4">
+        <div>
+          <%= link_to new_show_season_episode_path(season_id: @season, show_id: @show), class: "link float-right flex items-center gap-2" do %>
+            <i class="fa-solid fa-plus"></i>
+            New episode
+          <% end %>
+        </div>
         <% @season.ordered_episodes.each do |episode| %>
           <div class="grid grid-cols-1 md:grid-cols-3">
             <div class="col-span-1">
-              <%= image_tag episode.background, class: "rounded-lg md:rounded-r-none border border-pop aspect-[16/9]" %>
+              <%= link_to show_season_episode_path(episode, season_id: @season, show_id: @show) do %>
+                <%= image_tag episode.background, class: "rounded-lg md:rounded-r-none border border-pop aspect-[16/9]" %>
+              <% end %>
             </div>
             <div class="col-span-1 md:col-span-2">
-              <div class="flex items-center gap-2 bg-background-darker md:border md:border-pop md:border-l-0 pl-4 py-4 rounded-lg md:rounded-l-none">
-                <p class="font-domine"><b class="text-pop">Episode <%= episode.number %></b> - <%= episode.translated_name %></p>
-                <% unless episode.standard? %>
-                  <small class="py-1 px-2 bg-pop/50 rounded-lg"><%= episode.episode_type %></small>
+              <div class="flex justify-between gap-4 bg-background-darker md:border md:border-pop md:border-l-0 p-4 rounded-lg md:rounded-l-none">
+                <div class="flex flex-wrap items-center gap-2">
+                  <%= link_to show_season_episode_path(episode, season_id: @season, show_id: @show), class: "font-domine hover:underline decoration-pop" do %>
+                    <b class="text-pop">Episode <%= episode.number %></b> - <%= episode.translated_name %>
+                  <% end %>
+                  <% unless episode.standard? %>
+                    <small class="py-1 px-2 bg-pop/50 rounded-lg whitespace-nowrap"><%= episode.episode_type %></small>
+                  <% end %>
+                </div>
+                <%= link_to edit_show_season_episode_path(episode, season_id: @season, show_id: @show) do %>
+                  <i class="fa-solid fa-pen"></i>
                 <% end %>
               </div>
               <p class="px-4 pt-2 text-sm line-clamp-2 sm:line-clamp-3 md:line-clamp-4"><%= episode.overview %></p>

@@ -64,6 +64,9 @@ Rails.application.routes.draw do
         get :posters, on: :collection
         get :videos, on: :collection
       end
+      resources :episodes, except: [:index, :destroy] do
+        get :backgrounds, on: :member
+      end
 
       get :posters, on: :member
     end

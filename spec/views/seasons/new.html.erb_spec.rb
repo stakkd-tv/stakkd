@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "seasons/edit", type: :view do
+RSpec.describe "seasons/new", type: :view do
   let(:season) { Season.new }
   let(:show) { FactoryBot.create(:show) }
 
@@ -9,7 +9,7 @@ RSpec.describe "seasons/edit", type: :view do
     assign(:season, season)
   end
 
-  it "renders the edit season form" do
+  it "renders the new season form" do
     render
 
     assert_select "form[action='#{show_seasons_path(show)}'][method='post']" do

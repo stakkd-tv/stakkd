@@ -1,0 +1,52 @@
+<% content_for :title, "Stakkd - #{@show.translated_title} - Season #{@season.number} Episode #{@episode.number}" %>
+
+<%= render "shared/colour_from_image", image: @season.poster %>
+
+<%# TODO: Display gallery for backgrounds %>
+<div class="max-w-7xl mx-auto my-8 px-6 pt-10">
+  <div class="aspect-video w-full relative mb-10 md:mb-16">
+    <%= image_tag @episode.background, class: "rounded-lg border border-pop" %>
+    <%= image_tag @season.poster, class: "rounded-lg absolute left-5 -bottom-5 sm:left-10 sm:-bottom-10 w-[22%] sm:w-[15%]" %>
+  </div>
+  <div class="flex gap-3 mb-4 text-sm md:text-lg">
+    <%= link_to @show.translated_title, show_path(@show), class: "underline" %>
+    <p>/</p>
+    <%= link_to @season.translated_name, show_season_path(@season, show_id: @show), class: "underline" %>
+  </div>
+  <div class="flex justify-between gap-8 mb-4">
+    <h1 class="font-domine text-2xl md:text-4xl"><span class="text-pop">Episode <%= @episode.number %></span> - <%= @episode.translated_name %></h1>
+    <%= link_to edit_show_season_episode_path(@episode, season_id: @season, show_id: @show) do %>
+      <i class="fa-solid fa-pen text-lg"></i>
+    <% end %>
+  </div>
+  <div class="inline-flex gap-3 mb-8 text-sm">
+    <span><%= "#{@episode.runtime} #{"minute".pluralize(@episode.runtime)}" %></span>
+    <span>-</span>
+    <span><%= @episode.original_air_date.strftime("%B %d, %Y") %></span>
+    <% unless @episode.standard? %>
+      <span>-</span>
+      <span><%= @episode.episode_type.humanize %></span>
+    <% end %>
+  </div>
+
+  <div class="bg-background-darker p-4 rounded-lg flex flex-col mb-6">
+    <div class="leading-6 text-sm md:text-base flex flex-col gap-6">
+      <%= simple_format(@episode.overview.presence || @season.overview.presence || @show.overview.presence) %>
+    </div>
+    <% if @episode.imdb_id.present? %>
+      <%= link_to @episode.imdb_url, class: "link link-imdb w-fit text-4xl mt-6" do %>
+        <i class="fa-brands fa-imdb"></i>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="flex flex-wrap gap-2 justify-between">
+    <% if @episode.previous_episode %>
+      <%= link_to "Previous", show_season_episode_path(@episode.previous_episode, season_id: @season, show_id: @show), class: "link" %>
+    <% end %>
+    <div class="flex-1"></div>
+    <% if @episode.next_episode %>
+      <%= link_to "Next", show_season_episode_path(@episode.next_episode, season_id: @season, show_id: @show), class: "link" %>
+    <% end %>
+  </div>
+</div>

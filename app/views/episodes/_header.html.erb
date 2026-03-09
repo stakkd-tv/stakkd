@@ -1,0 +1,22 @@
+<div class="bg-background-darker p-8">
+  <div class="max-w-7xl mx-auto px-6 flex flex-col items-center gap-4">
+    <div class="aspect-square w-16 h-16 border border-pop overflow-hidden flex items-center rounded-lg">
+      <%= image_tag show.poster %>
+    </div>
+    <%= link_to show do %>
+      <h3 class="text-4xl font-bold font-domine text-white text-center"><%= show.translated_title %></h3>
+    <% end %>
+    <div class="flex gap-2">
+      <%= link_to season.translated_name, show_season_path(season, show_id: show), class: "underline text-xl font-bold font-domine text-white text-center" %>
+      <% e = local_assigns[:episode] %>
+      <% if e %>
+        <p>-</p>
+        <%# TODO: WHY? Spec fails unless we EXPLICITLY call to_param %>
+        <%= link_to e.translated_name, show_season_episode_path(show.to_param, season.to_param, e.to_param), class: "underline text-xl font-bold font-domine text-white text-center" %>
+      <% else %>
+        <p>-</p>
+        <p class="text-xl font-bold font-domine text-white text-center">New episode</p>
+      <% end %>
+    </div>
+  </div>
+</div>

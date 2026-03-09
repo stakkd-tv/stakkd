@@ -1,5 +1,6 @@
 class Show < ApplicationRecord
   include Slugify
+  include HasImdb
 
   acts_as_taggable_on :keywords
 
@@ -54,8 +55,6 @@ class Show < ApplicationRecord
   def background = backgrounds.first
 
   def logo = logos.first || "1:1.png"
-
-  def imdb_url = "https://www.imdb.com/title/#{imdb_id}/"
 
   def slug=(value)
     self.title_kebab = value

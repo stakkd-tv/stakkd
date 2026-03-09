@@ -1,4 +1,6 @@
 class Episode < ApplicationRecord
+  include HasImdb
+
   TYPES = [
     STANDARD = "standard",
     MID_SEASON_FINALE = "mid-season finale",
@@ -7,6 +9,7 @@ class Episode < ApplicationRecord
 
   # Assocations
   belongs_to :season
+  has_one :show, through: :season
   has_many_attached :backgrounds
 
   # Validations
@@ -20,6 +23,16 @@ class Episode < ApplicationRecord
   scope :ordered, -> { order(number: :asc) }
 
   def background = backgrounds.first || "16:9.png"
+
+  def to_param = number
+
+  # TODO: If the episode is the last episode in the season, check if there is a next season and
+  # if there is, get the first episode of that season as the next episode.
+  def next_episode = @next_episode ||= season.episodes.where(number: number + 1).first
+
+  # TODO: If the episode is the first episode in the season, check if there is a previous season and
+  # if there is, get the last episode of that season as the previous episode.
+  def previous_episode = @previous_episode ||= season.episodes.where(number: number - 1).first
 
   TYPES.each do |type|
     define_method "#{type}?" do

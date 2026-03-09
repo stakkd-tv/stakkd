@@ -1,0 +1,5 @@
+<% content_for :title, "Stakkd - Edit #{@show.translated_title} - Season #{@season.number} Episode #{@episode.number}" %>
+
+<%= render "header", season: @season, show: @show, episode: @episode %>
+
+<%= render "shared/backgrounds_editor", object: @episode %>

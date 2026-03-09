@@ -1,8 +1,10 @@
 require "rails_helper"
+require_relative "shared_examples/has_imdb"
 
 RSpec.describe Episode, type: :model do
   describe "associations" do
     it { should belong_to(:season) }
+    it { should have_one(:show).through(:season) }
     it { should have_many_attached(:backgrounds) }
   end
 
@@ -24,6 +26,8 @@ RSpec.describe Episode, type: :model do
     end
   end
 
+  it_behaves_like "a model with imdb_id", Episode
+
   describe "#background" do
     context "when there are no backgrounds" do
       it "returns the 16:9 asset" do
@@ -40,6 +44,36 @@ RSpec.describe Episode, type: :model do
         )
         expect(episode.background).to be_a(ActiveStorage::Attachment)
       end
+    end
+  end
+
+  describe "#next_episode" do
+    it "returns the next episode" do
+      season = FactoryBot.create(:season)
+      episode = FactoryBot.create(:episode, season: season, number: 1)
+      next_episode = FactoryBot.create(:episode, season: season, number: 2)
+      expect(episode.next_episode).to eq next_episode
+    end
+
+    it "returns nil when there is no next episode" do
+      season = FactoryBot.create(:season)
+      episode = FactoryBot.create(:episode, season: season, number: 1)
+      expect(episode.next_episode).to be_nil
+    end
+  end
+
+  describe "#previous_episode" do
+    it "returns the previous episode" do
+      season = FactoryBot.create(:season)
+      episode = FactoryBot.create(:episode, season: season, number: 2)
+      previous_episode = FactoryBot.create(:episode, season: season, number: 1)
+      expect(episode.previous_episode).to eq previous_episode
+    end
+
+    it "returns nil when there is no previous episode" do
+      season = FactoryBot.create(:season)
+      episode = FactoryBot.create(:episode, season: season, number: 1)
+      expect(episode.previous_episode).to be_nil
     end
   end
 

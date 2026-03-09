@@ -25,5 +25,9 @@ RSpec.describe SeasonsController, type: :routing do
     it "routes to #update via PATCH" do
       expect(patch: "/shows/1/seasons/1").to route_to("seasons#update", id: "1", show_id: "1")
     end
+
+    it "routes to #posters" do
+      expect(get: "/shows/1/seasons/1/posters").to route_to("seasons#posters", id: "1", show_id: "1")
+    end
   end
 end

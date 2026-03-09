@@ -1,0 +1,73 @@
+<div class="form">
+  <%= render "form_nav", episode: %>
+  <%= form_with model: episode, url: [show, season, episode] do |form| %>
+    <% if episode.errors.any? %>
+      <div style="color: red">
+        <h2><%= pluralize(episode.errors.count, "error") %> prohibited this episode from being saved:</h2>
+
+        <ul>
+          <% episode.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="flex flex-col xs:flex-row gap-6">
+      <div class="basis-1/2">
+        <%= form.label :translated_name %>
+        <%= form.text_field :translated_name, required: true %>
+      </div>
+
+      <div class="basis-1/2">
+        <%= form.label :original_name %>
+        <%= form.text_field :original_name, required: true %>
+      </div>
+    </div>
+
+    <div class="flex flex-col xs:flex-row gap-6">
+      <div class="basis-1/2">
+        <%= form.label :original_air_date %>
+        <%= form.date_field :original_air_date %>
+      </div>
+
+      <div class="basis-1/2">
+        <%= form.label :number %>
+        <%= form.number_field :number, required: true, min: 1 %>
+      </div>
+    </div>
+
+    <div>
+      <%= form.label :overview %>
+      <%= form.text_area :overview, class: "h-60" %>
+    </div>
+
+    <div class="flex flex-col xs:flex-row gap-6">
+      <div class="basis-1/2">
+        <%= form.label :runtime %>
+        <%= form.number_field :runtime %>
+      </div>
+
+      <div class="basis-1/2">
+        <%= form.label :episode_type %>
+        <%= form.collection_select :episode_type, Episode::TYPES, :to_s, :humanize %>
+      </div>
+    </div>
+
+    <div class="flex flex-col xs:flex-row gap-6">
+      <div class="basis-1/2">
+        <%= form.label :imdb_id, "IMDB" %>
+        <%= form.text_field :imdb_id %>
+      </div>
+
+      <div class="basis-1/2">
+        <%= form.label :production_code %>
+        <%= form.text_field :production_code %>
+      </div>
+    </div>
+
+    <div>
+      <%= form.submit "Save" %>
+    </div>
+  <% end %>
+</div>
