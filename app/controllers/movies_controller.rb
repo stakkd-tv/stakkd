@@ -12,6 +12,7 @@ class MoviesController < ApplicationController
     @alternative_names = @movie.alternative_names.includes(:country).group_by(&:country)
     @gallery_presenter = Galleries::Presenter.new(@movie)
     @release_dates_for_country = @movie.release_dates_for_country
+    @cast_members = CastMembers::Movie.new(@movie).cast_members
   end
 
   def new

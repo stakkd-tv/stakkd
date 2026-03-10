@@ -26,10 +26,12 @@ RSpec.describe "shows/show", type: :view do
       videos:,
       genres: [FactoryBot.create(:genre, name: "Action")]
     )
+    FactoryBot.create(:cast_member, record: @show, person: FactoryBot.build(:person, translated_name: "John Doe"), character: "Bob")
     gallery_presenter = Galleries::Presenter.new(@show)
     assign(:show, @show)
     assign(:alternative_names, alternative_names)
     assign(:gallery_presenter, gallery_presenter)
+    assign(:cast_members, CastMembers::Show.new(@show).cast_members)
   end
 
   it "renders attributes in <p>" do
@@ -45,6 +47,14 @@ RSpec.describe "shows/show", type: :view do
   it "renders the genres" do
     render
     assert_select "a.rounded-full", text: "Action"
+  end
+
+  it "renders the cast members" do
+    render
+    assert_select "p", text: "John Doe"
+    assert_select "small", text: "Bob"
+    # TODO: Add spec for cast and crew link
+    # assert_select "a[href='#{cast_show_path(@show)}']"
   end
 
   it "renders the seasons" do

@@ -1,0 +1,20 @@
+<div>
+  <div class="w-full flex gap-4 overflow-x-scroll p-2 mb-4">
+    <% cast_members.take(10).each do |cast_member| %>
+      <%= link_to cast_member[:person] do %>
+        <div class="flex flex-col">
+          <%= image_tag cast_member[:person].image, class: "aspect-2/3 w-24 min-w-24 md:w-40 md:min-w-40 object-cover object-top rounded-lg" %>
+          <div class="w-24 md:w-40">
+            <p class="text-sm md:text-lg font-bold mt-2 md:mb-1"><%= cast_member[:person].translated_name %></p>
+            <small class="line-clamp-4">
+              <%= cast_member[:characters].map { it[:character_name] }.join(" / ") %>
+            </small>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+  <% if local_assigns[:full_cast_path] %>
+    <%= link_to "View full cast and crew", full_cast_path, class: "link" %>
+  <% end %>
+</div>

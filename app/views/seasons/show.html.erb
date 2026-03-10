@@ -63,6 +63,8 @@
         <% end %>
       </div>
 
+      <%= render "shared/cast_members", cast_members: @cast_members %>
+
       <div class="flex flex-col gap-4">
         <div>
           <%= link_to new_show_season_episode_path(season_id: @season, show_id: @show), class: "link float-right flex items-center gap-2" do %>

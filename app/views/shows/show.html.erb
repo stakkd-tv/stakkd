@@ -80,6 +80,8 @@
         <%= simple_format @show.overview %>
       </div>
 
+      <%= render "shared/cast_members", cast_members: @cast_members, full_cast_path: "#" %>
+
       <div class="flex flex-col gap-4" id="seasons">
         <div class="flex justify-between mt-10 md:mt-4">
           <h4 class="text-2xl font-bold font-domine text-white">

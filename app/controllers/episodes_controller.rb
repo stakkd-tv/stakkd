@@ -5,6 +5,7 @@ class EpisodesController < ApplicationController
   before_action :set_episode, except: [:new, :create]
 
   def show
+    @cast_members = CastMembers::Episode.new(@episode).cast_members
   end
 
   def new

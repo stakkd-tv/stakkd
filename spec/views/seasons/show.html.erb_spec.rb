@@ -32,10 +32,12 @@ RSpec.describe "seasons/show", type: :view do
       translated_name: "Ringtoneers",
       backgrounds: [Rack::Test::UploadedFile.new("spec/support/assets/1280x720.png", "image/png")]
     )
+    FactoryBot.create(:cast_member, record: @season, person: FactoryBot.build(:person, translated_name: "John Doe"), character: "Bob")
     gallery_presenter = Galleries::Presenter.new(@season)
     assign(:show, @show)
     assign(:season, @season)
     assign(:gallery_presenter, gallery_presenter)
+    assign(:cast_members, CastMembers::Season.new(@season).cast_members)
   end
 
   it "renders attributes in <p>" do
@@ -47,6 +49,14 @@ RSpec.describe "seasons/show", type: :view do
     expect(rendered).to match(/This is overview/)
     expect(rendered).to match(/January 01, 2023/)
     expect(rendered).to match(/1h 0m/)
+  end
+
+  it "renders the cast members" do
+    render
+    assert_select "p", text: "John Doe"
+    assert_select "small", text: "Bob"
+    # TODO: Add spec for cast and crew link
+    # assert_select "a[href='#{cast_show_path(@show)}']"
   end
 
   context "when name matches the potential name" do
