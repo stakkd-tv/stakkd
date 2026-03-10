@@ -56,7 +56,7 @@ class Movie < ApplicationRecord
 
   def available_galleries = [:posters, :backgrounds, :logos, :videos]
 
-  def directors = @director ||= crew_members.includes(:job, :person).where(job: {name: Job::DIRECTOR})
+  def directors = @directors ||= crew_members.includes(:job, :person).where(job: {name: Job::DIRECTOR})
 
   private
 

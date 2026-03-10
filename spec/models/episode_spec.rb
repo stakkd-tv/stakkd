@@ -108,6 +108,40 @@ RSpec.describe Episode, type: :model do
     end
   end
 
+  describe "#directors" do
+    context "when the episode has a director" do
+      it "returns the directors" do
+        director = FactoryBot.build(:crew_member, job: FactoryBot.build(:job, name: Job::DIRECTOR))
+        episode = FactoryBot.create(:episode, crew_members: [director])
+        expect(episode.directors).to eq [director]
+      end
+    end
+
+    context "when the episode does not have a director" do
+      it "returns an empty array" do
+        episode = FactoryBot.create(:episode)
+        expect(episode.directors).to eq []
+      end
+    end
+  end
+
+  describe "#writers" do
+    context "when the episode has a writer" do
+      it "returns the writers" do
+        writer = FactoryBot.build(:crew_member, job: FactoryBot.build(:job, name: Job::WRITER))
+        episode = FactoryBot.create(:episode, crew_members: [writer])
+        expect(episode.writers).to eq [writer]
+      end
+    end
+
+    context "when the episode does not have a writer" do
+      it "returns an empty array" do
+        episode = FactoryBot.create(:episode)
+        expect(episode.writers).to eq []
+      end
+    end
+  end
+
   Episode::TYPES.each do |type|
     describe "##{type}?" do
       it "returns true when the episode type matches" do

@@ -22,7 +22,7 @@
   <div class="inline-flex gap-3 mb-8 text-sm">
     <span><%= format_runtime(@episode) %></span>
     <span>-</span>
-    <span><%= @episode.original_air_date.strftime("%B %d, %Y") %></span>
+    <span><%= @episode.original_air_date&.strftime("%B %d, %Y") || "TBA" %></span>
     <% unless @episode.standard? %>
       <span>-</span>
       <span><%= @episode.episode_type.humanize %></span>
@@ -33,6 +33,22 @@
     <div class="leading-6 text-sm md:text-base flex flex-col gap-6">
       <%= simple_format(@episode.overview.presence || @season.overview.presence || @show.overview.presence) %>
     </div>
+    <% if @episode.directors.any? %>
+      <p class="mt-2">
+        Directed by:
+        <% @episode.directors.each_with_index do |director, i| %>
+          <%= link_to director.person.translated_name, person_path(director.person), class: "underline" %><% unless i == @episode.directors.size - 1 %>, <% end %>
+        <% end %>
+      </p>
+    <% end %>
+    <% if @episode.writers.any? %>
+      <p class="mt-2">
+        Written by:
+        <% @episode.writers.each_with_index do |writer, i| %>
+          <%= link_to writer.person.translated_name, person_path(writer.person), class: "underline" %><% unless i == @episode.writers.size - 1 %>, <% end %>
+        <% end %>
+      </p>
+    <% end %>
     <% if @episode.imdb_id.present? %>
       <%= link_to @episode.imdb_url, class: "link link-imdb w-fit text-4xl mt-6" do %>
         <i class="fa-brands fa-imdb"></i>

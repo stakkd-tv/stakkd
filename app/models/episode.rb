@@ -42,6 +42,10 @@ class Episode < ApplicationRecord
 
   def records_for_polymorphic_paths = [show, season, self]
 
+  def directors = @directors ||= crew_members.includes(:job, :person).where(job: {name: Job::DIRECTOR})
+
+  def writers = @writers ||= crew_members.includes(:job, :person).where(job: {name: Job::WRITER})
+
   TYPES.each do |type|
     define_method "#{type}?" do
       episode_type == type

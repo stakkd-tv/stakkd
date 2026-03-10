@@ -3,6 +3,7 @@ class Job < ApplicationRecord
 
   DIRECTOR = "Director"
   CREATOR = "Creator"
+  WRITER = "Writer"
 
   pg_search_scope :search, against: [:department, :name], using: {trigram: {threshold: 0.2}}
 
