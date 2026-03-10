@@ -102,6 +102,13 @@ RSpec.describe Season, type: :model do
     end
   end
 
+  describe "#records_for_polymorphic_paths" do
+    it "includes the show in the array ordered by depth" do
+      season = FactoryBot.create(:season)
+      expect(season.records_for_polymorphic_paths).to eq([season.show, season])
+    end
+  end
+
   describe "#to_s" do
     it "returns the season number as a string" do
       expect(Season.new(number: 2, show: Show.new(translated_title: "Testing")).to_s).to eq "Testing - Season 2"

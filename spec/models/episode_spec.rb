@@ -5,6 +5,7 @@ RSpec.describe Episode, type: :model do
   describe "associations" do
     it { should belong_to(:season) }
     it { should have_many(:guest_stars).class_name("CastMember") }
+    it { should have_many(:crew_members).dependent(:destroy) }
     it { should have_many(:videos).dependent(:destroy) }
     it { should have_one(:show).through(:season) }
     it { should have_many_attached(:backgrounds) }
@@ -97,6 +98,13 @@ RSpec.describe Episode, type: :model do
     it "includes the show and season in the hash" do
       episode = FactoryBot.create(:episode)
       expect(episode.related_records).to eq({show: episode.show, season: episode.season, episode:})
+    end
+  end
+
+  describe "#records_for_polymorphic_paths" do
+    it "includes the show and season in the array ordered by depth" do
+      episode = FactoryBot.create(:episode)
+      expect(episode.records_for_polymorphic_paths).to eq([episode.show, episode.season, episode])
     end
   end
 

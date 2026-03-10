@@ -8,7 +8,7 @@
 
     <%= render "shared/table_editor", table_presenter: @table_presenter, path_prefix: nested_path_for(relatable: @relatable) %>
 
-    <%= form_with model: [@relatable, CrewMember.new] do |form| %>
+    <%= form_with model: @relatable.records_for_polymorphic_paths + [CrewMember.new] do |form| %>
       <h4 class="font-bold text-2xl">Add a crew member</h4>
 
       <div class="flex flex-col sm:flex-row gap-6">

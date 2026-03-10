@@ -10,6 +10,7 @@ class Episode < ApplicationRecord
   # Assocations
   belongs_to :season
   has_many :guest_stars, -> { order(position: :asc) }, as: :record, class_name: "CastMember", dependent: :destroy
+  has_many :crew_members, as: :record, dependent: :destroy
   has_many :videos, as: :record, dependent: :destroy
   has_one :show, through: :season
   has_many_attached :backgrounds
@@ -38,6 +39,8 @@ class Episode < ApplicationRecord
   def previous_episode = @previous_episode ||= season.episodes.where(number: number - 1).first
 
   def related_records = super.merge(season:, show:)
+
+  def records_for_polymorphic_paths = [show, season, self]
 
   TYPES.each do |type|
     define_method "#{type}?" do

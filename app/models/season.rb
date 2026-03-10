@@ -29,6 +29,8 @@ class Season < ApplicationRecord
     super.merge(show:)
   end
 
+  def records_for_polymorphic_paths = [show, self]
+
   def to_s = "#{show} - Season #{number}"
 
   def runtime = episodes.sum(:runtime)

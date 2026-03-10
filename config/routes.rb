@@ -69,6 +69,7 @@ Rails.application.routes.draw do
         resources :guest_stars, only: [:index, :create, :update, :destroy] do
           post :move, on: :member
         end
+        resources :crew_members, only: [:index, :create, :update, :destroy]
         resources :videos, only: [:index, :create, :destroy]
 
         get :backgrounds, on: :member

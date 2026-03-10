@@ -7,6 +7,12 @@ RSpec.feature "Show form", type: :system, js: true do
     @show = FactoryBot.create(:show)
     @season = @show.seasons.first
 
+    FactoryBot.create(:person, translated_name: "John Doe")
+    FactoryBot.create(:person, translated_name: "Obi Wan")
+
+    FactoryBot.create(:job, name: "Actor")
+    FactoryBot.create(:job, name: "Producer")
+
     user = FactoryBot.create(:user)
     sign_in(user)
   end
@@ -35,6 +41,68 @@ RSpec.feature "Show form", type: :system, js: true do
     end
     expect(page).to have_css("img[src*='1280x720.png']")
     expect(page).not_to have_css("img[src*='1279x719.png']")
+
+    # Guest Stars
+    click_link "Guest Stars"
+    expect(page).to have_css("a[data-active='true']", text: "Guest Stars")
+    expect(page).to have_content("Add a guest star")
+    fill_in "person", with: "obi wan"
+    expect(page).to have_css("div.p-2", text: "Obi Wan")
+    expect(page).not_to have_css("div.p-2", text: "John Doe") # Applies searching
+    find("div.p-2", text: "Obi Wan").click
+    fill_in "cast_member_character", with: "Test character"
+    click_button "Save"
+    using_wait_time 5 do
+      expect(page).to have_css "div.tabulator-cell", text: "Obi Wan"
+      expect(page).to have_css "div.tabulator-cell", text: "Test character"
+      expect(episode.reload.guest_stars.count).to eq 1
+    end
+    character_cell = find("div.tabulator-cell", text: "Test character")
+    character_cell.click
+    find("input:focus").send_keys([:control, "a"], :backspace)
+    find("input:focus").send_keys("New character", :enter)
+    using_wait_time 5 do
+      expect(page).to have_css "div.tabulator-cell", text: "Obi Wan"
+      expect(page).to have_css "div.tabulator-cell", text: "New character"
+    end
+    find("div.tabulator-cell>svg").click
+    using_wait_time 5 do
+      expect(page).not_to have_css "div.tabulator-cell", text: "Obi Wan"
+      expect(page).not_to have_css "div.tabulator-cell", text: "New character"
+      expect(episode.reload.guest_stars).to eq []
+    end
+
+    # Crew Members
+    click_link "Crew"
+    expect(page).to have_css("a[data-active='true']", text: "Crew")
+    expect(page).to have_content("Add a crew member")
+    fill_in "person", with: "obi wan"
+    expect(page).to have_css("div.p-2", text: "Obi Wan")
+    expect(page).not_to have_css("div.p-2", text: "John Doe") # Applies searching
+    find("div.p-2", text: "Obi Wan").click
+    fill_in "job", with: "producer"
+    expect(page).to have_css("div.p-2", text: "Producer")
+    expect(page).not_to have_css("div.p-2", text: "Actor") # Applies searching
+    find("div.p-2", text: "Producer").click
+    click_button "Save"
+    using_wait_time 5 do
+      expect(page).to have_css "div.tabulator-cell", text: "Obi Wan"
+      expect(page).to have_css "div.tabulator-cell", text: "Producer"
+      expect(episode.reload.crew_members.count).to eq 1
+    end
+    job_cell = find("div.tabulator-cell", text: "Producer")
+    job_cell.click
+    find("div.dropdown-option", text: "Actor").click
+    using_wait_time 5 do
+      expect(page).to have_css "div.tabulator-cell", text: "Obi Wan"
+      expect(page).to have_css "div.tabulator-cell", text: "Actor"
+    end
+    find("div.tabulator-cell>svg").click
+    using_wait_time 5 do
+      expect(page).not_to have_css "div.tabulator-cell", text: "Obi Wan"
+      expect(page).not_to have_css "div.tabulator-cell", text: "Actor"
+      expect(episode.reload.crew_members).to eq []
+    end
 
     # Videos
     click_link "Videos"
