@@ -41,6 +41,7 @@ Rails.application.routes.draw do
     resources :cast_members, only: [:index, :create, :update, :destroy] do
       post :move, on: :member
     end
+    resources :crew_members, only: [:index, :create, :update, :destroy]
     resources :content_ratings, only: [:index, :create, :destroy]
     resources :genre_assignments, only: [:index, :create, :destroy]
     resources :keywords, only: [:index, :create, :destroy]

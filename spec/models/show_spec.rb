@@ -7,6 +7,8 @@ RSpec.describe Show, type: :model do
     it { should belong_to(:country) }
     it { should belong_to(:language) }
     it { should have_many(:alternative_names).dependent(:destroy) }
+    it { should have_many(:season_regulars).class_name("CastMember").dependent(:destroy) }
+    it { should have_many(:crew_members).dependent(:destroy) }
     it { should have_many(:content_ratings).dependent(:destroy) }
     it { should have_many(:genre_assignments).dependent(:destroy) }
     it { should have_many(:genres).through(:genre_assignments) }
@@ -19,7 +21,6 @@ RSpec.describe Show, type: :model do
     it { should have_many(:ordered_seasons).class_name("Season") }
     it { should have_many(:seasons_without_specials).class_name("Season") }
     it { should have_many(:non_special_episodes).through(:seasons_without_specials) }
-    it { should have_many(:season_regulars).class_name("CastMember").dependent(:destroy) }
     it { should have_many_attached(:posters) }
     it { should have_many_attached(:backgrounds) }
     it { should have_many_attached(:logos) }
