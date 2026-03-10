@@ -8,8 +8,6 @@ module CastMembers
     private
 
     def consolidate_cast_members
-      return @output if @output.any?
-
       episodes = @object.episodes.includes(guest_stars: :person).to_a
 
       @show.season_regulars.includes(:person).each do |regular|
@@ -25,8 +23,6 @@ module CastMembers
           increment_character_count_for(cast_member: guest_star, increment_by: 1, depth: 2)
         end
       end
-
-      @output
     end
   end
 end

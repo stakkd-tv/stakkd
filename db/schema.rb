@@ -61,7 +61,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_06_144326) do
     t.bigint "record_id", null: false
     t.bigint "person_id", null: false
     t.string "character", null: false
-    t.integer "position", default: 0, null: false
+    t.integer "position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["person_id", "record_type", "record_id"], name: "index_unique_cast_members", unique: true
