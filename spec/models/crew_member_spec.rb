@@ -10,6 +10,6 @@ RSpec.describe CrewMember, type: :model do
   describe "validations" do
     subject { FactoryBot.create(:crew_member) }
 
-    it { should validate_uniqueness_of(:person_id).scoped_to([:record_type, :record_id]) }
+    it { should validate_uniqueness_of(:person_id).scoped_to([:record_type, :record_id, :job_id]) }
   end
 end

@@ -128,7 +128,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_06_144326) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["job_id"], name: "index_crew_members_on_job_id"
-    t.index ["person_id", "record_type", "record_id"], name: "index_unique_crew_members", unique: true
+    t.index ["person_id", "record_type", "record_id", "job_id"], name: "index_unique_crew_members", unique: true
     t.index ["person_id"], name: "index_crew_members_on_person_id"
     t.index ["record_type", "record_id"], name: "index_crew_members_on_record"
   end

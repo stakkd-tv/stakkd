@@ -6,7 +6,6 @@ class RuntimeFormatter
   def format
     days = extract_from_runtime(1440)
     hours = extract_from_runtime(60)
-    minutes = @remaining_minutes
 
     formatted_output = ""
     formatted_output += "#{days}d " if days > 0

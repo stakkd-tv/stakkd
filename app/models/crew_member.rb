@@ -5,5 +5,5 @@ class CrewMember < ApplicationRecord
   belongs_to :job
 
   # Validations
-  validates_uniqueness_of :person_id, scope: [:record_type, :record_id]
+  validates_uniqueness_of :person_id, scope: [:record_type, :record_id, :job_id]
 end

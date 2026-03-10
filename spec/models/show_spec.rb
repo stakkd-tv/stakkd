@@ -155,7 +155,7 @@ RSpec.describe Show, type: :model do
       season = FactoryBot.create(:season, show: show)
       FactoryBot.create(:episode, number: 1, season: season, runtime: 40)
       FactoryBot.create(:episode, number: 2, season: season, runtime: 20)
-      special_episode = FactoryBot.create(:episode, season: show.ordered_seasons.first, runtime: 30)
+      FactoryBot.create(:episode, season: show.ordered_seasons.first, runtime: 30)
       expect(show.runtime).to eq 60
     end
   end
