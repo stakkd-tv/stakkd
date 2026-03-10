@@ -73,6 +73,8 @@ class Show < ApplicationRecord
 
   def cast_members = season_regulars # Duck typing for cast members controller
 
+  def creators = @creators ||= crew_members.includes(:job, :person).where(job: {name: Job::CREATOR})
+
   private
 
   def slug_source = translated_title

@@ -168,4 +168,21 @@ RSpec.describe Show, type: :model do
       expect(show.cast_members).to eq regulars
     end
   end
+
+  describe "#creators" do
+    context "when the show has a creator" do
+      it "returns the creator" do
+        creator = FactoryBot.build(:crew_member, job: FactoryBot.build(:job, name: Job::CREATOR))
+        show = FactoryBot.create(:show, crew_members: [creator])
+        expect(show.creators).to eq [creator]
+      end
+    end
+
+    context "when the show does not have a creator" do
+      it "returns an empty array" do
+        show = FactoryBot.create(:show)
+        expect(show.creators).to eq []
+      end
+    end
+  end
 end

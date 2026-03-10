@@ -88,6 +88,30 @@ RSpec.describe "movies/show", type: :view do
     end
   end
 
+  context "when the movie has directors" do
+    before do
+      job = FactoryBot.create(:job, name: Job::DIRECTOR)
+      @person = FactoryBot.create(:person, translated_name: "John Doe")
+      FactoryBot.create(:crew_member, job:, person: @person, record: @movie)
+      @person2 = FactoryBot.create(:person, translated_name: "Chris Doe")
+      FactoryBot.create(:crew_member, job:, person: @person2, record: @movie)
+    end
+
+    it "renders the directors" do
+      render
+      assert_select "p", text: "Directors:"
+      assert_select "a", text: "John Doe"
+      assert_select "a", text: "Chris Doe"
+    end
+  end
+
+  context "when the movie has no directors" do
+    it "does not render the directors" do
+      render
+      assert_select "p", text: "Directors:", count: 0
+    end
+  end
+
   context "when there are alternative names" do
     let(:country) { FactoryBot.create(:country) }
     let(:names) { FactoryBot.build_list(:alternative_name, 1, type: "Test type") }

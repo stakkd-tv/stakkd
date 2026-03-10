@@ -26,6 +26,14 @@
           <p class="font-domine"><b>Total runtime (excl specials):</b></p>
           <p><%= format_runtime(@show) %></p>
         </div>
+        <% if @show.creators.any? %>
+          <div>
+            <p class="font-domine"><b>Creators:</b></p>
+            <% @show.creators.each do |creator| %>
+              <%= link_to creator.person.translated_name, person_path(creator.person), class: "underline" %><br>
+            <% end %>
+          </div>
+        <% end %>
       </div>
       <% if @show.companies.any? %>
         <div class="grid grid-cols-5 gap-2">

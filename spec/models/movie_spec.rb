@@ -190,19 +190,19 @@ RSpec.describe Movie, type: :model do
     end
   end
 
-  describe "#director" do
+  describe "#directors" do
     context "when the movie has a director" do
-      it "returns the director" do
+      it "returns the directors" do
         director = FactoryBot.build(:crew_member, job: FactoryBot.build(:job, name: Job::DIRECTOR))
         movie = FactoryBot.create(:movie, crew_members: [director])
-        expect(movie.director).to eq director
+        expect(movie.directors).to eq [director]
       end
     end
 
     context "when the movie does not have a director" do
-      it "returns nil" do
+      it "returns an empty array" do
         movie = FactoryBot.create(:movie)
-        expect(movie.director).to be_nil
+        expect(movie.directors).to eq []
       end
     end
   end

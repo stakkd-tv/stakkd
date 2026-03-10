@@ -62,6 +62,30 @@ RSpec.describe "shows/show", type: :view do
     end
   end
 
+  context "when the show has creators" do
+    before do
+      job = FactoryBot.create(:job, name: Job::CREATOR)
+      @person = FactoryBot.create(:person, translated_name: "John Doe")
+      FactoryBot.create(:crew_member, job:, person: @person, record: @show)
+      @person2 = FactoryBot.create(:person, translated_name: "Chris Doe")
+      FactoryBot.create(:crew_member, job:, person: @person2, record: @show)
+    end
+
+    it "renders the creators" do
+      render
+      assert_select "p", text: "Creators:"
+      assert_select "a", text: "John Doe"
+      assert_select "a", text: "Chris Doe"
+    end
+  end
+
+  context "when the show has no creators" do
+    it "does not render the creators" do
+      render
+      assert_select "p", text: "Creators:", count: 0
+    end
+  end
+
   context "when there are alternative names" do
     let(:country) { FactoryBot.create(:country) }
     let(:names) { FactoryBot.build_list(:alternative_name, 1, type: "Test type") }

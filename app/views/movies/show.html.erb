@@ -28,10 +28,12 @@
           <p class="font-domine"><b>Runtime:</b></p>
           <p><%= format_runtime(@movie) %></p>
         </div>
-        <% if @movie.director %>
+        <% if @movie.directors.any? %>
           <div>
-            <p class="font-domine"><b>Director:</b></p>
-            <%= link_to @movie.director.person.translated_name, person_path(@movie.director.person), class: "underline" %>
+            <p class="font-domine"><b>Directors:</b></p>
+            <% @movie.directors.each do |director| %>
+              <%= link_to director.person.translated_name, person_path(director.person), class: "underline" %><br>
+            <% end %>
           </div>
         <% end %>
         <div>
