@@ -195,6 +195,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_06_144326) do
     t.decimal "revenue", default: "0.0", null: false
     t.decimal "budget", default: "0.0", null: false
     t.string "homepage"
+    t.date "release_date"
     t.string "imdb_id"
     t.string "title_kebab", null: false
     t.datetime "created_at", null: false

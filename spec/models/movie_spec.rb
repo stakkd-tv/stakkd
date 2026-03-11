@@ -31,6 +31,27 @@ RSpec.describe Movie, type: :model do
     it { should validate_inclusion_of(:status).in_array(Movie::STATUSES) }
   end
 
+  describe "before_validation :denormalize_release_date" do
+    context "when there is a release" do
+      it "sets release_date from release" do
+        uk = FactoryBot.create(:country, code: "UK")
+        cert_uk = FactoryBot.create(:certification, country: uk)
+        movie = FactoryBot.create(:movie, country: uk)
+        release = FactoryBot.create(:release, movie:, type: Release::THEATRICAL, certification: cert_uk, date: Date.today)
+        movie.save # This line isn't needed due to callback on release model, but will keep for clarity
+        expect(movie.release_date).to eq release.date
+      end
+    end
+
+    context "when there is no release" do
+      it "does not set a release date" do
+        movie = FactoryBot.create(:movie)
+        movie.save
+        expect(movie.release_date).to be_nil
+      end
+    end
+  end
+
   it_behaves_like "a slugified model", :movie, :translated_title
 
   describe "#poster" do
@@ -204,6 +225,22 @@ RSpec.describe Movie, type: :model do
         movie = FactoryBot.create(:movie)
         expect(movie.directors).to eq []
       end
+    end
+  end
+
+  describe "#year" do
+    it "returns the year of the release date" do
+      uk = FactoryBot.create(:country, code: "UK")
+      cert_uk = FactoryBot.create(:certification, country: uk)
+      movie = FactoryBot.create(:movie, country: uk)
+      release = FactoryBot.create(:release, movie:, type: Release::THEATRICAL, certification: cert_uk, date: Date.today)
+      movie.save # This line isn't needed due to callback on release model, but will keep for clarity
+      expect(movie.year).to eq release.date.year
+    end
+
+    it "returns nil when the release date is nil" do
+      movie = FactoryBot.create(:movie)
+      expect(movie.year).to be_nil
     end
   end
 end

@@ -34,6 +34,9 @@ class Movie < ApplicationRecord
   validates_presence_of :translated_title, :original_title, :runtime, :revenue, :budget
   validates_inclusion_of :status, in: STATUSES
 
+  # Callbacks
+  before_validation :denormalize_release_date
+
   def poster = posters.first || "2:3.png"
 
   def background = backgrounds.first
@@ -58,7 +61,13 @@ class Movie < ApplicationRecord
 
   def directors = @directors ||= crew_members.includes(:job, :person).where(job: {name: Job::DIRECTOR})
 
+  def year = release_date&.year
+
   private
+
+  def denormalize_release_date
+    self.release_date = release&.date
+  end
 
   def theatrical_release
     @theatrical_release ||= releases.includes(certification: :country).where(certification: {country:}, type: Release::THEATRICAL).first
