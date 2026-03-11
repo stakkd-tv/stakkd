@@ -53,8 +53,7 @@ RSpec.describe "shows/show", type: :view do
     render
     assert_select "p", text: "John Doe"
     assert_select "small", text: "Bob"
-    # TODO: Add spec for cast and crew link
-    # assert_select "a[href='#{cast_show_path(@show)}']"
+    assert_select "a[href='#{cast_show_path(@show)}']"
   end
 
   it "renders the seasons" do

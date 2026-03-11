@@ -81,6 +81,7 @@ Rails.application.routes.draw do
     get :posters, on: :member
     get :backgrounds, on: :member
     get :logos, on: :member
+    get :cast, on: :member
   end
   resources :users, only: [:new, :create]
   resources :genres, only: [:index]
