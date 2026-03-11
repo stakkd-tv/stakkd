@@ -4,7 +4,9 @@
       <%= render "shared/cast_column", cast_members: cast_members %>
     </div>
     <div class="col-span-1">
-      <%= render "shared/crew_column", crew_members: crew_members %>
+      <% if crew_members.present? %>
+        <%= render "shared/crew_column", crew_members: crew_members %>
+      <% end %>
     </div>
   </div>
 </div>

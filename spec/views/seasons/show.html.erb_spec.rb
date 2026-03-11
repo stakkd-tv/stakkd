@@ -55,8 +55,7 @@ RSpec.describe "seasons/show", type: :view do
     render
     assert_select "p", text: "John Doe"
     assert_select "small", text: "Bob"
-    # TODO: Add spec for cast and crew link
-    # assert_select "a[href='#{cast_show_path(@show)}']"
+    assert_select "a[href='#{cast_show_season_path(@season, show_id: @show)}']"
   end
 
   context "when name matches the potential name" do

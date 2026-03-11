@@ -63,7 +63,7 @@
         <% end %>
       </div>
 
-      <%= render "shared/cast_members", cast_members: @cast_members %>
+      <%= render "shared/cast_members", cast_members: @cast_members, full_cast_path: cast_show_season_path(@season, show_id: @show) %>
 
       <div class="flex flex-col gap-4">
         <div>

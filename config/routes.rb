@@ -76,6 +76,7 @@ Rails.application.routes.draw do
       end
 
       get :posters, on: :member
+      get :cast, on: :member
     end
 
     get :posters, on: :member

@@ -225,4 +225,17 @@ RSpec.describe "/shows/:show_id/seasons", type: :request do
       end
     end
   end
+
+  describe "GET /shows/:show_id/seasons/:id/cast" do
+    it "renders the cast and crew members" do
+      show = FactoryBot.create(:show)
+      season = show.seasons.first
+      FactoryBot.create(:episode, season: season)
+      FactoryBot.create(:cast_member, record: season, person: FactoryBot.build(:person, translated_name: "John Doe"), character: "Bob")
+      get cast_show_season_path(season, show_id: show)
+      assert_select "h4", text: "Cast"
+      assert_select "h5", text: "John Doe"
+      assert_select "p", text: "Bob (1 episode)"
+    end
+  end
 end
