@@ -1,5 +1,5 @@
 class EpisodesController < ApplicationController
-  before_action :require_authentication, except: [:show]
+  before_action :require_authentication, except: [:show, :cast]
   before_action :set_show
   before_action :set_season
   before_action :set_episode, except: [:new, :create]
@@ -34,6 +34,11 @@ class EpisodesController < ApplicationController
   end
 
   def backgrounds
+  end
+
+  def cast
+    @cast_members = CastMembers::Episode.new(@episode).cast_members
+    @crew_members = @episode.crew_members.includes(:job, person: {images_attachments: :blob}).group_by { it.job.department }
   end
 
   private

@@ -73,6 +73,7 @@ Rails.application.routes.draw do
         resources :videos, only: [:index, :create, :destroy]
 
         get :backgrounds, on: :member
+        get :cast, on: :member
       end
 
       get :posters, on: :member

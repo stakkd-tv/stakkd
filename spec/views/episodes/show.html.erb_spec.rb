@@ -41,8 +41,7 @@ RSpec.describe "episodes/show", type: :view do
     render
     assert_select "p", text: "John Doe"
     assert_select "small", text: "Bob"
-    # TODO: Add spec for cast and crew link
-    # assert_select "a[href='#{cast_show_path(@show)}']"
+    assert_select "a[href='#{cast_show_season_episode_path(@episode, season_id: @season, show_id: @show)}']"
   end
 
   context "when episode has no air date" do
