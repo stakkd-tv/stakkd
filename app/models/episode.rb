@@ -46,6 +46,8 @@ class Episode < ApplicationRecord
 
   def writers = @writers ||= crew_members.includes(:job, :person).where(job: {name: Job::WRITER})
 
+  def year = original_air_date&.year
+
   TYPES.each do |type|
     define_method "#{type}?" do
       episode_type == type

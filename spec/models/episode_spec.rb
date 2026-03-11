@@ -142,6 +142,18 @@ RSpec.describe Episode, type: :model do
     end
   end
 
+  describe "#year" do
+    it "returns the year of the release date" do
+      episode = FactoryBot.create(:episode, original_air_date: Date.new(2022, 1, 1))
+      expect(episode.year).to eq 2022
+    end
+
+    it "returns nil when the release date is nil" do
+      episode = FactoryBot.create(:episode, original_air_date: nil)
+      expect(episode.year).to be_nil
+    end
+  end
+
   Episode::TYPES.each do |type|
     describe "##{type}?" do
       it "returns true when the episode type matches" do
