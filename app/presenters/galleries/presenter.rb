@@ -29,7 +29,7 @@ module Galleries
     def tabs
       available_galleries.map do |image_type|
         max_images = MAX_IMAGES[image_type]
-        images = @record.send(image_type)
+        images = @record.send(image_type).to_a
         {
           name: image_type.to_s.humanize,
           images: images.take(max_images),

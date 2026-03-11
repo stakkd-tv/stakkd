@@ -72,7 +72,7 @@
             New episode
           <% end %>
         </div>
-        <% @season.ordered_episodes.each do |episode| %>
+        <% @season.ordered_episodes.with_attached_backgrounds.each do |episode| %>
           <div class="grid grid-cols-1 md:grid-cols-3">
             <div class="col-span-1">
               <%= link_to show_season_episode_path(episode, season_id: @season, show_id: @show) do %>

@@ -2,7 +2,13 @@ module CastMembers
   class Show < Base
     def initialize(show)
       super
-      @seasons = @object.seasons.includes(season_regulars: {person: {images_attachments: :blob}}, episodes: {guest_stars: {person: {images_attachments: :blob}}}).to_a
+      @seasons = @object
+        .seasons
+        .includes(
+          season_regulars: {person: {images_attachments: :blob}},
+          episodes: {guest_stars: {person: {images_attachments: :blob}}}
+        )
+        .to_a
     end
 
     private
