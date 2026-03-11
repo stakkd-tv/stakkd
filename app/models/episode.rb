@@ -22,6 +22,9 @@ class Episode < ApplicationRecord
   validates :episode_type, inclusion: {in: TYPES}
   validates :runtime, numericality: {greater_than_or_equal_to: 0}
 
+  # Callbacks
+  after_save :set_season_premiere_date
+
   # Scopes
   scope :ordered, -> { order(number: :asc) }
   scope :nested, ->(number) { where(number:) }
@@ -46,9 +49,19 @@ class Episode < ApplicationRecord
 
   def writers = @writers ||= crew_members.includes(:job, :person).where(job: {name: Job::WRITER})
 
+  def year = original_air_date&.year
+
   TYPES.each do |type|
     define_method "#{type}?" do
       episode_type == type
+    end
+  end
+
+  private
+
+  def set_season_premiere_date
+    if season.ordered_episodes.first == self
+      season.update(premiere_date: original_air_date)
     end
   end
 end

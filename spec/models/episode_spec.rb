@@ -21,6 +21,30 @@ RSpec.describe Episode, type: :model do
     it { should validate_numericality_of(:runtime).is_greater_than_or_equal_to(0) }
   end
 
+  describe "after_save :set_season_premiere_date" do
+    context "when episode is the first episode in the season" do
+      it "sets the seasons premiere date" do
+        show = FactoryBot.create(:show)
+        specials = show.seasons.first
+        expect(specials.premiere_date).to be_nil
+        episode = FactoryBot.create(:episode, season: specials, original_air_date: Date.today)
+        expect(specials.premiere_date).to eq episode.original_air_date
+      end
+    end
+
+    context "when episode is not the first episode in the season" do
+      it "does not set the seasons premiere date" do
+        show = FactoryBot.create(:show)
+        specials = show.seasons.first
+        expect(specials.premiere_date).to be_nil
+        episode = FactoryBot.create(:episode, number: 1, season: specials, original_air_date: Date.today)
+        expect(specials.premiere_date).to eq episode.original_air_date
+        FactoryBot.create(:episode, number: 2, season: specials, original_air_date: Date.tomorrow)
+        expect(specials.premiere_date).to eq episode.original_air_date
+      end
+    end
+  end
+
   describe ".ordered" do
     it "returns the seasons in order of number" do
       episode2 = FactoryBot.create(:episode, number: 2)
@@ -139,6 +163,18 @@ RSpec.describe Episode, type: :model do
         episode = FactoryBot.create(:episode)
         expect(episode.writers).to eq []
       end
+    end
+  end
+
+  describe "#year" do
+    it "returns the year of the release date" do
+      episode = FactoryBot.create(:episode, original_air_date: Date.new(2022, 1, 1))
+      expect(episode.year).to eq 2022
+    end
+
+    it "returns nil when the release date is nil" do
+      episode = FactoryBot.create(:episode, original_air_date: nil)
+      expect(episode.year).to be_nil
     end
   end
 

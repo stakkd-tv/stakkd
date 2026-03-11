@@ -11,6 +11,7 @@ class CreateMovies < ActiveRecord::Migration[8.0]
       t.decimal :revenue, null: false, default: 0
       t.decimal :budget, null: false, default: 0
       t.string :homepage
+      t.date :release_date
 
       t.string :imdb_id
       t.string :title_kebab, null: false

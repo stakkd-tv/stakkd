@@ -16,7 +16,7 @@
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-1 gap-10">
         <div>
           <p class="font-domine"><b>Premiered:</b></p>
-          <p><%= @season.ordered_episodes.first&.original_air_date&.strftime("%B %d, %Y") || "Unknown air date" %></p>
+          <p><%= @season.premiere_date&.strftime("%B %d, %Y") || "TBA" %></p>
         </div>
         <div>
           <p class="font-domine"><b>Runtime:</b></p>

@@ -12,8 +12,11 @@ class Season < ApplicationRecord
   validates :number, uniqueness: {scope: [:show_id]}
   validates :number, numericality: {greater_than_or_equal_to: 0}
 
+  # Callbacks
+  after_save :set_show_premiere_date
+
   # Scopes
-  scope :without_specials, -> { where.not(number: 0) }
+  scope :without_specials, -> { where.not(number: 0).ordered }
   scope :ordered, -> { order(number: :asc) }
   scope :nested, ->(number) { where(number:) }
 
@@ -38,4 +41,14 @@ class Season < ApplicationRecord
   def next_season = @next_season ||= show.seasons.where(number: number + 1).first
 
   def previous_season = @previous_season ||= show.seasons.where(number: number - 1).first
+
+  def year = premiere_date&.year
+
+  private
+
+  def set_show_premiere_date
+    if show.seasons_without_specials.first == self
+      show.update(premiere_date: premiere_date)
+    end
+  end
 end

@@ -75,6 +75,8 @@ class Show < ApplicationRecord
 
   def creators = @creators ||= crew_members.includes(:job, :person).where(job: {name: Job::CREATOR})
 
+  def year = premiere_date&.year
+
   private
 
   def slug_source = translated_title

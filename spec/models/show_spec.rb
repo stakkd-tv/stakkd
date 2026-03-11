@@ -185,4 +185,18 @@ RSpec.describe Show, type: :model do
       end
     end
   end
+
+  describe "#year" do
+    it "returns the year of the premiere date" do
+      show = FactoryBot.create(:show)
+      season = FactoryBot.create(:season, number: 1, show:)
+      episode = FactoryBot.create(:episode, season:, original_air_date: Date.today)
+      expect(show.year).to eq episode.original_air_date.year
+    end
+
+    it "returns nil when there is no premiere date" do
+      show = FactoryBot.create(:show)
+      expect(show.year).to be_nil
+    end
+  end
 end
