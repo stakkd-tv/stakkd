@@ -41,5 +41,9 @@ RSpec.describe ShowsController, type: :routing do
     it "routes to #logos" do
       expect(get: "/shows/1/logos").to route_to("shows#logos", id: "1")
     end
+
+    it "routes to #cast" do
+      expect(get: "/shows/1/cast").to route_to("shows#cast", id: "1")
+    end
   end
 end

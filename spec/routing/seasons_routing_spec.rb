@@ -29,5 +29,9 @@ RSpec.describe SeasonsController, type: :routing do
     it "routes to #posters" do
       expect(get: "/shows/1/seasons/1/posters").to route_to("seasons#posters", id: "1", show_id: "1")
     end
+
+    it "routes to #cast" do
+      expect(get: "/shows/1/seasons/1/cast").to route_to("seasons#cast", id: "1", show_id: "1")
+    end
   end
 end

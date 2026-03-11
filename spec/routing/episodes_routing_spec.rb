@@ -29,5 +29,9 @@ RSpec.describe EpisodesController, type: :routing do
     it "routes to #backgrounds" do
       expect(get: "/shows/1/seasons/1/episodes/1/backgrounds").to route_to("episodes#backgrounds", id: "1", season_id: "1", show_id: "1")
     end
+
+    it "routes to #cast" do
+      expect(get: "/shows/1/seasons/1/episodes/1/cast").to route_to("episodes#cast", id: "1", season_id: "1", show_id: "1")
+    end
   end
 end
