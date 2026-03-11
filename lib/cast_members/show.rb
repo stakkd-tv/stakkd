@@ -2,7 +2,7 @@ module CastMembers
   class Show < Base
     def initialize(show)
       super
-      @seasons = @object.seasons.includes(season_regulars: :person, episodes: {guest_stars: :person}).to_a
+      @seasons = @object.seasons.includes(season_regulars: {person: {images_attachments: :blob}}, episodes: {guest_stars: {person: {images_attachments: :blob}}}).to_a
     end
 
     private
@@ -15,12 +15,12 @@ module CastMembers
       end
 
       @seasons.each do |season|
-        season.season_regulars.includes(person: {images_attachments: :blob}).each do |regular|
+        season.season_regulars.each do |regular|
           increment_character_count_for(cast_member: regular, increment_by: season.episodes.size, depth: 1)
         end
 
         season.episodes.each do |episode|
-          episode.guest_stars.includes(person: {images_attachments: :blob}).each do |guest_star|
+          episode.guest_stars.each do |guest_star|
             increment_character_count_for(cast_member: guest_star, increment_by: 1, depth: 2)
           end
         end
