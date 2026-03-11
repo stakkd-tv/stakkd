@@ -50,8 +50,8 @@ class MoviesController < ApplicationController
   end
 
   def cast
-    @cast_members = @movie.cast_members.includes(:person)
-    @crew_members = @movie.crew_members.includes(:person, :job).group_by { it.job.department }
+    @cast_members = CastMembers::Movie.new(@movie).cast_members
+    @crew_members = @movie.crew_members.includes(:job, person: {images_attachments: :blob}).group_by { it.job.department }
   end
 
   private

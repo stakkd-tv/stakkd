@@ -9,15 +9,15 @@ module CastMembers
     private
 
     def consolidate_cast_members
-      @show.season_regulars.includes(:person).each do |regular|
+      @show.season_regulars.includes(person: {images_attachments: :blob}).each do |regular|
         increment_character_count_for(cast_member: regular, increment_by: 0)
       end
 
-      @season.season_regulars.includes(:person).each do |regular|
+      @season.season_regulars.includes(person: {images_attachments: :blob}).each do |regular|
         increment_character_count_for(cast_member: regular, increment_by: 0, depth: 1)
       end
 
-      @object.guest_stars.each do |guest_star|
+      @object.guest_stars.includes(person: {images_attachments: :blob}).each do |guest_star|
         increment_character_count_for(cast_member: guest_star, increment_by: 0, depth: 2)
       end
     end
