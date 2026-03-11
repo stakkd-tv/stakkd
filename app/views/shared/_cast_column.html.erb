@@ -7,9 +7,9 @@
         <h5 class="text-lg font-bold"><%= cast_member[:person].translated_name %></h5>
         <p class="text-pop">
           <%= cast_member[:characters].map do |character|
-            count = character[:count] > 0 ? " (#{character[:count]} #{"episode".pluralize(character[:count])})" : ""
-            "#{character[:character_name]}#{count}"
-          end.join(', ') %>
+                count = (character[:count] > 0) ? " (#{character[:count]} #{"episode".pluralize(character[:count])})" : ""
+                "#{character[:character_name]}#{count}"
+              end.join(", ") %>
         </p>
       </div>    <% end %>
   <% end %>
