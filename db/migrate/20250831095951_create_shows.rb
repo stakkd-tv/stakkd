@@ -11,6 +11,7 @@ class CreateShows < ActiveRecord::Migration[8.0]
       t.string :translated_title, null: false
       t.string :title_kebab
       t.string :type, null: false
+      t.date :premiere_date
 
       t.timestamps
     end

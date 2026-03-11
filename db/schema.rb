@@ -237,6 +237,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_06_144326) do
     t.string "translated_name", null: false
     t.string "original_name", null: false
     t.string "overview"
+    t.date "premiere_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["show_id", "number"], name: "index_unique_seasons_number_show", unique: true
@@ -263,6 +264,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_06_144326) do
     t.string "translated_title", null: false
     t.string "title_kebab"
     t.string "type", null: false
+    t.date "premiere_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["country_id"], name: "index_shows_on_country_id"

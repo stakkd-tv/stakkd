@@ -18,15 +18,51 @@ RSpec.describe Season, type: :model do
     it { should validate_numericality_of(:number).is_greater_than_or_equal_to(0) }
   end
 
+  describe "after_save :set_show_premiere_date" do
+    context "when the season is a special" do
+      it "does not update the show premiere date" do
+        show = FactoryBot.create(:show)
+        specials = show.seasons.first
+        expect(show.premiere_date).to be_nil
+        FactoryBot.create(:episode, season: specials, original_air_date: Date.today)
+        expect(show.premiere_date).to be_nil
+      end
+    end
+
+    context "when the season is the first non-special season" do
+      it "updates the show premiere date" do
+        show = FactoryBot.create(:show)
+        season = FactoryBot.create(:season, number: 1, show:)
+        expect(show.premiere_date).to be_nil
+        episode = FactoryBot.create(:episode, season:, original_air_date: Date.today)
+        expect(show.premiere_date).to eq episode.original_air_date
+      end
+    end
+
+    context "when the season is not the first non-special season" do
+      it "does not update the premiere date" do
+        show = FactoryBot.create(:show)
+        season = FactoryBot.create(:season, number: 1, show:)
+        expect(show.premiere_date).to be_nil
+        episode = FactoryBot.create(:episode, season:, original_air_date: Date.today)
+        expect(show.premiere_date).to eq episode.original_air_date
+
+        season2 = FactoryBot.create(:season, number: 2, show:)
+        FactoryBot.create(:episode, season: season2, original_air_date: Date.tomorrow)
+        expect(show.premiere_date).to eq episode.original_air_date
+      end
+    end
+  end
+
   describe ".without_specials" do
-    it "returns all seasons excluding special seasons" do
+    it "returns all seasons excluding special seasons ordered by number" do
+      season2 = FactoryBot.create(:season, number: 2)
       season1 = FactoryBot.create(:season, number: 1)
       show_with_special = FactoryBot.create(:show)
       special = show_with_special.seasons.first
       expect(special).to be
       expect(special.number).to eq 0
-      expect(Season.without_specials).to include(season1)
-      expect(Season.without_specials).not_to include(special)
+      expect(Season.without_specials).to eq [season1, season2]
     end
   end
 
@@ -155,6 +191,20 @@ RSpec.describe Season, type: :model do
       show = FactoryBot.create(:show)
       season = show.seasons.first
       expect(season.previous_season).to be_nil
+    end
+  end
+
+  describe "#year" do
+    it "returns the year of the premiere date" do
+      show = FactoryBot.create(:show)
+      season = FactoryBot.create(:season, number: 1, show:)
+      episode = FactoryBot.create(:episode, season:, original_air_date: Date.today)
+      expect(season.year).to eq episode.original_air_date.year
+    end
+
+    it "returns nil when there is no premiere date" do
+      season = FactoryBot.create(:season)
+      expect(season.year).to be_nil
     end
   end
 end

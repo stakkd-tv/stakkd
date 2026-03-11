@@ -29,11 +29,11 @@ RSpec.describe Release, type: :model do
         uk = FactoryBot.create(:country, code: "UK")
         cert_uk = FactoryBot.create(:certification, country: uk)
         movie = FactoryBot.create(:movie, country: uk)
-        first_release = FactoryBot.create(:release, movie:, type: Release::PHYSICAL, certification: cert_uk, date: Date.yesterday)
+        FactoryBot.create(:release, movie:, type: Release::PHYSICAL, certification: cert_uk, date: Date.yesterday)
         expect(movie.reload.release_date).to be_nil
         release = FactoryBot.create(:release, movie:, type: Release::THEATRICAL, certification: cert_uk, date: Date.today)
         expect(movie.reload.release_date).to eq release.date
-        future_release = FactoryBot.create(:release, movie:, type: Release::TV, certification: cert_uk, date: Date.today)
+        FactoryBot.create(:release, movie:, type: Release::TV, certification: cert_uk, date: Date.today)
         expect(movie.reload.release_date).to eq release.date
       end
     end
