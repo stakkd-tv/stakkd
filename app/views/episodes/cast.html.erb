@@ -1,0 +1,5 @@
+<% content_for :title, "Stakkd - #{@show.translated_title} - Season #{@season.number} Episode #{@episode.number} full cast and crew" %>
+
+<%= render "header", show: @show, season: @season, episode: @episode %>
+
+<%= render "shared/cast_and_crew", cast_members: @cast_members, crew_members: @crew_members %>

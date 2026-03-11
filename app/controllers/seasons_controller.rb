@@ -1,10 +1,11 @@
 class SeasonsController < ApplicationController
-  before_action :require_authentication, except: [:show]
+  before_action :require_authentication, except: [:show, :cast]
   before_action :set_show
   before_action :set_season, except: [:new, :create]
 
   def show
     @gallery_presenter = Galleries::Presenter.new(@season)
+    @cast_members = CastMembers::Season.new(@season).cast_members
   end
 
   def new
@@ -35,6 +36,10 @@ class SeasonsController < ApplicationController
   end
 
   def posters
+  end
+
+  def cast
+    @cast_members = CastMembers::Season.new(@season).cast_members
   end
 
   private

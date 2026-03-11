@@ -38,6 +38,7 @@ RSpec.describe "movies/show", type: :view do
     assign(:alternative_names, alternative_names)
     assign(:gallery_presenter, gallery_presenter)
     assign(:release_dates_for_country, [release1])
+    assign(:cast_members, CastMembers::Movie.new(@movie).cast_members)
   end
 
   it "renders attributes in <p>" do

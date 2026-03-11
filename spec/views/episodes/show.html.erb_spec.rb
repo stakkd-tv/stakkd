@@ -19,10 +19,12 @@ RSpec.describe "episodes/show", type: :view do
       translated_name: "Pilot",
       backgrounds: [Rack::Test::UploadedFile.new("spec/support/assets/1280x720.png", "image/png")]
     )
+    FactoryBot.create(:cast_member, record: @episode, person: FactoryBot.build(:person, translated_name: "John Doe"), character: "Bob")
     gallery_presenter = Galleries::Presenter.new(@season)
     assign(:show, @show)
     assign(:season, @season)
     assign(:gallery_presenter, gallery_presenter)
+    assign(:cast_members, CastMembers::Episode.new(@episode).cast_members)
   end
 
   it "renders attributes in <p>" do
@@ -33,6 +35,13 @@ RSpec.describe "episodes/show", type: :view do
     expect(rendered).not_to match(/TBA/i)
     assert_select "a", text: "NAME"
     assert_select "a", text: @show.translated_title
+  end
+
+  it "renders the cast members" do
+    render
+    assert_select "p", text: "John Doe"
+    assert_select "small", text: "Bob"
+    assert_select "a[href='#{cast_show_season_episode_path(@episode, season_id: @season, show_id: @show)}']"
   end
 
   context "when episode has no air date" do

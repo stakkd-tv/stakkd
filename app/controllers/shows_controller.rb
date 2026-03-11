@@ -1,5 +1,5 @@
 class ShowsController < ApplicationController
-  before_action :require_authentication, except: [:index, :show]
+  before_action :require_authentication, except: [:index, :show, :cast]
   before_action :set_show, except: [:index, :new, :create]
 
   def index
@@ -9,6 +9,7 @@ class ShowsController < ApplicationController
   def show
     @alternative_names = @show.alternative_names.includes(:country).group_by(&:country)
     @gallery_presenter = Galleries::Presenter.new(@show)
+    @cast_members = CastMembers::Show.new(@show).cast_members
   end
 
   def new
@@ -43,6 +44,11 @@ class ShowsController < ApplicationController
   end
 
   def logos
+  end
+
+  def cast
+    @cast_members = CastMembers::Show.new(@show).cast_members
+    @crew_members = @show.crew_members.includes(:job, person: {images_attachments: :blob}).group_by { it.job.department }
   end
 
   private

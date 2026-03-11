@@ -6,6 +6,6 @@ class CastMember < ApplicationRecord
   belongs_to :person
 
   # Validations
-  validates_presence_of :character, :position
+  validates_presence_of :character
   validates_uniqueness_of :person_id, scope: [:record_type, :record_id]
 end
