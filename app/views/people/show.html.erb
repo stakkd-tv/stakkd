@@ -59,14 +59,43 @@
       </h3>
       <div class="relative">
         <input type="checkbox" class="hidden peer" id="read-more" autocomplete="off">
-        <label for="read-more" class="cursor-pointer absolute right-0 bottom-0 w-full text-right bg-gradient-to-l from-background to-transparent peer-checked:hidden">Read more</label>
-        <div class="h-[7.5rem] leading-[1.5rem] text-sm md:text-base peer-checked:h-auto flex flex-col gap-6 overflow-hidden">
+        <label for="read-more" class="cursor-pointer absolute right-0 bottom-0 w-full text-right bg-linear-to-l from-background to-transparent peer-checked:hidden">Read more</label>
+        <div class="h-30 leading-6 text-sm md:text-base peer-checked:h-auto flex flex-col gap-6 overflow-hidden">
           <%= simple_format @person.biography %>
         </div>
       </div>
-      <div class="w-full h-44 border border-pop rounded-lg flex justify-center items-center">
-        This is a work in progress. Please check back later.
-      </div>
+      <% if @possible_tabs.any? %>
+        <%= turbo_frame_tag "credits" do %>
+          <div class="flex gap-2 mb-2">
+            <% @possible_tabs.each do |tab| %>
+              <%= link_to "#{tab.humanize} Credits", "?credit_type=#{tab}", class: "link#{" text-pop hover:bg-background-darker" if tab == @credit_type}", data: {turbo_frame: "credits"} %>
+            <% end %>
+          </div>
+          <div class="w-full bg-background-darker p-4 rounded-lg grid grid-cols-4 gap-4">
+            <% @credits.each do |credits_for_year| %>
+              <div class="col-span-1"><p class="font-domine text-pop"><%= credits_for_year[:year] || "TBA" %></p></div>
+              <div class="col-span-3">
+                <div class="flex flex-col gap-2">
+                  <% credits_for_year[:credits].each_pair do |parent, credits| %>
+                    <div class="flex flex-col">
+                      <b class="font-domine"><%= link_to parent, parent, data: {turbo_frame: "_top"} %></b>
+                      <% credits.each_pair do |character, count| %>
+                        <small>
+                          <%= character %>
+                          <% unless parent.is_a?(Movie) %>
+                            (<%= count %> <%= "episode".pluralize(count) %>)
+                          <% end %>
+                        </small>
+                      <% end %>
+                    </div>
+                  <% end %>
+                  <hr class="mt-4 border-pop">
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      <% end %>
 
       <%= render "shared/galleries", presenter: @gallery_presenter %>
     </div>

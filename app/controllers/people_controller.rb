@@ -4,14 +4,18 @@ class PeopleController < ApplicationController
 
   def index
     @people = if params[:query]
-      Person.search(params[:query]).order(:translated_name)
+      Person.with_attached_images.search(params[:query]).order(:translated_name)
     else
-      Person.all.order(:translated_name)
+      Person.with_attached_images.order(:translated_name)
     end
   end
 
   def show
     @gallery_presenter = Galleries::Presenter.new(@person)
+    credits = Credits.new(@person)
+    @possible_tabs = credits.credit_types
+    @credit_type = @possible_tabs.dup.delete(params[:credit_type]) || @possible_tabs.first
+    @credits = (@credit_type == "cast") ? credits.as_cast_member : credits.as_crew_member
   end
 
   def new

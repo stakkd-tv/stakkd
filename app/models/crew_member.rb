@@ -6,4 +6,5 @@ class CrewMember < ApplicationRecord
 
   # Validations
   validates_uniqueness_of :person_id, scope: [:record_type, :record_id, :job_id]
+  validates_exclusion_of :record_type, in: ["Season"]
 end

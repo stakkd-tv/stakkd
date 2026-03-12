@@ -52,6 +52,43 @@ RSpec.describe "People", type: :request do
       get person_url(person)
       expect(response).to be_successful
     end
+
+    it "assigns the credit type and possible tabs" do
+      person = FactoryBot.create(:person)
+      allow_any_instance_of(Credits).to receive(:as_cast_member).and_return([{year: nil, credits: {}}])
+      allow_any_instance_of(Credits).to receive(:as_crew_member).and_return([{year: 2002, credits: {}}])
+      get person_url(person)
+      assert_select "a[href='?credit_type=cast'][class='link text-pop hover:bg-background-darker']", text: "Cast Credits" # Cast is auto selected
+      assert_select "a[href='?credit_type=crew'][class='link']", text: "Crew Credits"
+      assert_select "p.font-domine", text: "TBA"
+      assert_select "p.font-domine", text: "2002", count: 0
+    end
+
+    context "with a valid credit type" do
+      it "renders credits for given type" do
+        person = FactoryBot.create(:person)
+        allow_any_instance_of(Credits).to receive(:as_cast_member).and_return([{year: nil, credits: {}}])
+        allow_any_instance_of(Credits).to receive(:as_crew_member).and_return([{year: 2002, credits: {}}])
+        get person_url(person, credit_type: "crew")
+        assert_select "a[href='?credit_type=cast'][class='link']", text: "Cast Credits"
+        assert_select "a[href='?credit_type=crew'][class='link text-pop hover:bg-background-darker']", text: "Crew Credits" # Crew is auto selected
+        assert_select "p.font-domine", text: "TBA", count: 0
+        assert_select "p.font-domine", text: "2002"
+      end
+    end
+
+    context "with an invalid credit type" do
+      it "defaults to first valid credit type" do
+        person = FactoryBot.create(:person)
+        allow_any_instance_of(Credits).to receive(:as_cast_member).and_return([{year: nil, credits: {}}])
+        allow_any_instance_of(Credits).to receive(:as_crew_member).and_return([{year: 2002, credits: {}}])
+        get person_url(person)
+        assert_select "a[href='?credit_type=cast'][class='link text-pop hover:bg-background-darker']", text: "Cast Credits" # Cast is auto selected
+        assert_select "a[href='?credit_type=crew'][class='link']", text: "Crew Credits"
+        assert_select "p.font-domine", text: "TBA"
+        assert_select "p.font-domine", text: "2002", count: 0
+      end
+    end
   end
 
   describe "GET /people/new" do

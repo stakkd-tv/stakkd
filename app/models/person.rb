@@ -23,6 +23,8 @@ class Person < ApplicationRecord
   ]
 
   # Associations
+  has_many :cast_credits, class_name: "CastMember", dependent: :destroy
+  has_many :crew_credits, class_name: "CrewMember", dependent: :destroy
   has_many_attached :images
 
   # Validations

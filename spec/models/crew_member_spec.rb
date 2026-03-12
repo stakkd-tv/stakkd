@@ -11,5 +11,6 @@ RSpec.describe CrewMember, type: :model do
     subject { FactoryBot.create(:crew_member) }
 
     it { should validate_uniqueness_of(:person_id).scoped_to([:record_type, :record_id, :job_id]) }
+    it { should validate_exclusion_of(:record_type).in_array(["Season"]) }
   end
 end
