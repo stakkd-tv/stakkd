@@ -44,8 +44,10 @@
       </div>
       <div class="flex gap-4 flex-col w-full">
         <%= link_to "Edit", edit_person_path(@person), class: "link" %>
-        <%= link_to @person.imdb_url, class: "link link-imdb" do %>
-          <i class="fa-brands fa-imdb text-4xl"></i>
+        <% if @person.imdb_url.present? %>
+          <%= link_to @person.imdb_url, class: "link link-imdb" do %>
+            <i class="fa-brands fa-imdb text-4xl"></i>
+          <% end %>
         <% end %>
       </div>
     </div>

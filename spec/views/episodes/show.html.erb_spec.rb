@@ -4,6 +4,7 @@ RSpec.describe "episodes/show", type: :view do
   let(:posters) { [] }
   let(:backgrounds) { [] }
   let(:original_air_date) { Date.new(2023, 1, 1) }
+  let(:imdb_id) { nil }
 
   before(:each) do
     def view.authenticated? = false
@@ -17,7 +18,8 @@ RSpec.describe "episodes/show", type: :view do
       original_air_date:,
       runtime: 30,
       translated_name: "Pilot",
-      backgrounds: [Rack::Test::UploadedFile.new("spec/support/assets/1280x720.png", "image/png")]
+      backgrounds: [Rack::Test::UploadedFile.new("spec/support/assets/1280x720.png", "image/png")],
+      imdb_id:
     )
     FactoryBot.create(:cast_member, record: @episode, person: FactoryBot.build(:person, translated_name: "John Doe"), character: "Bob")
     gallery_presenter = Galleries::Presenter.new(@season)
@@ -134,6 +136,22 @@ RSpec.describe "episodes/show", type: :view do
     it "does not render next episode link" do
       render
       assert_select "a", text: "Next", count: 0
+    end
+  end
+
+  context "when there is an IMDb URL" do
+    let(:imdb_id) { "tt1234567" }
+
+    it "renders the IMDb link" do
+      render
+      assert_select "a.link-imdb[href='https://www.imdb.com/title/#{imdb_id}/']"
+    end
+  end
+
+  context "when there is no IMDb URL" do
+    it "does not render the IMDb link" do
+      render
+      assert_select "a.link-imdb", count: 0
     end
   end
 end

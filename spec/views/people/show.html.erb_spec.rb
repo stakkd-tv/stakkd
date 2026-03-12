@@ -178,4 +178,22 @@ RSpec.describe "people/show", type: :view do
       end
     end
   end
+
+  context "when there is an IMDb URL" do
+    let(:imdb_id) { "nm1234567" }
+
+    it "renders the IMDb link" do
+      render
+      assert_select "a.link-imdb[href='https://www.imdb.com/name/#{imdb_id}/']"
+    end
+  end
+
+  context "when there is no IMDb URL" do
+    let(:imdb_id) { nil }
+
+    it "does not render the IMDb link" do
+      render
+      assert_select "a.link-imdb", count: 0
+    end
+  end
 end

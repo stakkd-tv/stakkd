@@ -62,8 +62,10 @@
             <i class="fa-solid fa-globe text-2xl"></i>
           <% end %>
         <% end %>
-        <%= link_to @movie.imdb_url, class: "link link-imdb w-full" do %>
-          <i class="fa-brands fa-imdb text-4xl"></i>
+        <% if @movie.imdb_url.present? %>
+          <%= link_to @movie.imdb_url, class: "link link-imdb w-full" do %>
+            <i class="fa-brands fa-imdb text-4xl"></i>
+          <% end %>
         <% end %>
         </div>
       </div>

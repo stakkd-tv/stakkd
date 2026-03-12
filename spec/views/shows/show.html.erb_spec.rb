@@ -7,6 +7,7 @@ RSpec.describe "shows/show", type: :view do
   let(:logos) { [] }
   let(:videos) { [] }
   let(:alternative_names) { {} }
+  let(:imdb_id) { nil }
 
   before(:each) do
     def view.authenticated? = false
@@ -19,7 +20,7 @@ RSpec.describe "shows/show", type: :view do
       status: "ended",
       type: "series",
       homepage: "https://google.com",
-      imdb_id: "tt0000000",
+      imdb_id:,
       posters:,
       backgrounds:,
       logos:,
@@ -40,7 +41,6 @@ RSpec.describe "shows/show", type: :view do
     expect(rendered).to match(/This is overview/)
     expect(rendered).to match(/Ended/)
     expect(rendered).to match(/Series/)
-    assert_select "a[href='https://www.imdb.com/title/tt0000000/']"
     assert_select "a[href='https://google.com']"
   end
 
@@ -158,6 +158,22 @@ RSpec.describe "shows/show", type: :view do
       render
       assert_select "label", text: "Videos"
       assert_select "img[src='/example.png']", count: 1
+    end
+  end
+
+  context "when there is an IMDb URL" do
+    let(:imdb_id) { "tt1234567" }
+
+    it "renders the IMDb link" do
+      render
+      assert_select "a.link-imdb[href='https://www.imdb.com/title/#{imdb_id}/']"
+    end
+  end
+
+  context "when there is no IMDb URL" do
+    it "does not render the IMDb link" do
+      render
+      assert_select "a.link-imdb", count: 0
     end
   end
 end
