@@ -3,6 +3,7 @@ require "rails_helper"
 RSpec.describe Company, type: :model do
   describe "associations" do
     it { should belong_to(:country) }
+    it { should have_many(:company_assignments).dependent(:destroy) }
     it { should have_many_attached(:logos) }
   end
 
