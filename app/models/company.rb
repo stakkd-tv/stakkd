@@ -1,6 +1,7 @@
 class Company < ApplicationRecord
   # Associations
   belongs_to :country
+  has_many :company_assignments, dependent: :destroy
   has_many_attached :logos
 
   # Validations

@@ -1,0 +1,13 @@
+<%= turbo_stream.append "company_assignments" do %>
+  <% @company_assignments.each do |assignment| %>
+    <%= render "company_assignment", company_assignment: assignment %>
+  <% end %>
+<% end %>
+
+<% if @company_assignments.next_page.present? %>
+  <%= turbo_stream.replace "load_more_assignments" do %>
+    <%= render "load_more_assignments" %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.remove "load_more_assignments" %>
+<% end %>

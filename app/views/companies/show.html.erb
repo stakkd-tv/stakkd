@@ -21,13 +21,23 @@
         <%= @company.name %>
       </h3>
       <% if @company.description.present? %>
-        <div class="leading-[1.5rem] text-sm md:text-base flex flex-col gap-6">
+        <div class="leading-6 text-sm md:text-base flex flex-col gap-6">
           <%= simple_format @company.description %>
         </div>
       <% end %>
-      <div class="w-full h-44 border border-pop rounded-lg flex justify-center items-center">
-        This is a work in progress. Please check back later.
-      </div>
+      <% if @company_assignments.any? %>
+        <div class="w-full bg-background-darker rounded-lg p-4">
+          <%= turbo_frame_tag "company_assignments", class: "flex flex-col gap-4" do %>
+            <% @company_assignments.each do |assignment| %>
+              <%= render "company_assignment", company_assignment: assignment %>
+            <% end %>
+          <% end %>
+
+          <% if @company_assignments.next_page.present? %>
+            <%= render "load_more_assignments" %>
+          <% end %>
+        </div>
+      <% end %>
 
       <%= render "shared/galleries", presenter: @gallery_presenter %>
     </div>

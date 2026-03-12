@@ -32,5 +32,15 @@ RSpec.feature "Company form", type: :system, js: true do
     end
     expect(page).to have_css("img[src*='400x400.png']")
     expect(page).not_to have_css("img[src*='399x399.png']")
+
+    # Editing the company
+    click_link "Test company"
+    expect(page).to have_content("Test description")
+    click_link "Edit"
+    fill_in "company_name", with: "Test company UPDATE"
+    fill_in "company_description", with: "Test description UPDATE"
+    click_button "Save"
+    expect(page).to have_content("Company was successfully updated.")
+    expect(page).to have_content("Test description UPDATE")
   end
 end

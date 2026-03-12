@@ -1,0 +1,3 @@
+<%= turbo_frame_tag "load_more_assignments" do %>
+  <%= link_to "Load More", company_path(@company, page: @company_assignments.next_page), class: "link inline-block mt-4 w-full", data: {turbo_stream: true} %>
+<% end %>
