@@ -39,6 +39,7 @@ class Show < ApplicationRecord
   has_many :ordered_seasons, -> { ordered }, class_name: "Season"
   has_many :seasons_without_specials, -> { without_specials }, class_name: "Season"
   has_many :non_special_episodes, through: :seasons_without_specials, source: :episodes
+  has_many :episodes, through: :seasons
   has_many_attached :posters
   has_many_attached :backgrounds
   has_many_attached :logos

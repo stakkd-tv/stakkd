@@ -5,6 +5,8 @@ RSpec.describe Person, type: :model do
   include ActiveSupport::Testing::TimeHelpers
 
   describe "associations" do
+    it { should have_many(:cast_credits).class_name("CastMember").dependent(:destroy) }
+    it { should have_many(:crew_credits).class_name("CrewMember").dependent(:destroy) }
     it { should have_many_attached(:images) }
   end
 

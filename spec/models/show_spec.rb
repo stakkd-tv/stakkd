@@ -21,6 +21,7 @@ RSpec.describe Show, type: :model do
     it { should have_many(:ordered_seasons).class_name("Season") }
     it { should have_many(:seasons_without_specials).class_name("Season") }
     it { should have_many(:non_special_episodes).through(:seasons_without_specials) }
+    it { should have_many(:episodes).through(:seasons) }
     it { should have_many_attached(:posters) }
     it { should have_many_attached(:backgrounds) }
     it { should have_many_attached(:logos) }
