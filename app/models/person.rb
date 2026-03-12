@@ -1,6 +1,7 @@
 class Person < ApplicationRecord
   include PgSearch::Model
   include Slugify
+  include HasImdb
 
   pg_search_scope :search, against: [:alias, :original_name, :translated_name], using: {trigram: {threshold: 0.2}}
 
@@ -44,8 +45,6 @@ class Person < ApplicationRecord
     end_date = dod.present? ? dod : Date.current
     ((end_date - dob).to_f / 365).to_i
   end
-
-  def imdb_url = "https://www.imdb.com/name/#{imdb_id}/"
 
   def slug=(value)
     self.name_kebab = value

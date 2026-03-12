@@ -1,5 +1,6 @@
 require "rails_helper"
 require_relative "shared_examples/slugify"
+require_relative "shared_examples/has_imdb"
 
 RSpec.describe Person, type: :model do
   include ActiveSupport::Testing::TimeHelpers
@@ -85,12 +86,7 @@ RSpec.describe Person, type: :model do
     end
   end
 
-  describe "imdb_url" do
-    it "returns the link to imdb" do
-      person = Person.new(imdb_id: "nm0000000")
-      expect(person.imdb_url).to eq "https://www.imdb.com/name/nm0000000/"
-    end
-  end
+  it_behaves_like "a model with imdb_id", Person
 
   it_behaves_like "a slugified model", :person, :translated_name
 
