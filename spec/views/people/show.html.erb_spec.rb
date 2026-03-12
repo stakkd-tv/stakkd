@@ -162,8 +162,8 @@ RSpec.describe "people/show", type: :view do
     it "renders credits section" do
       render
       assert_select "turbo-frame#credits"
-      assert_select "a[href='?credit_type=cast'][class='link text-pop hover:bg-background-darker']", text: "Cast Credits"
-      assert_select "a[href='?credit_type=crew'][class='link']", text: "Crew Credits"
+      assert_select "a[href='?credit_type=cast'][data-active='true']", text: "Cast Credits"
+      assert_select "a[href='?credit_type=crew'][data-active='false']", text: "Crew Credits"
     end
 
     it "renders the credits" do

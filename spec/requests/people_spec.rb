@@ -58,8 +58,8 @@ RSpec.describe "People", type: :request do
       allow_any_instance_of(Credits).to receive(:as_cast_member).and_return([{year: nil, credits: {}}])
       allow_any_instance_of(Credits).to receive(:as_crew_member).and_return([{year: 2002, credits: {}}])
       get person_url(person)
-      assert_select "a[href='?credit_type=cast'][class='link text-pop hover:bg-background-darker']", text: "Cast Credits" # Cast is auto selected
-      assert_select "a[href='?credit_type=crew'][class='link']", text: "Crew Credits"
+      assert_select "a[href='?credit_type=cast'][data-active='true']", text: "Cast Credits" # Cast is auto selected
+      assert_select "a[href='?credit_type=crew'][data-active='false']", text: "Crew Credits"
       assert_select "p.font-domine", text: "TBA"
       assert_select "p.font-domine", text: "2002", count: 0
     end
@@ -70,8 +70,8 @@ RSpec.describe "People", type: :request do
         allow_any_instance_of(Credits).to receive(:as_cast_member).and_return([{year: nil, credits: {}}])
         allow_any_instance_of(Credits).to receive(:as_crew_member).and_return([{year: 2002, credits: {}}])
         get person_url(person, credit_type: "crew")
-        assert_select "a[href='?credit_type=cast'][class='link']", text: "Cast Credits"
-        assert_select "a[href='?credit_type=crew'][class='link text-pop hover:bg-background-darker']", text: "Crew Credits" # Crew is auto selected
+        assert_select "a[href='?credit_type=cast'][data-active='false']", text: "Cast Credits"
+        assert_select "a[href='?credit_type=crew'][data-active='true']", text: "Crew Credits" # Crew is auto selected
         assert_select "p.font-domine", text: "TBA", count: 0
         assert_select "p.font-domine", text: "2002"
       end
@@ -83,8 +83,8 @@ RSpec.describe "People", type: :request do
         allow_any_instance_of(Credits).to receive(:as_cast_member).and_return([{year: nil, credits: {}}])
         allow_any_instance_of(Credits).to receive(:as_crew_member).and_return([{year: 2002, credits: {}}])
         get person_url(person)
-        assert_select "a[href='?credit_type=cast'][class='link text-pop hover:bg-background-darker']", text: "Cast Credits" # Cast is auto selected
-        assert_select "a[href='?credit_type=crew'][class='link']", text: "Crew Credits"
+        assert_select "a[href='?credit_type=cast'][data-active='true']", text: "Cast Credits" # Cast is auto selected
+        assert_select "a[href='?credit_type=crew'][data-active='false']", text: "Crew Credits"
         assert_select "p.font-domine", text: "TBA"
         assert_select "p.font-domine", text: "2002", count: 0
       end

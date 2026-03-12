@@ -104,7 +104,8 @@
         @apply font-bold cursor-pointer py-2 px-4 border border-pop rounded-lg text-sm hover:bg-pop/75 transition duration-300 ease-in-out w-fit min-w-fit;
     }
 
-    .form .form-nav a[data-active="true"] {
+    .form .form-nav a[data-active="true"],
+    .link[data-active="true"] {
         @apply bg-pop/75;
     }
 

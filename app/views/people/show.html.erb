@@ -80,7 +80,7 @@
         <%= turbo_frame_tag "credits" do %>
           <div class="flex gap-2 mb-2">
             <% @possible_tabs.each do |tab| %>
-              <%= link_to "#{tab.humanize} Credits", "?credit_type=#{tab}", class: "link#{" text-pop hover:bg-background-darker" if tab == @credit_type}", data: {turbo_frame: "credits"} %>
+              <%= link_to "#{tab.humanize} Credits", "?credit_type=#{tab}", class: "link", data: {turbo_frame: "credits", active: (tab == @credit_type)} %>
             <% end %>
           </div>
           <div class="w-full bg-background-darker p-4 rounded-lg grid grid-cols-4 gap-4">
