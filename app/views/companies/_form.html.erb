@@ -1,6 +1,6 @@
 <div class="form">
   <%= render "form_nav", company: %>
-  <%= form_with model: company do |form| %>
+  <%= form_with model: company, data: {turbo: false} do |form| %>
     <% if company.errors.any? %>
       <div style="color: red">
         <h2><%= pluralize(company.errors.count, "error") %> prohibited this company from being saved:</h2>

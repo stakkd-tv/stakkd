@@ -4,7 +4,7 @@
   <% end %>
   <div class="flex flex-col gap-1">
     <div class="font-domine">
-      <%= link_to company_assignment.record, company_assignment.record, class: "text-pop", data: { turbo_frame: "_top" } %> (<%= company_assignment.record.year || "TBA" %>)
+      <%= link_to company_assignment.record, company_assignment.record, class: "text-pop", data: {turbo_frame: "_top"} %> (<%= company_assignment.record.year || "TBA" %>)
     </div>
     <div class="text-xs"></div>
     <div class="text-xs line-clamp-3"><%= company_assignment.record.overview %></div>
