@@ -4,7 +4,14 @@
   <div class="grid grid-cols-1 md:grid-cols-4 md:gap-8 md:min-h-screen">
     <div class="col-span-1 bg-background-darker rounded-lg p-4 flex flex-col gap-10 items-center md:items-start">
       <%= image_tag @person.image, class: "max-h-40 w-fit md:w-full md:max-h-none rounded-lg" %>
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-1 gap-10">
+      <h3 class="block md:hidden w-full text-2xl font-bold font-domine text-white">
+        <i class="fa-solid fa-person text-2xl mr-6"></i>
+        <%= @person.translated_name %>
+        <% unless @person.translated_name == @person.original_name %>
+          <small class="text-sm">(<%= @person.original_name %>)</small>
+        <% end %>
+      </h3>
+      <div class="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-1 gap-10">
         <% if @person.alias.present? %>
           <div>
             <p class="font-domine"><b>AKA:</b></p>
@@ -52,19 +59,22 @@
       </div>
     </div>
     <div class="col-span-3 flex flex-col gap-10">
-      <h3 class="text-4xl font-bold font-domine text-white mt-10 md:mt-4">
+      <h3 class="hidden md:block text-4xl font-bold font-domine text-white mt-10 md:mt-4">
         <i class="fa-solid fa-person text-4xl mr-6"></i>
         <%= @person.translated_name %>
         <% unless @person.translated_name == @person.original_name %>
           <small class="text-sm">(<%= @person.original_name %>)</small>
         <% end %>
       </h3>
-      <div class="relative">
-        <input type="checkbox" class="hidden peer" id="read-more" autocomplete="off">
-        <label for="read-more" class="cursor-pointer absolute right-0 bottom-0 w-full text-right bg-linear-to-l from-background to-transparent peer-checked:hidden">Read more</label>
-        <div class="h-30 leading-6 text-sm md:text-base peer-checked:h-auto flex flex-col gap-6 overflow-hidden">
-          <%= simple_format @person.biography %>
-        </div>
+      <div class="relative mt-10 md:mt-0">
+        <% if @person.biography.present? %>
+          <input type="checkbox" class="hidden peer" id="read-more" autocomplete="off">
+          <label for="read-more" class="cursor-pointer absolute right-0 bottom-0 w-full text-right bg-linear-to-l from-background to-transparent peer-checked:hidden">Read more</label>
+          <div class="h-30 leading-6 text-sm md:text-base peer-checked:h-auto flex flex-col gap-6 overflow-hidden">
+            <p class="block sm:hidden text-xl font-domine">Biography:</p>
+            <%= simple_format @person.biography %>
+          </div>
+        <% end %>
       </div>
       <% if @possible_tabs.any? %>
         <%= turbo_frame_tag "credits" do %>

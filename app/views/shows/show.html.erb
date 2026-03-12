@@ -13,7 +13,23 @@
   <div class="grid grid-cols-1 md:grid-cols-4 md:gap-8 md:min-h-screen">
     <div class="col-span-1 bg-background-darker rounded-lg p-4 flex flex-col gap-10 items-center md:items-start">
       <%= image_tag @show.poster, class: "max-h-40 w-fit md:w-full md:max-h-none rounded-lg" %>
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-1 gap-10">
+      <div class="block md:hidden w-full">
+        <h3 class="text-2xl font-bold font-domine text-white">
+          <i class="fa-solid fa-tv text-2xl mr-6"></i>
+          <%= @show.translated_title %>
+        </h3>
+        <% if @show.genres.any? %>
+          <div class="flex gap-3 flex-wrap mt-4">
+            <% @show.genres.each do |genre| %>
+              <%= link_to genre.name, shows_path(genre_ids: [genre.id]), class: "rounded-full bg-pop/65 px-2 py-1 text-xs border-2 border-pop" %>
+            <% end %>
+          </div>
+        <% end %>
+        <% if @show.tagline %>
+          <p class="text-sm mt-4 italic"><%= @show.tagline %></p>
+        <% end %>
+      </div>
+      <div class="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-1 gap-10">
         <div>
           <p class="font-domine"><b>Status:</b></p>
           <p><%= @show.status.titleize %></p>
@@ -36,13 +52,7 @@
         <% end %>
       </div>
       <% if @show.companies.any? %>
-        <div class="grid grid-cols-5 gap-2">
-          <% @show.companies.each do |company| %>
-            <%= link_to company do %>
-              <%= image_tag company.logo, alt: company.name, title: company.name, class: "bg-pop/25 rounded-lg border border-pop aspect-square" %>
-            <% end %>
-          <% end %>
-        </div>
+        <%= render "shared/companies", companies: @show.companies %>
       <% end %>
       <div class="flex gap-4 flex-col w-full">
         <%= link_to "Edit", edit_show_path(@show), class: "link" %>
@@ -62,7 +72,7 @@
     </div>
 
     <div class="col-span-3 flex flex-col gap-10">
-      <div>
+      <div class="hidden md:block">
         <h3 class="text-4xl font-bold font-domine text-white mt-10 md:mt-4">
           <i class="fa-solid fa-tv text-4xl mr-6"></i>
           <%= @show.translated_title %>
@@ -78,7 +88,8 @@
           <p class="text-sm mt-4 italic"><%= @show.tagline %></p>
         <% end %>
       </div>
-      <div class="leading-6 text-sm md:text-base flex flex-col gap-6">
+      <div class="mt-10 md:mt-0 leading-6 text-sm md:text-base flex flex-col gap-6">
+        <p class="block sm:hidden text-xl font-domine">Overview:</p>
         <%= simple_format @show.overview %>
       </div>
 

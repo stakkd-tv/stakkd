@@ -9,11 +9,21 @@
   </div>
 <% end %>
 
+<% potential_name = @season.specials? ? "Specials" : "Season #{@season.number}" %>
 <div class="max-w-7xl mx-auto my-8 px-6 pt-10">
   <div class="grid grid-cols-1 md:grid-cols-4 md:gap-8 md:min-h-screen">
     <div class="col-span-1 bg-background-darker rounded-lg p-4 flex flex-col gap-10 items-center md:items-start">
       <%= image_tag @season.poster, class: "max-h-40 w-fit md:w-full md:max-h-none rounded-lg" %>
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-1 gap-10">
+      <div class="block md:hidden w-full">
+        <h3 class="text-2xl font-bold font-domine text-white">
+          <i class="fa-solid fa-tv text-2xl mr-6"></i>
+          <%= link_to @show.translated_title, @show, class: "underline" %> - <%= potential_name %>
+        </h3>
+        <% if @season.translated_name != potential_name %>
+          <p class="text-xl mt-4 italic font-bold"><%= @season.translated_name %></p>
+        <% end %>
+      </div>
+      <div class="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-1 gap-10">
         <div>
           <p class="font-domine"><b>Premiered:</b></p>
           <p><%= @season.premiere_date&.strftime("%B %d, %Y") || "TBA" %></p>
@@ -25,13 +35,7 @@
         </div>
       </div>
       <% if @show.companies.any? %>
-        <div class="grid grid-cols-5 gap-2">
-          <% @show.companies.each do |company| %>
-            <%= link_to company do %>
-              <%= image_tag company.logo, alt: company.name, title: company.name, class: "bg-pop/25 rounded-lg border border-pop aspect-square" %>
-            <% end %>
-          <% end %>
-        </div>
+        <%= render "shared/companies", companies: @show.companies %>
       <% end %>
       <div class="flex gap-4 flex-col w-full">
         <%= link_to "Edit", edit_show_season_path(@season, show_id: @show), class: "link" %>
@@ -39,8 +43,7 @@
     </div>
 
     <div class="col-span-3 flex flex-col gap-10">
-      <div>
-        <% potential_name = @season.specials? ? "Specials" : "Season #{@season.number}" %>
+      <div class="hidden md:block">
         <h3 class="text-4xl font-bold font-domine text-white mt-10 md:mt-4">
           <i class="fa-solid fa-tv text-4xl mr-6"></i>
           <%= link_to @show.translated_title, @show, class: "underline" %> - <%= potential_name %>
@@ -49,7 +52,8 @@
           <p class="text-xl mt-4 italic font-bold"><%= @season.translated_name %></p>
         <% end %>
       </div>
-      <div class="leading-6 text-sm md:text-base flex flex-col gap-6">
+      <div class="mt-10 md:mt-0 leading-6 text-sm md:text-base flex flex-col gap-6">
+        <p class="block sm:hidden text-xl font-domine">Overview:</p>
         <%= simple_format(@season.overview.presence || @show.overview.presence) %>
       </div>
 

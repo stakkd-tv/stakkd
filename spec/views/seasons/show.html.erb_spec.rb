@@ -40,11 +40,11 @@ RSpec.describe "seasons/show", type: :view do
     assign(:cast_members, CastMembers::Season.new(@season).cast_members)
   end
 
-  it "renders attributes in <p>" do
+  it "renders attributes" do
     render
     expect(rendered).to match(/Translated Title/)
     expect(rendered).to match(/Season 1/)
-    expect(rendered.scan("Season 1").count).to eq 1
+    expect(rendered.scan("Season 1").count).to eq 2 # An extra one for mobile layout
     expect(rendered).to match(/The OG season/)
     expect(rendered).to match(/This is overview/)
     expect(rendered).to match(/January 01, 2023/)
@@ -63,7 +63,16 @@ RSpec.describe "seasons/show", type: :view do
 
     it "does not render the subtitle with the name" do
       render
-      expect(rendered.scan("Season 1").count).to eq 1
+      expect(rendered.scan("Season 1").count).to eq 2 # 1 for mobile layout. It is not rendering it 3 names
+    end
+  end
+
+  context "when name does not match the potential name" do
+    let(:translated_name) { "Season 01" }
+
+    it "renders the subtitle with the name" do
+      render
+      assert_select "p.italic", text: "Season 01", count: 2 # An extra one for mobile layout
     end
   end
 
