@@ -1,6 +1,7 @@
 require "rails_helper"
 require_relative "shared_examples/slugify"
 require_relative "shared_examples/has_imdb"
+require_relative "shared_examples/has_galleries"
 
 RSpec.describe Movie, type: :model do
   describe "associations" do
@@ -16,10 +17,6 @@ RSpec.describe Movie, type: :model do
     it { should have_many(:companies).through(:company_assignments) }
     it { should have_many(:releases).dependent(:destroy) }
     it { should have_many(:taglines).dependent(:destroy) }
-    it { should have_many(:videos).dependent(:destroy) }
-    it { should have_many_attached(:posters) }
-    it { should have_many_attached(:backgrounds) }
-    it { should have_many_attached(:logos) }
   end
 
   describe "validations" do
@@ -30,6 +27,8 @@ RSpec.describe Movie, type: :model do
     it { should validate_presence_of(:budget) }
     it { should validate_inclusion_of(:status).in_array(Movie::STATUSES) }
   end
+
+  it_behaves_like "a model with galleries", :movie, [:posters, :backgrounds, :logos, :videos]
 
   describe "before_validation :denormalize_release_date" do
     context "when there is a release" do
@@ -53,63 +52,6 @@ RSpec.describe Movie, type: :model do
   end
 
   it_behaves_like "a slugified model", :movie, :translated_title
-
-  describe "#poster" do
-    context "when there are no posters" do
-      it "returns the 2:3 asset" do
-        movie = Movie.new
-        expect(movie.poster).to eq "2:3.png"
-      end
-    end
-
-    context "when there are posters" do
-      it "returns an image" do
-        movie = FactoryBot.create(
-          :movie,
-          posters: [Rack::Test::UploadedFile.new("spec/support/assets/300x450.png", "image/png")]
-        )
-        expect(movie.poster).to be_a(ActiveStorage::Attachment)
-      end
-    end
-  end
-
-  describe "#background" do
-    context "when there are no backgrounds" do
-      it "returns nil" do
-        movie = Movie.new
-        expect(movie.background).to be_nil
-      end
-    end
-
-    context "when there are backgrounds" do
-      it "returns an image" do
-        movie = FactoryBot.create(
-          :movie,
-          backgrounds: [Rack::Test::UploadedFile.new("spec/support/assets/300x450.png", "image/png")]
-        )
-        expect(movie.background).to be_a(ActiveStorage::Attachment)
-      end
-    end
-  end
-
-  describe "#logo" do
-    context "when there are no logos" do
-      it "returns the 1:1 asset" do
-        movie = Movie.new
-        expect(movie.logo).to eq "1:1.png"
-      end
-    end
-
-    context "when there are logos" do
-      it "returns an image" do
-        movie = FactoryBot.create(
-          :movie,
-          logos: [Rack::Test::UploadedFile.new("spec/support/assets/300x450.png", "image/png")]
-        )
-        expect(movie.logo).to be_a(ActiveStorage::Attachment)
-      end
-    end
-  end
 
   it_behaves_like "a model with imdb_id", Movie
 
@@ -201,13 +143,6 @@ RSpec.describe Movie, type: :model do
       release1 = FactoryBot.create(:release, movie:, type: Release::THEATRICAL, certification: cert_uk, date: Date.new(2022, 2, 1))
       release2 = FactoryBot.create(:release, movie:, type: Release::DIGITAL, certification: cert_uk, date: Date.new(2022, 1, 1))
       expect(movie.release_dates_for_country).to eq [release2, release1]
-    end
-  end
-
-  describe "#available_galleries" do
-    it "returns the available galleries" do
-      movie = Movie.new
-      expect(movie.available_galleries).to eq [:posters, :backgrounds, :logos, :videos]
     end
   end
 

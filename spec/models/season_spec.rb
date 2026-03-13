@@ -1,13 +1,14 @@
 require "rails_helper"
+require_relative "shared_examples/has_galleries"
 
 RSpec.describe Season, type: :model do
   describe "associations" do
     it { should belong_to(:show) }
     it { should have_many(:season_regulars).class_name("CastMember").dependent(:destroy) }
-    it { should have_many(:videos).dependent(:destroy) }
+    # it { should have_many(:videos).dependent(:destroy) }
     it { should have_many(:episodes).dependent(:destroy) }
     it { should have_many(:ordered_episodes) }
-    it { should have_many_attached(:posters) }
+    # it { should have_many_attached(:posters) }
   end
 
   describe "validations" do
@@ -17,6 +18,8 @@ RSpec.describe Season, type: :model do
     it { should validate_uniqueness_of(:number).scoped_to([:show_id]) }
     it { should validate_numericality_of(:number).is_greater_than_or_equal_to(0) }
   end
+
+  it_behaves_like "a model with galleries", :season, [:posters, :videos]
 
   describe "after_save :set_show_premiere_date" do
     context "when the season is a special" do
@@ -81,31 +84,6 @@ RSpec.describe Season, type: :model do
       season1 = FactoryBot.create(:season, number: 1)
       FactoryBot.create(:season, number: 2)
       expect(Season.nested(1)).to eq [season1]
-    end
-  end
-
-  describe "#poster" do
-    context "when there are no posters" do
-      it "returns the 2:3 asset" do
-        season = Season.new
-        expect(season.poster).to eq "2:3.png"
-      end
-    end
-
-    context "when there are posters" do
-      it "returns an image" do
-        season = FactoryBot.create(
-          :season,
-          posters: [Rack::Test::UploadedFile.new("spec/support/assets/300x450.png", "image/png")]
-        )
-        expect(season.poster).to be_a(ActiveStorage::Attachment)
-      end
-    end
-  end
-
-  describe "#available_galleries" do
-    it "returns the galleries available" do
-      expect(Season.new.available_galleries).to eq [:posters, :videos]
     end
   end
 

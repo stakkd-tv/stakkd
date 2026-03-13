@@ -1,6 +1,7 @@
 class Movie < ApplicationRecord
   include Slugify
   include HasImdb
+  include HasGalleries
 
   acts_as_taggable_on :keywords
 
@@ -25,10 +26,7 @@ class Movie < ApplicationRecord
   has_many :companies, through: :company_assignments
   has_many :releases, dependent: :destroy
   has_many :taglines, -> { order(position: :asc) }, as: :record, dependent: :destroy
-  has_many :videos, as: :record, dependent: :destroy
-  has_many_attached :posters
-  has_many_attached :backgrounds
-  has_many_attached :logos
+  has_galleries :posters, :backgrounds, :logos, :videos
 
   # Validations
   validates_presence_of :translated_title, :original_title, :runtime, :revenue, :budget
@@ -36,12 +34,6 @@ class Movie < ApplicationRecord
 
   # Callbacks
   before_validation :denormalize_release_date
-
-  def poster = posters.first || "2:3.png"
-
-  def background = backgrounds.first
-
-  def logo = logos.first || "1:1.png"
 
   def slug=(value)
     self.title_kebab = value
@@ -56,8 +48,6 @@ class Movie < ApplicationRecord
   def release_dates_for_country
     @release_dates_for_country ||= releases.includes(certification: :country).where(certification: {country:}).order(date: :asc)
   end
-
-  def available_galleries = [:posters, :backgrounds, :logos, :videos]
 
   def directors = @directors ||= crew_members.includes(:job, :person).where(job: {name: Job::DIRECTOR})
 

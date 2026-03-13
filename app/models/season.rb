@@ -1,11 +1,12 @@
 class Season < ApplicationRecord
+  include HasGalleries
+
   # Associations
   belongs_to :show
   has_many :season_regulars, -> { order(position: :asc) }, as: :record, class_name: "CastMember", dependent: :destroy
-  has_many :videos, as: :record, dependent: :destroy
   has_many :episodes, dependent: :destroy
   has_many :ordered_episodes, -> { ordered }, class_name: "Episode"
-  has_many_attached :posters
+  has_galleries :posters, :videos
 
   # Validations
   validates :translated_name, :original_name, presence: true
@@ -19,10 +20,6 @@ class Season < ApplicationRecord
   scope :without_specials, -> { where.not(number: 0).ordered }
   scope :ordered, -> { order(number: :asc) }
   scope :nested, ->(number) { where(number:) }
-
-  def poster = posters.first || "2:3.png"
-
-  def available_galleries = [:posters, :videos]
 
   def to_param = number.to_s
 

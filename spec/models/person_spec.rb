@@ -1,6 +1,7 @@
 require "rails_helper"
 require_relative "shared_examples/slugify"
 require_relative "shared_examples/has_imdb"
+require_relative "shared_examples/has_galleries"
 
 RSpec.describe Person, type: :model do
   include ActiveSupport::Testing::TimeHelpers
@@ -8,7 +9,6 @@ RSpec.describe Person, type: :model do
   describe "associations" do
     it { should have_many(:cast_credits).class_name("CastMember").dependent(:destroy) }
     it { should have_many(:crew_credits).class_name("CrewMember").dependent(:destroy) }
-    it { should have_many_attached(:images) }
   end
 
   describe "validations" do
@@ -19,24 +19,7 @@ RSpec.describe Person, type: :model do
     it { should validate_inclusion_of(:gender).in_array(Person::GENDERS) }
   end
 
-  describe "#image" do
-    context "when there are no images" do
-      it "returns the 2:3 asset" do
-        person = Person.new
-        expect(person.image).to eq "2:3.png"
-      end
-    end
-
-    context "when there are images" do
-      it "returns an image" do
-        person = FactoryBot.create(
-          :person,
-          images: [Rack::Test::UploadedFile.new("spec/support/assets/300x450.png", "image/png")]
-        )
-        expect(person.image).to be_a(ActiveStorage::Attachment)
-      end
-    end
-  end
+  it_behaves_like "a model with galleries", :person, [:images]
 
   describe "#image_url" do
     context "when there are no images" do
@@ -89,11 +72,4 @@ RSpec.describe Person, type: :model do
   it_behaves_like "a model with imdb_id", Person
 
   it_behaves_like "a slugified model", :person, :translated_name
-
-  describe "#available_galleries" do
-    it "returns the available galleries" do
-      person = Person.new
-      expect(person.available_galleries).to eq [:images]
-    end
-  end
 end

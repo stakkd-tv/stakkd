@@ -1,5 +1,6 @@
 class Episode < ApplicationRecord
   include HasImdb
+  include HasGalleries
 
   TYPES = [
     STANDARD = "standard",
@@ -11,9 +12,8 @@ class Episode < ApplicationRecord
   belongs_to :season
   has_many :guest_stars, -> { order(position: :asc) }, as: :record, class_name: "CastMember", dependent: :destroy
   has_many :crew_members, as: :record, dependent: :destroy
-  has_many :videos, as: :record, dependent: :destroy
   has_one :show, through: :season
-  has_many_attached :backgrounds
+  has_galleries :backgrounds, :videos
 
   # Validations
   validates :translated_name, :original_name, presence: true
@@ -28,8 +28,6 @@ class Episode < ApplicationRecord
   # Scopes
   scope :ordered, -> { order(number: :asc) }
   scope :nested, ->(number) { where(number:) }
-
-  def background = backgrounds.first || "16:9.png"
 
   def to_param = number.to_s
 

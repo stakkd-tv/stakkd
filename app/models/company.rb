@@ -1,20 +1,18 @@
 class Company < ApplicationRecord
+  include HasGalleries
+
   # Associations
   belongs_to :country
   has_many :company_assignments, dependent: :destroy
-  has_many_attached :logos
+  has_galleries :logos
 
   # Validations
   validates_presence_of :name
-
-  def logo = logos.first || "1:1.png"
 
   def logo_url
     ActiveStorage::Current.url_options = Rails.application.config.action_mailer.default_url_options
     logo.try(:url)
   end
-
-  def available_galleries = [:logos]
 
   # TODO: Add slug to companies
   def self.from_slug(id)

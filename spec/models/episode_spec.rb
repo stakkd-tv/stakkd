@@ -1,14 +1,13 @@
 require "rails_helper"
 require_relative "shared_examples/has_imdb"
+require_relative "shared_examples/has_galleries"
 
 RSpec.describe Episode, type: :model do
   describe "associations" do
     it { should belong_to(:season) }
     it { should have_many(:guest_stars).class_name("CastMember") }
     it { should have_many(:crew_members).dependent(:destroy) }
-    it { should have_many(:videos).dependent(:destroy) }
     it { should have_one(:show).through(:season) }
-    it { should have_many_attached(:backgrounds) }
   end
 
   describe "validations" do
@@ -20,6 +19,8 @@ RSpec.describe Episode, type: :model do
     it { should validate_inclusion_of(:episode_type).in_array(Episode::TYPES) }
     it { should validate_numericality_of(:runtime).is_greater_than_or_equal_to(0) }
   end
+
+  it_behaves_like "a model with galleries", :episode, [:backgrounds, :videos]
 
   describe "after_save :set_season_premiere_date" do
     context "when episode is the first episode in the season" do
@@ -62,25 +63,6 @@ RSpec.describe Episode, type: :model do
   end
 
   it_behaves_like "a model with imdb_id", Episode
-
-  describe "#background" do
-    context "when there are no backgrounds" do
-      it "returns the 16:9 asset" do
-        episode = Episode.new
-        expect(episode.background).to eq "16:9.png"
-      end
-    end
-
-    context "when there are backgrounds" do
-      it "returns an image" do
-        episode = FactoryBot.create(
-          :episode,
-          backgrounds: [Rack::Test::UploadedFile.new("spec/support/assets/300x450.png", "image/png")]
-        )
-        expect(episode.background).to be_a(ActiveStorage::Attachment)
-      end
-    end
-  end
 
   describe "#to_param" do
     it "returns the episode number as a string" do

@@ -2,6 +2,7 @@ class Person < ApplicationRecord
   include PgSearch::Model
   include Slugify
   include HasImdb
+  include HasGalleries
 
   pg_search_scope :search, against: [:alias, :original_name, :translated_name], using: {trigram: {threshold: 0.2}}
 
@@ -26,14 +27,12 @@ class Person < ApplicationRecord
   # Associations
   has_many :cast_credits, class_name: "CastMember", dependent: :destroy
   has_many :crew_credits, class_name: "CrewMember", dependent: :destroy
-  has_many_attached :images
+  has_galleries :images
 
   # Validations
   validates_presence_of :original_name, :translated_name, :name_kebab
   validates_inclusion_of :known_for, in: CREDITS, allow_blank: true, allow_nil: true
   validates_inclusion_of :gender, in: GENDERS
-
-  def image = images.first || "2:3.png"
 
   def image_url
     ActiveStorage::Current.url_options = Rails.application.config.action_mailer.default_url_options
@@ -49,8 +48,6 @@ class Person < ApplicationRecord
   def slug=(value)
     self.name_kebab = value
   end
-
-  def available_galleries = [:images]
 
   private
 
