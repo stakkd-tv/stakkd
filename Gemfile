@@ -46,7 +46,7 @@ gem "image_processing", "~> 1.2"
 gem "mini_magick", "~> 5.3"
 
 # ActiveRecord tagging
-gem "acts-as-taggable-on", "~> 12.0"
+gem "acts-as-taggable-on", "~> 13.0"
 
 # ActiveRecord positioning
 gem "acts_as_list", "~> 1.2"
