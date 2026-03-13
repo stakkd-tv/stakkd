@@ -36,7 +36,7 @@ module HasGalleries
     private
 
     def valid_gallery?(gallery)
-      GALLERY_FALLBACKS.keys.include?(gallery)
+      GALLERY_FALLBACKS.key?(gallery)
     end
   end
 end
