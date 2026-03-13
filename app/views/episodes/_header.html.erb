@@ -4,17 +4,17 @@
       <%= image_tag show.poster %>
     </div>
     <%= link_to show do %>
-      <h3 class="text-4xl font-bold font-domine text-white text-center"><%= show.translated_title %></h3>
+      <h3 class="text-2xl md:text-4xl font-bold font-domine text-white text-center"><%= show.translated_title %></h3>
     <% end %>
     <div class="inline-flex gap-2">
-      <%= link_to season.translated_name, show_season_path(season, show_id: show), class: "underline text-xl font-bold font-domine text-white text-center" %>
+      <%= link_to season.translated_name, show_season_path(season, show_id: show), class: "underline text-lg md:text-xl font-bold font-domine text-white text-center" %>
       <% e = local_assigns[:episode] %>
       <% if e %>
         <p>-</p>
-        <%= link_to e.translated_name, show_season_episode_path(show, season, e), class: "underline text-xl font-bold font-domine text-white text-center" %>
+        <%= link_to e.translated_name, show_season_episode_path(show, season, e), class: "underline text-lg md:text-xl font-bold font-domine text-white text-center" %>
       <% else %>
         <p>-</p>
-        <p class="text-xl font-bold font-domine text-white text-center">New episode</p>
+        <p class="text-lg md:text-xl font-bold font-domine text-white text-center">New episode</p>
       <% end %>
     </div>
   </div>
