@@ -1060,7 +1060,7 @@ __metadata:
     eslint-plugin-promise: "npm:^7.2.1"
     flatpickr: "npm:^4.6.13"
     slim-select: "npm:^3.4.3"
-    tabulator-tables: "npm:^6.3.1"
+    tabulator-tables: "npm:^6.4.0"
     tailwindcss: "npm:^4.1.8"
     tsc-watch: "npm:^7.2.0"
     typescript: "npm:^5.9.3"
@@ -3721,10 +3721,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tabulator-tables@npm:^6.3.1":
-  version: 6.3.1
-  resolution: "tabulator-tables@npm:6.3.1"
-  checksum: 10c0/aa42319ce00ec08f0575d5d5887a49c836d4b848e9fc0b53f1228632615450f003371c2a10e02108719a1ea3346a8c5d85f83d03606e1a84d4a06ce7a0520059
+"tabulator-tables@npm:^6.4.0":
+  version: 6.4.0
+  resolution: "tabulator-tables@npm:6.4.0"
+  checksum: 10c0/8e447de44f53873ef64f9a02e6066b0bf5d46657d5fa7171d170677215ffc8f9dd3cfd63e021aa089c6299815e63a07c5117945118f80e3da6cb99d1978db4ec
   languageName: node
   linkType: hard
 
