@@ -17,13 +17,13 @@ export default class extends Controller {
 
     this.searchTarget.addEventListener('focusin', () => {
       this.buttonTargets.forEach((btn) => {
-        btn.classList.add('!hidden')
+        btn.classList.add('hidden!')
       })
     })
 
     this.searchTarget.addEventListener('focusout', () => {
       this.buttonTargets.forEach((btn) => {
-        btn.classList.remove('!hidden')
+        btn.classList.remove('hidden!')
       })
     })
 

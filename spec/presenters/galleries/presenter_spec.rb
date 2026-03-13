@@ -29,7 +29,7 @@ module Galleries
           {
             name: "Backgrounds",
             images: movie.backgrounds.take(3),
-            aspect: "min-w-[425px] max-w-[425px] aspect-16/9",
+            aspect: "min-w-[425px] max-w-[425px] aspect-video",
             show_view_more: true,
             view_more_path: "/movies/#{movie.slug}/galleries/backgrounds",
             partial: "shared/gallery"
@@ -45,7 +45,7 @@ module Galleries
           {
             name: "Videos",
             images: movie.videos.to_a,
-            aspect: "min-w-[425px] max-w-[425px] aspect-16/9",
+            aspect: "min-w-[425px] max-w-[425px] aspect-video",
             show_view_more: false,
             view_more_path: "/movies/#{movie.slug}/galleries/videos",
             partial: "shared/video_gallery"

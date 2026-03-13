@@ -54,15 +54,15 @@ export default class extends Controller {
         body: formData
       })
 
-      loadingElement.classList.add('!hidden')
+      loadingElement.classList.add('hidden!')
 
       if (!response.ok) {
         const error = await response.json()
-        errorElement.classList.remove('!hidden')
+        errorElement.classList.remove('hidden!')
         textElement.textContent = `${file.name}: ${error.message}`
       } else {
         const json = await response.json()
-        successElement.classList.remove('!hidden')
+        successElement.classList.remove('hidden!')
         textElement.textContent = `${file.name} uploaded`
 
         const newImgElement = this.imageTemplateTarget.cloneNode(true) as HTMLElement
@@ -73,7 +73,7 @@ export default class extends Controller {
       }
     } catch (err) {
       console.error(err)
-      errorElement.classList.remove('!hidden')
+      errorElement.classList.remove('hidden!')
       result.textContent = `${file.name}: Upload failed`
     }
   }

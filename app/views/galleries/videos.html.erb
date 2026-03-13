@@ -5,7 +5,7 @@
 <div class="max-w-7xl mx-auto my-8 px-6">
   <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
     <% @videos.each do |video| %>
-      <div class="group aspect-16/9 border border-pop rounded-lg overflow-hidden relative">
+      <div class="group aspect-video border border-pop rounded-lg overflow-hidden relative">
         <%= link_to video.url do %>
           <%= image_tag video.thumbnail_url || "16:9.png", class: "min-w-[425px]" %>
           <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">

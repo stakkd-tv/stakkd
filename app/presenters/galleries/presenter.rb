@@ -6,8 +6,8 @@ module Galleries
       posters: "min-w-40 max-w-40 aspect-2/3",
       images: "min-w-40 max-w-40 aspect-2/3",
       logos: "min-w-60 max-w-60 aspect-square",
-      backgrounds: "min-w-[425px] max-w-[425px] aspect-16/9",
-      videos: "min-w-[425px] max-w-[425px] aspect-16/9"
+      backgrounds: "min-w-[425px] max-w-[425px] aspect-video",
+      videos: "min-w-[425px] max-w-[425px] aspect-video"
     }
 
     MAX_IMAGES = {
