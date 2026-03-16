@@ -31,8 +31,15 @@ RSpec.feature "Movie form", type: :system, js: true do
     visit movies_path
     expect(page).to have_content("Movies")
 
-    # Details, TODO: Failures. Not urgent as failures are tested in request specs
+    # Errors
     click_link "Add a movie"
+    fill_in "movie_translated_title", with: " "
+    fill_in "movie_original_title", with: " "
+    click_button "Save"
+    expect(page).to have_content("Translated title can't be blank")
+    expect(page).to have_content("Original title can't be blank")
+
+    # Details
     fill_in "movie_translated_title", with: "Test title"
     fill_in "movie_original_title", with: "Original title"
     click_button "Save"

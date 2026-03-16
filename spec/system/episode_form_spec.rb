@@ -21,8 +21,16 @@ RSpec.feature "Show form", type: :system, js: true do
     visit show_season_path(@show, @season)
     expect(page).to have_content(@season.translated_name)
 
-    # Details, TODO: Failures. Not urgent as failures are tested in request specs
+    # Errors
     click_link "New episode"
+    fill_in "episode_translated_name", with: " "
+    fill_in "episode_original_name", with: " "
+    fill_in "episode_number", with: "1"
+    click_button "Save"
+    expect(page).to have_content("Translated name can't be blank")
+    expect(page).to have_content("Original name can't be blank")
+
+    # Details
     fill_in "episode_translated_name", with: "Test name"
     fill_in "episode_original_name", with: "Original name"
     fill_in "episode_number", with: "1"

@@ -48,7 +48,6 @@ RSpec.feature "Authentication", type: :system, js: true do
     fill_in "user_password", with: "bye"
     fill_in "user_password_confirmation", with: "hello"
     click_button "Let's go!"
-    expect(page).to have_content("Your account could not be created due to the following:")
     expect(page).to have_content("Username can't be blank")
     expect(page).to have_content("Email address has already been taken")
     expect(page).to have_content("Password confirmation doesn't match password")

@@ -1,18 +1,6 @@
 <div class="form">
 <%= render "form_nav", person: %>
 <%= form_with model: person do |form| %>
-  <% if person.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(person.errors.count, "error") %> prohibited this person from being saved:</h2>
-
-      <ul>
-        <% person.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
   <div class="flex">
     <div class="basis-full md:basis-1/3">
       <%= form.label :translated_name %>

@@ -30,8 +30,15 @@ RSpec.feature "Show form", type: :system, js: true do
     visit shows_path
     expect(page).to have_content("Shows")
 
-    # Details, TODO: Failures. Not urgent as failures are tested in request specs
+    # Errors
     click_link "Add a show"
+    fill_in "show_translated_title", with: " "
+    fill_in "show_original_title", with: " "
+    click_button "Save"
+    expect(page).to have_content("Translated title can't be blank")
+    expect(page).to have_content("Original title can't be blank")
+
+    # Details
     fill_in "show_translated_title", with: "Test title"
     fill_in "show_original_title", with: "Original title"
     click_button "Save"

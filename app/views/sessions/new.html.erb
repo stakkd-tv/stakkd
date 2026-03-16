@@ -8,8 +8,12 @@
         </div>
       <% end %>
 
-      <%= form.email_field :email_address, required: true, autocomplete: "email", placeholder: "Email", value: params[:email_address], class: "h-14 px-4 border-b-3 border-white focus:border-pop focus:outline-none data-error:border-red-400" %>
-      <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Password", maxlength: 72, class: "h-14 px-4 border-b-3 border-white focus:border-pop focus:outline-none data-error:border-red-400" %>
+      <div class="w-full">
+        <%= form.email_field :email_address, required: true, autocomplete: "email", placeholder: "Email", value: params[:email_address], class: "w-full h-14 px-4 border-b-3 border-white focus:border-pop focus:outline-none data-field-error:border-red-500" %>
+      </div>
+      <div class="w-full">
+        <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Password", maxlength: 72, class: "w-full h-14 px-4 border-b-3 border-white focus:border-pop focus:outline-none data-field-error:border-red-500" %>
+      </div>
       <%= link_to "Forgot your password?", new_password_path, class: "btn w-fit" %>
       <div class="w-fit mt-10">
         <%= button_to do %>

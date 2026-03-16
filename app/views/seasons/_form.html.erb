@@ -3,18 +3,6 @@
   <%# Fixes the case where a request is sent with a nil params[:number]. This should never happen but a precaution. %>
   <% season.number = 0 if season.number.nil? %>
   <%= form_with model: [show, season] do |form| %>
-    <% if season.errors.any? %>
-      <div style="color: red">
-        <h2><%= pluralize(season.errors.count, "error") %> prohibited this season from being saved:</h2>
-
-        <ul>
-          <% season.errors.each do |error| %>
-            <li><%= error.full_message %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
-
     <div class="flex flex-col xs:flex-row gap-6">
       <div class="basis-1/2">
         <%= form.label :translated_name %>
