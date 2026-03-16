@@ -4,8 +4,29 @@ on:
   push:
     branches: [main]
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 25
+      - name: Install Yarn packages
+        run: |
+          corepack enable
+          yarn
+      - name: Lint all files
+        run: bin/lint
+
   test:
     runs-on: ubuntu-latest
+    needs: [lint]
     services:
       postgres:
         image: postgres:11-alpine
@@ -57,23 +78,3 @@ jobs:
       - name: Mark failure if needed
         if: env.rspec_failed == 'true'
         run: exit 1
-
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-      - name: Install Ruby and gems
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-      - name: Set up Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: 25
-      - name: Install Yarn packages
-        run: |
-          corepack enable
-          yarn
-      - name: Lint all files
-        run: bin/lint

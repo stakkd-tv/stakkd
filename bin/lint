@@ -12,6 +12,17 @@ def cmd(command)
   end
 end
 
+def check_for_focused_specs!
+  puts "Checking for focused specs..."
+
+  if system('grep -rE "^\s*(fdescribe|fcontext|fit|fscenario)\b" spec/')
+    puts "Focused specs found. Please remove them before continuing."
+    exit 1
+  end
+end
+
+check_for_focused_specs!
+
 if ARGV.include?("--fix")
   cmd("bundle exec standardrb --fix app spec lib")
   cmd("yarn lint:js --fix")
