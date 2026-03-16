@@ -25,7 +25,6 @@ RSpec.feature "Person form", type: :system, js: true do
     fill_in "person_original_name", with: "Original name"
     click_button "Save"
     expect(page).to have_content("Person was successfully created.")
-    person = Person.last
 
     # Images
     click_link "Images"
