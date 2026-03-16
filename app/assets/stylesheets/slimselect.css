@@ -16,6 +16,14 @@
     border-radius: var(--radius-lg);
 }
 
+form .ss-main.filter {
+    width: 100%;
+    background-color: var(--color-background);
+    padding: 0.5rem;
+    border: 1px solid var(--color-pop);
+    border-radius: var(--radius-lg);
+}
+
 .form > form .ss-main:focus {
     outline: 1px solid var(--color-pop);
 }
@@ -96,4 +104,10 @@
 .ss-content .ss-list .ss-optgroup .ss-optgroup-label .ss-optgroup-label-text {
     color: white;
     font-family: var(--font-domine);
+}
+
+.ss-main .ss-values .ss-value {
+    background-color: var(--color-background-darker);
+    /*padding: 15px 10px;*/
+    color: white;
 }

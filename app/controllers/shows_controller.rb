@@ -3,7 +3,16 @@ class ShowsController < ApplicationController
   before_action :set_show, except: [:index, :new, :create]
 
   def index
-    @shows = Show.all
+    show_filter = ::Filters::Shows.new(params)
+    @shows = show_filter.filter.paginate(page: params[:page], per_page: 12)
+    @filter_params = show_filter.to_params
+
+    @tags = ActsAsTaggableOn::Tag
+      .joins(:taggings)
+      .where("taggings.context = ?", "keywords")
+      .distinct
+      .order(taggings_count: :desc)
+      .limit(200)
   end
 
   def show

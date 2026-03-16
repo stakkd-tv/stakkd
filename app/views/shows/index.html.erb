@@ -5,17 +5,122 @@
     <h3 class="text-4xl font-bold font-domine text-white text-center">Shows</h3>
     <%= link_to "Add a show", new_show_path, class: "link" %>
   </div>
-
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-    <% @shows.each do |show| %>
-      <%= link_to show do %>
-        <div class="group w-full aspect-2/3 border border-pop rounded-lg overflow-hidden relative">
-          <div class="absolute w-full h-full flex flex-col gap-4 p-4 justify-center items-center opacity-0 group-hover:opacity-100 bg-pop/50 backdrop-blur-sm z-10 transition duration-300 ease-in-out">
-            <p class="font-domine font-bold text-2xl text-white text-center"><%= show.translated_title %></p>
-          </div>
-          <%= image_tag show.poster %>
+  <div class="grid grid-cols-1 md:grid-cols-4 md:gap-8 md:min-h-screen">
+    <%= form_with(url: shows_path, method: "get", class: "col-span-1 flex flex-col gap-5 items-center md:items-start", data: {turbo_frame: "shows"}) do |form| %>
+      <details class="bg-background-darker w-full rounded-lg">
+        <summary class="p-4 cursor-pointer border-b-2 border-background">Sort</summary>
+        <div class="p-4">
+          <select class="input" name="sort" autocomplete="off">
+            <option value="popularity">Popularity</option>
+            <option value="rating">Rating</option>
+            <option value="title">Title</option>
+          </select>
         </div>
-      <% end %>
+      </details>
+
+      <details class="bg-background-darker w-full rounded-lg mb-4" open>
+        <summary class="p-4 cursor-pointer border-b-2 border-background">Filters</summary>
+        <div class="flex flex-col">
+          <div class="p-4 border-b-2 border-background">
+            <label>
+              <input type="checkbox" name="hide_watched" class="mr-2 checked:bg-pop" autocomplete="off">
+              Hide shows I'm watching
+            </label>
+          </div>
+
+          <div class="p-4 border-b-2 border-background flex flex-col gap-4">
+            <p><b>Premiere date</b></p>
+            <div class="flex flex-col gap-1">
+              <label for="premiere_date_from" class="basis-1/4">From</label>
+              <input type="date" name="premiere_date_from" class="input" autocomplete="off" value="<%= params[:premiere_date_from] || "" %>">
+            </div>
+            <div class="flex flex-col gap-1">
+              <label for="premiere_date_to" class="basis-1/4">To</label>
+              <input type="date" name="premiere_date_to" class="input" autocomplete="off" value="<%= params[:premiere_date_to] || "" %>">
+            </div>
+          </div>
+
+          <div class="p-4 border-b-2 border-background flex flex-col gap-4">
+            <p><b>Episode air dates</b></p>
+            <div class="flex flex-col gap-1">
+              <label for="episode_air_date_from" class="basis-1/4">From</label>
+              <input type="date" name="episode_air_date_from" class="input" autocomplete="off" value="<%= params[:episode_air_date_from] || "" %>">
+            </div>
+            <div class="flex flex-col gap-1">
+              <label for="episode_air_date_to" class="basis-1/4">To</label>
+              <input type="date" name="episode_air_date_to" class="input" autocomplete="off" value="<%= params[:episode_air_date_to] || "" %>">
+            </div>
+          </div>
+
+          <div class="p-4 border-b-2 border-background">
+            <p class="mb-4"><b>Genres</b></p>
+            <div class="flex flex-wrap gap-2">
+              <% Genre.all.order(:name).each do |genre| %>
+                <div class="border border-pop rounded-lg overflow-hidden">
+                  <input type="checkbox"
+                    name="genre_ids[]"
+                    value="<%= genre.id %>"
+                    id="genre_<%= genre.id %>"
+                    class="hidden peer"
+                    autocomplete="off"
+                    <%= params[:genre_ids]&.include?(genre.id.to_s) ? "checked" : "" %>>
+                  <label for="genre_<%= genre.id %>" class="cursor-pointer block px-2 py-1 peer-checked:bg-pop/50"><%= genre.name %></label>
+                </div>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="p-4 border-b-2 border-background">
+            <p class="mb-4"><b>Country</b></p>
+            <select name="country_id" class="input" autocomplete="off">
+              <option value="" <%= params[:country_id].blank? ? "selected" : "" %>>None selected</option>
+              <% Country.all.order(:translated_name).each do |country| %>
+                <option value="<%= country.id %>" <%= (params[:country_id].to_i == country.id) ? "selected" : "" %>><%= country.translated_name %></option>
+              <% end %>
+            </select>
+          </div>
+
+          <div class="p-4 border-b-2 border-background">
+            <p class="mb-4"><b>Content ratings</b></p>
+            <%= form.grouped_collection_select(
+                  :certification_ids,
+                  Country.includes(:certifications).where(certifications: {media_type: "Show"}),
+                  :certifications,
+                  :translated_name,
+                  :id,
+                  :to_s,
+                  {include_blank: false},
+                  {class: "filter", data: {controller: "slim-select"}, multiple: true, autocomplete: "off"}
+                ) %>
+          </div>
+
+          <div class="p-4 border-b-2 border-background">
+            <p class="mb-4"><b>Keywords</b></p>
+            <%= form.collection_select(:keywords,
+                  @tags,
+                  :name,
+                  :name,
+                  {include_blank: false},
+                  {class: "filter", data: {controller: "slim-select", slim_select_addable_value: true}, multiple: true, autocomplete: "off"}
+                ) %>
+          </div>
+
+          <div class="p-4 border-b-2 border-background">
+            <%= submit_tag "Apply filter", class: "link w-full" %>
+          </div>
+        </div>
+      </details>
     <% end %>
+    <div class="col-span-3">
+      <%= turbo_frame_tag "shows", class: "grid grid-cols-2 md:grid-cols-3 gap-4" do %>
+        <% @shows.each do |show| %>
+          <%= render show %>
+        <% end %>
+
+        <% if @shows.any? && @shows.next_page.present? %>
+          <%= render "load_more" %>
+        <% end %>
+      <% end %>
+    </div>
   </div>
 </div>

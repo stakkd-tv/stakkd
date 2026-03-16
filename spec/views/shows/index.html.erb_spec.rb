@@ -4,7 +4,8 @@ RSpec.describe "shows/index", type: :view do
   before(:each) do
     @s1 = FactoryBot.create(:show, translated_title: "Back to the Present")
     @s2 = FactoryBot.create(:show, translated_title: "Back to the Future")
-    assign(:shows, [@s1, @s2])
+    assign(:shows, Show.all.paginate(page: 1, per_page: 10))
+    assign(:tags, [])
   end
 
   it "renders a new show link" do
@@ -14,8 +15,8 @@ RSpec.describe "shows/index", type: :view do
 
   it "renders a list of shows" do
     render
-    assert_select "p", text: "Back to the Present"
-    assert_select "p", text: "Back to the Future"
+    assert_select "h3", text: "Back to the Present"
+    assert_select "h3", text: "Back to the Future"
     assert_select "a[href='#{show_path(@s1)}']"
     assert_select "a[href='#{show_path(@s2)}']"
   end
