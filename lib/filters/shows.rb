@@ -2,8 +2,6 @@ module Filters
   class Shows
     attr_reader :options
 
-    # TODO: Certification
-
     def initialize(options)
       @options = options
     end

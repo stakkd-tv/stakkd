@@ -129,13 +129,13 @@ RSpec.feature "Show filters", type: :system, js: true do
     expect(page).not_to have_content("Avatar: The Last Airbender")
   end
 
-  scenario "Filtering movies with load more" do
+  scenario "Filtering shows with load more" do
     action = FactoryBot.create(:genre, name: "Action")
     comedy = FactoryBot.create(:genre, name: "Comedy")
 
     country = FactoryBot.create(:country, code: "UK", translated_name: "Great Britain")
     certification = FactoryBot.create(:certification, media_type: "Show", code: "PG", country:)
-    13.times do
+    36.times do
       show = FactoryBot.create(
         :show,
         translated_title: "Game of Thrones",
@@ -150,7 +150,10 @@ RSpec.feature "Show filters", type: :system, js: true do
     end
     show2 = FactoryBot.create(
       :show,
-      translated_title: "Avatar: The Last Airbender",
+      # Purposefully use a name that will appear at the end of results ordered by name, this is so that
+      # we can test that it never appears regardless of what page we're on and to ensure that this record
+      # will not appear on page 1 before (i.e. would not appear before we scroll).
+      translated_title: "Zombie Zombie Zombie",
       genres: [comedy],
       country: FactoryBot.build(:country, code: "US", translated_name: "United States"),
       keyword_list: ["greatest tv show of all time"]
@@ -185,10 +188,18 @@ RSpec.feature "Show filters", type: :system, js: true do
     click_button "Apply filter"
 
     expect(page).to have_css("h3", text: "Game of Thrones", count: 12)
-    expect(page).not_to have_content("Avatar: The Last Airbender")
+    expect(page).not_to have_content("Zombie Zombie Zombie")
     page.execute_script("window.scrollTo(0, document.body.scrollHeight)")
-    sleep 1 # TODO: This is dirty. We need this here so that we don't trigger any false positives
-    expect(page).to have_css("h3", text: "Game of Thrones", count: 13)
-    expect(page).not_to have_content("Avatar: The Last Airbender")
+    sleep 1 # This is dirty. We need this here so that we don't trigger any false positives
+    expect(page).to have_css("h3", text: "Game of Thrones", count: 24)
+    expect(page).not_to have_content("Zombie Zombie Zombie")
+    page.execute_script("window.scrollTo(0, document.body.scrollHeight)")
+    sleep 1
+    expect(page).to have_css("h3", text: "Game of Thrones", count: 36)
+    expect(page).not_to have_content("Zombie Zombie Zombie")
+    page.execute_script("window.scrollTo(0, document.body.scrollHeight)")
+    sleep 1
+    expect(page).to have_css("h3", text: "Game of Thrones", count: 36)
+    expect(page).not_to have_content("Zombie Zombie Zombie") # Show never appears
   end
 end

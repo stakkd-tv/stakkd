@@ -111,26 +111,40 @@ RSpec.feature "Movie filters", type: :system, js: true do
   scenario "Filtering movies with load more" do
     action = FactoryBot.create(:genre, name: "Action")
     comedy = FactoryBot.create(:genre, name: "Comedy")
-    FactoryBot.create_list(
-      :movie,
-      13,
-      translated_title: "Jurassic Park",
-      genres: [action]
-    )
+    36.times do
+      FactoryBot.create(
+        :movie,
+        translated_title: "Jurassic Park",
+        genres: [action]
+      )
+    end
     FactoryBot.create(
       :movie,
-      translated_title: "Jurassic Park",
+      # Purposefully use a name that will appear at the end of results ordered by name, this is so that
+      # we can test that it never appears regardless of what page we're on and to ensure that this record
+      # will not appear on page 1 before (i.e. would not appear before we scroll).
+      translated_title: "Zombie Zombie Zombie",
       genres: [comedy]
     )
 
     visit movies_path
 
-    # It applies filter when loading more (only shows 13 results instead of 14)
+    # It applies filter when loading more (Never displays Zombie Zombie Zombie)
     find("label", text: "Action").click # Check "Action"
     click_button "Apply filter"
-    expect(page).to have_content("Jurassic Park", count: 12)
+    expect(page).to have_css("h3", text: "Jurassic Park", count: 12)
+    expect(page).not_to have_content("Zombie Zombie Zombie")
     page.execute_script("window.scrollTo(0, document.body.scrollHeight)")
-    sleep 1 # TODO: This is dirty. We need this here so that we don't trigger any false positives
-    expect(page).to have_content("Jurassic Park", count: 13)
+    sleep 1 # This is dirty. We need this here so that we don't trigger any false positives
+    expect(page).to have_css("h3", text: "Jurassic Park", count: 24)
+    expect(page).not_to have_content("Zombie Zombie Zombie")
+    page.execute_script("window.scrollTo(0, document.body.scrollHeight)")
+    sleep 1
+    expect(page).to have_css("h3", text: "Jurassic Park", count: 36)
+    expect(page).not_to have_content("Zombie Zombie Zombie")
+    page.execute_script("window.scrollTo(0, document.body.scrollHeight)")
+    sleep 1
+    expect(page).to have_css("h3", text: "Jurassic Park", count: 36)
+    expect(page).not_to have_content("Zombie Zombie Zombie") # The result NEVER appears
   end
 end
