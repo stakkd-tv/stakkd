@@ -189,6 +189,80 @@ module Filters
         end
       end
 
+      context "when company filters are given" do
+        let(:disney) { FactoryBot.create(:company, name: "Disney") }
+        let(:cartoon_network) { FactoryBot.create(:company, name: "Cartoon Network") }
+        let(:youtube) { FactoryBot.create(:company, name: "YouTube") }
+        let(:nicktoons) { FactoryBot.create(:company, name: "Nicktoons") }
+        let(:options) { {company_ids: [disney.id, youtube.id]} }
+
+        before do
+          @movie = FactoryBot.create(:movie, companies: [youtube, nicktoons, disney])
+          FactoryBot.create(:movie, companies: [disney])
+          FactoryBot.create(:movie, companies: [cartoon_network, youtube])
+        end
+
+        it "returns only the shows that include all given companies" do
+          expect(subject).to eq [@movie]
+        end
+      end
+
+      context "when certification filters are given" do
+        let(:country) { FactoryBot.create(:country) }
+        let(:uk_pg) { FactoryBot.create(:certification, code: "PG", country: country) }
+        let(:uk_nr) { FactoryBot.create(:certification, code: "NR", country: country) }
+        let(:uk_18) { FactoryBot.create(:certification, code: "18", country: country) }
+        let(:uk_r) { FactoryBot.create(:certification, code: "R", country: country) }
+        let(:options) { {certification_ids: [uk_pg.id, uk_18.id]} }
+
+        before do
+          @movie = FactoryBot.create(:movie)
+          [uk_18, uk_r, uk_pg].each do |certification|
+            FactoryBot.create(:release, movie: @movie, certification:)
+          end
+          @movie2 = FactoryBot.create(:movie)
+          FactoryBot.create(:release, movie: @movie2, certification: uk_pg)
+          @movie3 = FactoryBot.create(:movie)
+          [uk_nr, uk_18].each do |certification|
+            FactoryBot.create(:release, movie: @movie3, certification:)
+          end
+          @movie4 = FactoryBot.create(:movie)
+          FactoryBot.create(:release, movie: @movie4, certification: uk_nr)
+        end
+
+        it "returns any show that include any of the given certifications" do
+          expect(subject.count).to eq 3
+          expect(subject).to include(@movie)
+          expect(subject).to include(@movie2)
+          expect(subject).to include(@movie3)
+        end
+      end
+
+      context "when keyword filters are given" do
+        let(:options) { {keywords: ["nonsense", "nope"]} }
+
+        before do
+          @movie = FactoryBot.create(:movie, keyword_list: ["nonsense", "nope"])
+          @movie2 = FactoryBot.create(:movie, keyword_list: ["nope"])
+          @movie3 = FactoryBot.create(:movie)
+        end
+
+        it "only returns shows with the keywords" do
+          expect(subject).to eq [@movie]
+        end
+
+        context "when there is a blank string" do
+          let(:options) { {keywords: [""]} }
+
+          it "treats it as a nil value" do
+            expect(subject.count).to eq 3
+            expect(subject).to include(@movie)
+            expect(subject).to include(@movie2)
+            expect(subject).to include(@movie3)
+          end
+        end
+      end
+
       context "when multiple filters are given" do
         let(:action) { FactoryBot.create(:genre, name: "Action") }
         let(:animation) { FactoryBot.create(:genre, name: "Animation") }
@@ -243,7 +317,10 @@ module Filters
           genre_ids:,
           release_date_from:,
           release_date_to:,
-          release_type:
+          release_type:,
+          company_ids:,
+          certification_ids:,
+          keywords:
         }
       }
       let(:country_id) { 1 }
@@ -251,6 +328,9 @@ module Filters
       let(:release_date_from) { "2025-01-01" }
       let(:release_date_to) { "2025-01-02" }
       let(:release_type) { Release::DIGITAL }
+      let(:company_ids) { [1] }
+      let(:certification_ids) { [1] }
+      let(:keywords) { ["lol"] }
 
       subject { instance.to_params }
 
@@ -260,7 +340,10 @@ module Filters
           genre_ids:,
           release_date_from:,
           release_date_to:,
-          release_type:
+          release_type:,
+          company_ids:,
+          certification_ids:,
+          keywords:
         })
       end
 
@@ -272,7 +355,10 @@ module Filters
             genre_ids:,
             release_date_from:,
             release_date_to:,
-            release_type:
+            release_type:,
+            company_ids:,
+            certification_ids:,
+            keywords:
           })
         end
       end
@@ -285,7 +371,10 @@ module Filters
             country_id:,
             release_date_from:,
             release_date_to:,
-            release_type:
+            release_type:,
+            company_ids:,
+            certification_ids:,
+            keywords:
           })
         end
       end
@@ -298,7 +387,10 @@ module Filters
             country_id:,
             genre_ids:,
             release_date_to:,
-            release_type:
+            release_type:,
+            company_ids:,
+            certification_ids:,
+            keywords:
           })
         end
       end
@@ -311,7 +403,10 @@ module Filters
             country_id:,
             genre_ids:,
             release_date_from:,
-            release_type:
+            release_type:,
+            company_ids:,
+            certification_ids:,
+            keywords:
           })
         end
       end
@@ -324,7 +419,58 @@ module Filters
             country_id:,
             genre_ids:,
             release_date_from:,
-            release_date_to:
+            release_date_to:,
+            company_ids:,
+            certification_ids:,
+            keywords:
+          })
+        end
+      end
+
+      context "when company ids are not present" do
+        let(:company_ids) { [] }
+
+        it "does not include the company ids" do
+          expect(subject).to eq({
+            country_id:,
+            genre_ids:,
+            release_date_from:,
+            release_date_to:,
+            release_type:,
+            certification_ids:,
+            keywords:
+          })
+        end
+      end
+
+      context "when certification ids are not present" do
+        let(:certification_ids) { [] }
+
+        it "does not include the certification ids" do
+          expect(subject).to eq({
+            country_id:,
+            genre_ids:,
+            release_date_from:,
+            release_date_to:,
+            release_type:,
+            company_ids:,
+            keywords:
+          })
+        end
+      end
+
+      context "when keywords are not present" do
+        let(:keywords) { [""] }
+
+        it "does not include the keywords" do
+          expect(subject).to eq({
+            country_id:,
+            genre_ids:,
+            release_date_from:,
+            release_date_to:,
+            release_type:,
+            company_ids:,
+            certification_ids:
           })
         end
       end

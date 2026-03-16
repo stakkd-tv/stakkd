@@ -26,6 +26,22 @@ module Filters
           })
       end
 
+      if company_ids.present?
+        movies = movies.joins(:companies)
+          .where(companies: {id: company_ids})
+          .group("movies.id")
+          .having("COUNT(DISTINCT companies.id) = ?", company_ids.size)
+      end
+
+      if certification_ids.present?
+        movies = movies.joins(:releases)
+          .where(releases: {certification_id: certification_ids})
+      end
+
+      if keywords.present?
+        movies = movies.tagged_with(keywords)
+      end
+
       movies.distinct
     end
 
@@ -36,6 +52,9 @@ module Filters
       params[:release_date_from] = release_date_from.to_s if release_date_from.present?
       params[:release_date_to] = release_date_to.to_s if release_date_to.present?
       params[:release_type] = options[:release_type] if options[:release_type].present?
+      params[:company_ids] = company_ids if company_ids.present?
+      params[:certification_ids] = certification_ids if certification_ids.present?
+      params[:keywords] = keywords if keywords.present?
       params
     end
 
@@ -53,6 +72,12 @@ module Filters
     def genre_ids = options[:genre_ids]&.map(&:to_i)
 
     def country_id = options[:country_id].present? ? options[:country_id].to_i : nil
+
+    def company_ids = options[:company_ids]&.map(&:to_i)
+
+    def certification_ids = options[:certification_ids]&.compact_blank&.map(&:to_i)
+
+    def keywords = options[:keywords]&.compact_blank
 
     def try_parse_date(date_string)
       Date.parse(date_string)

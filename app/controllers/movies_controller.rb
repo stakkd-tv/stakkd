@@ -6,6 +6,13 @@ class MoviesController < ApplicationController
     movie_filter = ::Filters::Movies.new(params)
     @movies = movie_filter.filter.paginate(page: params[:page], per_page: 12)
     @filter_params = movie_filter.to_params
+
+    @tags = ActsAsTaggableOn::Tag
+      .joins(:taggings)
+      .where("taggings.context = ?", "keywords")
+      .distinct
+      .order(taggings_count: :desc)
+      .limit(200)
   end
 
   def show
