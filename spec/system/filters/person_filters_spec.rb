@@ -68,8 +68,6 @@ RSpec.feature "Person filters", type: :system, js: true do
   end
 
   scenario "Filtering people with load more" do
-    action = FactoryBot.create(:genre, name: "Action")
-    comedy = FactoryBot.create(:genre, name: "Comedy")
     36.times do
       FactoryBot.create(
         :person,
