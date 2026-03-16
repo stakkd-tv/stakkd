@@ -152,7 +152,7 @@ RSpec.feature "Show filters", type: :system, js: true do
       :show,
       # Purposefully use a name that will appear at the end of results ordered by name, this is so that
       # we can test that it never appears regardless of what page we're on and to ensure that this record
-      # will not appear on page 1 before (i.e. would not appear before we scroll).
+      # will not appear on page 1 (would not appear before we scroll).
       translated_title: "Zombie Zombie Zombie",
       genres: [comedy],
       country: FactoryBot.build(:country, code: "US", translated_name: "United States"),

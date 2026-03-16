@@ -1,0 +1,13 @@
+<%= turbo_stream.append "people" do %>
+  <% @people.each do |person| %>
+    <%= render person %>
+  <% end %>
+<% end %>
+
+<% if @people.next_page.present? %>
+  <%= turbo_stream.replace "load_more" do %>
+    <%= render "load_more" %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.remove "load_more" %>
+<% end %>

@@ -5,16 +5,70 @@
     <h3 class="text-4xl font-bold font-domine text-white text-center">People</h3>
     <%= link_to "Add a person", new_person_path, class: "link" %>
   </div>
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-    <% @people.each do |person| %>
-      <%= link_to person do %>
-        <div class="group w-full aspect-2/3 border border-pop rounded-lg overflow-hidden relative">
-          <div class="absolute w-full h-full flex flex-col gap-4 p-4 justify-center items-center opacity-0 group-hover:opacity-100 bg-pop/50 backdrop-blur-sm z-10 transition duration-300 ease-in-out">
-            <p class="font-domine font-bold text-2xl text-white text-center"><%= person.translated_name %></p>
-          </div>
-          <%= image_tag person.image %>
+  <div class="grid grid-cols-1 md:grid-cols-4 md:gap-8 md:min-h-screen">
+    <%= form_with(url: people_path, method: "get", class: "col-span-1 flex flex-col gap-5 items-center md:items-start", data: {turbo_frame: "people_filter_results"}) do |form| %>
+      <details class="bg-background-darker w-full rounded-lg">
+        <summary class="p-4 cursor-pointer border-b-2 border-background">Sort</summary>
+        <div class="p-4">
+          <select class="input" name="sort" autocomplete="off">
+            <option value="popularity">Popularity</option>
+            <option value="name">Name</option>
+          </select>
         </div>
-      <% end %>
+      </details>
+
+      <details class="bg-background-darker w-full rounded-lg mb-4" open>
+        <summary class="p-4 cursor-pointer border-b-2 border-background">Filters</summary>
+        <div class="flex flex-col">
+          <div class="p-4 border-b-2 border-background flex flex-col gap-4">
+            <p><b>Birthday</b></p>
+            <div class="flex flex-col gap-1">
+              <label for="birthday_from" class="basis-1/4">From</label>
+              <input type="date" name="birthday_from" class="input" autocomplete="off" value="<%= params[:birthday_from] || "" %>">
+            </div>
+            <div class="flex flex-col gap-1">
+              <label for="birthday_to" class="basis-1/4">To</label>
+              <input type="date" name="birthday_to" class="input" autocomplete="off" value="<%= params[:birthday_to] || "" %>">
+            </div>
+          </div>
+
+          <div class="p-4 border-b-2 border-background">
+            <p class="mb-4"><b>Gender</b></p>
+            <select name="gender" class="input" autocomplete="off">
+              <option value="" <%= params[:gender].blank? ? "selected" : "" %>>None selected</option>
+              <% Person::GENDERS.each do |gender| %>
+                <option value="<%= gender %>" <%= (params[:gender] == gender) ? "selected" : "" %>><%= gender.humanize %></option>
+              <% end %>
+            </select>
+          </div>
+
+          <div class="p-4 border-b-2 border-background">
+            <p class="mb-4"><b>Known for</b></p>
+            <select name="known_for" class="input" autocomplete="off">
+              <option value="" <%= params[:known_for].blank? ? "selected" : "" %>>None selected</option>
+              <% Person::CREDITS.each do |credit| %>
+                <option value="<%= credit %>" <%= (params[:known_for] == credit) ? "selected" : "" %>><%= credit.humanize %></option>
+              <% end %>
+            </select>
+          </div>
+
+          <div class="p-4 border-b-2 border-background">
+            <%= submit_tag "Apply filter", class: "link w-full" %>
+          </div>
+        </div>
+      </details>
     <% end %>
+    <div class="col-span-3">
+      <%= turbo_frame_tag "people_filter_results" do %>
+        <%= turbo_frame_tag "people", class: "grid grid-cols-2 md:grid-cols-3 gap-4" do %>
+          <% @people.each do |person| %>
+            <%= render person %>
+          <% end %>
+        <% end %>
+        <% if @people.any? && @people.next_page.present? %>
+          <%= render "load_more" %>
+        <% end %>
+      <% end %>
+    </div>
   </div>
 </div>

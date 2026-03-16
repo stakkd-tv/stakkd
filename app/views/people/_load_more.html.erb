@@ -1,0 +1,1 @@
+<%= turbo_frame_tag "load_more", src: people_path(**@filter_params, page: @people.next_page, format: :turbo_stream), loading: :lazy %>

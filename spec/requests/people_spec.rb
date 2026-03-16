@@ -37,11 +37,11 @@ RSpec.describe "People", type: :request do
       end
 
       it "searches for people" do
-        person = FactoryBot.create(:person, translated_name: "Random")
-        person2 = FactoryBot.create(:person, translated_name: "Another")
+        person = FactoryBot.create(:person, translated_name: "Random", original_name: "Random")
+        person2 = FactoryBot.create(:person, translated_name: "Another", original_name: "Another")
         get people_url(query: person.translated_name)
-        assert_select "p", text: person.translated_name
-        assert_select "p", text: person2.translated_name, count: 0
+        assert_select "h3", text: person.translated_name
+        assert_select "h3", text: person2.translated_name, count: 0
       end
     end
   end
