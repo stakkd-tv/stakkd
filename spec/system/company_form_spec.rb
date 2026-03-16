@@ -13,8 +13,13 @@ RSpec.feature "Company form", type: :system, js: true do
     visit companies_path
     expect(page).to have_content("Companies")
 
-    # Details, TODO: Failures. Not urgent as failures are tested in request specs
+    # Errors
     click_link "Add a company"
+    fill_in "company_name", with: " "
+    click_button "Save"
+    expect(page).to have_content("Name can't be blank")
+
+    # Details
     fill_in "company_name", with: "Test company"
     fill_in "company_description", with: "Test description"
     fill_in "company_homepage", with: "https://example.com"
