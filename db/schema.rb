@@ -86,6 +86,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_06_144326) do
     t.string "description"
     t.string "homepage"
     t.string "name"
+    t.string "name_kebab", null: false
     t.datetime "updated_at", null: false
     t.index ["country_id"], name: "index_companies_on_country_id"
   end

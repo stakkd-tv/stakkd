@@ -5,6 +5,7 @@ class CreateCompanies < ActiveRecord::Migration[8.0]
       t.string :homepage
       t.string :name
       t.references :country
+      t.string :name_kebab, null: false
 
       t.timestamps
     end

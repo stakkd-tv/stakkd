@@ -50,7 +50,7 @@ RSpec.describe "companies/show", type: :view do
 
     it "does not render the next page link" do
       render
-      assert_select "a[href*='/companies/#{@company.id}?page=2']", count: 0
+      assert_select "a[href*='#{company_path(@company, page: 2)}']", count: 0
     end
   end
 
@@ -59,7 +59,7 @@ RSpec.describe "companies/show", type: :view do
 
     it "renders the next page link" do
       render
-      assert_select "a[href*='/companies/#{@company.id}?page=2']"
+      assert_select "a[href*='#{company_path(@company, page: 2)}']"
     end
   end
 

@@ -1,4 +1,5 @@
 class Company < ApplicationRecord
+  include Slugify
   include HasGalleries
 
   # Associations
@@ -7,15 +8,20 @@ class Company < ApplicationRecord
   has_galleries :logos
 
   # Validations
-  validates_presence_of :name
+  validates_presence_of :name, :name_kebab
 
   def logo_url
     ActiveStorage::Current.url_options = Rails.application.config.action_mailer.default_url_options
     logo.try(:url)
   end
 
-  # TODO: Add slug to companies
-  def self.from_slug(id)
-    find(id)
+  def slug=(value)
+    self.name_kebab = value
   end
+
+  private
+
+  def slug_source = name
+
+  def _slug = name_kebab
 end

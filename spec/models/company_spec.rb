@@ -1,4 +1,5 @@
 require "rails_helper"
+require_relative "shared_examples/slugify"
 require_relative "shared_examples/has_galleries"
 
 RSpec.describe Company, type: :model do
@@ -9,6 +10,7 @@ RSpec.describe Company, type: :model do
 
   describe "validations" do
     it { should validate_presence_of(:name) }
+    it { should validate_presence_of(:name_kebab) }
   end
 
   it_behaves_like "a model with galleries", :company, [:logos]
@@ -32,11 +34,5 @@ RSpec.describe Company, type: :model do
     end
   end
 
-  # TODO: Remove this when adding slugs to company
-  describe ".from_slug" do
-    it "returns the company" do
-      company = FactoryBot.create(:company)
-      expect(Company.from_slug(company.id)).to eq company
-    end
-  end
+  it_behaves_like "a slugified model", :company, :name
 end

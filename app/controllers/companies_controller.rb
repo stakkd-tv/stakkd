@@ -46,7 +46,7 @@ class CompaniesController < ApplicationController
   private
 
   def set_company
-    @company = Company.find(params.expect(:id))
+    @company = Company.from_slug(params.expect(:id))
   end
 
   def company_params
