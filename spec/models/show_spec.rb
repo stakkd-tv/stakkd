@@ -145,6 +145,8 @@ RSpec.describe Show, type: :model do
 
     it "returns 0 when there are no seasons" do
       show = FactoryBot.create(:show)
+      # TODO: This is a false positive, as the callback on show creates
+      # a specials season for the show with a number of 0.
       expect(show.latest_season_number).to eq 0
     end
   end
