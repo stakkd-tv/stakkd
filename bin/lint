@@ -5,15 +5,17 @@
 # If any command fails, exit with a non-zero status code
 
 def cmd(command)
+  puts "\n====== Running linter `##{command}`..."
+
   result = system(command)
   if result == false
-    puts "Command failed: #{command}"
+    puts "Command failed: #{command}. See above output for linting errors."
     exit 1
   end
 end
 
 def check_for_focused_specs!
-  puts "Checking for focused specs..."
+  puts "====== Checking for focused specs..."
 
   if system('grep -rE "^\s*(fdescribe|fcontext|fit|fscenario)\b" spec/')
     puts "Focused specs found. Please remove them before continuing."
@@ -32,3 +34,5 @@ else
   cmd("yarn lint:js")
   cmd("bundle exec erb_lint --cache --lint-all")
 end
+
+puts "\n====== No linting errors found!"
