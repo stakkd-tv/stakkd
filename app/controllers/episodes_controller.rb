@@ -9,7 +9,8 @@ class EpisodesController < ApplicationController
   end
 
   def new
-    @episode = @season.episodes.new
+    number = @season.latest_episode_number + 1
+    @episode = @season.episodes.new(number:, translated_name: "Episode #{number}", original_name: "Episode #{number}")
   end
 
   def edit

@@ -17,8 +17,13 @@ RSpec.feature "Show form", type: :system, js: true do
     visit show_path(@show)
     expect(page).to have_content(@show.translated_title)
 
-    # Errors
     click_link "Add Season"
+    # Prefills fields
+    expect(page).to have_css("input[name='season[translated_name]'][value='Season 1']")
+    expect(page).to have_css("input[name='season[original_name]'][value='Season 1']")
+    expect(page).to have_css("input[name='season[number]'][value='1']")
+
+    # Errors
     fill_in "season_translated_name", with: " "
     fill_in "season_original_name", with: " "
     fill_in "season_number", with: "1"

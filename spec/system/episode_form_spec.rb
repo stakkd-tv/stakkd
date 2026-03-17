@@ -21,8 +21,13 @@ RSpec.feature "Show form", type: :system, js: true do
     visit show_season_path(@show, @season)
     expect(page).to have_content(@season.translated_name)
 
-    # Errors
+    # Prefills fields
     click_link "New episode"
+    expect(page).to have_css("input[name='episode[translated_name]'][value='Episode 1']")
+    expect(page).to have_css("input[name='episode[original_name]'][value='Episode 1']")
+    expect(page).to have_css("input[name='episode[number]'][value='1']")
+
+    # Errors
     fill_in "episode_translated_name", with: " "
     fill_in "episode_original_name", with: " "
     fill_in "episode_number", with: "1"

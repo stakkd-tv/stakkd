@@ -185,4 +185,17 @@ RSpec.describe Season, type: :model do
       expect(season.year).to be_nil
     end
   end
+
+  describe "#latest_episode_number" do
+    it "returns the latest episode number" do
+      season = FactoryBot.create(:season)
+      FactoryBot.create(:episode, number: 2, season:)
+      expect(season.latest_episode_number).to eq 2
+    end
+
+    it "returns 0 when there are no episodes" do
+      season = FactoryBot.create(:season)
+      expect(season.latest_episode_number).to eq 0
+    end
+  end
 end

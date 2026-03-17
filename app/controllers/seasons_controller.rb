@@ -9,7 +9,8 @@ class SeasonsController < ApplicationController
   end
 
   def new
-    @season = Season.new
+    number = @show.latest_season_number + 1
+    @season = Season.new(number:, translated_name: "Season #{number}", original_name: "Season #{number}")
   end
 
   def edit

@@ -41,6 +41,8 @@ class Season < ApplicationRecord
 
   def year = premiere_date&.year
 
+  def latest_episode_number = episodes.maximum(:number) || 0
+
   private
 
   def set_show_premiere_date

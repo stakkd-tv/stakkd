@@ -68,6 +68,8 @@ class Show < ApplicationRecord
 
   def year = premiere_date&.year
 
+  def latest_season_number = seasons.maximum(:number) || 0
+
   private
 
   def slug_source = translated_title

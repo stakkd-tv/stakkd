@@ -86,13 +86,6 @@ RSpec.describe Show, type: :model do
     end
   end
 
-  # describe "#available_galleries" do
-  #   it "returns the available galleries" do
-  #     show = Show.new
-  #     expect(show.available_galleries).to eq [:posters, :backgrounds, :logos, :videos]
-  #   end
-  # end
-
   describe "#runtime" do
     it "calculates the runtime excluding special episodes" do
       show = FactoryBot.create(:show)
@@ -140,6 +133,19 @@ RSpec.describe Show, type: :model do
     it "returns nil when there is no premiere date" do
       show = FactoryBot.create(:show)
       expect(show.year).to be_nil
+    end
+  end
+
+  describe "#latest_season_number" do
+    it "returns the latest season number" do
+      show = FactoryBot.create(:show)
+      season = FactoryBot.create(:season, number: 2, show:)
+      expect(show.latest_season_number).to eq 2
+    end
+
+    it "returns 0 when there are no seasons" do
+      show = FactoryBot.create(:show)
+      expect(show.latest_season_number).to eq 0
     end
   end
 end
