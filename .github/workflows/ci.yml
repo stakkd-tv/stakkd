@@ -75,7 +75,6 @@ jobs:
         with:
           bundler-cache: true
       - name: Precompile assets
-        if: ${{ matrix.name == 'system' }}
         run: bin/rails assets:precompile
       - name: Run tests
         run: |
