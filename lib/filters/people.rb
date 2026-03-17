@@ -49,7 +49,7 @@ module Filters
     def allowed_sorting_options
       [
         {option_name: "Name", value: "translated_name", order_by: :translated_name},
-        {option_name: "Age", value: "age"},
+        {option_name: "Age", value: "age", order_by: method(:age_order_by)},
         {option_name: "Popularity", value: "popularity"}
       ]
     end
@@ -61,10 +61,22 @@ module Filters
 
       if order_by.is_a?(Symbol)
         Person.order(order_by)
+      elsif order_by.is_a?(Method)
+        order_by.call
       else
         # TODO: Support lambda function so we can sort on anonymous fields such as rating or popularity
         Person
       end
+    end
+
+    def age_order_by
+      Person.select(
+        "people.*,
+        CASE
+          WHEN dob IS NULL THEN NULL
+          ELSE EXTRACT(YEAR FROM AGE(COALESCE(dod, CURRENT_DATE), dob))
+        END AS age"
+      ).order(:age)
     end
 
     def try_parse_date(date_string)

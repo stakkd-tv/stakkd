@@ -70,11 +70,13 @@ RSpec.feature "Person filters", type: :system, js: true do
   scenario "Sorting people" do
     FactoryBot.create(
       :person,
-      translated_name: "Dude 2"
+      translated_name: "Dude 2",
+      dob: Date.new(1995, 1, 1)
     )
     FactoryBot.create(
       :person,
-      translated_name: "Dude 1"
+      translated_name: "Dude 1",
+      dob: Date.new(1990, 1, 1)
     )
 
     visit people_path
@@ -87,6 +89,15 @@ RSpec.feature "Person filters", type: :system, js: true do
     second_h3 = find_all("#people h3")[1]
     expect(first_h3.text).to eq "Dude 1 (Test Name)"
     expect(second_h3.text).to eq "Dude 2 (Test Name)"
+
+    # Sorting age
+    select "Age", from: "sort"
+    click_button "Apply filter"
+    sleep 0.5
+    first_h3 = find_all("#people h3")[0]
+    second_h3 = find_all("#people h3")[1]
+    expect(first_h3.text).to eq "Dude 2 (Test Name)"
+    expect(second_h3.text).to eq "Dude 1 (Test Name)"
   end
 
   scenario "Filtering people with load more" do

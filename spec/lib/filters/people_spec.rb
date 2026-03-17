@@ -44,8 +44,15 @@ module Filters
       context "when sort is age" do
         let(:options) { {sort: "age"} }
 
-        it "sorts people by rating" do
-          skip "TODO: rating sorting is not implemented yet"
+        before do
+          @people1 = FactoryBot.create(:person, dob: Date.new(1990, 1, 1))
+          @people2 = FactoryBot.create(:person, dob: Date.new(2000, 1, 1))
+          @people3 = FactoryBot.create(:person, dob: Date.new(1990, 1, 1), dod: Date.new(1991, 1, 1))
+          @people4 = FactoryBot.create(:person, dob: nil)
+        end
+
+        it "sorts people by age" do
+          expect(subject).to eq [@people3, @people2, @people1, @people4]
         end
       end
 
