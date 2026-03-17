@@ -71,16 +71,11 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-      - name: Set up database schema
-        run: bin/rails db:schema:load
       - name: Precompile assets
         run: bin/rails assets:precompile
       - name: Run tests
         run: |
-          bin/rails db:create db:schema:load db:migrate
-          bundle exec rake parallel:create
           bundle exec rake parallel:prepare
-          bin/rails assets:precompile
           bin/parallel-test --tag "${{ matrix.rspec_tag }}" || echo "rspec_failed=true" >> $GITHUB_ENV
       - name: Upload screenshots on fail
         if: env.rspec_failed == 'true'
