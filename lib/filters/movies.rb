@@ -7,7 +7,7 @@ module Filters
     end
 
     def filter
-      movies = Movie.order(:translated_title)
+      movies = sort_movies
 
       movies = movies.where(country_id:) if country_id.present?
 
@@ -55,10 +55,22 @@ module Filters
       params[:company_ids] = company_ids if company_ids.present?
       params[:certification_ids] = certification_ids if certification_ids.present?
       params[:keywords] = keywords if keywords.present?
+      params[:sort] = sort[:value]
       params
     end
 
+    def sorting_options = allowed_sorting_options.map { {name: it[:option_name], value: it[:value]} }
+
     private
+
+    def allowed_sorting_options
+      [
+        {option_name: "Title", value: "translated_title", order_by: :translated_title},
+        {option_name: "Release Date", value: "release_date", order_by: :release_date},
+        {option_name: "Popularity", value: "popularity"},
+        {option_name: "Rating", value: "rating"}
+      ]
+    end
 
     def release_types
       return Release::TYPES unless Release::TYPES.include?(options[:release_type])
@@ -78,6 +90,19 @@ module Filters
     def certification_ids = options[:certification_ids]&.compact_blank&.map(&:to_i)
 
     def keywords = options[:keywords]&.compact_blank
+
+    def sort = allowed_sorting_options.find { it[:value] == options[:sort] } || allowed_sorting_options.first
+
+    def sort_movies
+      order_by = sort[:order_by]
+
+      if order_by.is_a?(Symbol)
+        Movie.order(order_by)
+      else
+        # TODO: Support lambda function so we can sort on anonymous fields such as rating or popularity
+        Movie
+      end
+    end
 
     def try_parse_date(date_string)
       Date.parse(date_string)

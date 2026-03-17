@@ -108,6 +108,49 @@ RSpec.feature "Movie filters", type: :system, js: true do
     expect(page).not_to have_content("Jurassic Park")
   end
 
+  scenario "Sorting movies" do
+    action = FactoryBot.create(:genre, name: "Action")
+    comedy = FactoryBot.create(:genre, name: "Comedy")
+    uk = FactoryBot.create(:country, code: "UK", translated_name: "Great Britain")
+    us = FactoryBot.create(:country, code: "US", translated_name: "United States")
+    FactoryBot.create(
+      :movie,
+      translated_title: "Ready Player One",
+      genres: [action],
+      releases: [FactoryBot.build(:release, type: Release::DIGITAL, date: "2025-01-01", certification: FactoryBot.build(:certification, code: "PG", country: uk))],
+      country: uk,
+      keyword_list: ["ready player one"]
+    )
+    FactoryBot.create(
+      :movie,
+      translated_title: "Jurassic Park",
+      genres: [comedy],
+      releases: [FactoryBot.build(:release, type: Release::THEATRICAL, date: "2025-01-02", certification: FactoryBot.build(:certification, code: "NR", country: us))],
+      country: us,
+      keyword_list: ["jurassic"]
+    )
+
+    visit movies_path
+
+    # Sorting title
+    select "Title", from: "sort"
+    click_button "Apply filter"
+    sleep 0.5
+    first_h3 = find_all("#movies h3")[0]
+    second_h3 = find_all("#movies h3")[1]
+    expect(first_h3.text).to eq "Jurassic Park"
+    expect(second_h3.text).to eq "Ready Player One"
+
+    # Sorting release date
+    select "Release Date", from: "sort"
+    click_button "Apply filter"
+    sleep 0.5
+    first_h3 = find_all("#movies h3")[0]
+    second_h3 = find_all("#movies h3")[1]
+    expect(first_h3.text).to eq "Ready Player One"
+    expect(second_h3.text).to eq "Jurassic Park"
+  end
+
   scenario "Filtering movies with load more" do
     action = FactoryBot.create(:genre, name: "Action")
     comedy = FactoryBot.create(:genre, name: "Comedy")

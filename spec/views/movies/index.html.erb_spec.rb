@@ -6,6 +6,7 @@ RSpec.describe "movies/index", type: :view do
     @m2 = FactoryBot.create(:movie, translated_title: "Back to the Future")
     assign(:movies, Movie.all.paginate(page: 1, per_page: 10))
     assign(:tags, [])
+    assign(:movie_filter, Filters::Movies.new({}))
   end
 
   it "renders a new movie link" do

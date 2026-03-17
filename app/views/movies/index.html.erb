@@ -11,9 +11,9 @@
         <summary class="p-4 cursor-pointer border-b-2 border-background"><span class="ml-2">Sort</span></summary>
         <div class="p-4">
           <select class="input" name="sort" autocomplete="off">
-            <option value="popularity">Popularity</option>
-            <option value="rating">Rating</option>
-            <option value="title">Title</option>
+            <% @movie_filter.sorting_options.each do |option| %>
+              <option value="<%= option[:value] %>" <%= (params[:sort] == option[:value]) ? "selected" : "" %>><%= option[:name] %></option>
+            <% end %>
           </select>
         </div>
       </details>

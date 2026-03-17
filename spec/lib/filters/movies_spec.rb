@@ -7,6 +7,61 @@ module Filters
 
       subject { instance.filter }
 
+      context "when sort is not a valid sort" do
+        let(:options) { {sort: "bogus maloney"} }
+
+        before do
+          @movie1 = FactoryBot.create(:movie, translated_title: "Z")
+          @movie2 = FactoryBot.create(:movie, translated_title: "A")
+        end
+
+        it "sorts movies by title" do
+          expect(subject).to eq [@movie2, @movie1]
+        end
+      end
+
+      context "when sort is translated_title" do
+        let(:options) { {sort: "translated_title"} }
+
+        before do
+          @movie1 = FactoryBot.create(:movie, translated_title: "Z")
+          @movie2 = FactoryBot.create(:movie, translated_title: "A")
+        end
+
+        it "sorts movies by title" do
+          expect(subject).to eq [@movie2, @movie1]
+        end
+      end
+
+      context "when sort is release_date" do
+        let(:options) { {sort: "release_date"} }
+
+        before do
+          @movie1 = FactoryBot.create(:movie, :with_release_date, translated_title: "A", date_for_release: Date.new(2023, 1, 1))
+          @movie2 = FactoryBot.create(:movie, :with_release_date, translated_title: "Z", date_for_release: Date.new(2022, 1, 1))
+        end
+
+        it "sorts movies by release date" do
+          expect(subject).to eq [@movie2, @movie1]
+        end
+      end
+
+      context "when sort is popularity" do
+        let(:options) { {sort: "popularity"} }
+
+        it "sorts movies by popularity" do
+          skip "TODO: popularity sorting is not implemented yet"
+        end
+      end
+
+      context "when sort is rating" do
+        let(:options) { {sort: "popularity"} }
+
+        it "sorts movies by rating" do
+          skip "TODO: rating sorting is not implemented yet"
+        end
+      end
+
       context "when country filter is given" do
         let(:country) { FactoryBot.create(:country) }
         let(:options) { {country_id: country.id} }
@@ -320,7 +375,8 @@ module Filters
           release_type:,
           company_ids:,
           certification_ids:,
-          keywords:
+          keywords:,
+          sort:
         }
       }
       let(:country_id) { 1 }
@@ -331,6 +387,7 @@ module Filters
       let(:company_ids) { [1] }
       let(:certification_ids) { [1] }
       let(:keywords) { ["lol"] }
+      let(:sort) { "translated_title" }
 
       subject { instance.to_params }
 
@@ -343,7 +400,8 @@ module Filters
           release_type:,
           company_ids:,
           certification_ids:,
-          keywords:
+          keywords:,
+          sort:
         })
       end
 
@@ -358,7 +416,8 @@ module Filters
             release_type:,
             company_ids:,
             certification_ids:,
-            keywords:
+            keywords:,
+            sort:
           })
         end
       end
@@ -374,7 +433,8 @@ module Filters
             release_type:,
             company_ids:,
             certification_ids:,
-            keywords:
+            keywords:,
+            sort:
           })
         end
       end
@@ -390,7 +450,8 @@ module Filters
             release_type:,
             company_ids:,
             certification_ids:,
-            keywords:
+            keywords:,
+            sort:
           })
         end
       end
@@ -406,7 +467,8 @@ module Filters
             release_type:,
             company_ids:,
             certification_ids:,
-            keywords:
+            keywords:,
+            sort:
           })
         end
       end
@@ -422,7 +484,8 @@ module Filters
             release_date_to:,
             company_ids:,
             certification_ids:,
-            keywords:
+            keywords:,
+            sort:
           })
         end
       end
@@ -438,7 +501,8 @@ module Filters
             release_date_to:,
             release_type:,
             certification_ids:,
-            keywords:
+            keywords:,
+            sort:
           })
         end
       end
@@ -454,7 +518,8 @@ module Filters
             release_date_to:,
             release_type:,
             company_ids:,
-            keywords:
+            keywords:,
+            sort:
           })
         end
       end
@@ -470,9 +535,41 @@ module Filters
             release_date_to:,
             release_type:,
             company_ids:,
-            certification_ids:
+            certification_ids:,
+            sort:
           })
         end
+      end
+
+      context "when sort is not valid" do
+        let(:sort) { nil }
+
+        it "defaults to translated_title" do
+          expect(subject).to eq({
+            country_id:,
+            genre_ids:,
+            release_date_from:,
+            release_date_to:,
+            release_type:,
+            company_ids:,
+            certification_ids:,
+            keywords:,
+            sort: "translated_title"
+          })
+        end
+      end
+    end
+
+    describe "#sorting_options" do
+      subject { Movies.new({}).sorting_options }
+
+      it "returns an array of valid sorting options" do
+        expect(subject).to eq([
+          {name: "Title", value: "translated_title"},
+          {name: "Release Date", value: "release_date"},
+          {name: "Popularity", value: "popularity"},
+          {name: "Rating", value: "rating"}
+        ])
       end
     end
   end
