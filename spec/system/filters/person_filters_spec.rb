@@ -67,6 +67,28 @@ RSpec.feature "Person filters", type: :system, js: true do
     expect(page).to have_content("Dude Two")
   end
 
+  scenario "Sorting people" do
+    FactoryBot.create(
+      :person,
+      translated_name: "Dude 2"
+    )
+    FactoryBot.create(
+      :person,
+      translated_name: "Dude 1"
+    )
+
+    visit people_path
+
+    # Sorting name
+    select "Name", from: "sort"
+    click_button "Apply filter"
+    sleep 0.5
+    first_h3 = find_all("#people h3")[0]
+    second_h3 = find_all("#people h3")[1]
+    expect(first_h3.text).to eq "Dude 1 (Test Name)"
+    expect(second_h3.text).to eq "Dude 2 (Test Name)"
+  end
+
   scenario "Filtering people with load more" do
     36.times do
       FactoryBot.create(

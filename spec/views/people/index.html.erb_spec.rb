@@ -5,6 +5,7 @@ RSpec.describe "people/index", type: :view do
     @p1 = FactoryBot.create(:person, translated_name: "Oscar Piastri", original_name: "Other Name")
     @p2 = FactoryBot.create(:person, translated_name: "Lewis Hamilton", original_name: "Lewis Hamilton")
     assign(:people, Person.all.paginate(page: 1, per_page: 10))
+    assign(:people_filter, Filters::People.new({}))
   end
 
   it "renders a new person link" do

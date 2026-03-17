@@ -7,6 +7,48 @@ module Filters
 
       subject { instance.filter }
 
+      context "when sort is not a valid sort" do
+        let(:options) { {sort: "bogus maloney"} }
+
+        before do
+          @people1 = FactoryBot.create(:person, translated_name: "Z")
+          @people2 = FactoryBot.create(:person, translated_name: "A")
+        end
+
+        it "sorts people by name" do
+          expect(subject).to eq [@people2, @people1]
+        end
+      end
+
+      context "when sort is translated_name" do
+        let(:options) { {sort: "translated_name"} }
+
+        before do
+          @people1 = FactoryBot.create(:person, translated_name: "Z")
+          @people2 = FactoryBot.create(:person, translated_name: "A")
+        end
+
+        it "sorts people by name" do
+          expect(subject).to eq [@people2, @people1]
+        end
+      end
+
+      context "when sort is popularity" do
+        let(:options) { {sort: "popularity"} }
+
+        it "sorts people by popularity" do
+          skip "TODO: popularity sorting is not implemented yet"
+        end
+      end
+
+      context "when sort is age" do
+        let(:options) { {sort: "age"} }
+
+        it "sorts people by rating" do
+          skip "TODO: rating sorting is not implemented yet"
+        end
+      end
+
       context "when gender filter is given" do
         let(:options) { {gender: Person::MALE} }
 
@@ -64,14 +106,15 @@ module Filters
         }
 
         before do
-          @person = FactoryBot.create(:person, gender: Person::FEMALE, known_for: Person::ACTING, dob: "2025-01-01")
+          @person1 = FactoryBot.create(:person, gender: Person::FEMALE, known_for: Person::ACTING, dob: "2025-01-01", translated_name: "Z")
+          @person2 = FactoryBot.create(:person, gender: Person::FEMALE, known_for: Person::ACTING, dob: "2025-01-01", translated_name: "A")
           FactoryBot.create(:person, gender: Person::FEMALE, known_for: Person::WRITING, dob: "2025-01-01")
           FactoryBot.create(:person, gender: Person::FEMALE, known_for: Person::ACTING, dob: "2025-01-02")
           FactoryBot.create(:person, gender: Person::MALE, known_for: Person::ACTING, dob: "2025-01-01")
         end
 
-        it "applies the filter" do
-          expect(subject).to eq [@person]
+        it "applies the filter and sorting" do
+          expect(subject).to eq [@person2, @person1]
         end
       end
 
@@ -100,13 +143,15 @@ module Filters
           gender:,
           known_for:,
           birthday_from:,
-          birthday_to:
+          birthday_to:,
+          sort:
         }
       }
       let(:gender) { "Male" }
       let(:known_for) { "Acting" }
       let(:birthday_from) { "2025-01-01" }
       let(:birthday_to) { "2025-01-02" }
+      let(:sort) { "translated_name" }
 
       subject { instance.to_params }
 
@@ -115,7 +160,8 @@ module Filters
           gender:,
           known_for:,
           birthday_from:,
-          birthday_to:
+          birthday_to:,
+          sort:
         })
       end
 
@@ -126,7 +172,8 @@ module Filters
           expect(subject).to eq({
             known_for:,
             birthday_from:,
-            birthday_to:
+            birthday_to:,
+            sort:
           })
         end
       end
@@ -138,7 +185,8 @@ module Filters
           expect(subject).to eq({
             gender:,
             birthday_from:,
-            birthday_to:
+            birthday_to:,
+            sort:
           })
         end
       end
@@ -150,7 +198,8 @@ module Filters
           expect(subject).to eq({
             gender:,
             known_for:,
-            birthday_to:
+            birthday_to:,
+            sort:
           })
         end
       end
@@ -162,9 +211,36 @@ module Filters
           expect(subject).to eq({
             gender:,
             known_for:,
-            birthday_from:
+            birthday_from:,
+            sort:
           })
         end
+      end
+
+      context "when sort is not valid" do
+        let(:sort) { nil }
+
+        it "defaults to translated_name" do
+          expect(subject).to eq({
+            gender:,
+            known_for:,
+            birthday_from:,
+            birthday_to:,
+            sort: "translated_name"
+          })
+        end
+      end
+    end
+
+    describe "#sorting_options" do
+      subject { People.new({}).sorting_options }
+
+      it "returns an array of valid sorting options" do
+        expect(subject).to eq([
+          {name: "Name", value: "translated_name"},
+          {name: "Age", value: "age"},
+          {name: "Popularity", value: "popularity"}
+        ])
       end
     end
   end

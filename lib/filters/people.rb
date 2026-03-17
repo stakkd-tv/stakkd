@@ -7,7 +7,7 @@ module Filters
     end
 
     def filter
-      people = Person.order(:translated_name)
+      people = sort_people
 
       if gender.present?
         people = people.where(gender:)
@@ -30,8 +30,11 @@ module Filters
       params[:birthday_from] = birthday_from.to_s if birthday_from.present?
       params[:gender] = gender if gender.present?
       params[:known_for] = known_for if known_for.present?
+      params[:sort] = sort[:value]
       params
     end
+
+    def sorting_options = allowed_sorting_options.map { {name: it[:option_name], value: it[:value]} }
 
     private
 
@@ -42,6 +45,27 @@ module Filters
     def gender = options[:gender]
 
     def known_for = options[:known_for]
+
+    def allowed_sorting_options
+      [
+        {option_name: "Name", value: "translated_name", order_by: :translated_name},
+        {option_name: "Age", value: "age"},
+        {option_name: "Popularity", value: "popularity"},
+      ]
+    end
+
+    def sort = allowed_sorting_options.find { it[:value] == options[:sort] } || allowed_sorting_options.first
+
+    def sort_people
+      order_by = sort[:order_by]
+
+      if order_by.is_a?(Symbol)
+        Person.order(order_by)
+      else
+        # TODO: Support lambda function so we can sort on anonymous fields such as rating or popularity
+        Person
+      end
+    end
 
     def try_parse_date(date_string)
       Date.parse(date_string)

@@ -6,9 +6,9 @@ class PeopleController < ApplicationController
     if params[:query]
       @people = Person.search(params[:query]).order(:translated_name).paginate(page: params[:page], per_page: 100)
     else
-      people_filter = ::Filters::People.new(params)
-      @people = people_filter.filter.with_attached_images.paginate(page: params[:page], per_page: 12)
-      @filter_params = people_filter.to_params
+      @people_filter = ::Filters::People.new(params)
+      @people = @people_filter.filter.with_attached_images.paginate(page: params[:page], per_page: 12)
+      @filter_params = @people_filter.to_params
     end
   end
 
