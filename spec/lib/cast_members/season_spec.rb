@@ -18,12 +18,14 @@ module CastMembers
         @winona_ryder = FactoryBot.create(:person)
         @bob = FactoryBot.create(:person)
         @sean_astin = FactoryBot.create(:person)
-        FactoryBot.create(:cast_member, person: @winona_ryder, record: @show, character: "Character 1").insert_at(1)
-        FactoryBot.create(:cast_member, person: @bob, record: @specials, character: "Character 2 / Additional Voices").insert_at(1)
-        FactoryBot.create(:cast_member, person: @bob, record: @episode, character: "Extra").insert_at(1)
-        FactoryBot.create(:cast_member, person: @winona_ryder, record: @episode, character: "Self").insert_at(2)
-        FactoryBot.create(:cast_member, person: @sean_astin, record: @season1, character: "Character 3").insert_at(1)
-        FactoryBot.create(:cast_member, person: @bob, record: @season1, character: "Character 2").insert_at(2)
+        CastMember.acts_as_list_no_update do
+          FactoryBot.create(:cast_member, person: @winona_ryder, record: @show, character: "Character 1", position: 1)
+          FactoryBot.create(:cast_member, person: @bob, record: @specials, character: "Character 2 / Additional Voices", position: 1)
+          FactoryBot.create(:cast_member, person: @bob, record: @episode, character: "Extra", position: 1)
+          FactoryBot.create(:cast_member, person: @winona_ryder, record: @episode, character: "Self", position: 2)
+          FactoryBot.create(:cast_member, person: @sean_astin, record: @season1, character: "Character 3", position: 1)
+          FactoryBot.create(:cast_member, person: @bob, record: @season1, character: "Character 2", position: 2)
+        end
       end
 
       it "returns the season regulars and guest stars ordered by the position" do
