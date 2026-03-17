@@ -14,8 +14,8 @@ RSpec.describe "companies/index", type: :view do
 
   it "renders a list of companies" do
     render
-    assert_select "p", text: "YouTube"
-    assert_select "p", text: "Bruh"
+    assert_select "h3", text: "YouTube"
+    assert_select "h3", text: "Bruh"
     assert_select "a[href='#{company_path(@c1)}']"
     assert_select "a[href='#{company_path(@c2)}']"
   end
