@@ -5,6 +5,7 @@
 import { application } from './application'
 
 import AjaxSearchController from './ajax_search_controller'
+import DetailsAutoOpenController from './details_auto_open_controller'
 import FlashItemController from './flash_item_controller'
 import FormNavController from './form_nav_controller'
 import NavController from './nav_controller'
@@ -13,6 +14,7 @@ import TableEditorController from './table_editor_controller'
 import UploadsController from './uploads_controller'
 
 application.register('ajax-search', AjaxSearchController)
+application.register('details-auto-open', DetailsAutoOpenController)
 application.register('flash-item', FlashItemController)
 application.register('form-nav', FormNavController)
 application.register('nav', NavController)

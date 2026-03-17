@@ -8,8 +8,8 @@
   <div class="grid grid-cols-1 md:grid-cols-4 md:gap-8 md:min-h-screen">
     <%# TODO: Implement company ids filter. The filter class supports it, we just don't have a good way to display the companies to filter by yet. %>
     <%= form_with(url: shows_path, method: "get", class: "col-span-1 flex flex-col gap-5 items-center md:items-start", data: {turbo_frame: "shows_filter_results"}) do |form| %>
-      <details class="bg-background-darker w-full rounded-lg">
-        <summary class="p-4 cursor-pointer border-b-2 border-background">Sort</summary>
+      <details class="bg-background-darker w-full rounded-lg" data-auto-open>
+        <summary class="p-4 cursor-pointer border-b-2 border-background"><span class="ml-2">Sort</span></summary>
         <div class="p-4">
           <select class="input" name="sort" autocomplete="off">
             <option value="popularity">Popularity</option>
@@ -19,8 +19,8 @@
         </div>
       </details>
 
-      <details class="bg-background-darker w-full rounded-lg mb-4" open>
-        <summary class="p-4 cursor-pointer border-b-2 border-background">Filters</summary>
+      <details class="bg-background-darker w-full rounded-lg mb-4" data-auto-open>
+        <summary class="p-4 cursor-pointer border-b-2 border-background"><span class="ml-2">Filters</span></summary>
         <div class="flex flex-col">
           <div class="p-4 border-b-2 border-background">
             <label>
