@@ -7,6 +7,61 @@ module Filters
 
       subject { instance.filter }
 
+      context "when sort is not a valid sort" do
+        let(:options) { {sort: "bogus maloney"} }
+
+        before do
+          @show1 = FactoryBot.create(:show, translated_title: "Z")
+          @show2 = FactoryBot.create(:show, translated_title: "A")
+        end
+
+        it "sorts shows by title" do
+          expect(subject).to eq [@show2, @show1]
+        end
+      end
+
+      context "when sort is translated_title" do
+        let(:options) { {sort: "translated_title"} }
+
+        before do
+          @show1 = FactoryBot.create(:show, translated_title: "Z")
+          @show2 = FactoryBot.create(:show, translated_title: "A")
+        end
+
+        it "sorts shows by title" do
+          expect(subject).to eq [@show2, @show1]
+        end
+      end
+
+      context "when sort is premiere_date" do
+        let(:options) { {sort: "premiere_date"} }
+
+        before do
+          @show1 = FactoryBot.create(:show, :with_premiere_date, translated_title: "A", date_for_premiere: Date.new(2023, 1, 1))
+          @show2 = FactoryBot.create(:show, :with_premiere_date, translated_title: "Z", date_for_premiere: Date.new(2022, 1, 1))
+        end
+
+        it "sorts shows by premiere date" do
+          expect(subject).to eq [@show2, @show1]
+        end
+      end
+
+      context "when sort is popularity" do
+        let(:options) { {sort: "popularity"} }
+
+        it "sorts shows by popularity" do
+          skip "TODO: popularity sorting is not implemented yet"
+        end
+      end
+
+      context "when sort is rating" do
+        let(:options) { {sort: "popularity"} }
+
+        it "sorts shows by rating" do
+          skip "TODO: rating sorting is not implemented yet"
+        end
+      end
+
       context "when country filter is given" do
         let(:country) { FactoryBot.create(:country) }
         let(:options) { {country_id: country.id} }
@@ -168,18 +223,20 @@ module Filters
           {
             genre_ids: [action.id],
             premiere_date_from: "2025-01-01",
-            premiere_date_to: "2025-01-02"
+            premiere_date_to: "2025-01-02",
+            sort: "premiere_date"
           }
         }
 
         before do
-          @show = FactoryBot.create(:show, :with_premiere_date, date_for_premiere: "2025-01-01", genres: [horror, comedy, action])
+          @show1 = FactoryBot.create(:show, :with_premiere_date, date_for_premiere: "2025-01-02", genres: [horror, comedy, action])
+          @show2 = FactoryBot.create(:show, :with_premiere_date, date_for_premiere: "2025-01-01", genres: [horror, comedy, action])
           FactoryBot.create(:show, :with_premiere_date, date_for_premiere: "2025-01-03", genres: [action])
           FactoryBot.create(:show, :with_premiere_date, date_for_premiere: "2025-01-01", genres: [animation, horror])
         end
 
-        it "applies the filter" do
-          expect(subject).to eq [@show]
+        it "applies the filter and sorting" do
+          expect(subject).to eq [@show2, @show1]
         end
       end
 
@@ -217,7 +274,8 @@ module Filters
           episode_air_date_from:,
           episode_air_date_to:,
           certification_ids:,
-          keywords:
+          keywords:,
+          sort:
         }
       }
       let(:country_id) { 1 }
@@ -229,6 +287,7 @@ module Filters
       let(:episode_air_date_to) { "2025-01-02" }
       let(:certification_ids) { [1] }
       let(:keywords) { ["lol"] }
+      let(:sort) { "translated_title" }
 
       subject { instance.to_params }
 
@@ -242,7 +301,8 @@ module Filters
           episode_air_date_from:,
           episode_air_date_to:,
           certification_ids:,
-          keywords:
+          keywords:,
+          sort:
         })
       end
 
@@ -258,7 +318,8 @@ module Filters
             episode_air_date_from:,
             episode_air_date_to:,
             certification_ids:,
-            keywords:
+            keywords:,
+            sort:
           })
         end
       end
@@ -275,7 +336,8 @@ module Filters
             episode_air_date_from:,
             episode_air_date_to:,
             certification_ids:,
-            keywords:
+            keywords:,
+            sort:
           })
         end
       end
@@ -292,7 +354,8 @@ module Filters
             episode_air_date_from:,
             episode_air_date_to:,
             certification_ids:,
-            keywords:
+            keywords:,
+            sort:
           })
         end
       end
@@ -309,7 +372,8 @@ module Filters
             episode_air_date_from:,
             episode_air_date_to:,
             certification_ids:,
-            keywords:
+            keywords:,
+            sort:
           })
         end
       end
@@ -326,7 +390,8 @@ module Filters
             premiere_date_to:,
             episode_air_date_to:,
             certification_ids:,
-            keywords:
+            keywords:,
+            sort:
           })
         end
       end
@@ -343,7 +408,8 @@ module Filters
             premiere_date_to:,
             episode_air_date_from:,
             certification_ids:,
-            keywords:
+            keywords:,
+            sort:
           })
         end
       end
@@ -360,7 +426,8 @@ module Filters
             episode_air_date_from:,
             episode_air_date_to:,
             certification_ids:,
-            keywords:
+            keywords:,
+            sort:
           })
         end
       end
@@ -377,9 +444,42 @@ module Filters
             premiere_date_to:,
             episode_air_date_from:,
             episode_air_date_to:,
-            certification_ids:
+            certification_ids:,
+            sort:
           })
         end
+      end
+
+      context "when sort is not valid" do
+        let(:sort) { nil }
+
+        it "defaults to translated_title" do
+          expect(subject).to eq({
+            country_id:,
+            genre_ids:,
+            company_ids:,
+            premiere_date_from:,
+            premiere_date_to:,
+            episode_air_date_from:,
+            episode_air_date_to:,
+            certification_ids:,
+            keywords:,
+            sort: "translated_title"
+          })
+        end
+      end
+    end
+
+    describe "#sorting_options" do
+      subject { Shows.new({}).sorting_options }
+
+      it "returns an array of valid sorting options" do
+        expect(subject).to eq([
+          {name: "Title", value: "translated_title"},
+          {name: "Premiere Date", value: "premiere_date"},
+          {name: "Popularity", value: "popularity"},
+          {name: "Rating", value: "rating"}
+        ])
       end
     end
   end

@@ -63,15 +63,6 @@ module Filters
 
     private
 
-    def allowed_sorting_options
-      [
-        {option_name: "Title", value: "translated_title", order_by: :translated_title},
-        {option_name: "Release Date", value: "release_date", order_by: :release_date},
-        {option_name: "Popularity", value: "popularity"},
-        {option_name: "Rating", value: "rating"}
-      ]
-    end
-
     def release_types
       return Release::TYPES unless Release::TYPES.include?(options[:release_type])
       [options[:release_type]]
@@ -90,6 +81,15 @@ module Filters
     def certification_ids = options[:certification_ids]&.compact_blank&.map(&:to_i)
 
     def keywords = options[:keywords]&.compact_blank
+
+    def allowed_sorting_options
+      [
+        {option_name: "Title", value: "translated_title", order_by: :translated_title},
+        {option_name: "Release Date", value: "release_date", order_by: :release_date},
+        {option_name: "Popularity", value: "popularity"},
+        {option_name: "Rating", value: "rating"}
+      ]
+    end
 
     def sort = allowed_sorting_options.find { it[:value] == options[:sort] } || allowed_sorting_options.first
 

@@ -129,6 +129,49 @@ RSpec.feature "Show filters", type: :system, js: true do
     expect(page).not_to have_content("Avatar: The Last Airbender")
   end
 
+  scenario "Sorting shows" do
+    action = FactoryBot.create(:genre, name: "Action")
+    comedy = FactoryBot.create(:genre, name: "Comedy")
+    show1 = FactoryBot.create(
+      :show,
+      translated_title: "Game of Thrones",
+      genres: [action],
+      country: FactoryBot.build(:country, code: "UK", translated_name: "Great Britain"),
+      keyword_list: ["rubbish tv show"]
+    )
+    season1 = FactoryBot.create(:season, show: show1)
+    FactoryBot.create(:episode, number: 1, season: season1, original_air_date: Date.new(2020, 4, 17))
+    show2 = FactoryBot.create(
+      :show,
+      translated_title: "Avatar: The Last Airbender",
+      genres: [comedy],
+      country: FactoryBot.build(:country, code: "US", translated_name: "United States"),
+      keyword_list: ["greatest tv show of all time"]
+    )
+    season2 = FactoryBot.create(:season, show: show2)
+    FactoryBot.create(:episode, number: 1, season: season2, original_air_date: Date.new(2021, 2, 21))
+
+    visit shows_path
+
+    # Sorting title
+    select "Title", from: "sort"
+    click_button "Apply filter"
+    sleep 0.5
+    first_h3 = find_all("#shows h3")[0]
+    second_h3 = find_all("#shows h3")[1]
+    expect(first_h3.text).to eq "Avatar: The Last Airbender"
+    expect(second_h3.text).to eq "Game of Thrones"
+
+    # Sorting premiere date
+    select "Premiere Date", from: "sort"
+    click_button "Apply filter"
+    sleep 0.5
+    first_h3 = find_all("#shows h3")[0]
+    second_h3 = find_all("#shows h3")[1]
+    expect(first_h3.text).to eq "Game of Thrones"
+    expect(second_h3.text).to eq "Avatar: The Last Airbender"
+  end
+
   scenario "Filtering shows with load more" do
     action = FactoryBot.create(:genre, name: "Action")
     comedy = FactoryBot.create(:genre, name: "Comedy")

@@ -6,6 +6,7 @@ RSpec.describe "shows/index", type: :view do
     @s2 = FactoryBot.create(:show, translated_title: "Back to the Future")
     assign(:shows, Show.all.paginate(page: 1, per_page: 10))
     assign(:tags, [])
+    assign(:show_filter, ::Filters::Shows.new({}))
   end
 
   it "renders a new show link" do

@@ -327,18 +327,20 @@ module Filters
           {
             genre_ids: [action.id],
             release_date_from: "2025-01-01",
-            release_date_to: "2025-01-02"
+            release_date_to: "2025-01-02",
+            sort: "release_date"
           }
         }
 
         before do
-          @movie = FactoryBot.create(:movie, genres: [horror, comedy, action], releases: [FactoryBot.build(:release, date: "2025-01-01", type: Release::DIGITAL)])
+          @movie1 = FactoryBot.create(:movie, :with_release_date, genres: [horror, comedy, action], date_for_release: "2025-01-02")
+          @movie2 = FactoryBot.create(:movie, :with_release_date, genres: [horror, comedy, action], date_for_release: "2025-01-01")
           FactoryBot.create(:movie, genres: [action])
           FactoryBot.create(:movie, genres: [animation, horror])
         end
 
-        it "applies the filter" do
-          expect(subject).to eq [@movie]
+        it "applies the filter and sorting" do
+          expect(subject).to eq [@movie2, @movie1]
         end
       end
 

@@ -7,7 +7,7 @@ module Filters
     end
 
     def filter
-      shows = Show.order(:translated_title)
+      shows = sort_shows
 
       shows = shows.where(country_id:) if country_id.present?
 
@@ -58,8 +58,11 @@ module Filters
       params[:episode_air_date_from] = episode_air_date_from.to_s if episode_air_date_from.present?
       params[:episode_air_date_to] = episode_air_date_to.to_s if episode_air_date_to.present?
       params[:keywords] = keywords if keywords.present?
+      params[:sort] = sort[:value]
       params
     end
+
+    def sorting_options = allowed_sorting_options.map { {name: it[:option_name], value: it[:value]} }
 
     private
 
@@ -80,6 +83,28 @@ module Filters
     def certification_ids = options[:certification_ids]&.compact_blank&.map(&:to_i)
 
     def keywords = options[:keywords]&.compact_blank
+
+    def allowed_sorting_options
+      [
+        {option_name: "Title", value: "translated_title", order_by: :translated_title},
+        {option_name: "Premiere Date", value: "premiere_date", order_by: :premiere_date},
+        {option_name: "Popularity", value: "popularity"},
+        {option_name: "Rating", value: "rating"}
+      ]
+    end
+
+    def sort = allowed_sorting_options.find { it[:value] == options[:sort] } || allowed_sorting_options.first
+
+    def sort_shows
+      order_by = sort[:order_by]
+
+      if order_by.is_a?(Symbol)
+        Show.order(order_by)
+      else
+        # TODO: Support lambda function so we can sort on anonymous fields such as rating or popularity
+        Show
+      end
+    end
 
     def try_parse_date(date_string)
       Date.parse(date_string)
