@@ -50,7 +50,7 @@ module Filters
       [
         {option_name: "Name", value: "translated_name", order_by: :translated_name},
         {option_name: "Age", value: "age"},
-        {option_name: "Popularity", value: "popularity"},
+        {option_name: "Popularity", value: "popularity"}
       ]
     end
 
