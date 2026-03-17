@@ -10,31 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_06_144326) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_06_144326) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
 
   create_table "active_storage_attachments", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "record_type", null: false
-    t.bigint "record_id", null: false
     t.bigint "blob_id", null: false
     t.text "colours", default: ["#f7567c"], array: true
     t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.bigint "record_id", null: false
+    t.string "record_type", null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
   create_table "active_storage_blobs", force: :cascade do |t|
-    t.string "key", null: false
-    t.string "filename", null: false
-    t.string "content_type"
-    t.text "metadata"
-    t.string "service_name", null: false
     t.bigint "byte_size", null: false
     t.string "checksum"
+    t.string "content_type"
     t.datetime "created_at", null: false
+    t.string "filename", null: false
+    t.string "key", null: false
+    t.text "metadata"
+    t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
@@ -45,24 +45,24 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_06_144326) do
   end
 
   create_table "alternative_names", force: :cascade do |t|
-    t.string "name"
-    t.string "type"
     t.bigint "country_id", null: false
-    t.string "record_type", null: false
-    t.bigint "record_id", null: false
     t.datetime "created_at", null: false
+    t.string "name"
+    t.bigint "record_id", null: false
+    t.string "record_type", null: false
+    t.string "type"
     t.datetime "updated_at", null: false
     t.index ["country_id"], name: "index_alternative_names_on_country_id"
     t.index ["record_type", "record_id"], name: "index_alternative_names_on_record"
   end
 
   create_table "cast_members", force: :cascade do |t|
-    t.string "record_type", null: false
-    t.bigint "record_id", null: false
-    t.bigint "person_id", null: false
     t.string "character", null: false
-    t.integer "position"
     t.datetime "created_at", null: false
+    t.bigint "person_id", null: false
+    t.integer "position"
+    t.bigint "record_id", null: false
+    t.string "record_type", null: false
     t.datetime "updated_at", null: false
     t.index ["person_id", "record_type", "record_id"], name: "index_unique_cast_members", unique: true
     t.index ["person_id"], name: "index_cast_members_on_person_id"
@@ -70,31 +70,31 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_06_144326) do
   end
 
   create_table "certifications", force: :cascade do |t|
-    t.string "media_type", null: false
-    t.bigint "country_id", null: false
     t.string "code", null: false
-    t.string "description", null: false
-    t.integer "position", null: false
+    t.bigint "country_id", null: false
     t.datetime "created_at", null: false
+    t.string "description", null: false
+    t.string "media_type", null: false
+    t.integer "position", null: false
     t.datetime "updated_at", null: false
     t.index ["country_id"], name: "index_certifications_on_country_id"
   end
 
   create_table "companies", force: :cascade do |t|
+    t.bigint "country_id"
+    t.datetime "created_at", null: false
     t.string "description"
     t.string "homepage"
     t.string "name"
-    t.bigint "country_id"
-    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["country_id"], name: "index_companies_on_country_id"
   end
 
   create_table "company_assignments", force: :cascade do |t|
     t.bigint "company_id", null: false
-    t.string "record_type", null: false
-    t.bigint "record_id", null: false
     t.datetime "created_at", null: false
+    t.bigint "record_id", null: false
+    t.string "record_type", null: false
     t.datetime "updated_at", null: false
     t.index ["company_id", "record_type", "record_id"], name: "index_unique_company_assignments", unique: true
     t.index ["company_id"], name: "index_company_assignments_on_company_id"
@@ -102,9 +102,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_06_144326) do
   end
 
   create_table "content_ratings", force: :cascade do |t|
-    t.bigint "show_id", null: false
     t.bigint "certification_id", null: false
     t.datetime "created_at", null: false
+    t.bigint "show_id", null: false
     t.datetime "updated_at", null: false
     t.index ["certification_id"], name: "index_content_ratings_on_certification_id"
     t.index ["show_id", "certification_id"], name: "index_unique_content_ratings", unique: true
@@ -113,19 +113,19 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_06_144326) do
 
   create_table "countries", force: :cascade do |t|
     t.string "code"
-    t.string "translated_name"
-    t.string "original_name"
     t.datetime "created_at", null: false
+    t.string "original_name"
+    t.string "translated_name"
     t.datetime "updated_at", null: false
     t.index ["code"], name: "index_countries_on_code", unique: true
   end
 
   create_table "crew_members", force: :cascade do |t|
-    t.string "record_type", null: false
-    t.bigint "record_id", null: false
-    t.bigint "person_id", null: false
-    t.bigint "job_id", null: false
     t.datetime "created_at", null: false
+    t.bigint "job_id", null: false
+    t.bigint "person_id", null: false
+    t.bigint "record_id", null: false
+    t.string "record_type", null: false
     t.datetime "updated_at", null: false
     t.index ["job_id"], name: "index_crew_members_on_job_id"
     t.index ["person_id", "record_type", "record_id", "job_id"], name: "index_unique_crew_members", unique: true
@@ -134,27 +134,27 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_06_144326) do
   end
 
   create_table "episodes", force: :cascade do |t|
-    t.bigint "season_id", null: false
-    t.string "translated_name", null: false
+    t.datetime "created_at", null: false
+    t.string "episode_type", default: "standard", null: false
+    t.string "imdb_id"
+    t.integer "number", null: false
+    t.date "original_air_date"
     t.string "original_name", null: false
     t.text "overview"
-    t.date "original_air_date"
-    t.integer "number", null: false
-    t.string "episode_type", default: "standard", null: false
-    t.integer "runtime", default: 0, null: false
     t.string "production_code"
-    t.string "imdb_id"
-    t.datetime "created_at", null: false
+    t.integer "runtime", default: 0, null: false
+    t.bigint "season_id", null: false
+    t.string "translated_name", null: false
     t.datetime "updated_at", null: false
     t.index ["season_id", "number"], name: "index_unique_episodes_number_season", unique: true
     t.index ["season_id"], name: "index_episodes_on_season_id"
   end
 
   create_table "genre_assignments", force: :cascade do |t|
-    t.bigint "genre_id", null: false
-    t.string "record_type", null: false
-    t.bigint "record_id", null: false
     t.datetime "created_at", null: false
+    t.bigint "genre_id", null: false
+    t.bigint "record_id", null: false
+    t.string "record_type", null: false
     t.datetime "updated_at", null: false
     t.index ["genre_id", "record_type", "record_id"], name: "index_unique_genre_assignments", unique: true
     t.index ["genre_id"], name: "index_genre_assignments_on_genre_id"
@@ -162,43 +162,43 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_06_144326) do
   end
 
   create_table "genres", force: :cascade do |t|
-    t.string "name"
     t.datetime "created_at", null: false
+    t.string "name"
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_genres_on_name", unique: true
   end
 
   create_table "jobs", force: :cascade do |t|
+    t.datetime "created_at", null: false
     t.string "department", null: false
     t.string "name", null: false
-    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "languages", force: :cascade do |t|
     t.string "code"
-    t.string "translated_name"
-    t.string "original_name"
     t.datetime "created_at", null: false
+    t.string "original_name"
+    t.string "translated_name"
     t.datetime "updated_at", null: false
     t.index ["code"], name: "index_languages_on_code", unique: true
   end
 
   create_table "movies", force: :cascade do |t|
-    t.bigint "language_id"
-    t.bigint "country_id"
-    t.string "original_title", null: false
-    t.string "translated_title", null: false
-    t.text "overview"
-    t.string "status", default: "in production", null: false
-    t.integer "runtime", default: 0, null: false
-    t.decimal "revenue", default: "0.0", null: false
     t.decimal "budget", default: "0.0", null: false
-    t.string "homepage"
-    t.date "release_date"
-    t.string "imdb_id"
-    t.string "title_kebab", null: false
+    t.bigint "country_id"
     t.datetime "created_at", null: false
+    t.string "homepage"
+    t.string "imdb_id"
+    t.bigint "language_id"
+    t.string "original_title", null: false
+    t.text "overview"
+    t.date "release_date"
+    t.decimal "revenue", default: "0.0", null: false
+    t.integer "runtime", default: 0, null: false
+    t.string "status", default: "in production", null: false
+    t.string "title_kebab", null: false
+    t.string "translated_title", null: false
     t.datetime "updated_at", null: false
     t.index ["country_id"], name: "index_movies_on_country_id"
     t.index ["language_id"], name: "index_movies_on_language_id"
@@ -207,78 +207,78 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_06_144326) do
   create_table "people", force: :cascade do |t|
     t.string "alias"
     t.text "biography"
+    t.datetime "created_at", null: false
     t.date "dob"
     t.date "dod"
     t.string "gender", default: "unknown"
     t.string "imdb_id"
     t.string "known_for"
+    t.string "name_kebab", null: false
     t.string "original_name", null: false
     t.string "translated_name", null: false
-    t.string "name_kebab", null: false
-    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "releases", force: :cascade do |t|
-    t.bigint "movie_id", null: false
     t.bigint "certification_id", null: false
-    t.string "type", null: false
-    t.string "note"
-    t.date "date", null: false
     t.datetime "created_at", null: false
+    t.date "date", null: false
+    t.bigint "movie_id", null: false
+    t.string "note"
+    t.string "type", null: false
     t.datetime "updated_at", null: false
     t.index ["certification_id"], name: "index_releases_on_certification_id"
     t.index ["movie_id"], name: "index_releases_on_movie_id"
   end
 
   create_table "seasons", force: :cascade do |t|
-    t.bigint "show_id", null: false
+    t.datetime "created_at", null: false
     t.integer "number"
-    t.string "translated_name", null: false
     t.string "original_name", null: false
     t.string "overview"
     t.date "premiere_date"
-    t.datetime "created_at", null: false
+    t.bigint "show_id", null: false
+    t.string "translated_name", null: false
     t.datetime "updated_at", null: false
     t.index ["show_id", "number"], name: "index_unique_seasons_number_show", unique: true
     t.index ["show_id"], name: "index_seasons_on_show_id"
   end
 
   create_table "sessions", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.string "ip_address"
-    t.string "user_agent"
     t.datetime "created_at", null: false
+    t.string "ip_address"
     t.datetime "updated_at", null: false
+    t.string "user_agent"
+    t.bigint "user_id", null: false
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
   create_table "shows", force: :cascade do |t|
-    t.bigint "language_id", null: false
     t.bigint "country_id", null: false
+    t.datetime "created_at", null: false
     t.string "homepage"
     t.string "imdb_id"
+    t.bigint "language_id", null: false
     t.string "original_title", null: false
     t.string "overview"
-    t.string "status", null: false
-    t.string "translated_title", null: false
-    t.string "title_kebab"
-    t.string "type", null: false
     t.date "premiere_date"
-    t.datetime "created_at", null: false
+    t.string "status", null: false
+    t.string "title_kebab"
+    t.string "translated_title", null: false
+    t.string "type", null: false
     t.datetime "updated_at", null: false
     t.index ["country_id"], name: "index_shows_on_country_id"
     t.index ["language_id"], name: "index_shows_on_language_id"
   end
 
   create_table "taggings", force: :cascade do |t|
-    t.bigint "tag_id"
-    t.string "taggable_type"
-    t.bigint "taggable_id"
-    t.string "tagger_type"
-    t.bigint "tagger_id"
     t.string "context", limit: 128
     t.datetime "created_at", precision: nil
+    t.bigint "tag_id"
+    t.bigint "taggable_id"
+    t.string "taggable_type"
+    t.bigint "tagger_id"
+    t.string "tagger_type"
     t.string "tenant", limit: 128
     t.index ["context"], name: "index_taggings_on_context"
     t.index ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], name: "taggings_idx", unique: true
@@ -295,42 +295,42 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_06_144326) do
   end
 
   create_table "taglines", force: :cascade do |t|
-    t.string "tagline", null: false
-    t.string "record_type", null: false
-    t.bigint "record_id", null: false
-    t.integer "position", default: 0, null: false
     t.datetime "created_at", null: false
+    t.integer "position", default: 0, null: false
+    t.bigint "record_id", null: false
+    t.string "record_type", null: false
+    t.string "tagline", null: false
     t.datetime "updated_at", null: false
     t.index ["record_type", "record_id"], name: "index_taglines_on_record"
   end
 
   create_table "tags", force: :cascade do |t|
-    t.string "name"
     t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string "name"
     t.integer "taggings_count", default: 0
+    t.datetime "updated_at", null: false
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
   create_table "users", force: :cascade do |t|
+    t.datetime "created_at", null: false
     t.string "email_address", null: false
     t.string "password_digest", null: false
-    t.string "username", null: false
-    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "username", null: false
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
   create_table "videos", force: :cascade do |t|
-    t.string "name"
-    t.string "source_key", null: false
-    t.string "source", null: false
-    t.string "type", null: false
-    t.string "thumbnail_url"
-    t.string "record_type", null: false
-    t.bigint "record_id", null: false
     t.datetime "created_at", null: false
+    t.string "name"
+    t.bigint "record_id", null: false
+    t.string "record_type", null: false
+    t.string "source", null: false
+    t.string "source_key", null: false
+    t.string "thumbnail_url"
+    t.string "type", null: false
     t.datetime "updated_at", null: false
     t.index ["record_type", "record_id"], name: "index_videos_on_record"
   end

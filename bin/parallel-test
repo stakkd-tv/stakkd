@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+# Add ops to the run. For example `bin/parallel-test --only-failures` will only run the failed examples from the previous run.
+options = ARGV.join(" ")
+
+status_code = system("bundle exec rake parallel:prepare && RAILS_ENV=test PARALLEL=1 SPEC_OPTS='#{options}' bundle exec rake parallel:spec")
+exit(status_code)

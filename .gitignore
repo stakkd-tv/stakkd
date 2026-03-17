@@ -46,3 +46,6 @@
 !/.yarn/versions
 
 /.erb_lint_cache/*
+
+# RSpec persisted examples
+/spec/examples.txt

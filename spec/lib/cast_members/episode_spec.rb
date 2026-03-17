@@ -18,7 +18,7 @@ module CastMembers
         @winona_ryder = FactoryBot.create(:person, translated_name: "Winona Ryder")
         @bob = FactoryBot.create(:person, translated_name: "Bob")
         @sean_astin = FactoryBot.create(:person, translated_name: "Sean Astin")
-        CastMember.acts_as_list_no_update do # TODO: Figure out why this is needed for this spec but not others. CI fails without it.
+        CastMember.acts_as_list_no_update do # TODO: Figure out why this is needed. CI fails without it.
           FactoryBot.create(:cast_member, person: @winona_ryder, record: @show, character: "Character 1", position: 1)
           FactoryBot.create(:cast_member, person: @bob, record: @specials, character: "Character 2 / Additional Voices", position: 1)
           FactoryBot.create(:cast_member, person: @bob, record: @episode, character: "Extra", position: 1)

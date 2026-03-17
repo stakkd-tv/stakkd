@@ -27,6 +27,14 @@ jobs:
   test:
     runs-on: ubuntu-latest
     needs: [lint]
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: unit
+            rspec_tag: "~type:system"
+          - name: system
+            rspec_tag: "type:system"
     services:
       postgres:
         image: postgres:11-alpine
@@ -68,7 +76,12 @@ jobs:
       - name: Precompile assets
         run: bin/rails assets:precompile
       - name: Run tests
-        run: bundle exec rspec || echo "rspec_failed=true" >> $GITHUB_ENV
+        run: |
+          bin/rails db:create db:schema:load db:migrate
+          bundle exec rake parallel:create
+          bundle exec rake parallel:prepare
+          bin/rails assets:precompile
+          bin/parallel-test --tag "${{ matrix.rspec_tag }}" || echo "rspec_failed=true" >> $GITHUB_ENV
       - name: Upload screenshots on fail
         if: env.rspec_failed == 'true'
         uses: actions/upload-artifact@v7

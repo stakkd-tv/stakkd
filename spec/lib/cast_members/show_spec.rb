@@ -20,15 +20,18 @@ module CastMembers
         @sean_astin = FactoryBot.create(:person)
         @cricket = FactoryBot.create(:person)
         @john = FactoryBot.create(:person)
-        FactoryBot.create(:cast_member, person: @winona_ryder, record: @show, character: "Character 1")
-        @specials.ordered_episodes.each do |episode|
-          FactoryBot.create(:cast_member, person: @cricket, record: episode, character: "Cricket")
+        CastMember.acts_as_list_no_update do
+          FactoryBot.create(:cast_member, person: @winona_ryder, record: @show, character: "Character 1", position: 1)
+          @specials.ordered_episodes.each do |episode|
+            position = (episode == @episode) ? 4 : 1
+            FactoryBot.create(:cast_member, person: @cricket, record: episode, character: "Cricket", position:)
+          end
+          FactoryBot.create(:cast_member, person: @john, record: @episode, character: "Johnny", position: 1)
+          FactoryBot.create(:cast_member, person: @bob, record: @episode, character: "Extra", position: 2)
+          FactoryBot.create(:cast_member, person: @winona_ryder, record: @episode, character: "Self", position: 3)
+          FactoryBot.create(:cast_member, person: @sean_astin, record: @season1, character: "Character 3", position: 2)
+          FactoryBot.create(:cast_member, person: @bob, record: @season1, character: "Character 2", position: 1)
         end
-        FactoryBot.create(:cast_member, person: @john, record: @episode, character: "Johnny").insert_at(1)
-        FactoryBot.create(:cast_member, person: @bob, record: @episode, character: "Extra").insert_at(2)
-        FactoryBot.create(:cast_member, person: @winona_ryder, record: @episode, character: "Self").insert_at(3)
-        FactoryBot.create(:cast_member, person: @sean_astin, record: @season1, character: "Character 3")
-        FactoryBot.create(:cast_member, person: @bob, record: @season1, character: "Character 2").insert_at(1)
       end
 
       it "returns the season regulars and guest stars ordered by the position and the amount of episodes they appear in" do

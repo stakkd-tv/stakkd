@@ -89,6 +89,9 @@ group :development, :test do
 
   # Add support for save_and_open_*
   gem "launchy"
+
+  # Run specs in parallel
+  gem "parallel_tests"
 end
 
 group :development do
