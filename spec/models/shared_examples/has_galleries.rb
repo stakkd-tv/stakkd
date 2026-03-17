@@ -10,7 +10,7 @@ shared_examples "a model with galleries" do |factory, galleries|
 
   (galleries - [:videos]).each do |gallery|
     describe "##{gallery.to_s.singularize}" do
-      context "when there are no posters" do
+      context "when there are no #{gallery}" do
         context "when use_fallback is true" do
           it "returns the fallback asset" do
             object = FactoryBot.create(factory)
@@ -26,7 +26,7 @@ shared_examples "a model with galleries" do |factory, galleries|
         end
       end
 
-      context "when there are posters" do
+      context "when there are #{gallery}" do
         it "returns an image" do
           object = FactoryBot.create(
             factory,
