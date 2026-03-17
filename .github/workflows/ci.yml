@@ -47,6 +47,10 @@ jobs:
     env:
       RAILS_ENV: test
       RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+      TEST_PGHOST: 127.0.0.1
+      TEST_PGPORT: 5432
+      TEST_PGUSER: rails
+      TEST_PGPASSWORD: password
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
