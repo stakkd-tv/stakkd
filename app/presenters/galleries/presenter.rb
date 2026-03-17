@@ -34,7 +34,6 @@ module Galleries
           name: image_type.to_s.humanize,
           images: images.take(max_images),
           aspect: ASPECT_HASH_MAP[image_type],
-          show_view_more: images.size > max_images,
           view_more_path: view_more_path(image_type),
           partial: PARTIALS[image_type] || "shared/gallery"
         }

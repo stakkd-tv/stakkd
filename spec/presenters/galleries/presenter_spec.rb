@@ -22,7 +22,6 @@ module Galleries
             name: "Posters",
             images: movie.posters.to_a,
             aspect: "min-w-40 max-w-40 aspect-2/3",
-            show_view_more: false,
             view_more_path: "/movies/#{movie.slug}/galleries/posters",
             partial: "shared/gallery"
           },
@@ -30,7 +29,6 @@ module Galleries
             name: "Backgrounds",
             images: movie.backgrounds.take(3),
             aspect: "min-w-[425px] max-w-[425px] aspect-video",
-            show_view_more: true,
             view_more_path: "/movies/#{movie.slug}/galleries/backgrounds",
             partial: "shared/gallery"
           },
@@ -38,7 +36,6 @@ module Galleries
             name: "Logos",
             images: movie.logos.to_a,
             aspect: "min-w-60 max-w-60 aspect-square",
-            show_view_more: false,
             view_more_path: "/movies/#{movie.slug}/galleries/logos",
             partial: "shared/gallery"
           },
@@ -46,7 +43,6 @@ module Galleries
             name: "Videos",
             images: movie.videos.to_a,
             aspect: "min-w-[425px] max-w-[425px] aspect-video",
-            show_view_more: false,
             view_more_path: "/movies/#{movie.slug}/galleries/videos",
             partial: "shared/video_gallery"
           }

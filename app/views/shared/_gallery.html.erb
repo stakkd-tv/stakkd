@@ -6,9 +6,7 @@
           <%= image_tag image, class: "w-full" %>
         </div>
       <% end %>
-      <% if tab[:show_view_more] %>
-        <%= link_to "View More", tab[:view_more_path], class: "min-w-40 max-w-40 aspect-2/3 border border-pop rounded-lg overflow-hidden bg-pop/50 flex items-center justify-center mr-8" %>
-      <% end %>
+      <%= link_to "View More", tab[:view_more_path], class: "min-w-40 max-w-40 aspect-2/3 border border-pop rounded-lg overflow-hidden bg-pop/50 flex items-center justify-center mr-8" %>
     </div>
   </div>
 <% end %>
