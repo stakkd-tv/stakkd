@@ -46,7 +46,6 @@ jobs:
           POSTGRES_PASSWORD: password
     env:
       RAILS_ENV: test
-      DATABASE_URL: "postgres://rails:password@localhost:5432/stakkd_test_${{ matrix.name }}"
       RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
     steps:
       - name: Checkout code
@@ -76,6 +75,7 @@ jobs:
       - name: Run tests
         run: |
           bin/rails db:create db:schema:load db:migrate
+          bundle exec rake parallel:create
           bundle exec rake parallel:prepare
           bin/parallel-test --tag "${{ matrix.rspec_tag }}" || echo "rspec_failed=true" >> $GITHUB_ENV
       - name: Upload screenshots on fail
