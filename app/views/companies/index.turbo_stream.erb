@@ -1,0 +1,13 @@
+<%= turbo_stream.append "companies" do %>
+  <% @companies.each do |company| %>
+    <%= render company %>
+  <% end %>
+<% end %>
+
+<% if @companies.next_page.present? %>
+  <%= turbo_stream.replace "load_more" do %>
+    <%= render "load_more" %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.remove "load_more" %>
+<% end %>

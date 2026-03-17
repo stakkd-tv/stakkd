@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.feature "Company load more assignments", type: :system, js: true do
   scenario "Loading more company assignments" do
-    stub_const("CompaniesController::PER_PAGE", 1)
+    stub_const("CompaniesController::COMPANY_ASSIGNMENTS_PER_PAGE", 1)
     company = FactoryBot.create(:company)
     2.times do
       FactoryBot.create(:company_assignment, company:, record: FactoryBot.build(:movie, translated_title: "Cool Movie Name"))

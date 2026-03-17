@@ -2,15 +2,17 @@ class CompaniesController < ApplicationController
   before_action :require_authentication, except: [:index, :show]
   before_action :set_company, only: [:show, :edit, :update, :logos]
 
-  PER_PAGE = 10
+  COMPANY_ASSIGNMENTS_PER_PAGE = 10
 
   def index
-    @companies = Company.all
+    companies_filter = ::Filters::Companies.new(params)
+    @companies = companies_filter.filter.with_attached_logos.paginate(page: params[:page], per_page: 12)
+    @filter_params = companies_filter.to_params
   end
 
   def show
     @gallery_presenter = Galleries::Presenter.new(@company)
-    @company_assignments = @company.company_assignments.includes(:record).paginate(page: params[:page], per_page: PER_PAGE)
+    @company_assignments = @company.company_assignments.includes(:record).paginate(page: params[:page], per_page: COMPANY_ASSIGNMENTS_PER_PAGE)
   end
 
   def new

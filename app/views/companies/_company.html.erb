@@ -1,0 +1,13 @@
+<%= link_to company, class: "h-fit border border-pop rounded-lg overflow-hidden relative", data: {turbo: false} do %>
+  <%= image_tag company.logo, class: "w-full aspect-square object-cover" %>
+    <div class="absolute w-full p-2 sm:p-4 bottom-0 left-0 bg-background/75 border-t border-pop">
+    <div class="flex flex-col gap-2">
+      <h3 class="text-sm sm:text-lg font-bold">
+        <%= company.name %>
+      </h3>
+      <span class="text-sm">
+        <%= company.country.translated_name %>
+      </span>
+    </div>
+  </div>
+<% end %>

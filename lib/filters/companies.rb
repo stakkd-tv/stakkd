@@ -7,7 +7,7 @@ module Filters
     end
 
     def filter
-      companies = Company.order(:name)
+      companies = Company.includes(:country).order(:name)
 
       if country_id.present?
         companies = companies.where(country_id:)

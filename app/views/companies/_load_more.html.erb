@@ -1,0 +1,1 @@
+<%= turbo_frame_tag "load_more", src: companies_path(**@filter_params, page: @companies.next_page, format: :turbo_stream), loading: :lazy %>
