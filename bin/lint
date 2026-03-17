@@ -5,7 +5,7 @@
 # If any command fails, exit with a non-zero status code
 
 def cmd(command)
-  puts "\n====== Running linter `##{command}`..."
+  puts "\n====== Running linter `#{command}`..."
 
   result = system(command)
   if result == false
