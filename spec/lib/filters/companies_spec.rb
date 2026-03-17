@@ -12,12 +12,13 @@ module Filters
         let(:options) { {country_id: country.id} }
 
         before do
-          @company = FactoryBot.create(:company, country:)
+          @company1 = FactoryBot.create(:company, name: "Z", country:)
+          @company2 = FactoryBot.create(:company, name: "A", country:)
           FactoryBot.create(:company)
         end
 
-        it "only returns companies for that country" do
-          expect(subject).to eq [@company]
+        it "only returns companies for that country ordered by name" do
+          expect(subject).to eq [@company2, @company1]
         end
       end
 
@@ -25,16 +26,13 @@ module Filters
         let(:options) { {} }
 
         before do
-          @company1 = FactoryBot.create(:company)
-          @company2 = FactoryBot.create(:company)
-          @company3 = FactoryBot.create(:company)
+          @company1 = FactoryBot.create(:company, name: "Z")
+          @company2 = FactoryBot.create(:company, name: "B")
+          @company3 = FactoryBot.create(:company, name: "A")
         end
 
-        it "returns all movies" do
-          expect(subject.length).to eq 3
-          expect(subject).to include(@company1)
-          expect(subject).to include(@company2)
-          expect(subject).to include(@company3)
+        it "returns all movies ordered by name" do
+          expect(subject).to eq [@company3, @company2, @company1]
         end
       end
     end
