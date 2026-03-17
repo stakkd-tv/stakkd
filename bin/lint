@@ -23,7 +23,49 @@ def check_for_focused_specs!
   end
 end
 
+def lint_routes!
+  puts "\n====== Linting routes..."
+
+  ignored_paths = [
+    "/recede_historical_location",
+    "/resume_historical_location",
+    "/refresh_historical_location"
+  ]
+  lines = `bin/rails routes`.split("\n")
+  errors = Set.new
+  warnings = Set.new
+  lines.each do |line|
+    next if line.start_with?("Routes for") || line.strip.empty?
+    l = line.strip.gsub(/\s+/, " ")
+    path = l.split(" ").find { it.start_with?("/") }&.sub("(.:format)", "")
+    method = l[/\b(GET|POST|PATCH|PUT|DELETE|OPTIONS|HEAD)\b/]
+    next unless path
+    next if path.start_with?("/rails") # Ignore built in rails routes
+    next if ignored_paths.include?(path) # Ignore custom routes
+    elements = path.split("/")
+    elements.each do |element|
+      next if element.start_with?(":") # Ignore named parameters
+      next unless element.include?("_")
+      if method == "GET"
+        errors.add({path:, method:})
+      else
+        warnings.add({path:, method:})
+      end
+    end
+  end
+  if warnings.any?
+    puts "\e[38;5;208mWarning! The following non-GET routes contain underscores:\e[0m"
+    warnings.each { |w| puts "\e[38;5;208m  #{w[:path]} (#{w[:method]})\e[0m" }
+  end
+  if errors.any?
+    puts "\e[31mThe following routes contain underscores. Please replace them with hyphens before continuing:\e[0m"
+    errors.each { |e| puts "\e[31m  #{e[:path]} (#{e[:method]})\e[0m" }
+    exit 1
+  end
+end
+
 check_for_focused_specs!
+lint_routes!
 
 if ARGV.include?("--fix")
   cmd("bundle exec standardrb --fix app spec lib")
