@@ -139,7 +139,7 @@ RSpec.describe Show, type: :model do
   describe "#latest_season_number" do
     it "returns the latest season number" do
       show = FactoryBot.create(:show)
-      season = FactoryBot.create(:season, number: 2, show:)
+      FactoryBot.create(:season, number: 2, show:)
       expect(show.latest_season_number).to eq 2
     end
 
