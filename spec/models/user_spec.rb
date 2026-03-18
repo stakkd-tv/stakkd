@@ -1,6 +1,8 @@
 require "rails_helper"
 
 RSpec.describe User, type: :model do
+  include ActiveSupport::Testing::TimeHelpers
+
   describe "associations" do
     it { should have_many(:sessions).dependent(:destroy) }
     it { should have_many(:confirmation_tokens).dependent(:destroy) }
@@ -27,6 +29,34 @@ RSpec.describe User, type: :model do
       user = FactoryBot.create(:user, :confirmed)
       FactoryBot.create(:user)
       expect(User.confirmed).to eq [user]
+    end
+  end
+
+  describe ".stale" do
+    it "returns users who have not confirmed within 30 days" do
+      travel_to Time.current
+      FactoryBot.create(:user, :confirmed)
+      FactoryBot.create(:user)
+      user1 = FactoryBot.create(:user, created_at: 31.days.ago)
+      user2 = FactoryBot.create(:user, created_at: 30.days.ago)
+      FactoryBot.create(:user, created_at: 29.days.ago)
+      expect(User.stale).to contain_exactly(user1, user2)
+    end
+  end
+
+  describe ".needing_confirmation_reminder" do
+    it "returns users who have not confirmed within 20 days but does not return any older than 30 days" do
+      travel_to Time.current
+      FactoryBot.create(:user, :confirmed)
+      FactoryBot.create(:user)
+      FactoryBot.create(:user, created_at: 31.days.ago)
+      FactoryBot.create(:user, created_at: 30.days.ago)
+      user1 = FactoryBot.create(:user, created_at: 29.days.ago)
+      user2 = FactoryBot.create(:user, created_at: 21.days.ago)
+      FactoryBot.create(:user, created_at: 21.days.ago, confirmation_reminder_sent_at: Time.current)
+      user3 = FactoryBot.create(:user, created_at: 20.days.ago)
+      FactoryBot.create(:user, created_at: 19.days.ago)
+      expect(User.needing_confirmation_reminder).to contain_exactly(user1, user2, user3)
     end
   end
 

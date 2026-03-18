@@ -5,6 +5,9 @@ default: &default
   auto_purge:
     class: AutoPurgeJob
     schedule: every hour
+  prune_unconfirmed_users:
+    class: PruneUnconfirmedUsersJob
+    schedule: every day at noon
 
 development:
   <<: *default

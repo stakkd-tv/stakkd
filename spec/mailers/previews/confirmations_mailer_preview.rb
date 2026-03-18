@@ -5,4 +5,10 @@ class ConfirmationsMailerPreview < ActionMailer::Preview
     token = ConfirmationToken.new(user: User.first, token: "1234", expires_at: 15.minutes.from_now)
     ConfirmationsMailer.confirm(token)
   end
+
+  # Preview this email at http://localhost:3000/rails/mailers/confirmations_mailer/reminder
+  def reminder
+    token = ConfirmationToken.new(user: User.first, token: "1234", expires_at: 15.minutes.from_now)
+    ConfirmationsMailer.reminder(token.user, token)
+  end
 end

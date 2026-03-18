@@ -11,6 +11,7 @@ class ConfirmationToken < ApplicationRecord
 
   # Scopes
   scope :active, -> { where("expires_at > ?", Time.current) }
+  scope :stale, -> { where("expires_at < ?", Time.current) }
 
   private
 

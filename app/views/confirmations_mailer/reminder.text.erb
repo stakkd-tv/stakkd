@@ -1,0 +1,9 @@
+Your account will be deleted soon
+
+
+Hi crxssed, we noticed you haven't confirmed your Stakkd account yet. To keep things running smoothly, accounts that aren't confirmed within 30 days are removed. If you'd like to keep your account, please verify your email by clicking the button below.
+<%= confirm_users_url(token: @token.token) %>
+If the above link is expired, you can generate a new one here: <%= new_confirmation_token_url %>
+
+Thanks,
+The Stakkd Team

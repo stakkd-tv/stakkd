@@ -34,4 +34,14 @@ RSpec.describe ConfirmationToken, type: :model do
       expect(ConfirmationToken.active).to eq [confirmation_token1]
     end
   end
+
+  describe ".stale" do
+    it "returns tokens that have expired" do
+      travel_to Time.current
+      ConfirmationToken.create(user: FactoryBot.create(:user, :confirmed))
+      confirmation_token2 = ConfirmationToken.create(user: FactoryBot.create(:user, :confirmed))
+      confirmation_token2.update(expires_at: Time.current - 1.minute)
+      expect(ConfirmationToken.stale).to eq [confirmation_token2]
+    end
+  end
 end

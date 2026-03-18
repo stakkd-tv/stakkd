@@ -16,6 +16,8 @@ class User < ApplicationRecord
 
   # Scopes
   scope :confirmed, -> { where.not(confirmed_at: nil) }
+  scope :stale, -> { where(confirmed_at: nil, created_at: ..30.days.ago) }
+  scope :needing_confirmation_reminder, -> { where(confirmation_reminder_sent_at: nil, confirmed_at: nil, created_at: 29.days.ago..20.days.ago) }
 
   def avatar = "https://github.com/stakkd-tv.png"
 
