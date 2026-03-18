@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.feature "Person form", type: :system, js: true do
   before do
-    user = FactoryBot.create(:user)
+    user = FactoryBot.create(:user, :confirmed)
     sign_in(user)
   end
 

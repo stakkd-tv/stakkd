@@ -5,7 +5,7 @@ require "rails_helper"
 RSpec.feature "Company form", type: :system, js: true do
   before do
     FactoryBot.create(:country)
-    user = FactoryBot.create(:user)
+    user = FactoryBot.create(:user, :confirmed)
     sign_in(user)
   end
 

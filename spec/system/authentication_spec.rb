@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.feature "Authentication", type: :system, js: true do
   before do
-    @user = FactoryBot.create(:user, email_address: "test@example.com", password: "top-secret")
+    @user = FactoryBot.create(:user, :confirmed, email_address: "test@example.com", password: "top-secret")
   end
 
   scenario "User login, logout and sign up", :ignore_form_failures do
@@ -18,16 +18,17 @@ RSpec.feature "Authentication", type: :system, js: true do
     fill_in "email_address", with: "test@example.com"
     fill_in "password", with: "bogus"
     click_button "Enter"
-    expect(page).to have_content("Sorry, but we couldn't find that account. Click the forgot password link if you've forgotten your password or get in touch if you think this is incorrect.")
+    expect(page).to have_content("Sorry, but we couldn't find that account. Click the forgot password link if you've forgotten your password or request a new confirmation link if you have not yet confirmed your email address.")
 
     # Password reset
     click_link "Forgot your password?"
     expect(page).to have_content("Reset your password")
     fill_in "email_address", with: "test@example.com"
     click_button "Send instructions"
-    expect(page).to have_content("Password reset instructions sent (if user with that email address exists).")
+    expect(page).to have_content("Password reset instructions sent (if a confirmed user account with that email address exists).")
     # In the real world, user would access the reset link from their email
     visit edit_password_path(@user.password_reset_token)
+    expect(page).to have_content("Reset your password")
     fill_in "password", with: "top-secret123"
     fill_in "password_confirmation", with: "top-secret123"
     click_button "Save"
@@ -75,15 +76,18 @@ RSpec.feature "Authentication", type: :system, js: true do
     click_button "Let's go!"
     expect(page).to have_content("Success! You'll need to confirm your email before logging in.")
 
-    # User can now login. TODO: This will change when confirmations are in place
+    # User can't log in yet - they need to confirm their account
     click_link "login-link"
     fill_in "email_address", with: "obi@example.com"
     fill_in "password", with: "top-secret"
     click_button "Enter"
-    expect(page).to have_css("div[data-nav-target='user']")
-    expect(page).to have_content("Successfully logged in. Enjoy your stay!")
-    flash_item_remove_button = find("i.fa-circle-xmark")
-    flash_item_remove_button.click
-    expect(page).not_to have_content("Successfully logged in. Enjoy your stay!")
+    expect(page).to have_content("Sorry, but we couldn't find that account. Click the forgot password link if you've forgotten your password or request a new confirmation link if you have not yet confirmed your email address.")
+
+    # TODO: System specs for confirmations
+    # expect(page).to have_css("div[data-nav-target='user']")
+    # expect(page).to have_content("Successfully logged in. Enjoy your stay!")
+    # flash_item_remove_button = find("i.fa-circle-xmark")
+    # flash_item_remove_button.click
+    # expect(page).not_to have_content("Successfully logged in. Enjoy your stay!")
   end
 end

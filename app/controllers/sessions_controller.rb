@@ -6,11 +6,11 @@ class SessionsController < ApplicationController
   end
 
   def create
-    if (user = User.authenticate_by(params.permit(:email_address, :password)))
+    if (user = User.authenticate_by(params.permit(:email_address, :password))) && user.confirmed?
       start_new_session_for user
       redirect_to after_authentication_url, notice: "Successfully logged in. Enjoy your stay!"
     else
-      @error = "Sorry, but we couldn't find that account. Click the forgot password link if you've forgotten your password or get in touch if you think this is incorrect."
+      @error = "Sorry, but we couldn't find that account. Click the forgot password link if you've forgotten your password or request a new confirmation link if you have not yet confirmed your email address."
       render :new, status: 422
     end
   end

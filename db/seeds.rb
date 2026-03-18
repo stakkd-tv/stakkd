@@ -8,7 +8,8 @@ User.delete_all
 Company.delete_all
 
 puts "=== Creating users ==="
-User.create(username: "testies", email_address: "test@example.com", password: "123456")
+User.create(username: "crxssed", email_address: "test@example.com", password: "123456", confirmed_at: Time.current)
+User.create(username: "unconfirmed_user", email_address: "test2@example.com", password: "123456")
 
 puts "=== Importing genres ==="
 Sync::Genres.new.start

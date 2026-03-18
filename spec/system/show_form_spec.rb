@@ -22,7 +22,7 @@ RSpec.feature "Show form", type: :system, js: true do
     FactoryBot.create(:job, name: "Actor")
     FactoryBot.create(:job, name: "Producer")
 
-    user = FactoryBot.create(:user)
+    user = FactoryBot.create(:user, :confirmed)
     sign_in(user)
   end
 

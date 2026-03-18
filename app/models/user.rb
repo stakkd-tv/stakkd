@@ -10,9 +10,15 @@ class User < ApplicationRecord
   validates_uniqueness_of :username, case_sensitive: true
   validates :email_address, format: {with: URI::MailTo::EMAIL_REGEXP}
 
+  # Callbacks
   before_validation :normalize_email
 
+  # Scopes
+  scope :confirmed, -> { where.not(confirmed_at: nil) }
+
   def avatar = "https://github.com/stakkd-tv.png"
+
+  def confirmed? = confirmed_at.present?
 
   private
 

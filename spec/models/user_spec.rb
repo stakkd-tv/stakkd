@@ -21,10 +21,30 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe ".confirmed" do
+    it "only returns confirmed users" do
+      user = FactoryBot.create(:user, :confirmed)
+      FactoryBot.create(:user)
+      expect(User.confirmed).to eq [user]
+    end
+  end
+
   describe "#avatar" do
     it "returns a temporary avatar" do
       user = User.new(username: "hehe", password: "hehe")
       expect(user.avatar).to eq "https://github.com/stakkd-tv.png"
+    end
+  end
+
+  describe "#confirmed?" do
+    it "returns true for confirmed users" do
+      user = FactoryBot.create(:user, :confirmed)
+      expect(user.confirmed?).to be_truthy
+    end
+
+    it "returns false for unconfirmed users" do
+      user = FactoryBot.create(:user)
+      expect(user.confirmed?).to be_falsey
     end
   end
 end

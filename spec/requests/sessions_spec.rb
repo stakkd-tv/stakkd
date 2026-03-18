@@ -11,17 +11,31 @@ RSpec.describe "Session", type: :request do
   describe "POST /session" do
     context "when user is found" do
       it "starts a new session for the user" do
-        user = FactoryBot.create(:user, email_address: "user@example.com", password: "123456")
+        user = FactoryBot.create(:user, :confirmed, email_address: "user@example.com", password: "123456")
         post session_path, params: {email_address: "user@example.com", password: "123456"}
         expect(user.sessions.count).to eq 1
         expect(cookies[:session_id]).to be_present
       end
 
       it "redirects with a notice" do
-        FactoryBot.create(:user, email_address: "user@example.com", password: "123456")
+        FactoryBot.create(:user, :confirmed, email_address: "user@example.com", password: "123456")
         post session_path, params: {email_address: "user@example.com", password: "123456"}
         expect(response).to redirect_to(root_path)
         expect(flash[:notice]).to eq "Successfully logged in. Enjoy your stay!"
+      end
+    end
+
+    context "when user is found but not confirmed" do
+      it "does not sign in any user" do
+        user = FactoryBot.create(:user, email_address: "user@example.com", password: "123456")
+        post session_path, params: {email_address: "user@example.com", password: "123456"}
+        expect(user.sessions.count).to eq 0
+        expect(cookies[:session_id]).not_to be_present
+      end
+
+      it "renders 422" do
+        post session_path, params: {email_address: "user@example.com", password: "1234566"}
+        expect(response).to have_http_status(:unprocessable_content)
       end
     end
 
