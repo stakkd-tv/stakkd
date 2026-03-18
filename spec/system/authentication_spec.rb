@@ -98,5 +98,23 @@ RSpec.feature "Authentication", type: :system, js: true do
     flash_item_remove_button = find("i.fa-circle-xmark")
     flash_item_remove_button.click
     expect(page).not_to have_content("Successfully logged in. Enjoy your stay!")
+
+    # Logout
+    find("div[data-nav-target='user']").hover
+    click_link "Sign out"
+
+    expect(page).to have_content("Successfully logged out. Come back soon!")
+    flash_item_remove_button = find("i.fa-circle-xmark")
+    flash_item_remove_button.click
+    expect(page).not_to have_content("Successfully logged out. Come back soon!")
+
+    # Resend confirmation email
+    click_link "login-link"
+    expect(page).to have_content("Welcome home!")
+    click_link "Resend confirmation email"
+    expect(page).to have_content("Resend confirmation email")
+    fill_in "email_address", with: "obi@example.com"
+    click_button "Resend email"
+    expect(page).to have_content("A confirmation email has been resent to your email (if a user was found with that email address).")
   end
 end

@@ -88,6 +88,7 @@ Rails.application.routes.draw do
   resources :users, only: [:new, :create] do
     get :confirm, on: :collection
   end
+  resources :confirmation_tokens, only: [:new, :create], path: "confirmations"
   resources :genres, only: [:index]
   resources :countries, only: [:index]
   resources :languages, only: [:index]
