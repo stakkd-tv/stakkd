@@ -9,6 +9,9 @@ class ConfirmationToken < ApplicationRecord
   # Callbacks
   before_validation :generate_token, on: :create
 
+  # Scopes
+  scope :active, -> { where("expires_at > ?", Time.current) }
+
   private
 
   def generate_token

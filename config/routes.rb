@@ -85,7 +85,9 @@ Rails.application.routes.draw do
     get :logos, on: :member
     get :cast, on: :member
   end
-  resources :users, only: [:new, :create]
+  resources :users, only: [:new, :create] do
+    get :confirm, on: :collection
+  end
   resources :genres, only: [:index]
   resources :countries, only: [:index]
   resources :languages, only: [:index]

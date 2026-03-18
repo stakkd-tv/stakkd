@@ -83,11 +83,20 @@ RSpec.feature "Authentication", type: :system, js: true do
     click_button "Enter"
     expect(page).to have_content("Sorry, but we couldn't find that account. Click the forgot password link if you've forgotten your password or request a new confirmation link if you have not yet confirmed your email address.")
 
-    # TODO: System specs for confirmations
-    # expect(page).to have_css("div[data-nav-target='user']")
-    # expect(page).to have_content("Successfully logged in. Enjoy your stay!")
-    # flash_item_remove_button = find("i.fa-circle-xmark")
-    # flash_item_remove_button.click
-    # expect(page).not_to have_content("Successfully logged in. Enjoy your stay!")
+    # Confirm the user's account
+    confirmation_token = ConfirmationToken.last
+    # In the real world, user will access this link for the email
+    visit confirm_users_path(token: confirmation_token.token)
+    expect(page).to have_content "Successfully confirmed your account, you can now login!"
+
+    # Now the user can log in
+    fill_in "email_address", with: "obi@example.com"
+    fill_in "password", with: "top-secret"
+    click_button "Enter"
+    expect(page).to have_css("div[data-nav-target='user']")
+    expect(page).to have_content("Successfully logged in. Enjoy your stay!")
+    flash_item_remove_button = find("i.fa-circle-xmark")
+    flash_item_remove_button.click
+    expect(page).not_to have_content("Successfully logged in. Enjoy your stay!")
   end
 end

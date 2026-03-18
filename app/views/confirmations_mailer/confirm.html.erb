@@ -161,7 +161,7 @@
                                   <tbody>
                                     <tr>
                                       <td align="center" bgcolor="#232122" role="presentation" style="border:1px solid #f7567c;border-radius:0.5rem;cursor:auto;mso-padding-alt:10px 25px;background:#232122;" valign="middle">
-                                        <a href="" style="display:inline-block;background:#232122;color:#ffffff;font-family:Arial, sans-serif;font-size:16px;font-weight:bold;line-height:120%;margin:0;text-decoration:none;text-transform:none;padding:10px 25px;mso-padding-alt:0px;border-radius:0.5rem;"> Confirm account </a>
+                                        <a href="<%= confirm_users_url(token: @token.token) %>" style="display:inline-block;background:#232122;color:#ffffff;font-family:Arial, sans-serif;font-size:16px;font-weight:bold;line-height:120%;margin:0;text-decoration:none;text-transform:none;padding:10px 25px;mso-padding-alt:0px;border-radius:0.5rem;"> Confirm account </a>
                                       </td>
                                     </tr>
                                   </tbody>
@@ -170,7 +170,7 @@
                             </tr>
                             <tr>
                               <td align="center" style="font-size:0px;padding:0 25px;word-break:break-word;">
-                                <div style="font-family:Arial;font-size:18px;line-height:1;text-align:center;color:#ffffff;">If you did not sign up for an account, you can safely ignore this email. If the confirmation button above does not work, you can access it <a style="color: #fff;" href="">here</a> instead.</div>
+                                <div style="font-family:Arial;font-size:18px;line-height:1;text-align:center;color:#ffffff;">If you did not sign up for an account, you can safely ignore this email. If the confirmation button above does not work, you can access it <a style="color: #fff;" href="<%= confirm_users_url(token: @token.token) %>">here</a> instead.</div>
                               </td>
                             </tr>
                             <tr>

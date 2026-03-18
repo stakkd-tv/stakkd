@@ -51,4 +51,78 @@ RSpec.describe "Users", type: :request do
       end
     end
   end
+
+  describe "GET /users/confirm" do
+    context "when user is logged in" do
+      before do
+        @user = FactoryBot.create(:user)
+        session = @user.sessions.create!(user_agent: "Mozilla/", ip_address: "192.168.0.1")
+        allow(Current).to receive(:session).and_return(session)
+        allow(Current).to receive(:user).and_return(@user)
+      end
+
+      it "terminates the users seassion" do
+        get confirm_users_path
+        expect(@user.reload.sessions.count).to eq 0
+        expect(cookies[:session_id]).not_to be_present
+      end
+    end
+
+    context "when there is a token found" do
+      it "confirms the user and deletes the token" do
+        user = FactoryBot.create(:user, confirmed_at: nil)
+        token = ConfirmationToken.create!(user: user)
+        get confirm_users_path, params: {token: token.token}
+        expect(user.reload.confirmed_at).to be_present
+        expect(ConfirmationToken.count).to eq 0
+      end
+
+      it "redirects to the login page with a notice" do
+        user = FactoryBot.create(:user, confirmed_at: nil)
+        token = ConfirmationToken.create!(user: user)
+        get confirm_users_path, params: {token: token.token}
+        expect(response).to redirect_to(new_session_path)
+        expect(flash[:notice]).to eq "Successfully confirmed your account, you can now login!"
+      end
+
+      context "when the user is already confirmed" do
+        it "does not re-confirm the user" do
+          confirmed_at = DateTime.new(2023, 1, 1, 10)
+          user = FactoryBot.create(:user, confirmed_at:)
+          token = ConfirmationToken.create!(user: user)
+          get confirm_users_path, params: {token: token.token}
+          expect(user.reload.confirmed_at).to eq confirmed_at
+          expect(ConfirmationToken.count).to eq 1
+        end
+
+        it "redirects to the root path with an alert" do
+          user = FactoryBot.create(:user, :confirmed)
+          token = ConfirmationToken.create!(user: user)
+          get confirm_users_path, params: {token: token.token}
+          expect(response).to redirect_to(root_path)
+          expect(flash[:alert]).to eq "Confirmation link is invalid or has expired. Please request a new confirmation email."
+        end
+      end
+    end
+
+    context "when no token is found" do
+      it "does not confirm the user" do
+        user = FactoryBot.create(:user, confirmed_at: nil)
+        token = ConfirmationToken.create!(user: user)
+        token.update(expires_at: Time.current - 1.minute)
+        get confirm_users_path, params: {token: token.token}
+        expect(user.reload.confirmed_at).not_to be_present
+        expect(ConfirmationToken.count).to eq 1
+      end
+
+      it "redirects to the root path with an alert" do
+        user = FactoryBot.create(:user, confirmed_at: nil)
+        token = ConfirmationToken.create!(user: user)
+        token.update(expires_at: Time.current - 1.minute)
+        get confirm_users_path, params: {token: token.token}
+        expect(response).to redirect_to(root_path)
+        expect(flash[:alert]).to eq "Confirmation link is invalid or has expired. Please request a new confirmation email."
+      end
+    end
+  end
 end

@@ -15,7 +15,7 @@ RSpec.describe ConfirmationsMailer, type: :mailer do
       assert_equal ["from@example.com"], email.from
       assert_equal ["user@example.com"], email.to
       assert_equal "Confirm your Stakkd account", email.subject
-      # expect(email.body.parts.last.body).to include(edit_password_url("token")) # TODO: Confirm link
+      expect(email.body.parts.last.body).to include(confirm_users_url(token: "token"))
       expect(email.body.parts.last.body).to include("Hi user007!")
     end
   end
