@@ -1,8 +1,24 @@
-<h1>Forgot your password?</h1>
+<% content_for :title, "Stakkd - Forgot password" %>
 
-<%= tag.div(flash[:alert], style: "color:red") if flash[:alert] %>
+<div class="max-w-2xl mx-auto h-full flex justify-center items-center px-6">
+  <div class="flex flex-col w-full">
+    <h3 class="text-4xl font-bold font-domine text-white mt-28 mb-10">Reset your password</h3>
+    <%= form_with url: passwords_path, class: "flex flex-col gap-6" do |form| %>
+      <div class="bg-pop/50 rounded-lg p-4">
+        <p>Enter your email and if you've got an account we'll send you instructions on how to reset your password.</p>
+      </div>
 
-<%= form_with url: passwords_path do |form| %>
-  <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address] %><br>
-  <%= form.submit "Email reset instructions" %>
-<% end %>
+      <div class="w-full">
+        <%= form.email_field :email_address, required: true, autocomplete: "email", placeholder: "Email", value: params[:email_address], class: "w-full h-14 px-4 border-b-3 border-white focus:border-pop focus:outline-none data-field-error:border-red-400" %>
+      </div>
+      <div class="w-fit mt-10">
+        <%= button_to do %>
+          <div class="h-16 outline-3 outline-pop cursor-pointer px-6 flex gap-4 items-center text-white font-bold bg-pop/75 hover:bg-pop w-fit transition-all duration-300 ease-in-out">
+            <i class="fa-solid fa-envelope text-xl"></i>
+            Send instructions
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

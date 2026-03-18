@@ -1,9 +1,23 @@
-<h1>Update your password</h1>
+<% content_for :title, "Stakkd - Reset your password" %>
 
-<%= tag.div(flash[:alert], style: "color:red") if flash[:alert] %>
-
-<%= form_with url: password_path(params[:token]), method: :put do |form| %>
-  <%= form.password_field :password, required: true, autocomplete: "new-password", placeholder: "Enter new password", maxlength: 72 %><br>
-  <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", placeholder: "Repeat new password", maxlength: 72 %><br>
-  <%= form.submit "Save" %>
-<% end %>
+<div class="max-w-2xl mx-auto h-full flex justify-center items-center px-6">
+  <div class="flex flex-col w-full">
+    <h3 class="text-4xl font-bold font-domine text-white mt-28 mb-10">Reset your password</h3>
+    <%= form_with url: password_path(params[:token]), method: :put, class: "flex flex-col gap-6" do |form| %>
+      <div class="w-full">
+        <%= form.password_field :password, required: true, autocomplete: "new-password", placeholder: "Enter new password", maxlength: 72, class: "w-full h-14 px-4 border-b-3 border-white focus:border-pop focus:outline-none data-field-error:border-red-400" %>
+      </div>
+      <div class="w-full">
+        <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", placeholder: "Repeat new password", maxlength: 72, class: "w-full h-14 px-4 border-b-3 border-white focus:border-pop focus:outline-none data-field-error:border-red-400" %>
+      </div>
+      <div class="w-fit mt-10">
+        <%= button_to do %>
+          <div class="h-16 outline-3 outline-pop cursor-pointer px-6 flex gap-4 items-center text-white font-bold bg-pop/75 hover:bg-pop w-fit transition-all duration-300 ease-in-out">
+            <i class="fa-solid fa-floppy-disk text-xl"></i>
+            Save
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.feature "Authentication", type: :system, js: true do
   before do
-    FactoryBot.create(:user, email_address: "test@example.com", password: "top-secret")
+    @user = FactoryBot.create(:user, email_address: "test@example.com", password: "top-secret")
   end
 
   scenario "User login, logout and sign up", :ignore_form_failures do
@@ -20,8 +20,23 @@ RSpec.feature "Authentication", type: :system, js: true do
     click_button "Enter"
     expect(page).to have_content("Sorry, but we couldn't find that account. Click the forgot password link if you've forgotten your password or get in touch if you think this is incorrect.")
 
+    # Password reset
+    click_link "Forgot your password?"
+    expect(page).to have_content("Reset your password")
+    fill_in "email_address", with: "test@example.com"
+    click_button "Send instructions"
+    expect(page).to have_content("Password reset instructions sent (if user with that email address exists).")
+    # In the real world, user would access the reset link from their email
+    visit edit_password_path(@user.password_reset_token)
+    fill_in "password", with: "top-secret123"
+    fill_in "password_confirmation", with: "top-secret123"
+    click_button "Save"
+    expect(page).to have_content("Password has been reset. You can now sign in.")
+
     # Try again, with real credentials
-    fill_in "password", with: "top-secret"
+    expect(page).to have_content("Welcome home!")
+    fill_in "email_address", with: "test@example.com"
+    fill_in "password", with: "top-secret123"
     click_button "Enter"
     expect(page).to have_css("div[data-nav-target='user']")
     expect(page).to have_content("Successfully logged in. Enjoy your stay!")
