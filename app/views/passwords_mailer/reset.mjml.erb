@@ -1,0 +1,38 @@
+<!-- THIS FILE SHOULD BE USED ON THE MJML EDITOR. DO NOT EDIT DIRECTLY. -->
+<mjml>
+  <mj-head>
+    <mj-attributes>
+      <mj-all padding="0px"></mj-all>
+
+      <mj-text font-family="Ubuntu, Helvetica, Arial, sans-serif" padding="0 25px" font-size="13px"></mj-text>
+      <mj-section background-color="#1c1a1b"></mj-section>
+      <mj-class name="preheader" color="#fff" font-size="11px"></mj-class>
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#232122">
+    <mj-section>
+      <mj-column width="100%">
+
+        <mj-image src="<%= image_url("email-hero.png"") %>" alt="header image" padding="0px"></mj-image>
+
+      </mj-column>
+    </mj-section>
+    <mj-section padding-bottom="20px" padding-top="10px">
+      <mj-column>
+
+        <mj-text align="center" padding="40px 35px" font-size="20px" color="#f7567c"><strong>Reset your password</strong></mj-text>
+
+        <mj-text align="center" font-size="18px" font-family="Arial" color="#fff">Hi <%= @user.username %>! A password reset was requested for your Stakkd account. Click the link below to reset it - but be quick, the link expires in 15 minutes!</mj-text>
+
+        <mj-button background-color="#232122" color="#fff" border="1px solid #f7567c" border-radius="0.5rem" href="<%= edit_password_url(@user.password_reset_token) %>" font-family="Arial, sans-serif" padding="40px 0" font-weight="bold" font-size="16px">Reset password</mj-button>
+
+        <mj-text align="center" font-size="18px" font-family="Arial" color="#fff">Please do not share the above link. If you did not request this password reset, you can safely ignore this email. If the reset URL does not work, you can access it <a style="color: #fff;" href="<%= edit_password_url(@user.password_reset_token) %>">here</a> instead.</mj-text>
+
+        <mj-text align="center" color="#fff" font-size="14px" font-family="Arial, sans-serif" padding-top="40px">Thanks, <br /> The Stakkd Team
+          <p></p>
+        </mj-text>
+
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

@@ -1,2 +1,8 @@
-You can reset your password within the next 15 minutes on this password reset page:
+Reset your Stakkd password
+
+Hi <%= @user.username %>! A password reset was requested for your Stakkd account. Enter the link below in a web browser to reset it - but be quick, the link expires in 15 minutes!
 <%= edit_password_url(@user.password_reset_token) %>
+Please do not share the above link. If you did not request this password reset, you can safely ignore this email.
+
+Thanks,
+The Stakkd Team
