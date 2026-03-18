@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_06_144326) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_18_111753) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -100,6 +100,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_06_144326) do
     t.index ["company_id", "record_type", "record_id"], name: "index_unique_company_assignments", unique: true
     t.index ["company_id"], name: "index_company_assignments_on_company_id"
     t.index ["record_type", "record_id"], name: "index_company_assignments_on_record"
+  end
+
+  create_table "confirmation_tokens", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "expires_at", null: false
+    t.string "token", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["token"], name: "index_confirmation_tokens_on_token", unique: true
+    t.index ["user_id"], name: "index_confirmation_tokens_on_user_id"
   end
 
   create_table "content_ratings", force: :cascade do |t|
@@ -343,6 +353,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_06_144326) do
   add_foreign_key "cast_members", "people"
   add_foreign_key "certifications", "countries"
   add_foreign_key "company_assignments", "companies"
+  add_foreign_key "confirmation_tokens", "users"
   add_foreign_key "content_ratings", "certifications"
   add_foreign_key "content_ratings", "shows"
   add_foreign_key "crew_members", "jobs"

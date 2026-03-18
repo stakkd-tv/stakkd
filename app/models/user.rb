@@ -3,6 +3,7 @@ class User < ApplicationRecord
 
   # Associations
   has_many :sessions, dependent: :destroy
+  has_many :confirmation_tokens, dependent: :destroy
 
   # Validations
   validates_presence_of :username
