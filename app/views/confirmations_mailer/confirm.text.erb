@@ -1,0 +1,8 @@
+Confirm your Stakkd password
+
+Hi <%= @user.username %>! You'll need to confirm your Stakkd account before you can login - the link expires in 15 minutes, you'll need to request a new one after that.
+<%= edit_password_url(@user.password_reset_token) %>
+If you did not sign up for an account, you can safely ignore this email.
+
+Thanks,
+The Stakkd Team

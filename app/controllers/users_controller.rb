@@ -6,9 +6,10 @@ class UsersController < ApplicationController
   end
 
   def create
-    # TODO: User confirmation
     @user = User.new(user_params)
     if @user.save
+      token = @user.confirmation_tokens.create
+      ConfirmationsMailer.confirm(token).deliver_later
       redirect_to root_path, notice: "Success! You'll need to confirm your email before logging in."
     else
       render :new, status: 422
