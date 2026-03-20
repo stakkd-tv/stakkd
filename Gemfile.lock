@@ -85,7 +85,7 @@ GEM
       public_suffix (>= 2.0.2, < 7.0)
     ast (2.4.3)
     base64 (0.3.0)
-    bcrypt (3.1.21)
+    bcrypt (3.1.22)
     bcrypt_pbkdf (1.1.2)
     better_html (2.1.1)
       actionview (>= 6.0)
@@ -589,7 +589,7 @@ PLATFORMS
 DEPENDENCIES
   acts-as-taggable-on (~> 13.0)
   acts_as_list (~> 1.2)
-  bcrypt (~> 3.1.21)
+  bcrypt (~> 3.1.22)
   bootsnap
   brakeman
   capybara (~> 3.38)
