@@ -9,15 +9,31 @@ RSpec.describe "Users", type: :request do
   end
 
   describe "POST /users" do
+    context "when the specified trivia is not found" do
+      it "renders 422 with an alert" do
+        post users_path, params: {user: {username: "hey", email_address: "hey@hey.com", password: "hey", password_confirmation: "hey"}, trivia_question_name: "nonsense"}
+        expect(response.status).to eq 422
+        expect(flash[:alert]).to eq "Bot accounts are not allowed."
+      end
+    end
+
+    context "when the trivia answer is not correct" do
+      it "renders 422 with an alert" do
+        post users_path, params: {user: {username: "hey", email_address: "hey@hey.com", password: "hey", password_confirmation: "hey"}, trivia_question_name: "hulk", trivia_answer: "purple"}
+        expect(response.status).to eq 422
+        expect(flash[:alert]).to eq "Bot accounts are not allowed."
+      end
+    end
+
     context "with valid params" do
       it "redirects to root path" do
-        post users_path, params: {user: {username: "hey", email_address: "hey@hey.com", password: "hey", password_confirmation: "hey"}}
+        post users_path, params: {user: {username: "hey", email_address: "hey@hey.com", password: "hey", password_confirmation: "hey"}, trivia_question_name: "hulk", trivia_answer: "green"}
         expect(response).to redirect_to root_path
         expect(flash[:notice]).to eq "Success! You'll need to confirm your email before logging in."
       end
 
       it "creates an unconfirmed user with a confirmation token" do
-        post users_path, params: {user: {username: "hey", email_address: "hey@hey.com", password: "hey", password_confirmation: "hey"}}
+        post users_path, params: {user: {username: "hey", email_address: "hey@hey.com", password: "hey", password_confirmation: "hey"}, trivia_question_name: "hulk", trivia_answer: "green"}
         user = User.last
         expect(user.email_address).to eq "hey@hey.com"
         expect(user.username).to eq "hey"
@@ -29,25 +45,25 @@ RSpec.describe "Users", type: :request do
         mail = instance_double(ActionMailer::MessageDelivery)
         expect(ConfirmationsMailer).to receive(:confirm).and_return(mail)
         expect(mail).to receive(:deliver_later)
-        post users_path, params: {user: {username: "hey", email_address: "hey@hey.com", password: "hey", password_confirmation: "hey"}}
+        post users_path, params: {user: {username: "hey", email_address: "hey@hey.com", password: "hey", password_confirmation: "hey"}, trivia_question_name: "hulk", trivia_answer: "green"}
       end
     end
 
     context "with invalid params" do
       it "renders a 422" do
-        post users_path, params: {user: {username: nil, email_address: nil, password: nil, password_confirmation: nil}}
+        post users_path, params: {user: {username: nil, email_address: nil, password: nil, password_confirmation: nil}, trivia_question_name: "hulk", trivia_answer: "green"}
         expect(response.status).to eq 422
       end
 
       it "does not create a user" do
-        post users_path, params: {user: {username: nil, email_address: nil, password: nil, password_confirmation: nil}}
+        post users_path, params: {user: {username: nil, email_address: nil, password: nil, password_confirmation: nil}, trivia_question_name: "hulk", trivia_answer: "green"}
         expect(User.count).to eq 0
         expect(ConfirmationToken.count).to eq 0
       end
 
       it "does not send an email" do
         expect(ConfirmationsMailer).not_to receive(:confirm)
-        post users_path, params: {user: {username: nil, email_address: nil, password: nil, password_confirmation: nil}}
+        post users_path, params: {user: {username: nil, email_address: nil, password: nil, password_confirmation: nil}, trivia_question_name: "hulk", trivia_answer: "green"}
       end
     end
   end

@@ -2,7 +2,9 @@ require "rails_helper"
 
 RSpec.describe "users/new", type: :view do
   before(:each) do
+    @trivia = UsersController::TRIVIA.sample
     assign(:user, User.new)
+    assign(:trivia, @trivia)
   end
 
   it "renders the new user form" do
@@ -13,6 +15,8 @@ RSpec.describe "users/new", type: :view do
       assert_select "input[name='user[email_address]']"
       assert_select "input[name='user[password]']"
       assert_select "input[name='user[password_confirmation]']"
+      assert_select "input[name='trivia_question_name'][value='#{@trivia[:name]}']"
+      assert_select "input[name='trivia_answer']"
     end
   end
 end

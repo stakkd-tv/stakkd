@@ -58,11 +58,23 @@ RSpec.feature "Authentication", type: :system, js: true do
     click_link "join-link"
     expect(page).to have_content("Join the club")
 
+    # Fail the trivia
+    fill_in "user_username", with: "obiwan"
+    fill_in "user_email_address", with: "obi@example.com"
+    fill_in "user_password", with: "top-secret"
+    fill_in "user_password_confirmation", with: "top-secret"
+    trivia = page.find("input[name='trivia_question_name']", visible: false).value
+    trivia_answer = UsersController::TRIVIA.find { it[:name] == trivia }[:answers].first
+    fill_in "trivia_answer", with: "bogus answer"
+    click_button "Let's go!"
+    expect(page).to have_content("Bot accounts are not allowed.")
+
     # A failed attempt
     fill_in "user_username", with: " "
     fill_in "user_email_address", with: "test@example.com"
     fill_in "user_password", with: "bye"
     fill_in "user_password_confirmation", with: "hello"
+    fill_in "trivia_answer", with: trivia_answer # Trivia is persisted across requests
     click_button "Let's go!"
     expect(page).to have_content("Username can't be blank")
     expect(page).to have_content("Email address has already been taken")
@@ -73,6 +85,7 @@ RSpec.feature "Authentication", type: :system, js: true do
     fill_in "user_email_address", with: "obi@example.com"
     fill_in "user_password", with: "top-secret"
     fill_in "user_password_confirmation", with: "top-secret"
+    fill_in "trivia_answer", with: trivia_answer # Trivia is persisted across requests
     click_button "Let's go!"
     expect(page).to have_content("Success! You'll need to confirm your email before logging in.")
 
