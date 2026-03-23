@@ -99,7 +99,7 @@ RSpec.describe "Users", type: :request do
           user = FactoryBot.create(:user, :confirmed)
           token = ConfirmationToken.create!(user: user)
           get confirm_users_path, params: {token: token.token}
-          expect(response).to redirect_to(root_path)
+          expect(response).to redirect_to(new_confirmation_token_path)
           expect(flash[:alert]).to eq "Confirmation link is invalid or has expired. Please request a new confirmation email."
         end
       end
@@ -120,7 +120,7 @@ RSpec.describe "Users", type: :request do
         token = ConfirmationToken.create!(user: user)
         token.update(expires_at: Time.current - 1.minute)
         get confirm_users_path, params: {token: token.token}
-        expect(response).to redirect_to(root_path)
+        expect(response).to redirect_to(new_confirmation_token_path)
         expect(flash[:alert]).to eq "Confirmation link is invalid or has expired. Please request a new confirmation email."
       end
     end

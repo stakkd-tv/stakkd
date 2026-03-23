@@ -26,8 +26,7 @@ class UsersController < ApplicationController
       token.destroy
       redirect_to new_session_path, notice: "Successfully confirmed your account, you can now login!"
     else
-      # TODO: Redirect to new confirmation email path
-      redirect_to root_path, alert: "Confirmation link is invalid or has expired. Please request a new confirmation email."
+      redirect_to new_confirmation_token_path, alert: "Confirmation link is invalid or has expired. Please request a new confirmation email."
     end
   end
 
