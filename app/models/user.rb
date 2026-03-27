@@ -2,11 +2,13 @@ class User < ApplicationRecord
   has_secure_password
 
   # Associations
+  belongs_to :banned_by, class_name: "User", optional: true
   has_many :sessions, dependent: :destroy
   has_many :confirmation_tokens, dependent: :destroy
 
   # Validations
   validates_presence_of :username
+  validates_presence_of :ban_reason, if: :banned_at?
   validates_uniqueness_of :email_address
   validates_uniqueness_of :username, case_sensitive: true
   validates :email_address, format: {with: URI::MailTo::EMAIL_REGEXP}
@@ -22,6 +24,14 @@ class User < ApplicationRecord
   def avatar = "https://github.com/stakkd-tv.png"
 
   def confirmed? = confirmed_at.present?
+
+  def ban!(reason:, banned_by: nil)
+    update(banned_at: Time.current, ban_reason: reason, banned_by:)
+  end
+
+  def banned? = banned_at.present?
+
+  def can_login? = !banned? && confirmed?
 
   private
 

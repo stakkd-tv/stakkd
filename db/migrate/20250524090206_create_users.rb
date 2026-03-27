@@ -6,6 +6,9 @@ class CreateUsers < ActiveRecord::Migration[8.0]
       t.string :username, null: false
       t.datetime :confirmed_at
       t.datetime :confirmation_reminder_sent_at
+      t.datetime :banned_at
+      t.references :banned_by, foreign_key: {to_table: :users}, null: true
+      t.string :ban_reason
 
       t.timestamps
     end

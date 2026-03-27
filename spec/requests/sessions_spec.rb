@@ -34,6 +34,22 @@ RSpec.describe "Session", type: :request do
       end
 
       it "renders 422" do
+        FactoryBot.create(:user, email_address: "user@example.com", password: "123456")
+        post session_path, params: {email_address: "user@example.com", password: "1234566"}
+        expect(response).to have_http_status(:unprocessable_content)
+      end
+    end
+
+    context "when user is found but confirmed and banned" do
+      it "does not sign in any user" do
+        user = FactoryBot.create(:user, :confirmed, banned_at: Time.current, ban_reason: "Test", email_address: "user@example.com", password: "123456")
+        post session_path, params: {email_address: "user@example.com", password: "123456"}
+        expect(user.sessions.count).to eq 0
+        expect(cookies[:session_id]).not_to be_present
+      end
+
+      it "renders 422" do
+        FactoryBot.create(:user, :confirmed, banned_at: Time.current, ban_reason: "Test", email_address: "user@example.com", password: "123456")
         post session_path, params: {email_address: "user@example.com", password: "1234566"}
         expect(response).to have_http_status(:unprocessable_content)
       end

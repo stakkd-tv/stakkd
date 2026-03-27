@@ -324,6 +324,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_18_111753) do
   end
 
   create_table "users", force: :cascade do |t|
+    t.string "ban_reason"
+    t.datetime "banned_at"
+    t.bigint "banned_by_id"
     t.datetime "confirmation_reminder_sent_at"
     t.datetime "confirmed_at"
     t.datetime "created_at", null: false
@@ -331,6 +334,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_18_111753) do
     t.string "password_digest", null: false
     t.datetime "updated_at", null: false
     t.string "username", null: false
+    t.index ["banned_by_id"], name: "index_users_on_banned_by_id"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
   end
@@ -368,4 +372,5 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_18_111753) do
   add_foreign_key "shows", "countries"
   add_foreign_key "shows", "languages"
   add_foreign_key "taggings", "tags"
+  add_foreign_key "users", "users", column: "banned_by_id"
 end
