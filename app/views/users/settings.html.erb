@@ -1,0 +1,56 @@
+<% content_for :title, "Stakkd - Settings" %>
+
+<div class="max-w-7xl mx-auto my-28 px-6">
+  <h3 class="text-4xl font-bold font-domine text-white text-center mb-8">Your Settings</h3>
+
+  <div class="form" data-controller="settings">
+    <%# render "form_nav", user: %>
+    <%= form_with model: @user do |form| %>
+      <div class="flex flex-wrap gap-8">
+        <div data-action="click->settings#triggerProfilePicture">
+          <%= form.label :profile_picture %>
+          <%= form.file_field :profile_picture, class: "hidden", accept: "image/png,image/jpeg", data: { settings_target: "profilePictureUpload" } %>
+          <div class="relative cursor-pointer">
+            <div class="w-32 h-32 aspect-square overflow-hidden rounded-full border border-pop">
+              <%= image_tag @user.avatar, class: "w-full h-full object-cover object-center", id: "profile-picture-image", data: { settings_target: "profilePictureImage" } %>
+            </div>
+
+            <div class="text-xs flex gap-2 absolute right-[-8] bottom-3 items-center justify-center rounded-lg bg-background border border-pop px-2 py-1">
+              <i class="fa-solid fa-pen"></i>
+              Edit
+            </div>
+          </div>
+        </div>
+
+        <div data-action="click->settings#triggerBackground">
+          <%= form.label :background %>
+          <%= form.file_field :background, class: "hidden", accept: "image/png,image/jpeg", data: { settings_target: "backgroundUpload" } %>
+          <div class="relative h-32 cursor-pointer">
+            <%= image_tag @user.hero, class: "h-full object-cover rounded-lg border border-pop", id: "background-image", data: { settings_target: "backgroundImage" } %>
+
+            <div class="text-xs flex gap-2 absolute right-[-8] bottom-3 items-center justify-center rounded-lg bg-background border border-pop px-2 py-1">
+              <i class="fa-solid fa-pen"></i>
+              Edit
+            </div>
+          </div>
+        </div>
+      </div>
+      <small>We recommend using a square image for your profile picture. We'll crop the image to fit so anything outside the square will be cut off.</small>
+
+      <div>
+        <%= form.label :biography %>
+        <%= form.text_area :biography, class: "h-60" %>
+        <small class="inline-block mt-2">You can format your biography using Markdown. Read more about Markdown formatting <a class="underline" href="https://www.markdownguide.org/basic-syntax/">here</a>.</small>
+      </div>
+
+      <%= render "shared/form_toggle_field", form:, field: :private do %>
+        <small class="inline-block mt-2">Private accounts are not publicly accessible by other people. If you don't want people to see your watch history, enable this.</small>
+      <% end %>
+
+      <div>
+        <%= form.submit "Save" %>
+      </div>
+    <% end %>
+  </div>
+
+</div>

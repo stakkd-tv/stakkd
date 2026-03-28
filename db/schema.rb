@@ -327,11 +327,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_18_111753) do
     t.string "ban_reason"
     t.datetime "banned_at"
     t.bigint "banned_by_id"
+    t.text "biography"
     t.datetime "confirmation_reminder_sent_at"
     t.datetime "confirmed_at"
     t.datetime "created_at", null: false
     t.string "email_address", null: false
     t.string "password_digest", null: false
+    t.boolean "private", default: false, null: false
     t.datetime "updated_at", null: false
     t.string "username", null: false
     t.index ["banned_by_id"], name: "index_users_on_banned_by_id"

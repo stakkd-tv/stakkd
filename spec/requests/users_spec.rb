@@ -68,6 +68,86 @@ RSpec.describe "Users", type: :request do
     end
   end
 
+  describe "GET /users/settings" do
+    context "when user is logged in" do
+      before do
+        @user = FactoryBot.create(:user)
+        session = @user.sessions.create!(user_agent: "Mozilla/", ip_address: "192.168.0.1")
+        allow(Current).to receive(:session).and_return(session)
+        allow(Current).to receive(:user).and_return(@user)
+      end
+
+      it "returns a success response" do
+        get user_settings_path
+        expect(response).to be_successful
+      end
+    end
+
+    context "when user is not logged in" do
+      it "redirects to the login page" do
+        get user_settings_path
+        expect(response).to redirect_to(new_session_path)
+      end
+    end
+  end
+
+  describe "PATCH /users/:id" do
+    let(:user) { FactoryBot.create(:user) }
+    let(:attributes) {
+      {
+        profile_picture: Rack::Test::UploadedFile.new(File.join(Rails.root, "spec", "support", "assets", "300x450.png")),
+        background: Rack::Test::UploadedFile.new(File.join(Rails.root, "spec", "support", "assets", "300x450.png")),
+        biography: "Testing",
+        private: true
+      }
+    }
+
+    context "when the user is not logged in" do
+      it "redirects to the login page" do
+        patch user_path(user), params: {user: attributes}
+        expect(response).to redirect_to(new_session_path)
+      end
+    end
+
+    context "when the given user is not the current logged in user" do
+      before do
+        @user = FactoryBot.create(:user)
+        session = @user.sessions.create!(user_agent: "Mozilla/", ip_address: "192.168.0.1")
+        allow(Current).to receive(:session).and_return(session)
+        allow(Current).to receive(:user).and_return(@user)
+      end
+
+      it "redirects to the root path with a flash alert" do
+        patch user_path(user), params: {user: attributes}
+        expect(response).to redirect_to(root_path)
+        expect(flash[:alert]).to eq("You are not authorized to perform this action.")
+      end
+    end
+
+    context "with valid params" do
+      before do
+        session = user.sessions.create!(user_agent: "Mozilla/", ip_address: "192.168.0.1")
+        allow(Current).to receive(:session).and_return(session)
+        allow(Current).to receive(:user).and_return(user)
+      end
+
+      it "redirects to the settings path with a flash notice" do
+        patch user_path(user), params: {user: attributes}
+        expect(response).to redirect_to(user_settings_path)
+        expect(flash[:notice]).to eq("Settings updated successfully.")
+      end
+
+      it "updates the user" do
+        patch user_path(user), params: {user: attributes}
+        user.reload
+        expect(user.biography).to eq "Testing"
+        expect(user.private).to eq true
+        expect(user.profile_picture).to be_attached
+        expect(user.background).to be_attached
+      end
+    end
+  end
+
   describe "GET /users/confirm" do
     context "when user is logged in" do
       before do

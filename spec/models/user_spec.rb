@@ -7,6 +7,8 @@ RSpec.describe User, type: :model do
     it { should belong_to(:banned_by).class_name("User").optional(true) }
     it { should have_many(:sessions).dependent(:destroy) }
     it { should have_many(:confirmation_tokens).dependent(:destroy) }
+    it { should have_one_attached(:profile_picture) }
+    it { should have_one_attached(:background) }
   end
 
   describe "validations" do
@@ -68,10 +70,42 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe "#to_param" do
+    it "returns the username" do
+      user = FactoryBot.create(:user, username: "test")
+      expect(user.to_param).to eq "test"
+    end
+  end
+
   describe "#avatar" do
-    it "returns a temporary avatar" do
-      user = User.new(username: "hehe", password: "hehe")
-      expect(user.avatar).to eq "https://github.com/stakkd-tv.png"
+    context "when the user has a profile picture" do
+      it "returns the profile picture" do
+        user = FactoryBot.create(:user, profile_picture: Rack::Test::UploadedFile.new(File.join(Rails.root, "spec", "support", "assets", "300x450.png"), "image/png"))
+        expect(user.avatar).to be_a(ActiveStorage::Attached::One)
+      end
+    end
+
+    context "when the user has no avatar" do
+      it "returns a placeholder profile picture" do
+        user = FactoryBot.create(:user)
+        expect(user.avatar).to eq "user.png"
+      end
+    end
+  end
+
+  describe "#hero" do
+    context "when the user has a background" do
+      it "returns the background" do
+        user = FactoryBot.create(:user, background: Rack::Test::UploadedFile.new(File.join(Rails.root, "spec", "support", "assets", "300x450.png"), "image/png"))
+        expect(user.hero).to be_a(ActiveStorage::Attached::One)
+      end
+    end
+
+    context "when the user has no background" do
+      it "returns a placeholder background" do
+        user = FactoryBot.create(:user)
+        expect(user.hero).to eq "16:9.png"
+      end
     end
   end
 
@@ -117,25 +151,25 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe "#can_login?" do
+  describe "#active?" do
     it "returns true for confirmed, not banned users" do
       user = FactoryBot.create(:user, :confirmed)
-      expect(user.can_login?).to be_truthy
+      expect(user.active?).to be_truthy
     end
 
     it "returns false for unconfirmed, not banned users" do
       user = FactoryBot.create(:user)
-      expect(user.can_login?).to be_falsey
+      expect(user.active?).to be_falsey
     end
 
     it "returns false for confirmed, banned users" do
       user = FactoryBot.create(:user, :confirmed, banned_at: Time.current, ban_reason: "Test")
-      expect(user.can_login?).to be_falsey
+      expect(user.active?).to be_falsey
     end
 
     it "returns false for unconfirmed, banned users" do
       user = FactoryBot.create(:user, banned_at: Time.current, ban_reason: "Test")
-      expect(user.can_login?).to be_falsey
+      expect(user.active?).to be_falsey
     end
   end
 end

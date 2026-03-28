@@ -10,7 +10,9 @@ import FlashItemController from './flash_item_controller'
 import FormNavController from './form_nav_controller'
 import NavController from './nav_controller'
 import SlimSelectController from './slim_select_controller'
+import SettingsController from "./settings_controller"
 import TableEditorController from './table_editor_controller'
+import ToggleController from "./toggle_controller"
 import UploadsController from './uploads_controller'
 
 application.register('ajax-search', AjaxSearchController)
@@ -19,5 +21,7 @@ application.register('flash-item', FlashItemController)
 application.register('form-nav', FormNavController)
 application.register('nav', NavController)
 application.register('slim-select', SlimSelectController)
+application.register("settings", SettingsController)
 application.register('table-editor', TableEditorController)
+application.register("toggle", ToggleController)
 application.register('uploads', UploadsController)

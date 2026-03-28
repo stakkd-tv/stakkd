@@ -1,4 +1,7 @@
 class UsersController < ApplicationController
+  before_action :require_authentication, only: [:settings, :update]
+  before_action :set_user, only: [:update]
+  before_action :authorize_user, only: [:update]
   rate_limit to: 10, within: 3.minutes, only: :create, with: -> { redirect_to new_session_url, alert: "Try again later." }
 
   TRIVIA = [
@@ -31,6 +34,18 @@ class UsersController < ApplicationController
     end
   end
 
+  def settings
+    @user = current_user
+  end
+
+  def update
+    # NOTE: At the moment, there are no fields that would trigger an
+    # error on the user. Come back to this if there are fields in the
+    # future that would.
+    @user.update(user_update_params)
+    redirect_to user_settings_path, notice: "Settings updated successfully."
+  end
+
   def confirm
     terminate_session if authenticated?
 
@@ -47,8 +62,18 @@ class UsersController < ApplicationController
 
   private
 
+  # TODO: Test when doing show page
+  def set_user
+    @user = (params[:id] == "me") ? current_user : User.find_by(username: params[:id])
+    head :not_found unless @user
+  end
+
   def user_params
     params.expect(user: [:username, :email_address, :password, :password_confirmation])
+  end
+
+  def user_update_params
+    params.expect(user: [:profile_picture, :background, :biography, :private])
   end
 
   def trivia_valid?
@@ -59,5 +84,9 @@ class UsersController < ApplicationController
 
   def trivia_question_from_params
     TRIVIA.find { it[:name] == params[:trivia_question_name] }
+  end
+
+  def authorize_user
+    redirect_back fallback_location: root_path, alert: "You are not authorized to perform this action." unless @user == current_user
   end
 end

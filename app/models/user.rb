@@ -5,12 +5,14 @@ class User < ApplicationRecord
   belongs_to :banned_by, class_name: "User", optional: true
   has_many :sessions, dependent: :destroy
   has_many :confirmation_tokens, dependent: :destroy
+  has_one_attached :profile_picture
+  has_one_attached :background
 
   # Validations
   validates_presence_of :username
   validates_presence_of :ban_reason, if: :banned_at?
   validates_uniqueness_of :email_address
-  validates_uniqueness_of :username, case_sensitive: true
+  validates_uniqueness_of :username, case_sensitive: true # TODO: Reject certain usernames and only allow alnum characters
   validates :email_address, format: {with: URI::MailTo::EMAIL_REGEXP}
 
   # Callbacks
@@ -21,7 +23,11 @@ class User < ApplicationRecord
   scope :stale, -> { where(confirmed_at: nil, created_at: ..30.days.ago) }
   scope :needing_confirmation_reminder, -> { where(confirmation_reminder_sent_at: nil, confirmed_at: nil, created_at: 29.days.ago..20.days.ago) }
 
-  def avatar = "https://github.com/stakkd-tv.png"
+  def to_param = username
+
+  def avatar = profile_picture.attached? ? profile_picture : "user.png"
+
+  def hero = background.attached? ? background : "16:9.png"
 
   def confirmed? = confirmed_at.present?
 
@@ -31,7 +37,7 @@ class User < ApplicationRecord
 
   def banned? = banned_at.present?
 
-  def can_login? = !banned? && confirmed?
+  def active? = !banned? && confirmed?
 
   private
 
