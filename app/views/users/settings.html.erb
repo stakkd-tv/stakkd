@@ -9,10 +9,10 @@
       <div class="flex flex-wrap gap-8">
         <div data-action="click->settings#triggerProfilePicture">
           <%= form.label :profile_picture %>
-          <%= form.file_field :profile_picture, class: "hidden", accept: "image/png,image/jpeg", data: { settings_target: "profilePictureUpload" } %>
+          <%= form.file_field :profile_picture, class: "hidden", accept: "image/png,image/jpeg", data: {settings_target: "profilePictureUpload"} %>
           <div class="relative cursor-pointer">
             <div class="w-32 h-32 aspect-square overflow-hidden rounded-full border border-pop">
-              <%= image_tag @user.avatar, class: "w-full h-full object-cover object-center", id: "profile-picture-image", data: { settings_target: "profilePictureImage" } %>
+              <%= image_tag @user.avatar, class: "w-full h-full object-cover object-center", id: "profile-picture-image", data: {settings_target: "profilePictureImage"} %>
             </div>
 
             <div class="text-xs flex gap-2 absolute right-[-8] bottom-3 items-center justify-center rounded-lg bg-background border border-pop px-2 py-1">
@@ -24,9 +24,9 @@
 
         <div data-action="click->settings#triggerBackground">
           <%= form.label :background %>
-          <%= form.file_field :background, class: "hidden", accept: "image/png,image/jpeg", data: { settings_target: "backgroundUpload" } %>
+          <%= form.file_field :background, class: "hidden", accept: "image/png,image/jpeg", data: {settings_target: "backgroundUpload"} %>
           <div class="relative h-32 cursor-pointer">
-            <%= image_tag @user.hero, class: "h-full object-cover rounded-lg border border-pop", id: "background-image", data: { settings_target: "backgroundImage" } %>
+            <%= image_tag @user.hero, class: "h-full object-cover rounded-lg border border-pop", id: "background-image", data: {settings_target: "backgroundImage"} %>
 
             <div class="text-xs flex gap-2 absolute right-[-8] bottom-3 items-center justify-center rounded-lg bg-background border border-pop px-2 py-1">
               <i class="fa-solid fa-pen"></i>

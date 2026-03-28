@@ -1,4 +1,4 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from '@hotwired/stimulus'
 
 // Connects to data-controller="toggle"
 export default class extends Controller {
@@ -8,7 +8,7 @@ export default class extends Controller {
   declare readonly toggleContainerTarget: HTMLElement
   declare readonly toggleHandleTarget: HTMLElement
 
-  connect() {
+  connect () {
     this.toggle(this.checkboxTarget.checked)
   }
 
