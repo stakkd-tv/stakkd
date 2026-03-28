@@ -22,6 +22,10 @@ RSpec.feature "Settings", type: :system, js: true do
       expect(page).to have_selector("#background-image[src*='data:image/png']")
     end
 
+    bio_editor = page.find(".CodeMirror")
+    bio_editor.click
+    page.send_keys("**Markdown** is *sooooo* great!")
+
     private_toggle = page.find("div[data-controller='toggle'][id='private'] div[data-toggle-target='toggleContainer']")
     private_toggle.click
 
@@ -31,6 +35,7 @@ RSpec.feature "Settings", type: :system, js: true do
     @user.reload
     expect(@user.profile_picture).to be_attached
     expect(@user.background).to be_attached
-    expect(@user.private).to be(true)
+    expect(@user.biography).to eq "**Markdown** is *sooooo* great!"
+    expect(@user.private).to be_truthy
   end
 end

@@ -1,0 +1,35 @@
+.EasyMDEContainer {
+    border: 1px solid var(--color-pop);
+    border-radius: var(--radius-lg);
+}
+
+.editor-toolbar {
+    border-left: none !important;
+    border-right: none !important;
+    border-top: none !important;
+    border-bottom: 1px solid var(--color-pop);
+}
+
+.EasyMDEContainer .CodeMirror {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    background-color: var(--color-background) !important;
+    border: none !important;
+    border-bottom: 1px solid var(--color-pop) !important;
+    color: #fff !important;
+}
+
+.CodeMirror-cursor {
+    border-color: white !important;
+}
+
+.editor-toolbar button {
+    margin-right: 3px !important;
+}
+
+.editor-toolbar button.active,
+.editor-toolbar button:hover {
+    background: var(--color-background) !important;
+    border-color: var(--color-pop) !important;
+    color: var(--color-pop) !important;
+}

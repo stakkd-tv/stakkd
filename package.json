@@ -25,6 +25,7 @@
     "@hotwired/turbo-rails": "^8.0.23",
     "@tailwindcss/cli": "^4.2.2",
     "@types/tabulator-tables": "^6.3.1",
+    "easymde": "^2.20.0",
     "flatpickr": "^4.6.13",
     "slim-select": "^3.4.3",
     "tabulator-tables": "^6.4.0",

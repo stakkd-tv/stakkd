@@ -1,5 +1,9 @@
 <% content_for :title, "Stakkd - Settings" %>
 
+<%= content_for :head do %>
+  <%= stylesheet_link_tag "easymde", "data-turbo-track": "reload" %>
+<% end %>
+
 <div class="max-w-7xl mx-auto my-28 px-6">
   <h3 class="text-4xl font-bold font-domine text-white text-center mb-8">Your Settings</h3>
 
@@ -39,7 +43,7 @@
 
       <div>
         <%= form.label :biography %>
-        <%= form.text_area :biography, class: "h-60" %>
+        <%= form.text_area :biography, class: "h-60", autocomplete: "off", data: {settings_target: "biographyInput"} %>
         <small class="inline-block mt-2">You can format your biography using Markdown. Read more about Markdown formatting <a class="underline" href="https://www.markdownguide.org/basic-syntax/">here</a>.</small>
       </div>
 

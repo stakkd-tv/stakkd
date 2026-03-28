@@ -1,15 +1,24 @@
 import { Controller } from '@hotwired/stimulus'
+import EasyMDE from 'easymde'
 
 // Connects to data-controller="settings"
 export default class extends Controller {
-  static targets = ['profilePictureUpload', 'profilePictureImage', 'backgroundUpload', 'backgroundImage']
+  static targets = ['profilePictureUpload', 'profilePictureImage', 'backgroundUpload', 'backgroundImage', 'biographyInput']
 
   declare profilePictureUploadTarget: HTMLInputElement
   declare profilePictureImageTarget: HTMLImageElement
   declare backgroundUploadTarget: HTMLInputElement
   declare backgroundImageTarget: HTMLImageElement
+  declare biographyInputTarget: HTMLTextAreaElement
 
   connect () {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const _ = new EasyMDE({
+      element: this.biographyInputTarget,
+      hideIcons: ['fullscreen', 'side-by-side'],
+      spellChecker: false
+    })
+
     this.profilePictureUploadTarget.addEventListener('change', this.uploadProfilePicture.bind(this))
     this.backgroundUploadTarget.addEventListener('change', this.uploadBackground.bind(this))
   }
