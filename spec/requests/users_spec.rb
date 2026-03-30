@@ -8,6 +8,72 @@ RSpec.describe "Users", type: :request do
     end
   end
 
+  describe "GET /users/:id" do
+    context "when the username is me" do
+      context "when no user is logged in" do
+        it "renders a 404" do
+          get user_path("me")
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+
+      context "when a user is logged in" do
+        before do
+          @user = FactoryBot.create(:user, username: "testing123")
+          session = @user.sessions.create!(user_agent: "Mozilla/", ip_address: "192.168.0.1")
+          allow(Current).to receive(:session).and_return(session)
+          allow(Current).to receive(:user).and_return(@user)
+        end
+
+        it "displays the profile for the current user" do
+          get user_path("me")
+          expect(response).to have_http_status(:success)
+          assert_select "h1", text: "testing123"
+        end
+      end
+    end
+
+    context "when the user is private and is not the current logged in user" do
+      before do
+        @current_user = FactoryBot.create(:user, username: "testing123")
+        session = @current_user.sessions.create!(user_agent: "Mozilla/", ip_address: "192.168.0.1")
+        allow(Current).to receive(:session).and_return(session)
+        allow(Current).to receive(:user).and_return(@current_user)
+      end
+
+      it "redirects with a flash alert" do
+        user = FactoryBot.create(:user, username: "private_user", private: true)
+        get user_path(user)
+        expect(response).to redirect_to(root_path)
+        expect(flash[:alert]).to eq "You are not authorized to view this profile."
+      end
+    end
+
+    context "when the user is private and is the current logged in user" do
+      before do
+        @current_user = FactoryBot.create(:user, username: "testing123", private: true)
+        session = @current_user.sessions.create!(user_agent: "Mozilla/", ip_address: "192.168.0.1")
+        allow(Current).to receive(:session).and_return(session)
+        allow(Current).to receive(:user).and_return(@current_user)
+      end
+
+      it "displays the profile" do
+        get user_path(@current_user)
+        expect(response).to have_http_status(:success)
+        assert_select "h1", text: "testing123"
+      end
+    end
+
+    context "when the user is not private" do
+      it "displays the profile for the user" do
+        user = FactoryBot.create(:user, username: "normal_user")
+        get user_path(user)
+        expect(response).to have_http_status(:success)
+        assert_select "h1", text: "normal_user"
+      end
+    end
+  end
+
   describe "POST /users" do
     context "when the specified trivia is not found" do
       it "renders 422 with an alert" do

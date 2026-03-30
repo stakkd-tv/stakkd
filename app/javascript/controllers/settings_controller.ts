@@ -1,5 +1,6 @@
 import { Controller } from '@hotwired/stimulus'
 import EasyMDE from 'easymde'
+import { sanitize } from '../helpers/sanitize_html'
 
 // Connects to data-controller="settings"
 export default class extends Controller {
@@ -16,7 +17,11 @@ export default class extends Controller {
     const _ = new EasyMDE({
       element: this.biographyInputTarget,
       hideIcons: ['fullscreen', 'side-by-side'],
-      spellChecker: false
+      spellChecker: false,
+      previewClass: 'rendered-markdown',
+      renderingConfig: {
+        sanitizerFunction: sanitize
+      }
     })
 
     this.profilePictureUploadTarget.addEventListener('change', this.uploadProfilePicture.bind(this))

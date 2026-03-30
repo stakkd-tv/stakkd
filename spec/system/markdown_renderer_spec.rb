@@ -2,44 +2,8 @@
 
 require "rails_helper"
 
-RSpec.feature "Settings", type: :system, js: true do
+RSpec.feature "Markdown Rendering", type: :system, js: true do
   before do
-    @user = FactoryBot.create(:user, :confirmed)
-    sign_in(@user)
-  end
-
-  scenario "Updating user settings", :ignore_form_failures do
-    visit user_settings_path
-    expect(page).to have_content("Your Settings")
-
-    attach_file "user_profile_picture", Rails.root.join("spec/support/assets/400x400.png"), make_visible: true
-    using_wait_time 5 do
-      expect(page).to have_selector("#profile-picture-image[src*='data:image/png']")
-    end
-
-    attach_file "user_background", Rails.root.join("spec/support/assets/400x400.png"), make_visible: true
-    using_wait_time 5 do
-      expect(page).to have_selector("#background-image[src*='data:image/png']")
-    end
-
-    bio_editor = page.find(".CodeMirror")
-    bio_editor.click
-    page.send_keys("**Markdown** is *sooooo* great!")
-
-    private_toggle = page.find("div[data-controller='toggle'][id='private'] div[data-toggle-target='toggleContainer']")
-    private_toggle.click
-
-    click_button "Save"
-    expect(page).to have_content("Settings updated successfully.")
-
-    @user.reload
-    expect(@user.profile_picture).to be_attached
-    expect(@user.background).to be_attached
-    expect(@user.biography).to eq "**Markdown** is *sooooo* great!"
-    expect(@user.private).to be_truthy
-  end
-
-  scenario "Sanitizing markdown" do
     markdown = <<~MARKDOWN
       <div align="center" class="bogus">Div centered</div>
       <p align="center" class="bogus">P centered</p>
@@ -48,9 +12,11 @@ RSpec.feature "Settings", type: :system, js: true do
       <picture><source media="media" height="24px" onerror="alert('error')"></picture>
       <script>console.error('error')</script>
     MARKDOWN
-    @user.update(biography: markdown)
-    visit user_settings_path
-    click_button "Toggle Preview (Ctrl-P)"
+    @user = FactoryBot.create(:user, :confirmed, biography: markdown)
+  end
+
+  scenario "Rendering markdown" do
+    visit user_path(@user)
     expect(page).to have_css "div.rendered-markdown"
     within("div.rendered-markdown") do
       # Unsafe attributes are stripped, safe ones are kept

@@ -79,7 +79,7 @@
       </div>
       <div class="hover-nav-dropdown">
         <div class="btn">
-          <%= link_to "/", class: "link-flex p-4" do %>
+          <%= link_to user_path("me"), class: "link-flex p-4" do %>
             <i class="fa-solid fa-user text-xl w-3/20"></i>
             <p>Profile</p>
           <% end %>
@@ -131,7 +131,7 @@
       </div>
     </div>
 
-    <%= link_to "/", class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50" do %>
+    <%= link_to user_path("me"), class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50" do %>
       <i class="fa-solid fa-user w-2/20"></i>
       Profile
     <% end %>

@@ -85,7 +85,7 @@ Rails.application.routes.draw do
     get :logos, on: :member
     get :cast, on: :member
   end
-  resources :users, only: [:new, :create, :update] do
+  resources :users, only: [:show, :new, :create, :update] do
     get :confirm, on: :collection
   end
   get "settings", to: "users#settings", as: :user_settings
