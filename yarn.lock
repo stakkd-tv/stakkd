@@ -1177,7 +1177,7 @@ __metadata:
     eslint-plugin-n: "npm:^17.24.0"
     eslint-plugin-promise: "npm:^7.2.1"
     flatpickr: "npm:^4.6.13"
-    marked: "npm:^17.0.5"
+    marked: "npm:^18.0.0"
     sanitize-html: "npm:^2.17.2"
     slim-select: "npm:^3.4.3"
     tabulator-tables: "npm:^6.4.0"
@@ -3090,12 +3090,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"marked@npm:^17.0.5":
-  version: 17.0.5
-  resolution: "marked@npm:17.0.5"
+"marked@npm:^18.0.0":
+  version: 18.0.0
+  resolution: "marked@npm:18.0.0"
   bin:
     marked: bin/marked.js
-  checksum: 10c0/a044c59cfa14662fefa37bc840200c1f0899214fb677da779112284d49cd5b277806f9a28398195b2031b1e2c80d8daef218e8ad588d7bfa9bc8041cac777ee6
+  checksum: 10c0/4a2ce60b9fd96a3092405e10c616a5cdf5375d031da1d44d3aa9d790971851fbca20628efd28db28cc91e84e18b9f5b95ec1e6fd1124a85d94abb1b6f6b409ae
   languageName: node
   linkType: hard
 
