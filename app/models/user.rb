@@ -13,7 +13,11 @@ class User < ApplicationRecord
   validates_presence_of :ban_reason, if: :banned_at?
   validates_uniqueness_of :email_address
   # User CRXSSED is the same as the user crxssed
-  validates_uniqueness_of :username, case_sensitive: false # TODO: Reject certain usernames and only allow alnum characters
+  validates_uniqueness_of :username, case_sensitive: false
+  validates :username, format: {
+    with: /\A[a-zA-Z0-9_]+\z/,
+    message: "can only contain letters, numbers, and underscores"
+  }
   validates :email_address, format: {with: URI::MailTo::EMAIL_REGEXP}
 
   # Callbacks
