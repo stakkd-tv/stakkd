@@ -12,7 +12,8 @@ class User < ApplicationRecord
   validates_presence_of :username
   validates_presence_of :ban_reason, if: :banned_at?
   validates_uniqueness_of :email_address
-  validates_uniqueness_of :username, case_sensitive: true # TODO: Reject certain usernames and only allow alnum characters
+  # User CRXSSED is the same as the user crxssed
+  validates_uniqueness_of :username, case_sensitive: false # TODO: Reject certain usernames and only allow alnum characters
   validates :email_address, format: {with: URI::MailTo::EMAIL_REGEXP}
 
   # Callbacks
@@ -22,6 +23,11 @@ class User < ApplicationRecord
   scope :confirmed, -> { where.not(confirmed_at: nil) }
   scope :stale, -> { where(confirmed_at: nil, created_at: ..30.days.ago) }
   scope :needing_confirmation_reminder, -> { where(confirmation_reminder_sent_at: nil, confirmed_at: nil, created_at: 29.days.ago..20.days.ago) }
+
+  def self.from_username(username)
+    username = username.to_s.downcase
+    User.where("LOWER(username) = ?", username).first
+  end
 
   def to_param = username
 

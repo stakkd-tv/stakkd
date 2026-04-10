@@ -15,7 +15,7 @@ RSpec.describe User, type: :model do
     subject { User.create(email_address: "test@example.com", username: "Obi", password: "hello") }
     it { should have_secure_password }
     it { should validate_uniqueness_of(:email_address).case_insensitive }
-    it { should validate_uniqueness_of(:username) }
+    it { should validate_uniqueness_of(:username).case_insensitive }
     it { should validate_presence_of(:username) }
     it { should_not validate_presence_of(:ban_reason) }
 
@@ -67,6 +67,25 @@ RSpec.describe User, type: :model do
       user3 = FactoryBot.create(:user, created_at: 20.days.ago)
       FactoryBot.create(:user, created_at: 19.days.ago)
       expect(User.needing_confirmation_reminder).to contain_exactly(user1, user2, user3)
+    end
+  end
+
+  describe ".from_username" do
+    it "returns the user with the given username" do
+      user = FactoryBot.create(:user, username: "testuser")
+      found = User.from_username("testuser")
+      expect(found).to eq user
+    end
+
+    it "returns nil for a non-existent username" do
+      found = User.from_username("nonexistent")
+      expect(found).to be_nil
+    end
+
+    it "ignores case when searching by username" do
+      user = FactoryBot.create(:user, username: "testuser")
+      found = User.from_username("TESTUSER")
+      expect(found).to eq user
     end
   end
 

@@ -72,7 +72,7 @@ class UsersController < ApplicationController
     @user = if params[:id] == "me"
       current_user if authenticated?
     else
-      User.find_by(username: params[:id])
+      User.from_username(params[:id])
     end
     head :not_found unless @user
   end

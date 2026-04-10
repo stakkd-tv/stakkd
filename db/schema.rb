@@ -336,9 +336,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_18_111753) do
     t.boolean "private", default: false, null: false
     t.datetime "updated_at", null: false
     t.string "username", null: false
+    t.index "lower((username)::text)", name: "index_users_on_LOWER_username", unique: true
     t.index ["banned_by_id"], name: "index_users_on_banned_by_id"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
-    t.index ["username"], name: "index_users_on_username", unique: true
   end
 
   create_table "videos", force: :cascade do |t|
