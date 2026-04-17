@@ -20,6 +20,7 @@ RSpec.describe User, type: :model do
     it { should_not validate_presence_of(:ban_reason) }
     it { should allow_value("john_doe", "USER123", "abc_123").for(:username) }
     it { should_not allow_value("john doe", "john-doe", "john@doe").for(:username) }
+    it { should_not allow_value("me", "Me", "mE", "ME", "admin", "Admin", "ADMIN").for(:username) }
 
     context "when banned_at is present" do
       subject { FactoryBot.build(:user, banned_at: Time.current) }

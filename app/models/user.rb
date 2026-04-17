@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  USERNAME_EXCLUSIONS = ["me", "admin"].freeze
+
   has_secure_password
 
   # Associations
@@ -19,6 +21,7 @@ class User < ApplicationRecord
     message: "can only contain letters, numbers, and underscores"
   }
   validates :email_address, format: {with: URI::MailTo::EMAIL_REGEXP}
+  validate :username_exclusions
 
   # Callbacks
   before_validation :normalize_email
@@ -50,6 +53,13 @@ class User < ApplicationRecord
   def active? = !banned? && confirmed?
 
   private
+
+  def username_exclusions
+    return unless username.present? # Username presence is validated anyway
+    if USERNAME_EXCLUSIONS.include?(username.downcase)
+      errors.add(:username, "cannot be one of #{USERNAME_EXCLUSIONS.join(", ")}")
+    end
+  end
 
   def normalize_email
     self.email_address = email_address.to_s.strip.downcase
