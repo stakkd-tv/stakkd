@@ -29,7 +29,7 @@
     "easymde": "^2.20.0",
     "flatpickr": "^4.6.13",
     "marked": "^18.0.0",
-    "sanitize-html": "^2.17.2",
+    "sanitize-html": "^2.17.3",
     "slim-select": "^3.4.3",
     "tabulator-tables": "^6.4.0",
     "tailwindcss": "^4.2.2"
