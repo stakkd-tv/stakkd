@@ -12,9 +12,6 @@ class UsersController < ApplicationController
   ]
 
   def show
-    if @user.private? && current_user != @user
-      redirect_to root_path, alert: "You are not authorized to view this profile."
-    end
   end
 
   def new

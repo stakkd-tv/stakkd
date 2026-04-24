@@ -1,0 +1,31 @@
+<div class="rounded-lg border border-pop overflow-hidden mb-8">
+  <% if user.background.attached? %>
+    <div class="w-full h-32 md:h-56 border-b-3 border-b-pop">
+      <%= image_tag user.background, alt: "Background", class: "w-full h-full object-cover object-center" %>
+    </div>
+  <% end %>
+  <div class="p-8 flex gap-8">
+    <div class="min-w-14 w-14 h-14 md:w-24 md:h-24 aspect-square overflow-hidden rounded-full outline-3 outline-pop">
+      <%= image_tag user.avatar, alt: "Avatar", class: "w-full h-full object-cover object-center", data: {settings_target: "profilePictureImage"} %>
+    </div>
+    <div class="flex flex-col gap-1 md:gap-2">
+      <h1 class="text-2xl md:text-4xl font-bold font-domine"><%= user.username %></h1>
+      <p class="text-sm md:text-md">Member since <%= user.created_at.strftime("%d %B %Y") %></p>
+    </div>
+  </div>
+  <div class="form-nav flex flex-wrap gap-2 px-8 py-3 border-b-0 border-t border-t-pop">
+    <% if user.private? && current_user != user %>
+      <h4>This user's profile is private. You won't be able to see their activity unless they accept your follow request.</h4>
+    <% else %>
+      <%= link_to "Profile", user_path(user), class: "link", data: {active: true} %>
+      <%= link_to "History", "", class: "link" %>
+      <%= link_to "Progress", "", class: "link" %>
+      <%= link_to "Collection", "", class: "link" %>
+      <%= link_to "Ratings", "", class: "link" %>
+      <%= link_to "Stacks", "", class: "link" %>
+      <%= link_to "Comments", "", class: "link" %>
+      <%= link_to "Followers", "", class: "link" %>
+      <%= link_to "Following", "", class: "link" %>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,9 @@
+<div class="max-w-7xl mx-auto my-8 px-6 pt-10">
+  <%= render "header", user: user %>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <% if user.biography.present? %>
+      <div class="p-2 md:p-8 rendered-markdown rounded-lg" data-controller="markdown-renderer" data-markdown-renderer-markdown-value="<%= @user.biography %>"></div>
+    <% end %>
+  </div>
+</div>

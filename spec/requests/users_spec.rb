@@ -41,35 +41,41 @@ RSpec.describe "Users", type: :request do
         allow(Current).to receive(:user).and_return(@current_user)
       end
 
-      it "redirects with a flash alert" do
-        user = FactoryBot.create(:user, username: "private_user", private: true)
+      it "displays a private profile" do
+        user = FactoryBot.create(:user, username: "private_user", private: true, biography: "This my bio")
         get user_path(user)
-        expect(response).to redirect_to(root_path)
-        expect(flash[:alert]).to eq "You are not authorized to view this profile."
+        expect(response).to have_http_status(:success)
+        assert_select "h1", text: "private_user"
+        assert_select "h4", text: "This user's profile is private. You won't be able to see their activity unless they accept your follow request."
+        assert_select "div[data-markdown-renderer-markdown-value='This my bio']", count: 0
       end
     end
 
     context "when the user is private and is the current logged in user" do
       before do
-        @current_user = FactoryBot.create(:user, username: "testing123", private: true)
+        @current_user = FactoryBot.create(:user, username: "testing123", private: true, biography: "This my bio")
         session = @current_user.sessions.create!(user_agent: "Mozilla/", ip_address: "192.168.0.1")
         allow(Current).to receive(:session).and_return(session)
         allow(Current).to receive(:user).and_return(@current_user)
       end
 
-      it "displays the profile" do
+      it "displays the public profile" do
         get user_path(@current_user)
         expect(response).to have_http_status(:success)
         assert_select "h1", text: "testing123"
+        assert_select "h4", text: "This user's profile is private. You won't be able to see their activity unless they accept your follow request.", count: 0
+        assert_select "div[data-markdown-renderer-markdown-value='This my bio']"
       end
     end
 
     context "when the user is not private" do
-      it "displays the profile for the user" do
-        user = FactoryBot.create(:user, username: "normal_user")
+      it "displays the public profile for the user" do
+        user = FactoryBot.create(:user, username: "normal_user", biography: "This my bio")
         get user_path(user)
         expect(response).to have_http_status(:success)
         assert_select "h1", text: "normal_user"
+        assert_select "h4", text: "This user's profile is private. You won't be able to see their activity unless they accept your follow request.", count: 0
+        assert_select "div[data-markdown-renderer-markdown-value='This my bio']"
       end
     end
   end
