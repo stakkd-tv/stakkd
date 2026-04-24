@@ -25,7 +25,7 @@
     "@hotwired/stimulus": "^3.2.2",
     "@hotwired/turbo-rails": "^8.0.23",
     "@tailwindcss/cli": "^4.2.4",
-    "@types/tabulator-tables": "^6.3.1",
+    "@types/tabulator-tables": "^6.3.2",
     "easymde": "^2.20.0",
     "flatpickr": "^4.6.13",
     "marked": "^18.0.2",
