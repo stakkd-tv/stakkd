@@ -893,10 +893,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/tabulator-tables@npm:^6.3.1":
-  version: 6.3.1
-  resolution: "@types/tabulator-tables@npm:6.3.1"
-  checksum: 10c0/d8d5cde0647496abce7c1e2c0f717ec8a0d61312012820fe92e487e92fd4455a508e9a4502a79ef7a939eea96d1b26803ebea47e70793583ff64ed462747f9de
+"@types/tabulator-tables@npm:^6.3.2":
+  version: 6.3.2
+  resolution: "@types/tabulator-tables@npm:6.3.2"
+  checksum: 10c0/705d6064bf15f1a4fa2fdd29251d5fbea3103cb3680e3d8784061118eb55f548a1806db75afef1d1248bddb79e44bb3b19bcbc52110b93a0c824c1bc49936ab1
   languageName: node
   linkType: hard
 
@@ -1166,7 +1166,7 @@ __metadata:
     "@hotwired/turbo-rails": "npm:^8.0.23"
     "@tailwindcss/cli": "npm:^4.2.4"
     "@types/sanitize-html": "npm:^2.16.1"
-    "@types/tabulator-tables": "npm:^6.3.1"
+    "@types/tabulator-tables": "npm:^6.3.2"
     "@typescript-eslint/eslint-plugin": "npm:^8.58.2"
     "@typescript-eslint/parser": "npm:^8.59.0"
     easymde: "npm:^2.20.0"
