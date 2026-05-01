@@ -27,12 +27,26 @@ shared_examples "a model with galleries" do |factory, galleries|
       end
 
       context "when there are #{gallery}" do
-        it "returns an image" do
-          object = FactoryBot.create(
-            factory,
-            gallery => [Rack::Test::UploadedFile.new("spec/support/assets/300x450.png", "image/png")]
-          )
-          expect(object.send(gallery.to_s.singularize)).to be_a(ActiveStorage::Attachment)
+        context "when a variant is not specified" do
+          it "returns an image" do
+            object = FactoryBot.create(
+              factory,
+              gallery => [Rack::Test::UploadedFile.new("spec/support/assets/300x450.png", "image/png")]
+            )
+            expect(object.send(gallery.to_s.singularize)).to be_a(ActiveStorage::Attachment)
+          end
+        end
+
+        context "when a variant is specified" do
+          it "returns the variant" do
+            HasGalleries::VARIANTS.each do |variant, _|
+              object = FactoryBot.create(
+                factory,
+                gallery => [Rack::Test::UploadedFile.new("spec/support/assets/300x450.png", "image/png")]
+              )
+              expect(object.send(gallery.to_s.singularize, variant:)).to be_a(ActiveStorage::VariantWithRecord)
+            end
+          end
         end
       end
     end
