@@ -34,9 +34,13 @@ class Person < ApplicationRecord
   validates_inclusion_of :known_for, in: CREDITS, allow_blank: true, allow_nil: true
   validates_inclusion_of :gender, in: GENDERS
 
-  def image_url
+  def image_url(variant: nil)
     ActiveStorage::Current.url_options = Rails.application.config.action_mailer.default_url_options
-    image.try(:url)
+    img = image(variant:, use_fallback: false)
+    return unless img
+
+    img = img.processed if variant.present? && img.respond_to?(:processed)
+    img.url
   end
 
   def age

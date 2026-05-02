@@ -17,24 +17,24 @@ module Galleries
           videos: [FactoryBot.build(:video, thumbnail_url: "/example.png").tap { it.save(validate: false) }]
         )
         presenter = Presenter.new(movie)
-        expect(presenter.tabs).to eq([
+        expect(presenter.tabs).to match([
           {
             name: "Posters",
-            images: movie.posters.to_a,
+            images: [be_a(ActiveStorage::VariantWithRecord)],
             aspect: "min-w-40 max-w-40 aspect-2/3",
             view_more_path: "/movies/#{movie.slug}/galleries/posters",
             partial: "shared/gallery"
           },
           {
             name: "Backgrounds",
-            images: movie.backgrounds.take(3),
+            images: [be_a(ActiveStorage::VariantWithRecord)] * 3,
             aspect: "min-w-[425px] max-w-[425px] aspect-video",
             view_more_path: "/movies/#{movie.slug}/galleries/backgrounds",
             partial: "shared/gallery"
           },
           {
             name: "Logos",
-            images: movie.logos.to_a,
+            images: [be_a(ActiveStorage::VariantWithRecord)],
             aspect: "min-w-60 max-w-60 aspect-square",
             view_more_path: "/movies/#{movie.slug}/galleries/logos",
             partial: "shared/gallery"

@@ -12,7 +12,7 @@
 <div class="max-w-7xl mx-auto my-8 px-6 pt-10">
   <div class="grid grid-cols-1 md:grid-cols-4 md:gap-8 md:min-h-screen">
     <div class="col-span-1 bg-background-darker rounded-lg p-4 flex flex-col gap-10 items-center md:items-start">
-      <%= image_tag @movie.poster, class: "max-h-40 w-fit md:w-full md:max-h-none rounded-lg" %>
+      <%= image_tag @movie.poster(variant: :medium), class: "max-h-40 w-fit md:w-full md:max-h-none rounded-lg" %>
       <div class="block md:hidden w-full">
         <h3 class="text-2xl font-bold font-domine text-white">
           <i class="fa-solid fa-video text-2xl mr-6"></i>

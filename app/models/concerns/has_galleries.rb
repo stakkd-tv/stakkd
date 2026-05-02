@@ -10,9 +10,9 @@ module HasGalleries
   }
 
   VARIANTS = {
-    medium: [250, nil],
-    small: [160, nil],
-    thumb: [50, nil]
+    medium: 250,
+    small: 160,
+    thumb: 50
   }
 
   included do
@@ -31,7 +31,8 @@ module HasGalleries
 
       galleries.each do |gallery|
         has_many_attached gallery do |attachable|
-          VARIANTS.each do |variant, dimensions|
+          VARIANTS.each do |variant, size|
+            dimensions = restrict_height?(gallery) ? [nil, size] : [size, nil]
             attachable.variant variant, resize_to_limit: dimensions
           end
         end
@@ -51,6 +52,10 @@ module HasGalleries
 
     def valid_gallery?(gallery)
       GALLERY_FALLBACKS.key?(gallery)
+    end
+
+    def restrict_height?(gallery)
+      gallery == :backgrounds
     end
   end
 end

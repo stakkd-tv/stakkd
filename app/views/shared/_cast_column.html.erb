@@ -2,7 +2,7 @@
 <div class="flex flex-col gap-6">
   <% @cast_members.each do |cast_member| %>
     <%= link_to cast_member[:person], class: "flex items-center gap-4 rounded-lg hover:bg-background-darker transition duration-300 ease-in-out" do %>
-      <%= image_tag cast_member[:person].image, class: "w-16 min-w-16 h-16 rounded-lg object-cover" %>
+      <%= image_tag cast_member[:person].image(variant: :thumb), class: "w-16 min-w-16 h-16 rounded-lg object-cover" %>
       <div>
         <h5 class="text-lg font-bold"><%= cast_member[:person].translated_name %></h5>
         <p class="text-pop">

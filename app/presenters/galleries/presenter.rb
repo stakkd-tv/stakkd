@@ -32,7 +32,7 @@ module Galleries
         images = @record.send(image_type).to_a
         {
           name: image_type.to_s.humanize,
-          images: images.take(max_images),
+          images: images.take(max_images).map { |image| image.respond_to?(:variant) ? image.variant(:small) : image },
           aspect: ASPECT_HASH_MAP[image_type],
           view_more_path: view_more_path(image_type),
           partial: PARTIALS[image_type] || "shared/gallery"

@@ -17,7 +17,7 @@ module Tabulator
     def to_hash(cast_member)
       {
         id: cast_member.id,
-        person: {value: cast_member.person.image_url, label: cast_member.person.translated_name},
+        person: {value: cast_member.person.image_url(variant: :small), label: cast_member.person.translated_name},
         character: cast_member.character
       }
     end

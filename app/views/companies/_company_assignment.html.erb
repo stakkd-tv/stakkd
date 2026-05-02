@@ -1,6 +1,6 @@
 <div class="flex gap-4">
   <%= link_to company_assignment.record do %>
-    <%= image_tag company_assignment.record.poster, class: "w-16 min-w-16 border border-pop rounded-lg" %>
+    <%= image_tag company_assignment.record.poster(variant: :thumb), class: "w-16 min-w-16 border border-pop rounded-lg" %>
   <% end %>
   <div class="flex flex-col gap-1">
     <div class="font-domine">

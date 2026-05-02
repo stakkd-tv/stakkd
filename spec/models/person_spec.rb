@@ -27,6 +27,13 @@ RSpec.describe Person, type: :model do
         person = Person.new
         expect(person.image_url).to be_nil
       end
+
+      context "when a variant is present" do
+        it "returns nil" do
+          person = Person.new
+          expect(person.image_url(variant: :small)).to be_nil
+        end
+      end
     end
 
     context "when there are images" do
@@ -36,6 +43,16 @@ RSpec.describe Person, type: :model do
           images: [Rack::Test::UploadedFile.new("spec/support/assets/300x450.png", "image/png")]
         )
         expect(person.image_url).to be_a(String)
+      end
+
+      context "when a variant is present" do
+        it "returns an image URL" do
+          person = FactoryBot.create(
+            :person,
+            images: [Rack::Test::UploadedFile.new("spec/support/assets/300x450.png", "image/png")]
+          )
+          expect(person.image_url(variant: :small)).to be_a(String)
+        end
       end
     end
   end

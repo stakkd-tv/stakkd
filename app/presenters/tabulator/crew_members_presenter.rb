@@ -17,7 +17,7 @@ module Tabulator
     def to_hash(crew_member)
       {
         id: crew_member.id,
-        person: {value: crew_member.person.image_url, label: crew_member.person.translated_name},
+        person: {value: crew_member.person.image_url(variant: :small), label: crew_member.person.translated_name},
         job_id: {value: crew_member.job.id, label: crew_member.job.name}
       }
     end

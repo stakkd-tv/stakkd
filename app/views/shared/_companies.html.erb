@@ -1,7 +1,7 @@
 <div class="grid grid-cols-7 md:grid-cols-4 gap-2">
   <% companies.each do |company| %>
     <%= link_to company do %>
-      <%= image_tag company.logo, alt: company.name, title: company.name, class: "bg-pop/25 rounded-lg border border-pop aspect-square" %>
+      <%= image_tag company.logo(variant: :thumb), alt: company.name, title: company.name, class: "bg-pop/25 rounded-lg border border-pop aspect-square" %>
     <% end %>
   <% end %>
 </div>

@@ -4,7 +4,7 @@
     <div class="flex flex-col gap-6">
       <% crew_members.each do |crew_member| %>
         <%= link_to crew_member.person, class: "flex items-center gap-4 rounded-lg hover:bg-background-darker transition duration-300 ease-in-out" do %>
-          <%= image_tag crew_member.person.image, class: "w-16 min-w-16 h-16 rounded-lg object-cover" %>
+          <%= image_tag crew_member.person.image(variant: :thumb), class: "w-16 min-w-16 h-16 rounded-lg object-cover" %>
           <div>
             <h5 class="text-lg font-bold"><%= crew_member.person.translated_name %></h5>
             <p class="text-pop"><%= crew_member.job.name %></p>

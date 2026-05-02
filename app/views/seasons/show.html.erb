@@ -2,9 +2,10 @@
 
 <%= render "shared/colour_from_image", image: @season.poster %>
 
-<% if @show.background(use_fallback: false) %>
+<%= background = @show.background(use_fallback: false) %>
+<% if background %>
   <div class="absolute -z-10 w-full h-96 overflow-hidden flex items-center justify-center">
-    <%= image_tag @show.background(use_fallback: false), class: "w-full min-h-96 object-cover blur-xs" %>
+    <%= image_tag background, class: "w-full min-h-96 object-cover blur-xs" %>
     <div class="absolute w-full h-full bg-linear-to-t from-background to-background/35"></div>
   </div>
 <% end %>
@@ -13,7 +14,7 @@
 <div class="max-w-7xl mx-auto my-8 px-6 pt-10">
   <div class="grid grid-cols-1 md:grid-cols-4 md:gap-8 md:min-h-screen">
     <div class="col-span-1 bg-background-darker rounded-lg p-4 flex flex-col gap-10 items-center md:items-start">
-      <%= image_tag @season.poster, class: "max-h-40 w-fit md:w-full md:max-h-none rounded-lg" %>
+      <%= image_tag @season.poster(variant: :medium), class: "max-h-40 w-fit md:w-full md:max-h-none rounded-lg" %>
       <div class="block md:hidden w-full">
         <h3 class="text-2xl font-bold font-domine text-white">
           <i class="fa-solid fa-tv text-2xl mr-6"></i>
@@ -79,8 +80,8 @@
         <% @season.ordered_episodes.with_attached_backgrounds.each do |episode| %>
           <div class="grid grid-cols-1 md:grid-cols-3">
             <div class="col-span-1">
-              <%= link_to show_season_episode_path(episode, season_id: @season, show_id: @show) do %>
-                <%= image_tag episode.background, class: "rounded-lg md:rounded-r-none border border-pop aspect-[16/9]" %>
+              <%= link_to show_season_episode_path(episode, season_id: @season, show_id: @show), class: "w-full" do %>
+                <%= image_tag episode.background(variant: :small), class: "w-full rounded-lg md:rounded-r-none border border-pop aspect-[16/9]" %>
               <% end %>
             </div>
             <div class="col-span-1 md:col-span-2">

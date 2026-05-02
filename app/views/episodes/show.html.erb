@@ -5,8 +5,8 @@
 <%# TODO: Display gallery for backgrounds %>
 <div class="max-w-7xl mx-auto my-8 px-6 pt-10">
   <div class="aspect-video w-full relative mb-10 md:mb-16">
-    <%= image_tag @episode.background, class: "rounded-lg border border-pop" %>
-    <%= image_tag @season.poster, class: "rounded-lg absolute left-5 -bottom-5 sm:left-10 sm:-bottom-10 w-[22%] sm:w-[15%]" %>
+    <%= image_tag @episode.background, class: "w-full rounded-lg border border-pop" %>
+    <%= image_tag @season.poster(variant: :small), class: "rounded-lg absolute left-5 -bottom-5 sm:left-10 sm:-bottom-10 w-[22%] sm:w-[15%]" %>
   </div>
   <div class="flex gap-3 mb-4 text-sm md:text-lg">
     <%= link_to @show.translated_title, show_path(@show), class: "underline" %>
