@@ -6,7 +6,9 @@
   <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
     <% @backgrounds.each do |background| %>
       <div class="w-full aspect-video border border-pop rounded-lg overflow-hidden relative">
-        <%= image_tag background %>
+        <%= link_to background.url, target: "_blank", rel: "noopener noreferrer" do %>
+          <%= image_tag background.variant(:medium), class: "w-full" %>
+        <% end %>
       </div>
     <% end %>
   </div>

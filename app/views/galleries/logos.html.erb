@@ -6,7 +6,9 @@
   <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
     <% @logos.each do |logo| %>
       <div class="w-full aspect-square border border-pop rounded-lg overflow-hidden relative">
-        <%= image_tag logo %>
+        <%= link_to logo.url, target: "_blank", rel: "noopener noreferrer" do %>
+          <%= image_tag logo.variant(:medium), class: "w-full" %>
+        <% end %>
       </div>
     <% end %>
   </div>
