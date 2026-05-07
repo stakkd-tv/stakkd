@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe "shared/_colour_from_image", type: :view do
   context "when it is not an image" do
     it "does" do
-      image = ActiveStorage::Attachment.new(colours: ["#7556BB"])
+      image = ActiveStorage::Attachment.new(blob: ActiveStorage::Blob.new(colours: ["#7556BB"]))
       render "shared/colour_from_image", image: image
       expect(rendered).to match(/--color-pop: #7556BB;/)
     end

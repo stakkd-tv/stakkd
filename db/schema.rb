@@ -17,7 +17,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_18_111753) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
-    t.text "colours", default: ["#f7567c"], array: true
     t.datetime "created_at", null: false
     t.string "name", null: false
     t.bigint "record_id", null: false
@@ -29,6 +28,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_18_111753) do
   create_table "active_storage_blobs", force: :cascade do |t|
     t.bigint "byte_size", null: false
     t.string "checksum"
+    t.text "colours", default: ["#f7567c"], array: true
     t.string "content_type"
     t.datetime "created_at", null: false
     t.string "filename", null: false

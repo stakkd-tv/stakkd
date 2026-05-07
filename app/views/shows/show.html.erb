@@ -1,6 +1,7 @@
 <% content_for :title, "Stakkd - #{@show.translated_title}" %>
 
-<%= render "shared/colour_from_image", image: @show.poster %>
+<% poster = @show.poster(variant: :medium) %>
+<%= render "shared/colour_from_image", image: poster %>
 
 <% if @show.background(use_fallback: false) %>
   <div class="absolute -z-10 w-full h-96 overflow-hidden flex items-center justify-center">
@@ -12,7 +13,7 @@
 <div class="max-w-7xl mx-auto my-8 px-6 pt-10">
   <div class="grid grid-cols-1 md:grid-cols-4 md:gap-8 md:min-h-screen">
     <div class="col-span-1 bg-background-darker rounded-lg p-4 flex flex-col gap-10 items-center md:items-start">
-      <%= image_tag @show.poster(variant: :medium), class: "max-h-40 w-fit md:w-full md:max-h-none rounded-lg" %>
+      <%= image_tag poster, class: "max-h-40 w-fit md:w-full md:max-h-none rounded-lg" %>
       <div class="block md:hidden w-full">
         <h3 class="text-2xl font-bold font-domine text-white">
           <i class="fa-solid fa-tv text-2xl mr-6"></i>

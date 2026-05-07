@@ -2,10 +2,10 @@ class ExtractColourJob < ApplicationJob
   queue_as :default
 
   def perform(*args)
-    attachment = ActiveStorage::Attachment.find_by(id: args.first)
-    return unless attachment.present?
+    blob = ActiveStorage::Blob.find_by(id: args.first)
+    return unless blob.present?
 
-    colours = Uploads::ColourExtractor.new(attachment:).extract
-    attachment.update(colours:) if colours.any?
+    colours = Uploads::ColourExtractor.new(blob:).extract
+    blob.update(colours:) if colours.any?
   end
 end

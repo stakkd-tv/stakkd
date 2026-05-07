@@ -12,6 +12,7 @@ class CreateActiveStorageTables < ActiveRecord::Migration[7.0]
       t.string :service_name, null: false
       t.bigint :byte_size, null: false
       t.string :checksum
+      t.text :colours, array: true, default: ["#f7567c"]
 
       if connection.supports_datetime_with_precision?
         t.datetime :created_at, precision: 6, null: false
@@ -26,7 +27,6 @@ class CreateActiveStorageTables < ActiveRecord::Migration[7.0]
       t.string :name, null: false
       t.references :record, null: false, polymorphic: true, index: false, type: foreign_key_type
       t.references :blob, null: false, type: foreign_key_type
-      t.text :colours, array: true, default: ["#f7567c"]
 
       if connection.supports_datetime_with_precision?
         t.datetime :created_at, precision: 6, null: false

@@ -1,4 +1,4 @@
-module AttachmentExtension
+module BlobExtension
   extend ActiveSupport::Concern
 
   included do

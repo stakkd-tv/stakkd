@@ -1,4 +1,4 @@
-<% if image.is_a?(ActiveStorage::Attachment) %>
+<% if image.respond_to?(:dominant_colour) %>
   <style>
     :root {
       --color-pop: <%= image.dominant_colour %>;

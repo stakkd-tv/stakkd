@@ -1,11 +1,9 @@
 module Uploads
   class ColourExtractor
-    attr_reader :attachment
+    attr_reader :blob
 
-    delegate :blob, to: :attachment
-
-    def initialize(attachment:)
-      @attachment = attachment
+    def initialize(blob:)
+      @blob = blob
     end
 
     def extract
