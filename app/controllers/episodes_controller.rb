@@ -6,6 +6,7 @@ class EpisodesController < ApplicationController
 
   def show
     @cast_members = CastMembers::Episode.new(@episode).cast_members
+    @pagination = Pagination::Episodes.new(@episode, @season, @show)
   end
 
   def new

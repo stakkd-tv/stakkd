@@ -59,15 +59,7 @@
         <%= simple_format(@season.overview.presence || @show.overview.presence) %>
       </div>
 
-      <div class="flex flex-wrap gap-2 justify-between">
-        <% if @season.previous_season %>
-          <%= link_to "Previous", show_season_path(@season.previous_season, show_id: @show), class: "link" %>
-        <% end %>
-        <div class="flex-1"></div>
-        <% if @season.next_season %>
-          <%= link_to "Next", show_season_path(@season.next_season, show_id: @show), class: "link" %>
-        <% end %>
-      </div>
+      <%= render "shared/paginated_items", presenter: @pagination %>
 
       <%= render "shared/cast_members", cast_members: @cast_members, full_cast_path: cast_show_season_path(@season, show_id: @show) %>
 
@@ -108,15 +100,7 @@
 
       <%= render "shared/galleries", presenter: @gallery_presenter %>
 
-      <div class="flex flex-wrap gap-2 justify-between">
-        <% if @season.previous_season %>
-          <%= link_to "Previous", show_season_path(@season.previous_season, show_id: @show), class: "link" %>
-        <% end %>
-        <div class="flex-1"></div>
-        <% if @season.next_season %>
-          <%= link_to "Next", show_season_path(@season.next_season, show_id: @show), class: "link" %>
-        <% end %>
-      </div>
+      <%= render "shared/paginated_items", presenter: @pagination %>
     </div>
   </div>
 </div>

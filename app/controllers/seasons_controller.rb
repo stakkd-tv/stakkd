@@ -6,6 +6,7 @@ class SeasonsController < ApplicationController
   def show
     @gallery_presenter = Galleries::Presenter.new(@season)
     @cast_members = CastMembers::Season.new(@season).cast_members
+    @pagination = Pagination::Seasons.new(@season, @show)
   end
 
   def new
