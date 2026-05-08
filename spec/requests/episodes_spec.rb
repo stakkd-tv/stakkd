@@ -99,7 +99,7 @@ RSpec.describe "/shows/:show_id/seasons/:season_id/episodes", type: :request do
       context "with valid parameters" do
         it "creates a new Episode" do
           post show_season_episodes_url(season.show, season), params: {episode: valid_attributes}
-          episode = Episode.last
+          episode = Episode.includes(:season).last
           expect(episode.season).to eq season
           expect(episode.number).to eq 1
           expect(episode.translated_name).to eq "Episode 1"

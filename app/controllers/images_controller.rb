@@ -37,7 +37,8 @@ class ImagesController < ApplicationController
   end
 
   def set_record
-    @record = model.find(params[:record_id])
+    associations_to_load = model.respond_to?(:associations_to_load) ? model.associations_to_load : []
+    @record = model.includes(associations_to_load).find(params[:record_id])
   end
 
   def validate_record_id

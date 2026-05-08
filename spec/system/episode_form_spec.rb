@@ -41,7 +41,7 @@ RSpec.feature "Show form", type: :system, js: true do
     fill_in "episode_number", with: "1"
     click_button "Save"
     expect(page).to have_content("Episode was successfully created.")
-    episode = Episode.last
+    episode = Episode.includes(:videos).last
 
     # Backgrounds
     click_link "Backgrounds"

@@ -2,6 +2,8 @@ class Episode < ApplicationRecord
   include HasImdb
   include HasGalleries
 
+  self.strict_loading_by_default = true
+
   TYPES = [
     STANDARD = "standard",
     MID_SEASON_FINALE = "mid-season finale",
@@ -28,6 +30,8 @@ class Episode < ApplicationRecord
   # Scopes
   scope :ordered, -> { order(number: :asc) }
   scope :nested, ->(number) { where(number:) }
+
+  def self.associations_to_load = [:season]
 
   def to_param = number.to_s
 
