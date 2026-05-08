@@ -72,7 +72,7 @@ RSpec.describe "SeasonRegulars", type: :request do
       context "with valid params" do
         it "creates a cast member" do
           post show_season_season_regulars_path(season, show_id: season.show), params: {cast_member: valid_attributes}
-          cast_member = CastMember.last
+          cast_member = CastMember.includes(:record, :person).last
           expect(cast_member.record).to eq season
           expect(cast_member.person).to eq person
           expect(cast_member.character).to eq "Test character"
@@ -86,7 +86,7 @@ RSpec.describe "SeasonRegulars", type: :request do
         context "when add_to_all_seasons is true" do
           it "adds the cast member to the show instead of the season" do
             post show_season_season_regulars_path(season, show_id: season.show), params: {cast_member: valid_attributes, add_to_all_seasons: true}
-            cast_member = CastMember.last
+            cast_member = CastMember.includes(:record, :person).last
             expect(cast_member.record).to eq season.show
             expect(cast_member.person).to eq person
             expect(cast_member.character).to eq "Test character"

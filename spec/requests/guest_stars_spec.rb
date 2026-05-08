@@ -60,7 +60,7 @@ RSpec.describe "GuestStars", type: :request do
       context "with valid params" do
         it "creates a cast member" do
           post show_season_episode_guest_stars_path(episode, season_id: season, show_id: season.show), params: {cast_member: valid_attributes}
-          cast_member = CastMember.last
+          cast_member = CastMember.includes(:record, :person).last
           expect(cast_member.record).to eq episode
           expect(cast_member.person).to eq person
           expect(cast_member.character).to eq "Test character"
