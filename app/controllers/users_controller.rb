@@ -52,7 +52,7 @@ class UsersController < ApplicationController
   def confirm
     terminate_session if authenticated?
 
-    token = ConfirmationToken.active.find_by(token: params[:token])
+    token = ConfirmationToken.active.includes(:user).find_by(token: params[:token])
     if token && !token.user.confirmed?
       user = token.user
       user.update(confirmed_at: Time.current)
