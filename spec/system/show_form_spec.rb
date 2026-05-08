@@ -94,7 +94,7 @@ RSpec.feature "Show form", type: :system, js: true do
       expect(page).to have_css "div.tabulator-cell", text: "New alt type"
       expect(page).to have_css "div.tabulator-cell", text: "Saudi Arabia"
     end
-    alternative_name = AlternativeName.first
+    alternative_name = AlternativeName.includes(:country).first
     expect(alternative_name.name).to eq "New alt name"
     expect(alternative_name.type).to eq "New alt type"
     expect(alternative_name.country).to eq @saudi
