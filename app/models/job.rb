@@ -1,6 +1,8 @@
 class Job < ApplicationRecord
   include PgSearch::Model
 
+  self.strict_loading_by_default = true
+
   DIRECTOR = "Director"
   CREATOR = "Creator"
   WRITER = "Writer"
