@@ -57,7 +57,7 @@ RSpec.describe "Movies GenreAssignments", type: :request do
       context "with valid params" do
         it "creates an genre assignment" do
           post movie_genre_assignments_path(movie_id: movie), params: {genre_assignment: valid_attributes}
-          genre_assignment = GenreAssignment.last
+          genre_assignment = GenreAssignment.includes(:genre, :record).last
           expect(genre_assignment.record).to eq movie
           expect(genre_assignment.genre).to eq genre
         end
