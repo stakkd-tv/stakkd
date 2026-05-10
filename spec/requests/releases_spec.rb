@@ -70,7 +70,7 @@ RSpec.describe "Releases", type: :request do
       context "with valid params" do
         it "creates a release" do
           post movie_releases_path(movie_id: movie), params: {release: valid_attributes}
-          release = Release.last
+          release = Release.includes(:movie, :certification).last
           expect(release.movie).to eq movie
           expect(release.date).to eq Date.new(2025, 1, 1)
           expect(release.type).to eq Release::THEATRICAL
