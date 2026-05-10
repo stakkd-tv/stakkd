@@ -50,7 +50,14 @@ class Season < ApplicationRecord
   private
 
   def set_show_premiere_date
-    if show.seasons_without_specials.first == self
+    return if number == 0
+
+    first_non_special_number =
+      Season.where(show_id: show_id)
+        .where.not(number: 0)
+        .minimum(:number)
+
+    if first_non_special_number == number
       show.update(premiere_date: premiere_date)
     end
   end

@@ -145,7 +145,7 @@ RSpec.describe Show, type: :model do
 
     it "returns 0 when there are no seasons" do
       show = FactoryBot.create(:show)
-      show.seasons.destroy_all
+      show.seasons.includes(:season_regulars).destroy_all
       expect(show.reload.latest_season_number).to eq 0
     end
   end

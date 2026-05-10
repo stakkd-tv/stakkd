@@ -17,7 +17,7 @@ RSpec.feature "Show form", type: :system, js: true do
     sign_in(user)
   end
 
-  scenario "Using the season form", :ignore_form_failures do
+  scenario "Using the episode form", :ignore_form_failures do
     visit show_season_path(@show, @season)
     expect(page).to have_content(@season.translated_name)
 
