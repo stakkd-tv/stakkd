@@ -1,4 +1,6 @@
 class ConfirmationToken < ApplicationRecord
+  self.strict_loading_by_default = true
+
   # Associations
   belongs_to :user
 

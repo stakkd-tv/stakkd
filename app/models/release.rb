@@ -1,4 +1,6 @@
 class Release < ApplicationRecord
+  self.strict_loading_by_default = true
+
   TYPES = [
     PREMIERE = "Premiere",
     LIMITED_THEATRICAL = "Limited Theatrical",

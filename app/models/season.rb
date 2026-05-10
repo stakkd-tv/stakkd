@@ -1,6 +1,8 @@
 class Season < ApplicationRecord
   include HasGalleries
 
+  self.strict_loading_by_default = true
+
   # Associations
   belongs_to :show
   has_many :season_regulars, -> { order(position: :asc) }, as: :record, class_name: "CastMember", dependent: :destroy

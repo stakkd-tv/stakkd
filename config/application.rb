@@ -40,9 +40,9 @@ module Stakkd
     config.generators.system_tests = nil
 
     # Enable strict loading for all models, except when in the console
-    config.active_record.strict_loading_by_default = true
-    console do
-      config.active_record.action_on_strict_loading_violation = :log
-    end
+    # config.active_record.strict_loading_by_default = true
+    # console do
+    #   ActiveRecord::Base.strict_loading_by_default = false
+    # end
   end
 end

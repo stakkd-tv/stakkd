@@ -2,6 +2,8 @@ class Company < ApplicationRecord
   include Slugify
   include HasGalleries
 
+  self.strict_loading_by_default = true
+
   # Associations
   belongs_to :country
   has_many :company_assignments, dependent: :destroy

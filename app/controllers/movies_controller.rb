@@ -64,7 +64,7 @@ class MoviesController < ApplicationController
   private
 
   def set_movie
-    @movie = Movie.includes(:country, :taglines, :videos, :keywords).from_slug(params.expect(:id))
+    @movie = Movie.includes(:country, :taglines, :videos, :keywords, :genres).from_slug(params.expect(:id))
   end
 
   def movie_params

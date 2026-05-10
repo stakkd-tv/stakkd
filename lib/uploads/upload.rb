@@ -14,7 +14,6 @@ module Uploads
 
     def validate_and_save!
       if validator.invalid?
-        blob.strict_loading!(false)
         blob.purge
         return false
       end

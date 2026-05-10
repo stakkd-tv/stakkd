@@ -1,4 +1,6 @@
 class Certification < ApplicationRecord
+  self.strict_loading_by_default = true
+
   MEDIA_TYPES = ["Movie", "Show"]
 
   # Associations
