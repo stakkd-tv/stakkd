@@ -1,6 +1,4 @@
 class Genre < ApplicationRecord
-  self.strict_loading_by_default = true
-
   # Associations
   has_many :genre_assignments, dependent: :destroy
   has_many :movies, through: :genre_assignments, source: :record, source_type: "Movie"

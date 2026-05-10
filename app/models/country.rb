@@ -1,6 +1,4 @@
 class Country < ApplicationRecord
-  self.strict_loading_by_default = true
-
   # Associations
   has_many :certifications, dependent: :destroy
 

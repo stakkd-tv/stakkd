@@ -2,8 +2,6 @@ class Episode < ApplicationRecord
   include HasImdb
   include HasGalleries
 
-  self.strict_loading_by_default = true
-
   TYPES = [
     STANDARD = "standard",
     MID_SEASON_FINALE = "mid-season finale",

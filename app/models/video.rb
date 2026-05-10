@@ -1,6 +1,4 @@
 class Video < ApplicationRecord
-  self.strict_loading_by_default = true
-
   SOURCES = ["YouTube", "Vimeo"]
   TYPES = [
     "Trailer",

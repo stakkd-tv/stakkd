@@ -4,8 +4,6 @@ class Person < ApplicationRecord
   include HasImdb
   include HasGalleries
 
-  self.strict_loading_by_default = true
-
   pg_search_scope :search, against: [:alias, :original_name, :translated_name], using: {trigram: {threshold: 0.2}}
 
   CREDITS = [

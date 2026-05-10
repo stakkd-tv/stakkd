@@ -1,6 +1,4 @@
 class CrewMember < ApplicationRecord
-  self.strict_loading_by_default = true
-
   # Associations
   belongs_to :record, polymorphic: true
   belongs_to :person

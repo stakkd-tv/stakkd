@@ -3,8 +3,6 @@ class Show < ApplicationRecord
   include HasImdb
   include HasGalleries
 
-  self.strict_loading_by_default = true
-
   acts_as_taggable_on :keywords
 
   STATUSES = [
