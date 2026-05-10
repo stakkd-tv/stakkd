@@ -1,6 +1,8 @@
 class Season < ApplicationRecord
   include HasGalleries
 
+  self.strict_loading_by_default = true
+
   # Associations
   belongs_to :show
   has_many :season_regulars, -> { order(position: :asc) }, as: :record, class_name: "CastMember", dependent: :destroy
@@ -20,6 +22,8 @@ class Season < ApplicationRecord
   scope :without_specials, -> { where.not(number: 0).ordered }
   scope :ordered, -> { order(number: :asc) }
   scope :nested, ->(number) { where(number:) }
+
+  def self.associations_to_load = [:show, :ordered_episodes]
 
   def to_param = number.to_s
 

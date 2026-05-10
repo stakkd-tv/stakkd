@@ -37,7 +37,7 @@ RSpec.feature "Show form", type: :system, js: true do
     fill_in "season_number", with: "1"
     click_button "Save"
     expect(page).to have_content("Season was successfully created.")
-    season = Season.last
+    season = Season.includes(:videos).last
 
     # Posters
     click_link "Posters"

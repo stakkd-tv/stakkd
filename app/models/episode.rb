@@ -31,7 +31,7 @@ class Episode < ApplicationRecord
   scope :ordered, -> { order(number: :asc) }
   scope :nested, ->(number) { where(number:) }
 
-  def self.associations_to_load = [:season]
+  def self.associations_to_load = [season: [:ordered_episodes, :show]]
 
   def to_param = number.to_s
 
