@@ -1,6 +1,4 @@
 class GenreAssignment < ApplicationRecord
-  self.strict_loading_by_default = true
-
   # Associations
   belongs_to :genre
   belongs_to :record, polymorphic: true

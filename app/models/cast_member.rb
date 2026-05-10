@@ -1,6 +1,4 @@
 class CastMember < ApplicationRecord
-  self.strict_loading_by_default = true
-
   acts_as_list scope: :record
 
   # Associations
