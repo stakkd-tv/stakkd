@@ -110,7 +110,7 @@ RSpec.feature "Show form", type: :system, js: true do
       expect(page).to have_css "div.tabulator-cell", text: "YouTube Trailer"
       expect(season.videos.count).to eq 1
     end
-    video = Video.first
+    video = Video.includes(:record).first
     expect(video.source).to eq "YouTube"
     expect(video.source_key).to eq "abc123"
     expect(video.type).to eq "Trailer"

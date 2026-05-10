@@ -65,7 +65,7 @@ RSpec.describe "Movies Videos", type: :request do
       context "with valid params" do
         it "creates a video" do
           post movie_videos_path(movie_id: movie), params: {video: valid_attributes}
-          video = Video.last
+          video = Video.includes(:record).last
           expect(video.record).to eq movie
           expect(video.source).to eq "YouTube"
           expect(video.type).to eq "Trailer"
