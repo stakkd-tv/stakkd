@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  self.strict_loading_by_default = true
+
   USERNAME_EXCLUSIONS = ["me", "admin"].freeze
 
   has_secure_password
