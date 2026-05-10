@@ -1,6 +1,8 @@
 class Tagline < ApplicationRecord
   acts_as_list scope: :record
 
+  self.strict_loading_by_default = true
+
   # Associations
   belongs_to :record, polymorphic: true
 
