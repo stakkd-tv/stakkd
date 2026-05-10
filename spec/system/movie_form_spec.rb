@@ -44,7 +44,7 @@ RSpec.feature "Movie form", type: :system, js: true do
     fill_in "movie_original_title", with: "Original title"
     click_button "Save"
     expect(page).to have_content("Movie was successfully created.")
-    movie = Movie.last
+    movie = Movie.includes(:genres, :companies, :videos).last
 
     # Posters
     click_link "Posters"

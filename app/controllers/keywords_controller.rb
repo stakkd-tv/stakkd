@@ -28,6 +28,8 @@ class KeywordsController < ApplicationController
 
   private
 
+  def associations_to_load = [:taggings]
+
   def set_keyword_tagging
     @keyword_tagging = @relatable.keyword_taggings.find(params.expect(:id))
   end

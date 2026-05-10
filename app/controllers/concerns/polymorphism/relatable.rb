@@ -19,7 +19,11 @@ module Polymorphism
         relatable_from_nested_params
       else
         klass, param = relatable_class_from_params
-        klass&.from_slug(params[param.to_sym])
+        if associations_to_load.any?
+          klass&.includes(associations_to_load)&.from_slug(params[param.to_sym])
+        else
+          klass&.from_slug(params[param.to_sym])
+        end
       end
     end
 
@@ -33,7 +37,11 @@ module Polymorphism
     def relatable_from_nested_params
       parent_record_param = id_keys_from_params.keys.first
       parent_record_klass = parent_record_param.match(%r{([^/.]*)_id$})[1].classify.constantize
-      parent_record = parent_record_klass&.from_slug(params[parent_record_param])
+      parent_record = if associations_to_load.any?
+        parent_record_klass&.includes(associations_to_load)&.from_slug(params[parent_record_param])
+      else
+        parent_record_klass&.from_slug(params[parent_record_param])
+      end
       return unless parent_record
 
       id_keys_without_parent = id_keys_from_params.keys - [parent_record_param]
@@ -75,5 +83,7 @@ module Polymorphism
       @relatable = relatable
       head :not_found unless @relatable
     end
+
+    def associations_to_load = []
   end
 end
