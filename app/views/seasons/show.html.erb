@@ -3,7 +3,7 @@
 <% poster = @season.poster(variant: :medium) %>
 <%= render "shared/colour_from_image", image: poster %>
 
-<%= background = @show.background(use_fallback: false) %>
+<% background = @show.background(use_fallback: false) %>
 <% if background %>
   <div class="absolute -z-10 w-full h-96 overflow-hidden flex items-center justify-center">
     <%= image_tag background, class: "w-full min-h-96 object-cover blur-xs" %>
