@@ -59,7 +59,7 @@ RSpec.describe "Movies CastMembers", type: :request do
       context "with valid params" do
         it "creates an cast member" do
           post movie_cast_members_path(movie_id: movie), params: {cast_member: valid_attributes}
-          cast_member = CastMember.last
+          cast_member = CastMember.includes(:record, :person).last
           expect(cast_member.record).to eq movie
           expect(cast_member.person).to eq person
           expect(cast_member.character).to eq "Test character"

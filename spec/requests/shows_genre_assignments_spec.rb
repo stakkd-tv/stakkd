@@ -57,7 +57,7 @@ RSpec.describe "Shows GenreAssignments", type: :request do
       context "with valid params" do
         it "creates an genre assignment" do
           post show_genre_assignments_path(show_id: show), params: {genre_assignment: valid_attributes}
-          genre_assignment = GenreAssignment.last
+          genre_assignment = GenreAssignment.includes(:genre, :record).last
           expect(genre_assignment.record).to eq show
           expect(genre_assignment.genre).to eq genre
         end

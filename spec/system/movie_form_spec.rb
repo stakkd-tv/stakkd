@@ -44,7 +44,7 @@ RSpec.feature "Movie form", type: :system, js: true do
     fill_in "movie_original_title", with: "Original title"
     click_button "Save"
     expect(page).to have_content("Movie was successfully created.")
-    movie = Movie.last
+    movie = Movie.includes(:genres, :companies, :videos).last
 
     # Posters
     click_link "Posters"
@@ -95,7 +95,7 @@ RSpec.feature "Movie form", type: :system, js: true do
       expect(page).to have_css "div.tabulator-cell", text: "New alt type"
       expect(page).to have_css "div.tabulator-cell", text: "Saudi Arabia"
     end
-    alternative_name = AlternativeName.first
+    alternative_name = AlternativeName.includes(:country).first
     expect(alternative_name.name).to eq "New alt name"
     expect(alternative_name.type).to eq "New alt type"
     expect(alternative_name.country).to eq @saudi

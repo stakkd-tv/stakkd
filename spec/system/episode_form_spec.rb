@@ -17,7 +17,7 @@ RSpec.feature "Show form", type: :system, js: true do
     sign_in(user)
   end
 
-  scenario "Using the season form", :ignore_form_failures do
+  scenario "Using the episode form", :ignore_form_failures do
     visit show_season_path(@show, @season)
     expect(page).to have_content(@season.translated_name)
 
@@ -41,7 +41,7 @@ RSpec.feature "Show form", type: :system, js: true do
     fill_in "episode_number", with: "1"
     click_button "Save"
     expect(page).to have_content("Episode was successfully created.")
-    episode = Episode.last
+    episode = Episode.includes(:videos).last
 
     # Backgrounds
     click_link "Backgrounds"
@@ -131,7 +131,7 @@ RSpec.feature "Show form", type: :system, js: true do
       expect(page).to have_css "div.tabulator-cell", text: "YouTube Trailer"
       expect(episode.videos.count).to eq 1
     end
-    video = Video.first
+    video = Video.includes(:record).first
     expect(video.source).to eq "YouTube"
     expect(video.source_key).to eq "abc123"
     expect(video.type).to eq "Trailer"

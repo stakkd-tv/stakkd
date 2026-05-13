@@ -41,6 +41,11 @@ class Show < ApplicationRecord
   has_many :non_special_episodes, through: :seasons_without_specials, source: :episodes
   has_many :episodes, through: :seasons
   has_galleries :posters, :backgrounds, :logos, :videos
+  # TODO: Acts as taggable on does not seem to support strict loading. Keep an eye on
+  # https://github.com/mbleigh/acts-as-taggable-on/issues/1176 and update this if it
+  # is ever fixed.
+  has_many :taggings, as: :taggable, dependent: :destroy, class_name: "::ActsAsTaggableOn::Tagging", strict_loading: false
+  has_many :base_tags, through: :taggings, source: :tag, class_name: "::ActsAsTaggableOn::Tag", strict_loading: false
 
   # Validations
   validates_presence_of :translated_title, :original_title
@@ -77,6 +82,6 @@ class Show < ApplicationRecord
   def _slug = title_kebab
 
   def create_specials_season
-    Season.create(show: self, number: 0, translated_name: "Specials", original_name: "Specials")
+    seasons.create(number: 0, translated_name: "Specials", original_name: "Specials")
   end
 end

@@ -26,6 +26,10 @@ class GalleriesController < ApplicationController
 
   private
 
+  def associations_to_load
+    (params[:action] == "videos") ? [:videos] : []
+  end
+
   def require_gallery
     head :not_found unless @relatable.available_galleries.include?(action_name.to_sym)
   end

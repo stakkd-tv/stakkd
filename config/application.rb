@@ -38,5 +38,10 @@ module Stakkd
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    # Log strict loading violations instead of raising inside the console
+    if defined?(Rails::Console)
+      config.active_record.action_on_strict_loading_violation = :log
+    end
   end
 end

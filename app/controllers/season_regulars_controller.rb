@@ -49,7 +49,7 @@ class SeasonRegularsController < ApplicationController
   end
 
   def set_show
-    @show = Show.from_slug(params.expect(:show_id))
+    @show = Show.includes(season_regulars: :person).from_slug(params.expect(:show_id))
   end
 
   def set_season

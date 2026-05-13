@@ -46,7 +46,7 @@ class EpisodesController < ApplicationController
   private
 
   def set_show
-    @show = Show.from_slug(params.expect(:show_id))
+    @show = Show.includes(:seasons_without_specials).from_slug(params.expect(:show_id))
   end
 
   def set_season

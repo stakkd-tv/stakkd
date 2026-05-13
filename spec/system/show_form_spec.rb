@@ -43,7 +43,7 @@ RSpec.feature "Show form", type: :system, js: true do
     fill_in "show_original_title", with: "Original title"
     click_button "Save"
     expect(page).to have_content("Show was successfully created.")
-    show = Show.last
+    show = Show.includes(:genres, :companies, :videos).last
 
     # Posters
     click_link "Posters"
@@ -94,7 +94,7 @@ RSpec.feature "Show form", type: :system, js: true do
       expect(page).to have_css "div.tabulator-cell", text: "New alt type"
       expect(page).to have_css "div.tabulator-cell", text: "Saudi Arabia"
     end
-    alternative_name = AlternativeName.first
+    alternative_name = AlternativeName.includes(:country).first
     expect(alternative_name.name).to eq "New alt name"
     expect(alternative_name.type).to eq "New alt type"
     expect(alternative_name.country).to eq @saudi
@@ -195,7 +195,7 @@ RSpec.feature "Show form", type: :system, js: true do
     click_button "Save"
     using_wait_time 5 do
       expect(page).to have_css "div.tabulator-cell", text: "PG"
-      expect(show.reload.content_ratings.map(&:certification)).to eq [@pg]
+      expect(show.reload.content_ratings.includes(:certification).map(&:certification)).to eq [@pg]
     end
     find("div.tabulator-cell>svg").click
     using_wait_time 5 do

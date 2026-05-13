@@ -3,7 +3,7 @@ class PruneUnconfirmedUsersJob < ApplicationJob
 
   def perform(*args)
     ConfirmationToken.stale.destroy_all
-    User.stale.destroy_all
+    User.includes(:confirmation_tokens, :sessions).stale.destroy_all
     User.includes(:confirmation_tokens).needing_confirmation_reminder.each do |user|
       confirmation_token = user.confirmation_tokens.active.first || user.confirmation_tokens.create
       ConfirmationsMailer.reminder(user, confirmation_token).deliver_later

@@ -60,7 +60,7 @@ RSpec.describe "Movies AlternativeNames", type: :request do
       context "with valid params" do
         it "creates an alternative name" do
           post movie_alternative_names_path(movie_id: movie), params: {alternative_name: valid_attributes}
-          alternative_name = AlternativeName.last
+          alternative_name = AlternativeName.includes(:country, :record).last
           expect(alternative_name.record).to eq movie
           expect(alternative_name.name).to eq "Test name"
           expect(alternative_name.type).to eq "Test type"

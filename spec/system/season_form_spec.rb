@@ -37,7 +37,7 @@ RSpec.feature "Show form", type: :system, js: true do
     fill_in "season_number", with: "1"
     click_button "Save"
     expect(page).to have_content("Season was successfully created.")
-    season = Season.last
+    season = Season.includes(:videos).last
 
     # Posters
     click_link "Posters"
@@ -110,7 +110,7 @@ RSpec.feature "Show form", type: :system, js: true do
       expect(page).to have_css "div.tabulator-cell", text: "YouTube Trailer"
       expect(season.videos.count).to eq 1
     end
-    video = Video.first
+    video = Video.includes(:record).first
     expect(video.source).to eq "YouTube"
     expect(video.source_key).to eq "abc123"
     expect(video.type).to eq "Trailer"

@@ -39,6 +39,8 @@ class TaglinesController < ApplicationController
 
   private
 
+  def associations_to_load = [:taglines]
+
   def tagline_params
     params.expect(tagline: [:tagline])
   end

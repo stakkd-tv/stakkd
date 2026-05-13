@@ -47,7 +47,7 @@ class SeasonsController < ApplicationController
   private
 
   def set_show
-    @show = Show.from_slug(params.expect(:show_id))
+    @show = Show.includes(:ordered_seasons, :companies).from_slug(params.expect(:show_id))
   end
 
   def set_season
