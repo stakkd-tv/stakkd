@@ -51,6 +51,7 @@ jobs:
       TEST_PGPORT: 5432
       TEST_PGUSER: rails
       TEST_PGPASSWORD: password
+      TYPESENSE_API_KEY: DUMMY
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
