@@ -71,7 +71,7 @@ class UsersController < ApplicationController
     else
       User.from_username(params[:id])
     end
-    head :not_found unless @user
+    not_found unless @user
   end
 
   def user_params
