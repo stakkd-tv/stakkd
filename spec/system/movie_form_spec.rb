@@ -18,10 +18,10 @@ RSpec.feature "Movie form", type: :system, js: true do
     FactoryBot.create(:certification, country: @saudi, code: "ABC")
 
     FactoryBot.create(:person, translated_name: "John Doe")
-    FactoryBot.create(:person, translated_name: "Obi Wan")
+    @obi = FactoryBot.create(:person, translated_name: "Obi Wan")
 
     FactoryBot.create(:job, name: "Actor")
-    FactoryBot.create(:job, name: "Producer")
+    @producer = FactoryBot.create(:job, name: "Producer")
 
     user = FactoryBot.create(:user, :confirmed)
     sign_in(user)
@@ -125,6 +125,10 @@ RSpec.feature "Movie form", type: :system, js: true do
     expect(alternative_name.country).to eq @uk
 
     # Cast Members
+    collection = ::WillPaginate::Collection.create(1, 100, 1) do |pager|
+      pager.replace [@obi]
+    end
+    allow(Person).to receive(:search).with("obi wan", any_args).and_return(collection)
     click_link "Cast"
     expect(page).to have_css("a[data-active='true']", text: "Cast")
     expect(page).to have_content("Add a cast member")
@@ -155,6 +159,7 @@ RSpec.feature "Movie form", type: :system, js: true do
     end
 
     # Crew Members
+    allow(Job).to receive(:search).with("producer", any_args).and_return([@producer])
     click_link "Crew"
     expect(page).to have_css("a[data-active='true']", text: "Crew")
     expect(page).to have_content("Add a crew member")

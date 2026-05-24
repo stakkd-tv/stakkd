@@ -1,11 +1,15 @@
 class Job < ApplicationRecord
-  include PgSearch::Model
+  include Typesense
 
   DIRECTOR = "Director"
   CREATOR = "Creator"
   WRITER = "Writer"
 
-  pg_search_scope :search, against: [:department, :name], using: {trigram: {threshold: 0.2}}
+  typesense enqueue: true do
+    attributes :department, :name
+
+    default_sorting_field "department"
+  end
 
   # Validations
   validates :name, :department, presence: true

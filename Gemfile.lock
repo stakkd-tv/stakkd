@@ -139,6 +139,9 @@ GEM
     erubi (1.13.1)
     et-orbi (1.4.0)
       tzinfo
+    ethon (0.18.0)
+      ffi (>= 1.15.0)
+      logger
     factory_bot (6.5.6)
       activesupport (>= 6.1.0)
     factory_bot_rails (6.5.1)
@@ -328,6 +331,9 @@ GEM
       version_gem (~> 1.1)
     oauth-tty (1.0.5)
       version_gem (~> 1.1, >= 1.1.1)
+    oj (3.17.1)
+      bigdecimal (>= 3.0)
+      ostruct (>= 0.2)
     os (1.1.4)
     ostruct (0.6.3)
     parallel (1.28.0)
@@ -343,9 +349,6 @@ GEM
     pg (1.6.3-x86_64-darwin)
     pg (1.6.3-x86_64-linux)
     pg (1.6.3-x86_64-linux-musl)
-    pg_search (2.3.7)
-      activerecord (>= 6.1)
-      activesupport (>= 6.1)
     pp (0.6.3)
       prettyprint
     prettyprint (0.2.0)
@@ -545,6 +548,14 @@ GEM
     turbo-rails (2.0.23)
       actionpack (>= 7.1.0)
       railties (>= 7.1.0)
+    typesense (2.1.0)
+      oj (~> 3.16)
+      typhoeus (~> 1.4)
+    typesense-rails (1.0.0.rc4)
+      json (>= 1.5.1)
+      typesense (>= 0.13.0)
+    typhoeus (1.6.0)
+      ethon (>= 0.18.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     uber (0.1.0)
@@ -607,7 +618,6 @@ DEPENDENCIES
   mini_magick (~> 5.3)
   parallel_tests
   pg (~> 1.6)
-  pg_search (~> 2.3)
   propshaft
   puma (>= 5.0)
   rails (~> 8.1.3)
@@ -622,6 +632,7 @@ DEPENDENCIES
   stimulus-rails
   thruster
   turbo-rails
+  typesense-rails (~> 1.0.0.rc4)
   tzinfo-data
   vimeo (~> 1.5)
   web-console

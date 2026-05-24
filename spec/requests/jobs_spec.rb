@@ -16,6 +16,7 @@ RSpec.describe "Jobs", type: :request do
       it "searches for jobs" do
         job = FactoryBot.create(:job, name: "Random")
         FactoryBot.create(:job, name: "Another")
+        expect(Job).to receive(:search).with(job.name, "name,department").and_return([job])
         get jobs_url(query: job.name, format: :json)
         json = JSON.parse(response.body)
         expect(json).to eq([

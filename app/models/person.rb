@@ -1,10 +1,8 @@
 class Person < ApplicationRecord
-  include PgSearch::Model
+  include Typesense
   include Slugify
   include HasImdb
   include HasGalleries
-
-  pg_search_scope :search, against: [:alias, :original_name, :translated_name], using: {trigram: {threshold: 0.2}}
 
   CREDITS = [
     WRITING = "writing",
@@ -23,6 +21,17 @@ class Person < ApplicationRecord
     MALE = "male",
     NON_BINARY = "non-binary"
   ]
+
+  typesense enqueue: true do
+    attributes :original_name, :translated_name
+
+    # alias is used internally, so we use aka instead
+    attribute :aka do
+      self.alias.to_s
+    end
+
+    default_sorting_field "translated_name"
+  end
 
   # Associations
   has_many :cast_credits, class_name: "CastMember", dependent: :destroy
