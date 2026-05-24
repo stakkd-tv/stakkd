@@ -32,11 +32,9 @@ class Person < ApplicationRecord
 
     predefined_fields [
       {"name" => "original_name", "type" => "string"},
-      {"name" => "translated_name", "type" => "string", "facet" => true},
+      {"name" => "translated_name", "type" => "string", "sort" => true},
       {"name" => "aka", "type" => "string"}
     ]
-
-    default_sorting_field "translated_name"
   end
 
   # Associations

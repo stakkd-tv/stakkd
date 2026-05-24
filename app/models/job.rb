@@ -9,11 +9,9 @@ class Job < ApplicationRecord
     attributes :department, :name
 
     predefined_fields [
-      {"name" => "name", "type" => "string"},
-      {"name" => "department", "type" => "string", "facet" => true}
+      {"name" => "name", "type" => "string", "sort" => true},
+      {"name" => "department", "type" => "string", "sort" => true}
     ]
-
-    default_sorting_field "department"
   end
 
   # Validations

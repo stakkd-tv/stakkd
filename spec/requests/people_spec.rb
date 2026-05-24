@@ -45,7 +45,7 @@ RSpec.describe "People", type: :request do
         expect(Person).to receive(:search).with(
           person.translated_name,
           "original_name,translated_name,aka",
-          {page: nil, per_page: 100}
+          {page: nil, per_page: 100, sort_by: "translated_name:asc"}
         ).and_return(collection)
         get people_url(query: person.translated_name)
         assert_select "h3", text: person.translated_name
