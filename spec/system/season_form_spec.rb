@@ -7,7 +7,7 @@ RSpec.feature "Show form", type: :system, js: true do
     @show = FactoryBot.create(:show)
 
     FactoryBot.create(:person, translated_name: "John Doe")
-    FactoryBot.create(:person, translated_name: "Obi Wan")
+    @obi = FactoryBot.create(:person, translated_name: "Obi Wan")
 
     user = FactoryBot.create(:user, :confirmed)
     sign_in(user)
@@ -53,6 +53,10 @@ RSpec.feature "Show form", type: :system, js: true do
     expect(season.posters.count).to eq 1
 
     # Season Regulars
+    collection = ::WillPaginate::Collection.create(1, 100, 1) do |pager|
+      pager.replace [@obi]
+    end
+    allow(Person).to receive(:search).with("obi wan", any_args).and_return(collection)
     click_link "Season Regulars"
     expect(page).to have_css("a[data-active='true']", text: "Season Regulars")
     expect(page).to have_content("Add a season regular")

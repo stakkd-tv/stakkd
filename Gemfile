@@ -4,18 +4,22 @@ source "https://rubygems.org"
 gem "rails", "~> 8.1.3"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
-# Use postgresql as the database for Active Record
-gem "pg", "~> 1.6"
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
-# Bundle and transpile JavaScript [https://github.com/rails/jsbundling-rails]
-gem "jsbundling-rails"
+
+# Use postgresql as the database for Active Record
+gem "pg", "~> 1.6"
+
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
 gem "turbo-rails"
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
 gem "stimulus-rails"
+
+# Bundle and transpile JavaScript [https://github.com/rails/jsbundling-rails]
+gem "jsbundling-rails"
 # Bundle and process CSS [https://github.com/rails/cssbundling-rails]
 gem "cssbundling-rails"
+
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
@@ -55,11 +59,11 @@ gem "acts_as_list", "~> 1.2"
 gem "google-api-client", "~> 0.53.0"
 gem "vimeo", "~> 1.5"
 
-# Adds full text search to ActiveRecord models
-gem "pg_search", "~> 2.3"
-
 # Adds pagination to ActiveRecord models
 gem "will_paginate", "~> 4.0"
+
+# Lightning fast search backend
+gem "typesense-rails", "~> 1.0.0.rc4"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
