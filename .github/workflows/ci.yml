@@ -44,6 +44,14 @@ jobs:
           POSTGRES_DB: postgres
           POSTGRES_USER: rails
           POSTGRES_PASSWORD: password
+      typesense:
+        image: typesense/typesense:30.2
+        ports:
+          - "8108:8108"
+        command: >
+          --data-dir /tmp
+          --api-key=DUMMY
+          --enable-cors
     env:
       RAILS_ENV: test
       RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
@@ -52,6 +60,8 @@ jobs:
       TEST_PGUSER: rails
       TEST_PGPASSWORD: password
       TYPESENSE_API_KEY: DUMMY
+      TYPESENSE_HOST: localhost
+      TYPESENSE_PORT: 8108
     steps:
       - name: Checkout code
         uses: actions/checkout@v6

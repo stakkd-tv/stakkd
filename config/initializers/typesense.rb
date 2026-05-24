@@ -1,7 +1,7 @@
 Typesense.configuration = {
   nodes: [{
-    host: "localhost",
-    port: "8108",
+    host: ENV["TYPESENSE_HOST"],
+    port: ENV["TYPESENSE_PORT"],
     protocol: "http"
   }],
   api_key: ENV["TYPESENSE_API_KEY"],
