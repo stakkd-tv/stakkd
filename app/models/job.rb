@@ -8,6 +8,11 @@ class Job < ApplicationRecord
   typesense enqueue: true do
     attributes :department, :name
 
+    predefined_fields [
+      {"name" => "name", "type" => "string"},
+      {"name" => "department", "type" => "string", "facet" => true}
+    ]
+
     default_sorting_field "department"
   end
 

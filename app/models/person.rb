@@ -30,6 +30,12 @@ class Person < ApplicationRecord
       self.alias.to_s
     end
 
+    predefined_fields [
+      {"name" => "original_name", "type" => "string"},
+      {"name" => "translated_name", "type" => "string", "facet" => true},
+      {"name" => "aka", "type" => "string"}
+    ]
+
     default_sorting_field "translated_name"
   end
 
