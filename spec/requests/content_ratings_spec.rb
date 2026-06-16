@@ -50,7 +50,7 @@ RSpec.describe "/content_ratings", type: :request do
       context "with valid parameters" do
         it "creates a new ContentRating" do
           post show_content_ratings_path(show), params: {content_rating: valid_attributes}
-          content_rating = ContentRating.last
+          content_rating = ContentRating.includes(:show, :certification).last
           expect(content_rating.show).to eq show
           expect(content_rating.certification).to eq certification
         end

@@ -60,7 +60,7 @@ RSpec.describe "Movies CrewMembers", type: :request do
       context "with valid params" do
         it "creates an crew member" do
           post movie_crew_members_path(movie_id: movie), params: {crew_member: valid_attributes}
-          crew_member = CrewMember.last
+          crew_member = CrewMember.includes(:record, :person, :job).last
           expect(crew_member.record).to eq movie
           expect(crew_member.person).to eq person
           expect(crew_member.job).to eq job

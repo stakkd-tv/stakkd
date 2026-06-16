@@ -25,6 +25,8 @@ class VideosController < ApplicationController
 
   private
 
+  def associations_to_load = [:videos]
+
   def set_video
     @video = @relatable.videos.find(params.expect(:id))
   end

@@ -4,7 +4,7 @@ RSpec.describe "companies/index", type: :view do
   before(:each) do
     @c1 = FactoryBot.create(:company, name: "YouTube")
     @c2 = FactoryBot.create(:company, name: "Bruh")
-    assign(:companies, Company.all.paginate(page: 1, per_page: 10))
+    assign(:companies, Company.includes(:country).all.paginate(page: 1, per_page: 10))
   end
 
   it "renders a new company link" do

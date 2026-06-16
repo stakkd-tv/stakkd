@@ -107,7 +107,7 @@ RSpec.describe "Movies", type: :request do
       context "with valid parameters" do
         it "creates a new Movie" do
           post movies_url, params: {movie: valid_attributes}
-          movie = Movie.last
+          movie = Movie.includes(:language, :country).last
           expect(movie.language).to eq language
           expect(movie.country).to eq country
           expect(movie.original_title).to eq "Back to the Future"

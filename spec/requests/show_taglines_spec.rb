@@ -57,7 +57,7 @@ RSpec.describe "Shows Taglines", type: :request do
       context "with valid params" do
         it "creates a tagline" do
           post show_taglines_path(show_id: show), params: {tagline: valid_attributes}
-          tagline = Tagline.last
+          tagline = Tagline.includes(:record).last
           expect(tagline.record).to eq show
           expect(tagline.tagline).to eq "Test tag"
         end
