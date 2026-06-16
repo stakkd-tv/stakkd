@@ -59,7 +59,7 @@ RSpec.describe "Shows CastMembers", type: :request do
       context "with valid params" do
         it "creates an cast member" do
           post show_cast_members_path(show_id: show), params: {cast_member: valid_attributes}
-          cast_member = CastMember.last
+          cast_member = CastMember.includes(:record, :person).last
           expect(cast_member.record).to eq show
           expect(cast_member.person).to eq person
           expect(cast_member.character).to eq "Test character"

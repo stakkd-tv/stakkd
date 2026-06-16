@@ -65,7 +65,7 @@ RSpec.describe "Season Videos", type: :request do
       context "with valid params" do
         it "creates a video" do
           post show_season_videos_path(season_id: season, show_id: season.show), params: {video: valid_attributes}
-          video = Video.last
+          video = Video.includes(:record).last
           expect(video.record).to eq season
           expect(video.source).to eq "YouTube"
           expect(video.type).to eq "Trailer"

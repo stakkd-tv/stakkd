@@ -7,7 +7,7 @@ RSpec.feature "Show form", type: :system, js: true do
     @show = FactoryBot.create(:show)
 
     FactoryBot.create(:person, translated_name: "John Doe")
-    FactoryBot.create(:person, translated_name: "Obi Wan")
+    @obi = FactoryBot.create(:person, translated_name: "Obi Wan")
 
     user = FactoryBot.create(:user, :confirmed)
     sign_in(user)
@@ -37,7 +37,7 @@ RSpec.feature "Show form", type: :system, js: true do
     fill_in "season_number", with: "1"
     click_button "Save"
     expect(page).to have_content("Season was successfully created.")
-    season = Season.last
+    season = Season.includes(:videos).last
 
     # Posters
     click_link "Posters"
@@ -53,6 +53,10 @@ RSpec.feature "Show form", type: :system, js: true do
     expect(season.posters.count).to eq 1
 
     # Season Regulars
+    collection = ::WillPaginate::Collection.create(1, 100, 1) do |pager|
+      pager.replace [@obi]
+    end
+    allow(Person).to receive(:search).with("obi wan", any_args).and_return(collection)
     click_link "Season Regulars"
     expect(page).to have_css("a[data-active='true']", text: "Season Regulars")
     expect(page).to have_content("Add a season regular")
@@ -110,7 +114,7 @@ RSpec.feature "Show form", type: :system, js: true do
       expect(page).to have_css "div.tabulator-cell", text: "YouTube Trailer"
       expect(season.videos.count).to eq 1
     end
-    video = Video.first
+    video = Video.includes(:record).first
     expect(video.source).to eq "YouTube"
     expect(video.source_key).to eq "abc123"
     expect(video.type).to eq "Trailer"

@@ -57,7 +57,7 @@ RSpec.describe "Movies CompanyAssignments", type: :request do
       context "with valid params" do
         it "creates an company assignment" do
           post movie_company_assignments_path(movie_id: movie), params: {company_assignment: valid_attributes}
-          company_assignment = CompanyAssignment.last
+          company_assignment = CompanyAssignment.includes(:record, :company).last
           expect(company_assignment.record).to eq movie
           expect(company_assignment.company).to eq company
         end

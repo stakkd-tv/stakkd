@@ -95,7 +95,7 @@ RSpec.describe "/shows/:show_id/seasons", type: :request do
       context "with valid parameters" do
         it "creates a new Season" do
           post show_seasons_url(show), params: {season: valid_attributes}
-          season = Season.last
+          season = Season.includes(:show).last
           expect(season.show).to eq show
           expect(season.number).to eq 1
           expect(season.translated_name).to eq "Season 1"

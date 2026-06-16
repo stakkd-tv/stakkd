@@ -59,13 +59,7 @@
 
   <%= render "shared/cast_members", cast_members: @cast_members, full_cast_path: cast_show_season_episode_path(@episode, season_id: @season, show_id: @show) %>
 
-  <div class="flex flex-wrap gap-2 justify-between mt-6">
-    <% if @episode.previous_episode %>
-      <%= link_to "Previous", show_season_episode_path(@episode.previous_episode, season_id: @season, show_id: @show), class: "link" %>
-    <% end %>
-    <div class="flex-1"></div>
-    <% if @episode.next_episode %>
-      <%= link_to "Next", show_season_episode_path(@episode.next_episode, season_id: @season, show_id: @show), class: "link" %>
-    <% end %>
+  <div class="mt-6">
+    <%= render "shared/paginated_items", presenter: @pagination %>
   </div>
 </div>

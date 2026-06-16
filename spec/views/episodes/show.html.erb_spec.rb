@@ -27,6 +27,7 @@ RSpec.describe "episodes/show", type: :view do
     assign(:season, @season)
     assign(:gallery_presenter, gallery_presenter)
     assign(:cast_members, CastMembers::Episode.new(@episode).cast_members)
+    assign(:pagination, Pagination::Episodes.new(@episode, @season, @show))
   end
 
   it "renders attributes in <p>" do

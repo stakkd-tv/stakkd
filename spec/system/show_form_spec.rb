@@ -17,10 +17,10 @@ RSpec.feature "Show form", type: :system, js: true do
     @company2 = FactoryBot.create(:company, country: @uk, name: "Company 2", logos: [Rack::Test::UploadedFile.new("spec/support/assets/400x400.png", "image/png")])
 
     FactoryBot.create(:person, translated_name: "John Doe")
-    FactoryBot.create(:person, translated_name: "Obi Wan")
+    @obi = FactoryBot.create(:person, translated_name: "Obi Wan")
 
     FactoryBot.create(:job, name: "Actor")
-    FactoryBot.create(:job, name: "Producer")
+    @producer = FactoryBot.create(:job, name: "Producer")
 
     user = FactoryBot.create(:user, :confirmed)
     sign_in(user)
@@ -43,7 +43,7 @@ RSpec.feature "Show form", type: :system, js: true do
     fill_in "show_original_title", with: "Original title"
     click_button "Save"
     expect(page).to have_content("Show was successfully created.")
-    show = Show.last
+    show = Show.includes(:genres, :companies, :videos).last
 
     # Posters
     click_link "Posters"
@@ -94,7 +94,7 @@ RSpec.feature "Show form", type: :system, js: true do
       expect(page).to have_css "div.tabulator-cell", text: "New alt type"
       expect(page).to have_css "div.tabulator-cell", text: "Saudi Arabia"
     end
-    alternative_name = AlternativeName.first
+    alternative_name = AlternativeName.includes(:country).first
     expect(alternative_name.name).to eq "New alt name"
     expect(alternative_name.type).to eq "New alt type"
     expect(alternative_name.country).to eq @saudi
@@ -124,6 +124,10 @@ RSpec.feature "Show form", type: :system, js: true do
     expect(alternative_name.country).to eq @uk
 
     # Recurring Season Regulars
+    collection = ::WillPaginate::Collection.create(1, 100, 1) do |pager|
+      pager.replace [@obi]
+    end
+    allow(Person).to receive(:search).with("obi wan", any_args).and_return(collection)
     click_link "Recurring Season Regulars"
     expect(page).to have_css("a[data-active='true']", text: "Recurring Season Regulars")
     expect(page).to have_content("Add a cast member")
@@ -154,6 +158,7 @@ RSpec.feature "Show form", type: :system, js: true do
     end
 
     # Crew Members
+    allow(Job).to receive(:search).with("producer", any_args).and_return([@producer])
     click_link "Crew"
     expect(page).to have_css("a[data-active='true']", text: "Crew")
     expect(page).to have_content("Add a crew member")
@@ -195,7 +200,7 @@ RSpec.feature "Show form", type: :system, js: true do
     click_button "Save"
     using_wait_time 5 do
       expect(page).to have_css "div.tabulator-cell", text: "PG"
-      expect(show.reload.content_ratings.map(&:certification)).to eq [@pg]
+      expect(show.reload.content_ratings.includes(:certification).map(&:certification)).to eq [@pg]
     end
     find("div.tabulator-cell>svg").click
     using_wait_time 5 do

@@ -6,6 +6,7 @@ class EpisodesController < ApplicationController
 
   def show
     @cast_members = CastMembers::Episode.new(@episode).cast_members
+    @pagination = Pagination::Episodes.new(@episode, @season, @show)
   end
 
   def new
@@ -45,7 +46,7 @@ class EpisodesController < ApplicationController
   private
 
   def set_show
-    @show = Show.from_slug(params.expect(:show_id))
+    @show = Show.includes(:seasons_without_specials).from_slug(params.expect(:show_id))
   end
 
   def set_season

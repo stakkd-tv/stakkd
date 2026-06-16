@@ -104,7 +104,7 @@ RSpec.describe "/shows", type: :request do
       context "with valid parameters" do
         it "creates a new Show" do
           post shows_url, params: {show: valid_attributes}
-          show = Show.last
+          show = Show.includes(:language, :country).last
           expect(show.language).to eq language
           expect(show.country).to eq country
           expect(show.original_title).to eq "Back to the Future"
