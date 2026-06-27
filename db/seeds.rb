@@ -1,4 +1,5 @@
 Person.delete_all
+Job.delete_all
 Country.delete_all
 Language.delete_all
 Genre.delete_all

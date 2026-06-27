@@ -1,4 +1,5 @@
 class Movie < ApplicationRecord
+  include Typesense
   include Slugify
   include HasImdb
   include HasGalleries
@@ -13,6 +14,20 @@ class Movie < ApplicationRecord
     RELEASED = "released",
     CANCELLED = "cancelled"
   ]
+
+  typesense do
+    attributes :original_title, :translated_title
+
+    attribute :alternative_names do
+      AlternativeName.where(record: self).map { it.name }.join(", ")
+    end
+
+    predefined_fields [
+      {"name" => "original_title", "type" => "string"},
+      {"name" => "translated_title", "type" => "string", "sort" => true},
+      {"name" => "alternative_names", "type" => "string"}
+    ]
+  end
 
   # Associations
   belongs_to :country

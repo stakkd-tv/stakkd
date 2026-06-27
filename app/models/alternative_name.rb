@@ -6,5 +6,15 @@ class AlternativeName < ApplicationRecord
   # Validations
   validates_presence_of :name
 
+  # Callbacks
+  after_save :index_record
+  after_destroy :index_record, prepend: true
+
   def self.inheritance_column = nil
+
+  private
+
+  def index_record
+    record.try(:index!)
+  end
 end

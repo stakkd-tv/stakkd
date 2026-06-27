@@ -5,7 +5,7 @@ class Job < ApplicationRecord
   CREATOR = "Creator"
   WRITER = "Writer"
 
-  typesense enqueue: true do
+  typesense do
     attributes :department, :name
 
     predefined_fields [
