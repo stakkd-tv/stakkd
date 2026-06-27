@@ -2,6 +2,7 @@ class Show < ApplicationRecord
   include Slugify
   include HasImdb
   include HasGalleries
+  include HasSearchDocument
 
   acts_as_taggable_on :keywords
 
