@@ -62,6 +62,7 @@ jobs:
       # TODO: Mock out Typesense in tests - tests should still pass
       # even if someone does not have Typesense installed.
       TYPESENSE_API_KEY: DUMMY
+      TYPESENSE_SEARCH_API_KEY: DUMMY
       TYPESENSE_HOST: localhost
       TYPESENSE_PORT: 8108
       TYPESENSE_PROTOCOL: http
