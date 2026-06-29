@@ -8,6 +8,8 @@ type SearchResult = {
 }
 
 // Connects to data-controller="ajax-search"
+// TODO: Rewrite this to use instantsearch and bypass the Rails api.
+// Maybe DRY it out with the live search used by the navigation bar?
 export default class extends Controller {
   static values = { searchUrl: String }
 

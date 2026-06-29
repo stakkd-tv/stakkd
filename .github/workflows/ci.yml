@@ -59,9 +59,12 @@ jobs:
       TEST_PGPORT: 5432
       TEST_PGUSER: rails
       TEST_PGPASSWORD: password
+      # TODO: Mock out Typesense in tests - tests should still pass
+      # even if someone does not have Typesense installed.
       TYPESENSE_API_KEY: DUMMY
       TYPESENSE_HOST: localhost
       TYPESENSE_PORT: 8108
+      TYPESENSE_PROTOCOL: http
     steps:
       - name: Checkout code
         uses: actions/checkout@v6

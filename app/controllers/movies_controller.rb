@@ -1,5 +1,5 @@
 class MoviesController < ApplicationController
-  before_action :require_authentication, except: [:index, :show, :cast]
+  before_action :require_authentication, except: [:index, :show, :cast, :poster]
   before_action :set_movie, except: [:index, :new, :create]
 
   def index
@@ -59,6 +59,17 @@ class MoviesController < ApplicationController
   def cast
     @cast_members = CastMembers::Movie.new(@movie).cast_members
     @crew_members = @movie.crew_members.includes(:job, person: {images_attachments: :blob}).group_by { it.job.department }
+  end
+
+  def poster
+    poster = @movie.poster(variant: :thumb)
+
+    if poster.is_a?(String)
+      path = Rails.root.join("app/assets/images", poster)
+      return send_file path, disposition: :inline
+    end
+
+    redirect_to url_for(poster)
   end
 
   private

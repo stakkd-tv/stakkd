@@ -4,9 +4,11 @@
       <%= image_tag "icon.svg", class: "invert-100 brightness-0 hover:filter-none transition duration-300 ease-in-out" %>
     <% end %>
   </div>
+
   <div class="cursor-text w-full flex gap-4 text-white px-6 md:px-9 items-center" data-nav-target="searchWrapper">
     <i class="fa-solid fa-magnifying-glass text-xl"></i>
-    <input type="text" id="search" name="search" autocomplete="off" data-nav-target="search" placeholder="Start typing to begin your exploration..." class="peer w-full h-full text-white font-bold focus:outline-none placeholder:font-normal placeholder:text-white placeholder:opacity-75">
+    <div class="search-box w-full"></div>
+    <div class="hits absolute w-full top-16 md:top-20 left-15.25 md:left-19.25 backdrop-blur-sm z-20"></div>
   </div>
 
   <% if authenticated? %>

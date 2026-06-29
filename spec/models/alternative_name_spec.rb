@@ -23,7 +23,7 @@ RSpec.describe AlternativeName, type: :model do
         it "does not raise any errors and continues" do
           record = FactoryBot.create(:season) # This is not possible irl but we're still testing it to be safe
           alternative_name = FactoryBot.create(:alternative_name, record:)
-          expect{ alternative_name.save }.not_to raise_error
+          expect { alternative_name.save }.not_to raise_error
         end
       end
     end
@@ -40,7 +40,7 @@ RSpec.describe AlternativeName, type: :model do
         it "does not raise any errors and continues" do
           record = FactoryBot.create(:season) # This is not possible irl but we're still testing it to be safe
           alternative_name = FactoryBot.create(:alternative_name, record:)
-          expect{ alternative_name.destroy }.not_to raise_error
+          expect { alternative_name.destroy }.not_to raise_error
         end
       end
     end

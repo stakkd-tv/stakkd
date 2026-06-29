@@ -36,6 +36,12 @@
 
   <body class="bg-background text-white">
     <%= render "layouts/nav" %>
+    <span id="typesense-config" class="hidden"
+      data-api-key="<%= ENV["TYPESENSE_SEARCH_API_KEY"] %>"
+      data-host="<%= ENV["TYPESENSE_HOST"] %>"
+      data-port="<%= ENV["TYPESENSE_PORT"] %>"
+      data-protocol="<%= ENV["TYPESENSE_PROTOCOL"] %>">
+    </span>
     <div class="min-h-screen mt-16 md:mt-20" data-controller="details-auto-open">
       <%= yield %>
     </div>

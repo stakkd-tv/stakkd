@@ -295,4 +295,25 @@ RSpec.describe "/shows", type: :request do
       assert_select "p", text: "Painter"
     end
   end
+
+  describe "GET /shows/:id/poster" do
+    context "when the show has no poster" do
+      it "returns the placeholder image" do
+        show = FactoryBot.create(:show)
+        get poster_show_path(show)
+        expect(response).to have_http_status(:ok)
+        expect(response.content_type).to eq "image/png"
+      end
+    end
+
+    context "when the show has a poster" do
+      it "redirects to the poster url" do
+        show = FactoryBot.create(:show, posters: [Rack::Test::UploadedFile.new("spec/support/assets/300x450.png", "image/png")])
+        poster = show.poster(variant: :thumb)
+        get poster_show_path(show)
+        expect(response.content_type).to eq "text/html; charset=utf-8"
+        expect(response).to redirect_to url_for(poster)
+      end
+    end
+  end
 end

@@ -22,17 +22,21 @@
     "lint:js": "yarn run eslint app/javascript"
   },
   "dependencies": {
+    "@babel/runtime": "^7.29.7",
     "@hotwired/stimulus": "^3.2.2",
     "@hotwired/turbo-rails": "^8.0.23",
     "@tailwindcss/cli": "^4.2.4",
     "@types/tabulator-tables": "^6.3.2",
+    "algoliasearch": "^5.55.1",
     "easymde": "^2.21.0",
     "flatpickr": "^4.6.13",
+    "instantsearch.js": "^4.103.0",
     "marked": "^18.0.3",
     "sanitize-html": "^2.17.4",
     "slim-select": "^3.4.3",
     "tabulator-tables": "^6.4.0",
-    "tailwindcss": "^4.2.4"
+    "tailwindcss": "^4.2.4",
+    "typesense-instantsearch-adapter": "github:typesense/typesense-instantsearch-adapter#5855720f05df6b5af79e1e4e550de86369b09805"
   },
   "packageManager": "yarn@4.13.0"
 }

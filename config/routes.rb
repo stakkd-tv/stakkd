@@ -32,6 +32,7 @@ Rails.application.routes.draw do
     end
 
     get :posters, on: :member
+    get :poster, on: :member
     get :backgrounds, on: :member
     get :logos, on: :member
     get :cast, on: :member
@@ -81,6 +82,7 @@ Rails.application.routes.draw do
     end
 
     get :posters, on: :member
+    get :poster, on: :member
     get :backgrounds, on: :member
     get :logos, on: :member
     get :cast, on: :member

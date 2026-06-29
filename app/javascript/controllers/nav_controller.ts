@@ -1,30 +1,52 @@
 import { Controller } from '@hotwired/stimulus'
+import { setupLiveSearch } from '../helpers/livesearch'
+import { widgetsForNavLiveSearch } from '../helpers/livesearch/nav'
 
 // Connects to data-controller="nav"
 export default class extends Controller {
-  static targets = ['search', 'searchWrapper', 'button', 'user']
+  static targets = ['searchWrapper', 'button', 'user']
 
-  declare readonly searchTarget: HTMLElement
   declare readonly searchWrapperTarget: HTMLElement
   declare readonly userTarget: HTMLElement
   declare readonly buttonTargets: HTMLElement[]
   declare readonly hasUserTarget: boolean
 
   connect () {
+    const widgets = widgetsForNavLiveSearch(this.element)
+    const additionalSearchParameters = {
+      per_page: 3
+    }
+    const collectionSpecificSearchParameters = {
+      Movie: { query_by: 'translated_title,original_title,alternative_names' },
+      Show: { query_by: 'translated_title,original_title,alternative_names' }
+    }
+    setupLiveSearch({
+      widgets,
+      union: true,
+      indexName: 'Show',
+      additionalSearchParameters,
+      collectionSpecificSearchParameters
+    })
+    const searchInput = this.element.querySelector<HTMLInputElement>('.nav-search')
+    const hits = this.element.querySelector<HTMLInputElement>('.hits')
+    if (!searchInput || !hits) return
+
     this.searchWrapperTarget.addEventListener('click', () => {
-      this.searchTarget.focus()
+      searchInput.focus()
     })
 
-    this.searchTarget.addEventListener('focusin', () => {
+    searchInput.addEventListener('focusin', () => {
       this.buttonTargets.forEach((btn) => {
         btn.classList.add('hidden!')
       })
+      hits.style.width = (this.searchWrapperTarget.getBoundingClientRect().width + 3) + 'px'
     })
 
-    this.searchTarget.addEventListener('focusout', () => {
+    searchInput.addEventListener('focusout', () => {
       this.buttonTargets.forEach((btn) => {
         btn.classList.remove('hidden!')
       })
+      hits.style.width = (this.searchWrapperTarget.getBoundingClientRect().width + 3) + 'px'
     })
 
     const sidebar = document.getElementById('sidebar')
