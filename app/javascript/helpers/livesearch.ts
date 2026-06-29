@@ -21,7 +21,7 @@ export function setupLiveSearch ({ widgets, union, indexName, additionalSearchPa
   const port = typesenseConfig?.getAttribute('data-port')
   const protocol = typesenseConfig?.getAttribute('data-protocol')
   if (!apiKey || !host || !port || !protocol) {
-    throw new Error('typesense-search-api-key not found')
+    throw new Error(`Typesense config not valid. ${apiKey}, ${host}, ${port}, ${protocol}`)
   }
 
   const adapter = new TypesenseInstantsearchAdapter({
