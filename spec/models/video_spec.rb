@@ -6,6 +6,11 @@ RSpec.describe Video, type: :model do
   end
 
   describe "validations" do
+    before do
+      allow_any_instance_of(Videos::YouTube).to receive(:title).and_return(nil)
+      allow_any_instance_of(Videos::YouTube).to receive(:thumbnail_url).and_return(nil)
+    end
+
     it { should validate_presence_of(:name) }
     it { should validate_presence_of(:source) }
     it { should validate_presence_of(:source_key) }

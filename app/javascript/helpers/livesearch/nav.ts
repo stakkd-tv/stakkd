@@ -1,6 +1,7 @@
 import { searchBox, hits, index } from 'instantsearch.js/es/widgets/index.js'
 
 export function widgetsForNavLiveSearch (navbar: Element) {
+  const env = document.querySelector<HTMLElement>('#rails-env')?.textContent || 'development'
   const searchContainer = navbar.querySelector<HTMLElement>('.search-box')
   const hitsContainer = navbar.querySelector<HTMLElement>('.hits')
   if (!searchContainer || !hitsContainer) return []
@@ -48,7 +49,7 @@ export function widgetsForNavLiveSearch (navbar: Element) {
       }
     }),
     index({
-      indexName: 'Movie'
+      indexName: `Movie_${env}`
     })
   ]
 }

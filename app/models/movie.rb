@@ -15,7 +15,7 @@ class Movie < ApplicationRecord
     CANCELLED = "cancelled"
   ]
 
-  typesense do
+  typesense per_environment: true do
     attributes :original_title, :translated_title
 
     attribute :alternative_names do

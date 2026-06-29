@@ -96,6 +96,9 @@ group :development, :test do
 
   # Run specs in parallel
   gem "parallel_tests"
+
+  # Mock HTTP requests
+  gem "webmock", "~> 3.26"
 end
 
 group :development do

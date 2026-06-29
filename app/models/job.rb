@@ -5,7 +5,7 @@ class Job < ApplicationRecord
   CREATOR = "Creator"
   WRITER = "Writer"
 
-  typesense do
+  typesense per_environment: true do
     attributes :department, :name
 
     predefined_fields [

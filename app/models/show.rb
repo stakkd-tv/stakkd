@@ -24,7 +24,7 @@ class Show < ApplicationRecord
     VIDEO = "video"
   ]
 
-  typesense do
+  typesense per_environment: true do
     attributes :original_title, :translated_title
 
     attribute :alternative_names do

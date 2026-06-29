@@ -12,6 +12,7 @@ export default class extends Controller {
   declare readonly hasUserTarget: boolean
 
   connect () {
+    const env = document.querySelector<HTMLElement>('#rails-env')?.textContent || 'development'
     const widgets = widgetsForNavLiveSearch(this.element)
     const additionalSearchParameters = {
       per_page: 3
@@ -23,7 +24,7 @@ export default class extends Controller {
     setupLiveSearch({
       widgets,
       union: true,
-      indexName: 'Show',
+      indexName: `Show_${env}`,
       additionalSearchParameters,
       collectionSpecificSearchParameters
     })

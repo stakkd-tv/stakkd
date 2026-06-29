@@ -115,6 +115,9 @@ GEM
     coderay (1.1.3)
     concurrent-ruby (1.3.6)
     connection_pool (3.0.2)
+    crack (1.0.1)
+      bigdecimal
+      rexml
     crass (1.0.6)
     cssbundling-rails (1.4.3)
       railties (>= 6.0.0)
@@ -215,6 +218,7 @@ GEM
       guard (~> 2.1)
       guard-compat (~> 1.1)
       rspec (>= 2.99.0, < 4.0)
+    hashdiff (1.2.1)
     hashie (5.0.0)
     httparty (0.24.0)
       csv
@@ -575,6 +579,10 @@ GEM
       actionview (>= 8.0.0)
       bindex (>= 0.4.0)
       railties (>= 8.0.0)
+    webmock (3.26.2)
+      addressable (>= 2.8.0)
+      crack (>= 0.3.2)
+      hashdiff (>= 0.4.0, < 2.0.0)
     websocket (1.2.11)
     websocket-driver (0.8.0)
       base64
@@ -636,6 +644,7 @@ DEPENDENCIES
   tzinfo-data
   vimeo (~> 1.5)
   web-console
+  webmock (~> 3.26)
   will_paginate (~> 4.0)
 
 BUNDLED WITH

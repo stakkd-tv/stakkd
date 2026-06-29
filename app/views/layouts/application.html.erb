@@ -35,6 +35,7 @@
   </head>
 
   <body class="bg-background text-white">
+    <span id="rails-env" class="hidden"><%= Rails.env %></span>
     <%= render "layouts/nav" %>
     <span id="typesense-config" class="hidden"
       data-api-key="<%= ENV["TYPESENSE_SEARCH_API_KEY"] %>"

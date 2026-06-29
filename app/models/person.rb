@@ -22,7 +22,7 @@ class Person < ApplicationRecord
     NON_BINARY = "non-binary"
   ]
 
-  typesense do
+  typesense per_environment: true do
     attributes :original_name, :translated_name
 
     # alias is used internally, so we use aka instead
