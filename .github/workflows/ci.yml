@@ -94,7 +94,7 @@ jobs:
           bin/rails db:create db:schema:load db:migrate
           bundle exec rake parallel:create
           bundle exec rake parallel:prepare
-          bundle exec rake reindex:models
+          bundle exec rake typesense:reindex
           bin/parallel-test --tag "${{ matrix.rspec_tag }}" || echo "rspec_failed=true" >> $GITHUB_ENV
       - name: Upload screenshots on fail
         if: env.rspec_failed == 'true'
