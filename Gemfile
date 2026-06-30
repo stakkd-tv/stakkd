@@ -63,7 +63,7 @@ gem "vimeo", "~> 1.5"
 gem "will_paginate", "~> 4.0"
 
 # Lightning fast search backend
-gem "typesense-rails", "~> 1.0.0.rc4"
+gem "typesense-rails", "~> 1.0.0.rc8"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
