@@ -1366,7 +1366,7 @@ __metadata:
     eslint-plugin-n: "npm:^17.24.0"
     eslint-plugin-promise: "npm:^7.3.0"
     flatpickr: "npm:^4.6.13"
-    instantsearch.js: "npm:^4.103.0"
+    instantsearch.js: "npm:^4.104.0"
     marked: "npm:^18.0.5"
     sanitize-html: "npm:^2.17.4"
     slim-select: "npm:^3.4.3"
@@ -2874,19 +2874,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"instantsearch-ui-components@npm:0.32.0":
-  version: 0.32.0
-  resolution: "instantsearch-ui-components@npm:0.32.0"
+"instantsearch-ui-components@npm:0.33.0":
+  version: 0.33.0
+  resolution: "instantsearch-ui-components@npm:0.33.0"
   dependencies:
     "@swc/helpers": "npm:0.5.18"
     markdown-to-jsx: "npm:^7.7.15"
-  checksum: 10c0/5734736d69c3b6e5322747d9819bc0fd16e0e47f6df0e39917c391d5ac60e2ef7a8b91fe1cddd02cb143127f94d894b996354da9e17ca804311a9a8cd59b8f59
+  checksum: 10c0/5a75b371477589433f2c90a286db706b7ab3f9bf47c61888f709fcee5796118d431f8b1b9f723b51a71dd3008ae7f2538f2e7a3cea8568e45864ffa1c692cbc3
   languageName: node
   linkType: hard
 
-"instantsearch.js@npm:^4.103.0":
-  version: 4.103.0
-  resolution: "instantsearch.js@npm:4.103.0"
+"instantsearch.js@npm:^4.104.0":
+  version: 4.104.0
+  resolution: "instantsearch.js@npm:4.104.0"
   dependencies:
     "@algolia/events": "npm:^4.0.1"
     "@swc/helpers": "npm:0.5.18"
@@ -2897,14 +2897,14 @@ __metadata:
     algoliasearch-helper: "npm:3.29.1"
     hogan.js: "npm:^3.0.2"
     htm: "npm:^3.0.0"
-    instantsearch-ui-components: "npm:0.32.0"
+    instantsearch-ui-components: "npm:0.33.0"
     preact: "npm:^10.10.0"
     qs: "npm:^6.5.1"
     react: "npm:>= 0.14.0"
     search-insights: "npm:^2.17.2"
   peerDependencies:
     algoliasearch: ">= 3.1 < 6"
-  checksum: 10c0/92d59e9cbb01db0612742a2f2d813b55968badaac11eb810d72312e625c87ea429d040a12f765f1ebbd563e1505b5de2f66bc1d9bdbd61abbdc32ea4c3a4b43d
+  checksum: 10c0/cfc652dfef9152893e4272305af31e87a8d974d7de619a42f80b2b750da421f54d1c43971227da42984eaca03e98683e8c357aed253230f6a5daf82530435068
   languageName: node
   linkType: hard
 

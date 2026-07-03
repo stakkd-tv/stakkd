@@ -30,7 +30,7 @@
     "algoliasearch": "^5.55.1",
     "easymde": "^2.21.0",
     "flatpickr": "^4.6.13",
-    "instantsearch.js": "^4.103.0",
+    "instantsearch.js": "^4.104.0",
     "marked": "^18.0.5",
     "sanitize-html": "^2.17.4",
     "slim-select": "^3.4.3",
