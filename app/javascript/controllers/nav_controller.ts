@@ -28,6 +28,8 @@ export default class extends Controller {
     const hits = this.element.querySelector<HTMLInputElement>('.hits')
     if (!searchInput || !hits) return
 
+    hits.classList.add('hidden')
+
     this.searchWrapperTarget.addEventListener('click', () => {
       searchInput.focus()
     })
