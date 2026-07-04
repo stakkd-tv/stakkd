@@ -70,7 +70,15 @@ export default class extends Controller {
     })
 
     hits.addEventListener('click', () => {
-      searchInput.blur()
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur()
+      }
+      hideHits()
+    })
+
+    const el = this.element as HTMLElement
+    el.addEventListener('keydown', (event: KeyboardEvent) => {
+      this.handleKeydown(event, hits, searchInput)
     })
 
     const sidebar = document.getElementById('sidebar')
@@ -86,6 +94,43 @@ export default class extends Controller {
         sidebar.classList.add('flex')
         sidebar.classList.remove('hidden')
       })
+    }
+  }
+
+  handleKeydown (event: KeyboardEvent, hits: HTMLElement, searchInput: HTMLInputElement) {
+    if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp' && event.key !== 'Enter') return
+
+    const links = Array.from(hits.querySelectorAll<HTMLAnchorElement>('a'))
+    if (links.length === 0) return
+
+    const activeElement = document.activeElement
+
+    if (activeElement === searchInput) {
+      if (event.key === 'ArrowDown') {
+        event.preventDefault()
+        links[0].focus()
+      } else if (event.key === 'Enter') {
+        event.preventDefault()
+        links[0].click()
+      }
+    } else if (activeElement instanceof HTMLAnchorElement && links.includes(activeElement)) {
+      if (event.key === 'ArrowDown') {
+        event.preventDefault()
+        const currentIndex = links.indexOf(activeElement)
+        if (currentIndex < links.length - 1) {
+          links[currentIndex + 1].focus()
+        } else {
+          searchInput.focus()
+        }
+      } else if (event.key === 'ArrowUp') {
+        event.preventDefault()
+        const currentIndex = links.indexOf(activeElement)
+        if (currentIndex > 0) {
+          links[currentIndex - 1].focus()
+        } else {
+          searchInput.focus()
+        }
+      }
     }
   }
 }

@@ -26,8 +26,8 @@ export function widgetsForNavLiveSearch (navbar: Element) {
       },
       templates: {
         item: `
-          <a href="/{{type}}s/{{id}}">
-            <div class="flex items-center p-4 hover:bg-pop/75 cursor-pointer">
+          <a href="/{{type}}s/{{id}}" class="group outline-none block">
+            <div class="flex items-center p-4 hover:bg-pop/75 group-focus:bg-pop/75 cursor-pointer">
               <img src="/{{type}}s/{{id}}/poster" align="left" alt="" loading="lazy" class="aspect-2/3 w-8 mr-4" />
               <div class="hit-name">
                 {{translated_title}}
