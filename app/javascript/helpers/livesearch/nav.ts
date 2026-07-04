@@ -39,11 +39,11 @@ export function widgetsForNavLiveSearch (navbar: Element) {
           if (!state.query || state.query === '*') {
             return ''
           }
-          return '<div class="border-l-3 border-r-3 border-b-3 border-pop p-4 cursor-default">No results</div>'
+          return '<div class="border-l-3 border-r-3 border-b-3 border-pop p-4 cursor-default">No movies or shows found</div>'
         }
       },
       cssClasses: {
-        root: 'bg-background/75 border-l-3 border-r-3 border-b-1 border-pop flex flex-col gap-4',
+        root: 'bg-background/75 border-l-3 border-r-3 border-b-3 border-pop flex flex-col gap-4',
         emptyRoot: 'border-none',
         list: 'flex flex-col gap-2'
       }

@@ -15,18 +15,14 @@ export default class extends Controller {
     const env = document.querySelector<HTMLElement>('#rails-env')?.textContent || 'development'
     const widgets = widgetsForNavLiveSearch(this.element)
     const additionalSearchParameters = {
-      per_page: 3
-    }
-    const collectionSpecificSearchParameters = {
-      Movie: { query_by: 'translated_title,original_title,alternative_names' },
-      Show: { query_by: 'translated_title,original_title,alternative_names' }
+      per_page: 3,
+      query_by: 'translated_title,original_title,alternative_names'
     }
     setupLiveSearch({
       widgets,
       union: true,
       indexName: `Show_${env}`,
-      additionalSearchParameters,
-      collectionSpecificSearchParameters
+      additionalSearchParameters
     })
     const searchInput = this.element.querySelector<HTMLInputElement>('.nav-search')
     const hits = this.element.querySelector<HTMLInputElement>('.hits')
@@ -36,18 +32,45 @@ export default class extends Controller {
       searchInput.focus()
     })
 
+    const hideHits = () => {
+      this.buttonTargets.forEach((btn) => {
+        btn.classList.remove('hidden!')
+      })
+      hits.style.width = (this.searchWrapperTarget.getBoundingClientRect().width + 3) + 'px'
+      hits.classList.add('hidden')
+    }
+
+    const isFocusInsideSearch = (target: EventTarget | null) => {
+      if (!target) return false
+      return target === searchInput || hits.contains(target as Node)
+    }
+
     searchInput.addEventListener('focusin', () => {
       this.buttonTargets.forEach((btn) => {
         btn.classList.add('hidden!')
       })
       hits.style.width = (this.searchWrapperTarget.getBoundingClientRect().width + 3) + 'px'
+      hits.classList.remove('hidden')
     })
 
-    searchInput.addEventListener('focusout', () => {
-      this.buttonTargets.forEach((btn) => {
-        btn.classList.remove('hidden!')
-      })
-      hits.style.width = (this.searchWrapperTarget.getBoundingClientRect().width + 3) + 'px'
+    searchInput.addEventListener('focusout', (event: FocusEvent) => {
+      if (isFocusInsideSearch(event.relatedTarget)) return
+      hideHits()
+    })
+
+    hits.addEventListener('focusout', (event: FocusEvent) => {
+      if (isFocusInsideSearch(event.relatedTarget)) return
+      hideHits()
+    })
+
+    hits.addEventListener('mousedown', (event: MouseEvent) => {
+      if (event.button === 0) {
+        event.preventDefault()
+      }
+    })
+
+    hits.addEventListener('click', () => {
+      searchInput.blur()
     })
 
     const sidebar = document.getElementById('sidebar')
