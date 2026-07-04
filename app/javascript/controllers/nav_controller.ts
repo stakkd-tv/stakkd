@@ -1,6 +1,6 @@
 import { Controller } from '@hotwired/stimulus'
 import { setupLiveSearch } from '../helpers/livesearch'
-import { NAV_SEARCH_PLACEHOLDER, NAV_SEARCHING_PLACEHOLDER, widgetsForNavLiveSearch } from '../helpers/livesearch/nav'
+import { buildSearchUrl, NAV_SEARCH_PLACEHOLDER, NAV_SEARCHING_PLACEHOLDER, widgetsForNavLiveSearch } from '../helpers/livesearch/nav'
 
 // Connects to data-controller="nav"
 export default class extends Controller {
@@ -122,7 +122,10 @@ export default class extends Controller {
         links[0].focus()
       } else if (event.key === 'Enter') {
         event.preventDefault()
-        links[0].click()
+        const query = searchInput.value.trim()
+        if (query && query !== '*') {
+          window.location.href = buildSearchUrl(query)
+        }
       }
     } else if (activeElement instanceof HTMLAnchorElement && links.includes(activeElement)) {
       if (event.key === 'ArrowDown') {
