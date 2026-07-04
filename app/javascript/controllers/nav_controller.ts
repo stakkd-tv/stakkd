@@ -1,6 +1,6 @@
 import { Controller } from '@hotwired/stimulus'
 import { setupLiveSearch } from '../helpers/livesearch'
-import { widgetsForNavLiveSearch } from '../helpers/livesearch/nav'
+import { NAV_SEARCH_PLACEHOLDER, NAV_SEARCHING_PLACEHOLDER, widgetsForNavLiveSearch } from '../helpers/livesearch/nav'
 
 // Connects to data-controller="nav"
 export default class extends Controller {
@@ -48,6 +48,7 @@ export default class extends Controller {
     }
 
     searchInput.addEventListener('focusin', () => {
+      searchInput.placeholder = NAV_SEARCHING_PLACEHOLDER
       this.buttonTargets.forEach((btn) => {
         btn.classList.add('hidden!')
       })
@@ -56,6 +57,7 @@ export default class extends Controller {
     })
 
     searchInput.addEventListener('focusout', (event: FocusEvent) => {
+      searchInput.placeholder = NAV_SEARCH_PLACEHOLDER
       if (isFocusInsideSearch(event.relatedTarget)) return
       hideHits()
     })
@@ -81,6 +83,13 @@ export default class extends Controller {
     const el = this.element as HTMLElement
     el.addEventListener('keydown', (event: KeyboardEvent) => {
       this.handleKeydown(event, hits, searchInput)
+    })
+
+    document.addEventListener('keydown', (event: KeyboardEvent) => {
+      if (event.key === '/' && document.activeElement !== searchInput) {
+        event.preventDefault()
+        searchInput.focus()
+      }
     })
 
     const sidebar = document.getElementById('sidebar')

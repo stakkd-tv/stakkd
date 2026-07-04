@@ -1,6 +1,9 @@
 import { searchBox, hits, index } from 'instantsearch.js/es/widgets/index.js'
 import { Widget, IndexWidget } from 'instantsearch.js'
 
+export const NAV_SEARCH_PLACEHOLDER = 'Type / to begin your exploration...'
+export const NAV_SEARCHING_PLACEHOLDER = 'What are you looking for today?'
+
 export function widgetsForNavLiveSearch (navbar: Element): (Widget | IndexWidget)[] {
   const env = document.querySelector<HTMLElement>('#rails-env')?.textContent || 'development'
   const searchContainer = navbar.querySelector<HTMLElement>('.search-box')
@@ -28,7 +31,7 @@ export function widgetsForNavLiveSearch (navbar: Element): (Widget | IndexWidget
   return [
     searchBox({
       container: searchContainer,
-      placeholder: 'Start typing to begin your exploration...',
+      placeholder: NAV_SEARCH_PLACEHOLDER,
       showSubmit: false,
       showReset: false,
       cssClasses: {
