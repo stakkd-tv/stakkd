@@ -86,7 +86,14 @@ export default class extends Controller {
     })
 
     document.addEventListener('keydown', (event: KeyboardEvent) => {
-      if (event.key === '/' && document.activeElement !== searchInput) {
+      const active = document.activeElement as HTMLElement | null
+      const isEditable =
+        active instanceof HTMLInputElement ||
+        active instanceof HTMLTextAreaElement ||
+        active instanceof HTMLSelectElement ||
+        active?.isContentEditable
+
+      if (event.key === '/' && active !== searchInput && !isEditable) {
         event.preventDefault()
         searchInput.focus()
       }
