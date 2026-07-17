@@ -21,6 +21,13 @@ RSpec.describe Person, type: :model do
 
   it_behaves_like "a model with galleries", :person, [:images]
 
+  describe "#to_s" do
+    it "returns the translated name" do
+      person = Person.new(translated_name: "John Doe")
+      expect(person.to_s).to eq("John Doe")
+    end
+  end
+
   describe "#image_url" do
     context "when there are no images" do
       it "returns nil" do

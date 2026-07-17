@@ -47,6 +47,8 @@ class Person < ApplicationRecord
   validates_inclusion_of :known_for, in: CREDITS, allow_blank: true, allow_nil: true
   validates_inclusion_of :gender, in: GENDERS
 
+  def to_s = translated_name
+
   def image_url(variant: nil)
     ActiveStorage::Current.url_options = Rails.application.config.action_mailer.default_url_options
     img = image(variant:, use_fallback: false)
