@@ -1,6 +1,15 @@
 class Company < ApplicationRecord
   include Slugify
   include HasGalleries
+  include Typesense
+
+  typesense per_environment: true do
+    attributes :name
+
+    predefined_fields [
+      {"name" => "name", "type" => "string"}
+    ]
+  end
 
   # Associations
   belongs_to :country

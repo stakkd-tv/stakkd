@@ -1,5 +1,15 @@
 class User < ApplicationRecord
+  include Typesense
+
   USERNAME_EXCLUSIONS = ["me", "admin"].freeze
+
+  typesense per_environment: true do
+    attributes :username
+
+    predefined_fields [
+      {"name" => "username", "type" => "string"}
+    ]
+  end
 
   has_secure_password
 

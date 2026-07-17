@@ -25,8 +25,10 @@ export function widgetsForNavLiveSearch (navbar: Element): (Widget | IndexWidget
         if (query && query !== '*') {
           seeAllBtn.href = buildSearchUrl(query)
           seeAllBtn.classList.remove('hidden')
+          seeAllBtn.classList.add('block')
         } else {
           seeAllBtn.classList.add('hidden')
+          seeAllBtn.classList.remove('block')
         }
       }
     }
@@ -65,13 +67,13 @@ export function widgetsForNavLiveSearch (navbar: Element): (Widget | IndexWidget
           if (!state.query || state.query === '*') {
             return ''
           }
-          return '<div class="border-l-3 border-r-3 border-b border-pop p-4 cursor-default">No movies or shows found</div>'
+          return '<div class="border-l-3 border-r-3 border-b border-pop p-4 cursor-default">No movies or shows found. Press enter to search across all records.</div>'
         }
       },
       cssClasses: {
-        root: 'bg-background/75 border-l-3 border-r-3 border-b border-pop flex flex-col gap-4',
+        root: 'border-l-3 border-r-3 border-b border-pop flex flex-col',
         emptyRoot: 'border-none',
-        list: 'flex flex-col gap-2'
+        list: 'flex flex-col'
       }
     }),
     index({
