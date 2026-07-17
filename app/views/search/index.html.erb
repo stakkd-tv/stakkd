@@ -5,22 +5,30 @@
     <div class="col-span-1 h-fit mb-4 md:mb-0 bg-background-darker rounded-lg p-4 flex flex-col gap-10 items-center md:items-start">
       <h2 class="text-xl font-bold">Search - <%= params[:q] %></h2>
       <div class="flex flex-col gap-4 w-full">
-        <% @tabs_with_results.each do |hash| %>
+        <% @tabs_with_results.each_with_index do |hash, index| %>
           <button class="text-left w-full px-2 py-1 rounded-lg cursor-pointer"
-            data-sidetab-active="false"
-            data-initial-results="<%= hash[:initial_results].to_json %>"
+            data-sidetab-active="<%= index == 0 ? "true" : "false" %>"
             data-search-results-target="tab"
             data-tab="<%= hash[:tab] %>"
-            data-action="click->search-results#updateTab"
-            data-fallback-src="<%= image_path(hash[:fallback]) %>">
+            data-action="click->search-results#updateTab">
             <%= hash[:tab].humanize %> <small>(<%= hash[:count] %>)</small>
           </button>
         <% end %>
       </div>
     </div>
     <div class="col-span-3 flex flex-col gap-8">
-      <div class="grid grid-cols-2 md:grid-cols-3 gap-4" id="search-results" data-search-results-target="resultsContainer">
-      </div>
+      <% @tabs_with_results.each_with_index do |hash, index| %>
+        <div id="<%= hash[:tab] %>-results-container" class="<%= 'hidden' unless index == 0 %>" data-search-results-target="resultsGrid">
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-4" id="<%= hash[:tab] %>-results">
+            <% hash[:initial_results].each do |result| %>
+              <%= render "search/result", result:, tab: hash[:tab] %>
+            <% end %>
+          </div>
+          <% if hash[:count] > ApplicationController::GLOBAL_PER_PAGE %>
+            <%= turbo_frame_tag "load_more_#{hash[:tab]}", src: search_path(id: hash[:tab], q: params[:q], page: 2, format: :turbo_stream), loading: :lazy %>
+          <% end %>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>
