@@ -108,6 +108,7 @@ Rails.application.routes.draw do
     end
   end
   resources :jobs, only: [:index]
+  resources :search, only: [:index, :show]
 
   get "about" => "pages#about", :as => :about
   get "contribute" => "pages#contribute", :as => :contribute
