@@ -4,7 +4,7 @@ class ShowsController < ApplicationController
 
   def index
     @show_filter = ::Filters::Shows.new(params)
-    @shows = @show_filter.filter.paginate(page: params[:page], per_page: 12)
+    @shows = @show_filter.filter.paginate(page: params[:page], per_page: ApplicationController::GLOBAL_PER_PAGE)
     @filter_params = @show_filter.to_params
 
     @tags = ActsAsTaggableOn::Tag

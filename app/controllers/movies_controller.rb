@@ -4,7 +4,7 @@ class MoviesController < ApplicationController
 
   def index
     @movie_filter = ::Filters::Movies.new(params)
-    @movies = @movie_filter.filter.paginate(page: params[:page], per_page: 12)
+    @movies = @movie_filter.filter.paginate(page: params[:page], per_page: ApplicationController::GLOBAL_PER_PAGE)
     @filter_params = @movie_filter.to_params
 
     @tags = ActsAsTaggableOn::Tag

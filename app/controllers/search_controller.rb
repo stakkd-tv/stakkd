@@ -44,7 +44,7 @@ class SearchController < ApplicationController
     multi_search_params = {
       searches: searches
     }
-    common_search_params = {q: params[:q], per_page: 12}
+    common_search_params = {q: params[:q], per_page: ApplicationController::GLOBAL_PER_PAGE}
     response = Typesense.client.multi_search.perform(multi_search_params, common_search_params)
     response["results"]
   rescue

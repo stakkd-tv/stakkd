@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   include Authentication
 
+  GLOBAL_PER_PAGE = 12
+
   unless Rails.application.config.consider_all_requests_local
     # 500
     rescue_from StandardError, with: :server_error

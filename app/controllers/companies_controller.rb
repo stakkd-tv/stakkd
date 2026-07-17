@@ -6,7 +6,7 @@ class CompaniesController < ApplicationController
 
   def index
     companies_filter = ::Filters::Companies.new(params)
-    @companies = companies_filter.filter.with_attached_logos.paginate(page: params[:page], per_page: 12)
+    @companies = companies_filter.filter.with_attached_logos.paginate(page: params[:page], per_page: ApplicationController::GLOBAL_PER_PAGE)
     @filter_params = companies_filter.to_params
   end
 
