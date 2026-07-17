@@ -46,9 +46,16 @@ class User < ApplicationRecord
     User.where("LOWER(username) = ?", username).first
   end
 
+  def to_s = username
+
+  def slug = to_param
+
   def to_param = username
 
-  def avatar = profile_picture.attached? ? profile_picture : "user.png"
+  def avatar(use_fallback: true)
+    fallback = use_fallback ? "user.png" : nil
+    profile_picture.attached? ? profile_picture : fallback
+  end
 
   def hero = background.attached? ? background : "16:9.png"
 

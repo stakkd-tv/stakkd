@@ -92,6 +92,20 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe "#to_s" do
+    it "returns the username" do
+      user = FactoryBot.build(:user, username: "testuser")
+      expect(user.to_s).to eq("testuser")
+    end
+  end
+
+  describe "#slug" do
+    it "returns the username" do
+      user = FactoryBot.build(:user, username: "testuser")
+      expect(user.slug).to eq("testuser")
+    end
+  end
+
   describe "#to_param" do
     it "returns the username" do
       user = FactoryBot.create(:user, username: "test")
@@ -111,6 +125,13 @@ RSpec.describe User, type: :model do
       it "returns a placeholder profile picture" do
         user = FactoryBot.create(:user)
         expect(user.avatar).to eq "user.png"
+      end
+
+      context "when use_fallback is false" do
+        it "returns nil" do
+          user = FactoryBot.create(:user)
+          expect(user.avatar(use_fallback: false)).to be_nil
+        end
       end
     end
   end
