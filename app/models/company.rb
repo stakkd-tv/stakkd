@@ -19,6 +19,8 @@ class Company < ApplicationRecord
   # Validations
   validates_presence_of :name, :name_kebab
 
+  def to_s = name
+
   def logo_url
     ActiveStorage::Current.url_options = Rails.application.config.action_mailer.default_url_options
     logo.try(:url)

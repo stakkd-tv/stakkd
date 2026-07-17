@@ -15,6 +15,13 @@ RSpec.describe Company, type: :model do
 
   it_behaves_like "a model with galleries", :company, [:logos]
 
+  describe "#to_s" do
+    it "returns the company name" do
+      company = Company.new(name: "Acme Corp")
+      expect(company.to_s).to eq("Acme Corp")
+    end
+  end
+
   describe "#logo_url" do
     context "when there are no logos" do
       it "returns nil" do
