@@ -25,7 +25,7 @@
             <% end %>
           </div>
           <% if hash[:count] > ApplicationController::GLOBAL_PER_PAGE %>
-            <%= turbo_frame_tag "load_more_#{hash[:tab]}", src: search_path(id: hash[:tab], q: params[:q], page: 2, format: :turbo_stream), loading: :lazy %>
+            <%= render "search/load_more", tab_name: hash[:tab], page: 2 %>
           <% end %>
         </div>
       <% end %>

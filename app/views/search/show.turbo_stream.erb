@@ -6,7 +6,7 @@
 
 <% if @has_more %>
   <%= turbo_stream.replace "load_more_#{params[:id]}" do %>
-    <%= turbo_frame_tag "load_more_#{params[:id]}", src: search_path(id: params[:id], q: params[:q], page: @page + 1, format: :turbo_stream), loading: :lazy %>
+    <%= render "search/load_more", tab_name: params[:id], page: @page + 1 %>
   <% end %>
 <% else %>
   <%= turbo_stream.remove "load_more_#{params[:id]}" %>
