@@ -1369,7 +1369,7 @@ __metadata:
     instantsearch.js: "npm:^4.104.0"
     marked: "npm:^18.0.5"
     sanitize-html: "npm:^2.17.4"
-    slim-select: "npm:^3.4.3"
+    slim-select: "npm:^4.0.6"
     tabulator-tables: "npm:^6.4.0"
     tailwindcss: "npm:^4.3.2"
     tsc-watch: "npm:^7.2.0"
@@ -4278,9 +4278,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"slim-select@npm:^3.4.3":
-  version: 3.4.3
-  resolution: "slim-select@npm:3.4.3"
+"slim-select@npm:^4.0.6":
+  version: 4.0.6
+  resolution: "slim-select@npm:4.0.6"
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
@@ -4292,7 +4292,7 @@ __metadata:
       optional: true
     vue:
       optional: true
-  checksum: 10c0/cdc9a683884deff9f731f2a969e91cae37d139a4342a525511d56ead6956cbcb4e96b5e2ffc459e55934582a95f587058a6b17fe1c567c6bc3e19e5dd2eabcd4
+  checksum: 10c0/647c903a168dabde7b7bd5af692fe0317e47be0afc40ce68809f7325619ba5ba95efbec36b29bf2d80b989bf5d03a9f57a8a405f33fdfb765ab2b07d9702d75d
   languageName: node
   linkType: hard
 
