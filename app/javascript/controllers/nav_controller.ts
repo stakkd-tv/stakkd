@@ -1,6 +1,7 @@
 import { Controller } from '@hotwired/stimulus'
 import { setupLiveSearch } from '../helpers/livesearch'
 import { buildSearchUrl, NAV_SEARCH_PLACEHOLDER, NAV_SEARCHING_PLACEHOLDER, widgetsForNavLiveSearch } from '../helpers/livesearch/nav'
+import { getRailsEnv } from '../helpers/rails'
 
 // Connects to data-controller="nav"
 export default class extends Controller {
@@ -12,7 +13,7 @@ export default class extends Controller {
   declare readonly hasUserTarget: boolean
 
   connect () {
-    const env = document.querySelector<HTMLElement>('#rails-env')?.textContent || 'development'
+    const env = getRailsEnv()
     const widgets = widgetsForNavLiveSearch(this.element)
     const additionalSearchParameters = {
       per_page: 3,
