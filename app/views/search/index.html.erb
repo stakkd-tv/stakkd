@@ -7,7 +7,7 @@
       <div class="flex flex-col gap-4 w-full">
         <% @tabs_with_results.each_with_index do |hash, index| %>
           <button class="text-left w-full px-2 py-1 rounded-lg cursor-pointer"
-            data-sidetab-active="<%= index == 0 ? "true" : "false" %>"
+            data-sidetab-active="<%= (index == 0) ? "true" : "false" %>"
             data-search-results-target="tab"
             data-tab="<%= hash[:tab] %>"
             data-action="click->search-results#updateTab">
@@ -18,7 +18,7 @@
     </div>
     <div class="col-span-3 flex flex-col gap-8">
       <% @tabs_with_results.each_with_index do |hash, index| %>
-        <div id="<%= hash[:tab] %>-results-container" class="<%= 'hidden' unless index == 0 %>" data-search-results-target="resultsGrid">
+        <div id="<%= hash[:tab] %>-results-container" class="<%= "hidden" unless index == 0 %>" data-search-results-target="resultsGrid">
           <div class="grid grid-cols-2 md:grid-cols-3 gap-4" id="<%= hash[:tab] %>-results">
             <% hash[:initial_results].each do |result| %>
               <%= render "search/result", result:, tab: hash[:tab] %>
