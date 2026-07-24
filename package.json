@@ -32,6 +32,7 @@
     "flatpickr": "^4.6.13",
     "instantsearch.js": "^4.104.0",
     "marked": "^18.0.5",
+    "marked-inline-spoilers": "^1.0.1",
     "sanitize-html": "^2.17.4",
     "slim-select": "^3.4.3",
     "tabulator-tables": "^6.4.0",

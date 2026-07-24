@@ -1368,6 +1368,7 @@ __metadata:
     flatpickr: "npm:^4.6.13"
     instantsearch.js: "npm:^4.104.0"
     marked: "npm:^18.0.5"
+    marked-inline-spoilers: "npm:^1.0.1"
     sanitize-html: "npm:^2.17.4"
     slim-select: "npm:^3.4.3"
     tabulator-tables: "npm:^6.4.0"
@@ -3459,6 +3460,15 @@ __metadata:
     react:
       optional: true
   checksum: 10c0/581c5ee1b3c79445f9f8369dc2882d0289507e702b2fcf2bc276b163a984cdcca2d8463a609c9bf310a31dcbf10c3210721c42c9173d4f12da675d3b56243736
+  languageName: node
+  linkType: hard
+
+"marked-inline-spoilers@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "marked-inline-spoilers@npm:1.0.1"
+  peerDependencies:
+    marked: ">=1 <19"
+  checksum: 10c0/2377d692682f7c24582074804c79eff5dd9ef2b872665cd9b9d4556456677e5cfb9f5c47fe545f3cb6d5e5a41242d7912eb28c62b7d27d52c9ec24f610930714
   languageName: node
   linkType: hard
 
