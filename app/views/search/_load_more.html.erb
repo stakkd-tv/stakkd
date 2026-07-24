@@ -1,0 +1,1 @@
+<%= turbo_frame_tag "load_more_#{tab_name}", src: search_path(id: tab_name, q: params[:q], page: page, format: :turbo_stream), loading: :lazy %>

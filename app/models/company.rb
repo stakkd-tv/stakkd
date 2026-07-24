@@ -4,10 +4,11 @@ class Company < ApplicationRecord
   include Typesense
 
   typesense per_environment: true do
-    attributes :name
+    attributes :name, :slug
 
     predefined_fields [
-      {"name" => "name", "type" => "string"}
+      {"name" => "name", "type" => "string"},
+      {"name" => "slug", "type" => "string"}
     ]
   end
 

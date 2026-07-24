@@ -11,7 +11,7 @@ class PeopleController < ApplicationController
         sort_by: "translated_name:asc"
       })
     else
-      @people = @people_filter.filter.with_attached_images.paginate(page: params[:page], per_page: 12)
+      @people = @people_filter.filter.with_attached_images.paginate(page: params[:page], per_page: ApplicationController::GLOBAL_PER_PAGE)
       @filter_params = @people_filter.to_params
     end
   end

@@ -1,0 +1,13 @@
+<%= turbo_stream.append "#{params[:id]}-results" do %>
+  <% @results.each do |result| %>
+    <%= render "search/result", result:, tab: params[:id] %>
+  <% end %>
+<% end %>
+
+<% if @has_more %>
+  <%= turbo_stream.replace "load_more_#{params[:id]}" do %>
+    <%= render "search/load_more", tab_name: params[:id], page: @page + 1 %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.remove "load_more_#{params[:id]}" %>
+<% end %>

@@ -25,7 +25,7 @@ class Show < ApplicationRecord
   ]
 
   typesense per_environment: true do
-    attributes :original_title, :translated_title
+    attributes :original_title, :translated_title, :slug
 
     attribute :alternative_names do
       AlternativeName.where(record: self).map { it.name }.join(", ")
@@ -34,7 +34,8 @@ class Show < ApplicationRecord
     predefined_fields [
       {"name" => "original_title", "type" => "string"},
       {"name" => "translated_title", "type" => "string", "sort" => true},
-      {"name" => "alternative_names", "type" => "string"}
+      {"name" => "alternative_names", "type" => "string"},
+      {"name" => "slug", "type" => "string"}
     ]
   end
 
