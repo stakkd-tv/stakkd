@@ -41,6 +41,7 @@ RSpec.feature "Settings", type: :system, js: true do
 
   scenario "Sanitizing markdown" do
     markdown = <<~MARKDOWN
+      ||some spoiler text||
       <div align="center" class="bogus">Div centered</div>
       <p align="center" class="bogus">P centered</p>
       <img align="center" onerror="alert('error')" src="https://github.com/crxssed7.png"/>
@@ -56,6 +57,7 @@ RSpec.feature "Settings", type: :system, js: true do
       # Unsafe attributes are stripped, safe ones are kept
       expect(page).not_to have_css("[class='bogus']")
       expect(page).not_to have_css("[onerror]")
+      expect(page).to have_css("span.spoiler", text: "some spoiler text")
       expect(page).to have_css("div[align='center']")
       expect(page).to have_css("p[align='center']")
       expect(page).to have_css("img[align='center'][src='https://github.com/crxssed7.png']")

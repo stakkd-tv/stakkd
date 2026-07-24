@@ -1,6 +1,7 @@
 import { Controller } from '@hotwired/stimulus'
 import { marked } from 'marked'
 import { sanitize } from '../helpers/sanitize_html'
+import { MARKED_CONFIG } from '../helpers/marked'
 
 // Connects to data-controller="markdown-renderer"
 export default class extends Controller {
@@ -9,6 +10,7 @@ export default class extends Controller {
   declare markdownValue: string
 
   connect () {
+    marked.use(MARKED_CONFIG)
     const html = marked.parse(this.markdownValue, { gfm: true, breaks: false }) as string
     this.element.innerHTML = sanitize(html)
   }

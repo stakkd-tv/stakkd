@@ -52,6 +52,8 @@ biography = <<~HEREDOC
   	<h3>Certain HTML elements work too :)</h3>
   </center>
   <script>alert("but no malicious ones!")</script>
+
+  ||Spoilers work too!|| <- Hover over this!
 HEREDOC
 User.create(username: "crxssed", email_address: "test@example.com", password: "123456", biography:, confirmed_at: Time.current, profile_picture: Rack::Test::UploadedFile.new(File.join(Rails.root, "spec", "support", "assets", "300x450.png")))
 User.create(username: "other_user", email_address: "test2@example.com", password: "123456", confirmed_at: Time.current)

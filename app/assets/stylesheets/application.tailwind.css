@@ -276,6 +276,19 @@
                 border-bottom: 1px solid var(--color-pop);
             }
         }
+
+        span.spoiler {
+            display: inline;
+            background-color: var(--color-pop);
+            color: var(--color-pop);
+            border-radius: var(--radius-sm);
+            padding: 0 5px;
+            cursor: help;
+        }
+
+        span.spoiler:hover {
+            background-color: transparent;
+        }
     }
 }
 

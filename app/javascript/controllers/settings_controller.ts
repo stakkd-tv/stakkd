@@ -1,6 +1,7 @@
 import { Controller } from '@hotwired/stimulus'
 import EasyMDE from 'easymde'
 import { sanitize } from '../helpers/sanitize_html'
+import { MARKED_CONFIG } from '../helpers/marked'
 
 // Connects to data-controller="settings"
 export default class extends Controller {
@@ -20,7 +21,8 @@ export default class extends Controller {
       spellChecker: false,
       previewClass: 'rendered-markdown',
       renderingConfig: {
-        sanitizerFunction: sanitize
+        sanitizerFunction: sanitize,
+        markedOptions: MARKED_CONFIG
       }
     })
 
