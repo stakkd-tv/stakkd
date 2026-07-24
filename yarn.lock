@@ -1099,10 +1099,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/tabulator-tables@npm:^6.3.2":
-  version: 6.3.2
-  resolution: "@types/tabulator-tables@npm:6.3.2"
-  checksum: 10c0/705d6064bf15f1a4fa2fdd29251d5fbea3103cb3680e3d8784061118eb55f548a1806db75afef1d1248bddb79e44bb3b19bcbc52110b93a0c824c1bc49936ab1
+"@types/tabulator-tables@npm:^6.3.6":
+  version: 6.3.6
+  resolution: "@types/tabulator-tables@npm:6.3.6"
+  checksum: 10c0/d8b4df570bba7904194e75dc38702a1d91a17e1cfe426637603afbfbac7249754ba78b788e07e6836d7bfcc2c45753bc40953fd682a9aeb0f996f2e1082c7e4a
   languageName: node
   linkType: hard
 
@@ -1354,7 +1354,7 @@ __metadata:
     "@hotwired/turbo-rails": "npm:^8.0.23"
     "@tailwindcss/cli": "npm:^4.3.2"
     "@types/sanitize-html": "npm:^2.16.1"
-    "@types/tabulator-tables": "npm:^6.3.2"
+    "@types/tabulator-tables": "npm:^6.3.6"
     "@typescript-eslint/eslint-plugin": "npm:^8.62.1"
     "@typescript-eslint/parser": "npm:^8.62.1"
     algoliasearch: "npm:^5.55.1"
@@ -1371,7 +1371,7 @@ __metadata:
     marked-inline-spoilers: "npm:^1.0.1"
     sanitize-html: "npm:^2.17.4"
     slim-select: "npm:^4.0.7"
-    tabulator-tables: "npm:^6.4.0"
+    tabulator-tables: "npm:^6.5.2"
     tailwindcss: "npm:^4.3.2"
     tsc-watch: "npm:^7.2.0"
     typescript: "npm:^6.0.3"
@@ -4444,10 +4444,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tabulator-tables@npm:^6.4.0":
-  version: 6.4.0
-  resolution: "tabulator-tables@npm:6.4.0"
-  checksum: 10c0/8e447de44f53873ef64f9a02e6066b0bf5d46657d5fa7171d170677215ffc8f9dd3cfd63e021aa089c6299815e63a07c5117945118f80e3da6cb99d1978db4ec
+"tabulator-tables@npm:^6.5.2":
+  version: 6.5.2
+  resolution: "tabulator-tables@npm:6.5.2"
+  checksum: 10c0/18ba8c573f786ad9ef7b2c4d48b6e4bd2163183d810d51b797188a12354c1d8397bb39b0d27e3a989371280288ada7c98af2ce962ed347f4089fb0093ef9f2bc
   languageName: node
   linkType: hard
 
