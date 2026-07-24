@@ -54,7 +54,7 @@ export function widgetsForNavLiveSearch (navbar: Element): (Widget | IndexWidget
       },
       templates: {
         item: `
-          <a href="/{{type}}s/{{id}}" class="group outline-none block">
+          <a href="/{{type}}s/{{slug}}" class="group outline-none block">
             <div class="flex items-center p-4 hover:bg-pop/75 group-focus:bg-pop/75 cursor-pointer">
               <img src="/{{type}}s/{{id}}/poster" align="left" alt="" loading="lazy" class="aspect-2/3 w-8 mr-4" />
               <div class="hit-name">

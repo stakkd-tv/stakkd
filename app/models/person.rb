@@ -23,7 +23,7 @@ class Person < ApplicationRecord
   ]
 
   typesense per_environment: true do
-    attributes :original_name, :translated_name
+    attributes :original_name, :translated_name, :slug
 
     # alias is used internally, so we use aka instead
     attribute :aka do
@@ -33,7 +33,8 @@ class Person < ApplicationRecord
     predefined_fields [
       {"name" => "original_name", "type" => "string"},
       {"name" => "translated_name", "type" => "string", "sort" => true},
-      {"name" => "aka", "type" => "string"}
+      {"name" => "aka", "type" => "string"},
+      {"name" => "slug", "type" => "string"}
     ]
   end
 
