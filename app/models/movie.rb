@@ -1,5 +1,5 @@
 class Movie < ApplicationRecord
-  include Typesense
+  include Searchable
   include Slugify
   include HasImdb
   include HasGalleries
@@ -15,14 +15,14 @@ class Movie < ApplicationRecord
     CANCELLED = "cancelled"
   ]
 
-  typesense collection_name: collection_name do
+  searchable do
     attributes :original_title, :translated_title, :slug
 
     attribute :alternative_names do
       AlternativeName.where(record: self).map { it.name }.join(", ")
     end
 
-    predefined_fields [
+    set_schema [
       {"name" => "original_title", "type" => "string"},
       {"name" => "translated_title", "type" => "string", "sort" => true},
       {"name" => "alternative_names", "type" => "string"},

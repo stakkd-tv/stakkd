@@ -1,12 +1,12 @@
 class Company < ApplicationRecord
   include Slugify
   include HasGalleries
-  include Typesense
+  include Searchable
 
-  typesense collection_name: collection_name do
+  searchable do
     attributes :name, :slug
 
-    predefined_fields [
+    set_schema [
       {"name" => "name", "type" => "string"},
       {"name" => "slug", "type" => "string"}
     ]

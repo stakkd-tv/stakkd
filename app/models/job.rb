@@ -1,14 +1,14 @@
 class Job < ApplicationRecord
-  include Typesense
+  include Searchable
 
   DIRECTOR = "Director"
   CREATOR = "Creator"
   WRITER = "Writer"
 
-  typesense collection_name: collection_name do
+  searchable do
     attributes :department, :name
 
-    predefined_fields [
+    set_schema [
       {"name" => "name", "type" => "string", "sort" => true},
       {"name" => "department", "type" => "string", "sort" => true}
     ]

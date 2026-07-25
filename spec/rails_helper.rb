@@ -82,20 +82,25 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 
+  config.before(:all) do
+    Typesense::Utilities.get_model_classes.each do |model|
+      schema = {
+        "name" => model.collection_name,
+        "fields" => model.search_schema
+      }
+      Typesense.client.collections.create(schema)
+    rescue => e
+      # Ignore any errors that occur during setup.
+    end
+  end
+
   # Wipe Typesense collections after each test.
   config.after(:each) do
-    original_stdout = $stdout
-    $stdout = StringIO.new
-
-    begin
-      Typesense::Utilities.get_model_classes.each do |model|
-        collection = model.collection_name
-        Typesense.client.collections[collection].documents.delete(truncate: true)
-      end
+    Typesense::Utilities.get_model_classes.each do |model|
+      collection = model.collection_name
+      Typesense.client.collections[collection].documents.delete(truncate: true)
     rescue => e
       # Ignore any errors that occur during clearing.
     end
-
-    $stdout = original_stdout
   end
 end
