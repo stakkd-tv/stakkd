@@ -41,5 +41,9 @@ module Searchable
         dsl.instance_exec(&block) if block
       end
     end
+
+    def collection_name
+      "#{model_name}_#{Rails.env}#{ENV["TEST_ENV_NUMBER"]}"
+    end
   end
 end
