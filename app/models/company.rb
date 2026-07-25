@@ -3,7 +3,7 @@ class Company < ApplicationRecord
   include HasGalleries
   include Typesense
 
-  typesense per_environment: true do
+  typesense collection_name: collection_name do
     attributes :name, :slug
 
     predefined_fields [

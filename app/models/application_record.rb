@@ -3,6 +3,10 @@ class ApplicationRecord < ActiveRecord::Base
 
   self.strict_loading_by_default = true
 
+  def self.collection_name
+    "#{model_name}_#{Rails.env}#{ENV["TEST_ENV_NUMBER"]}"
+  end
+
   def related_records
     {self.class.to_s.downcase.to_sym => self}
   end

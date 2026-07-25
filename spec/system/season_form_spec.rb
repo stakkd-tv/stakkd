@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.feature "Show form", type: :system, js: true do
+RSpec.feature "Season form", type: :system, js: true do
   before do
     @show = FactoryBot.create(:show)
 
@@ -61,9 +61,9 @@ RSpec.feature "Show form", type: :system, js: true do
     expect(page).to have_css("a[data-active='true']", text: "Season Regulars")
     expect(page).to have_content("Add a season regular")
     fill_in "person", with: "obi wan"
-    expect(page).to have_css("div.p-2", text: "Obi Wan")
-    expect(page).not_to have_css("div.p-2", text: "John Doe") # Applies searching
-    find("div.p-2", text: "Obi Wan").click
+    expect(page).to have_css("li.p-2", text: "Obi Wan")
+    expect(page).not_to have_css("li.p-2", text: "John Doe") # Applies searching
+    find("li.p-2", text: "Obi Wan").click
     fill_in "cast_member_character", with: "Test character"
     click_button "Save"
     using_wait_time 5 do
@@ -87,9 +87,9 @@ RSpec.feature "Show form", type: :system, js: true do
     end
     # Add to all seasons
     fill_in "person", with: "obi wan"
-    expect(page).to have_css("div.p-2", text: "Obi Wan")
-    expect(page).not_to have_css("div.p-2", text: "John Doe") # Applies searching
-    find("div.p-2", text: "Obi Wan").click
+    expect(page).to have_css("li.p-2", text: "Obi Wan")
+    expect(page).not_to have_css("li.p-2", text: "John Doe") # Applies searching
+    find("li.p-2", text: "Obi Wan").click
     fill_in "cast_member_character", with: "Test character"
     check "add_to_all_seasons"
     click_button "Save"

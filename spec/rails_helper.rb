@@ -81,4 +81,21 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  # Wipe Typesense collections after each test.
+  config.after(:each) do
+    original_stdout = $stdout
+    $stdout = StringIO.new
+
+    begin
+      Typesense::Utilities.get_model_classes.each do |model|
+        collection = model.collection_name
+        Typesense.client.collections[collection].documents.delete(truncate: true)
+      end
+    rescue => e
+      # Ignore any errors that occur during clearing.
+    end
+
+    $stdout = original_stdout
+  end
 end

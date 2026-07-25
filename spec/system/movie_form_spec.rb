@@ -133,9 +133,9 @@ RSpec.feature "Movie form", type: :system, js: true do
     expect(page).to have_css("a[data-active='true']", text: "Cast")
     expect(page).to have_content("Add a cast member")
     fill_in "person", with: "obi wan"
-    expect(page).to have_css("div.p-2", text: "Obi Wan")
-    expect(page).not_to have_css("div.p-2", text: "John Doe") # Applies searching
-    find("div.p-2", text: "Obi Wan").click
+    expect(page).to have_css("li.p-2", text: "Obi Wan")
+    expect(page).not_to have_css("li.p-2", text: "John Doe") # Applies searching
+    find("li.p-2", text: "Obi Wan").click
     fill_in "cast_member_character", with: "Test character"
     click_button "Save"
     using_wait_time 5 do
@@ -164,13 +164,13 @@ RSpec.feature "Movie form", type: :system, js: true do
     expect(page).to have_css("a[data-active='true']", text: "Crew")
     expect(page).to have_content("Add a crew member")
     fill_in "person", with: "obi wan"
-    expect(page).to have_css("div.p-2", text: "Obi Wan")
-    expect(page).not_to have_css("div.p-2", text: "John Doe") # Applies searching
-    find("div.p-2", text: "Obi Wan").click
+    expect(page).to have_css("li.p-2", text: "Obi Wan")
+    expect(page).not_to have_css("li.p-2", text: "John Doe") # Applies searching
+    find("li.p-2", text: "Obi Wan").click
     fill_in "job", with: "producer"
-    expect(page).to have_css("div.p-2", text: "Producer")
-    expect(page).not_to have_css("div.p-2", text: "Actor") # Applies searching
-    find("div.p-2", text: "Producer").click
+    expect(page).to have_css("li.p-2", text: "Producer")
+    expect(page).not_to have_css("li.p-2", text: "Actor") # Applies searching
+    find("li.p-2", text: "Producer").click
     click_button "Save"
     using_wait_time 5 do
       expect(page).to have_css "div.tabulator-cell", text: "Obi Wan"

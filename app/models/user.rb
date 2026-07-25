@@ -3,7 +3,7 @@ class User < ApplicationRecord
 
   USERNAME_EXCLUSIONS = ["me", "admin"].freeze
 
-  typesense per_environment: true do
+  typesense collection_name: collection_name do
     attributes :username
 
     predefined_fields [
