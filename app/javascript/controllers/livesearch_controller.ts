@@ -4,7 +4,7 @@ import { setupLiveSearch } from '../helpers/livesearch'
 import { getRailsEnv } from '../helpers/rails'
 import { infiniteHits } from '../helpers/livesearch/infinite_hits'
 
-// Connects to data-controller="ajax-search"
+// Connects to data-controller="livesearch"
 export default class extends Controller {
   static values = { queryBy: String, collectionName: String, displayAttributes: Array }
 
