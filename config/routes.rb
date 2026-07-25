@@ -107,7 +107,6 @@ Rails.application.routes.draw do
       get :logos, on: :collection
     end
   end
-  resources :jobs, only: [:index]
   resources :search, only: [:index, :show]
 
   get "about" => "pages#about", :as => :about

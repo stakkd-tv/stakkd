@@ -1,12 +1,12 @@
 class User < ApplicationRecord
-  include Typesense
+  include Searchable
 
   USERNAME_EXCLUSIONS = ["me", "admin"].freeze
 
-  typesense per_environment: true do
+  searchable do
     attributes :username
 
-    predefined_fields [
+    set_schema [
       {"name" => "username", "type" => "string"}
     ]
   end

@@ -1,5 +1,5 @@
 class Person < ApplicationRecord
-  include Typesense
+  include Searchable
   include Slugify
   include HasImdb
   include HasGalleries
@@ -22,7 +22,7 @@ class Person < ApplicationRecord
     NON_BINARY = "non-binary"
   ]
 
-  typesense per_environment: true do
+  searchable do
     attributes :original_name, :translated_name, :slug
 
     # alias is used internally, so we use aka instead
@@ -30,7 +30,7 @@ class Person < ApplicationRecord
       self.alias.to_s
     end
 
-    predefined_fields [
+    set_schema [
       {"name" => "original_name", "type" => "string"},
       {"name" => "translated_name", "type" => "string", "sort" => true},
       {"name" => "aka", "type" => "string"},
