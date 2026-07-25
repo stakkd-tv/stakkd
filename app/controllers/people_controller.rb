@@ -4,16 +4,8 @@ class PeopleController < ApplicationController
 
   def index
     @people_filter = ::Filters::People.new(params)
-    if params[:query]
-      @people = Person.search(params[:query], "original_name,translated_name,aka", {
-        page: params[:page],
-        per_page: 100,
-        sort_by: "translated_name:asc"
-      })
-    else
-      @people = @people_filter.filter.with_attached_images.paginate(page: params[:page], per_page: ApplicationController::GLOBAL_PER_PAGE)
-      @filter_params = @people_filter.to_params
-    end
+    @people = @people_filter.filter.with_attached_images.paginate(page: params[:page], per_page: ApplicationController::GLOBAL_PER_PAGE)
+    @filter_params = @people_filter.to_params
   end
 
   def show

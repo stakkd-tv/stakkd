@@ -29,29 +29,6 @@ RSpec.describe "People", type: :request do
       get people_url
       expect(response).to be_successful
     end
-
-    context "when there is a query" do
-      it "returns a successful response" do
-        get people_url(query: "query")
-        expect(response).to be_successful
-      end
-
-      it "searches for people" do
-        person = FactoryBot.create(:person, translated_name: "Random", original_name: "Random")
-        person2 = FactoryBot.create(:person, translated_name: "Another", original_name: "Another")
-        collection = ::WillPaginate::Collection.create(1, 100, 1) do |pager|
-          pager.replace [person]
-        end
-        expect(Person).to receive(:search).with(
-          person.translated_name,
-          "original_name,translated_name,aka",
-          {page: nil, per_page: 100, sort_by: "translated_name:asc"}
-        ).and_return(collection)
-        get people_url(query: person.translated_name)
-        assert_select "h3", text: person.translated_name
-        assert_select "h3", text: person2.translated_name, count: 0
-      end
-    end
   end
 
   describe "GET /people/:id" do
