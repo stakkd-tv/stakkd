@@ -19,7 +19,7 @@ export const infiniteHits = connectInfiniteHits<BaseHit>(
       const sentinel = document.createElement('div')
       sentinel.classList.add('sentinel')
       const ul = document.createElement('ul')
-      ul.classList.add('rounded-lg', 'bg-background-darker', 'border', 'border-pop', 'absolute', 'w-full', 'mt-2', 'max-h-96', 'overflow-y-auto')
+      ul.classList.add('rounded-lg', 'bg-background-darker', 'border', 'border-pop', 'absolute', 'w-full', 'mt-2', 'max-h-96', 'overflow-y-auto', 'z-1')
       container.appendChild(ul)
       ul.appendChild(sentinel)
 

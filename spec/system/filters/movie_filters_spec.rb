@@ -8,13 +8,15 @@ RSpec.feature "Movie filters", type: :system, js: true do
     comedy = FactoryBot.create(:genre, name: "Comedy")
     uk = FactoryBot.create(:country, code: "UK", translated_name: "Great Britain")
     us = FactoryBot.create(:country, code: "US", translated_name: "United States")
+    company = FactoryBot.create(:company, name: "Universal Pictures")
     FactoryBot.create(
       :movie,
       translated_title: "Ready Player One",
       genres: [action],
       releases: [FactoryBot.build(:release, type: Release::DIGITAL, date: "2025-01-01", certification: FactoryBot.build(:certification, code: "PG", country: uk))],
       country: uk,
-      keyword_list: ["ready player one"]
+      keyword_list: ["ready player one"],
+      companies: [company]
     )
     FactoryBot.create(
       :movie,
@@ -57,6 +59,20 @@ RSpec.feature "Movie filters", type: :system, js: true do
     expect(page).to have_content("Ready Player One")
     expect(page).not_to have_content("Jurassic Park")
     find("label", text: "Action").click # Uncheck
+    click_button "Apply filter"
+    expect(page).to have_content("Jurassic Park")
+    expect(page).to have_content("Ready Player One")
+
+    # Filtering companies
+    fill_in "company", with: "Universal"
+    expect(page).to have_css "li.p-2", text: "Universal"
+    find("li.p-2", text: "Universal").click
+    expect(page).to have_content("Selected: Universal Pictures")
+    click_button "Apply filter"
+    expect(page).to have_content("Ready Player One")
+    expect(page).not_to have_content("Jurassic Park")
+    fill_in "company", with: ""
+    expect(page).to have_content("Nothing selected")
     click_button "Apply filter"
     expect(page).to have_content("Jurassic Park")
     expect(page).to have_content("Ready Player One")

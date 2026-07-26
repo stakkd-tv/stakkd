@@ -11,7 +11,8 @@ export default class extends Controller {
     collectionName: String,
     displayAttributes: Array,
     inputClasses: String,
-    placeholder: String
+    placeholder: String,
+    showSelectedText: { type: Boolean, default: false }
   }
 
   declare queryByValue: string
@@ -21,15 +22,18 @@ export default class extends Controller {
   declare hasInputClassesValue: boolean
   declare placeholderValue: string
   declare hasPlaceholderValue: boolean
+  declare showSelectedTextValue: boolean
 
   declare searchInput: HTMLInputElement | null | undefined
   declare searchResults: HTMLElement
+  declare selectedText: HTMLElement
 
   connect () {
     this.element.classList.add('hidden')
 
     const searchInputWrapper = this.element.parentElement?.querySelector('.search-input') as HTMLElement
     const searchResultsWrapper = this.element.parentElement?.querySelector('.search-results') as HTMLElement
+    this.createSelectedText()
 
     let inputCssClasses = 'livesearch-input'
     if (this.hasInputClassesValue) {
@@ -70,11 +74,15 @@ export default class extends Controller {
     this.searchInput = this.element.parentElement?.querySelector<HTMLInputElement>('input.livesearch-input')
     this.searchResults = searchResultsWrapper
 
-    const name = this.element.getAttribute('name')?.split('[')
+    const name = this.element.getAttribute('name')?.replace('[]', '')?.split('[')
     if (name) {
-      this.searchInput?.setAttribute('name', name[name.length - 1].replace(']', '').replace('_id', ''))
+      const normalizedName = name[name.length - 1]
+        .replace('_ids', '')
+        .replace(']', '')
+        .replace('_id', '')
+      this.searchInput?.setAttribute('name', normalizedName)
     }
-    this.searchInput?.addEventListener('focusin', () => this.searchResults.classList.remove('hidden'))
+    this.searchInput?.addEventListener('focusin', () => this.restartSearch())
   }
 
   getItemText (item: Record<string, string>): string {
@@ -83,9 +91,25 @@ export default class extends Controller {
     }).join(' - ')
   }
 
+  createSelectedText () {
+    this.selectedText = document.createElement('small')
+    this.selectedText.innerText = 'Nothing selected'
+    this.element.parentElement?.appendChild(this.selectedText)
+    if (!this.showSelectedTextValue) {
+      this.selectedText.classList.add('hidden')
+    }
+  }
+
+  restartSearch () {
+    this.element.removeAttribute('value')
+    this.searchResults.classList.remove('hidden')
+    this.selectedText.innerText = 'Nothing selected'
+  }
+
   onItemClick (item: Record<string, string>) {
     this.element.setAttribute('value', item.id)
     this.searchResults.classList.add('hidden')
+    this.selectedText.innerText = `Selected: ${this.getItemText(item)}`
     if (this.searchInput) {
       this.searchInput.value = this.getItemText(item)
     }

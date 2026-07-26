@@ -78,7 +78,7 @@ module Filters
 
     def genre_ids = options[:genre_ids]&.map(&:to_i)
 
-    def company_ids = options[:company_ids]&.map(&:to_i)
+    def company_ids = options[:company_ids]&.compact_blank&.map(&:to_i)
 
     def certification_ids = options[:certification_ids]&.compact_blank&.map(&:to_i)
 

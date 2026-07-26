@@ -76,7 +76,7 @@ module Filters
 
     def country_id = options[:country_id].present? ? options[:country_id].to_i : nil
 
-    def company_ids = options[:company_ids]&.map(&:to_i)
+    def company_ids = options[:company_ids]&.compact_blank&.map(&:to_i)
 
     def certification_ids = options[:certification_ids]&.compact_blank&.map(&:to_i)
 

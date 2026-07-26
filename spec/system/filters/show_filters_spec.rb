@@ -6,12 +6,14 @@ RSpec.feature "Show filters", type: :system, js: true do
   scenario "Filtering movies" do
     action = FactoryBot.create(:genre, name: "Action")
     comedy = FactoryBot.create(:genre, name: "Comedy")
+    company = FactoryBot.create(:company, name: "Universal Pictures")
     show1 = FactoryBot.create(
       :show,
       translated_title: "Game of Thrones",
       genres: [action],
       country: FactoryBot.build(:country, code: "UK", translated_name: "Great Britain"),
-      keyword_list: ["rubbish tv show"]
+      keyword_list: ["rubbish tv show"],
+      companies: [company]
     )
     season1 = FactoryBot.create(:season, show: show1)
     FactoryBot.create(:episode, number: 1, season: season1, original_air_date: Date.new(2011, 4, 17))
@@ -78,6 +80,20 @@ RSpec.feature "Show filters", type: :system, js: true do
     expect(page).to have_content("Game of Thrones")
     expect(page).not_to have_content("Avatar: The Last Airbender")
     find("label", text: "Action").click # Uncheck
+    click_button "Apply filter"
+    expect(page).to have_content("Game of Thrones")
+    expect(page).to have_content("Avatar: The Last Airbender")
+
+    # Filtering companies
+    fill_in "company", with: "Universal"
+    expect(page).to have_css "li.p-2", text: "Universal"
+    find("li.p-2", text: "Universal").click
+    expect(page).to have_content("Selected: Universal Pictures")
+    click_button "Apply filter"
+    expect(page).to have_content("Game of Thrones")
+    expect(page).not_to have_content("Avatar: The Last Airbender")
+    fill_in "company", with: ""
+    expect(page).to have_content("Nothing selected")
     click_button "Apply filter"
     expect(page).to have_content("Game of Thrones")
     expect(page).to have_content("Avatar: The Last Airbender")

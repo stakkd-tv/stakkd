@@ -64,6 +64,23 @@
             </div>
           </div>
 
+          <div class="p-4 border-b-2 border-background relative">
+            <p class="mb-4"><b>Company</b></p>
+            <%= form.text_field "company_ids[]",
+                  autocomplete: "off",
+                  data: {
+                    controller: "livesearch",
+                    livesearch_query_by_value: "name",
+                    livesearch_collection_name_value: "Company",
+                    livesearch_display_attributes_value: "[\"name\"]",
+                    livesearch_input_classes_value: "input",
+                    livesearch_placeholder_value: "Search for a company",
+                    livesearch_show_selected_text_value: "true"
+                  } %>
+            <div class="search-input"></div>
+            <div class="search-results z-100"></div>
+          </div>
+
           <div class="p-4 border-b-2 border-background">
             <p class="mb-4"><b>Country</b></p>
             <select name="country_id" class="input" autocomplete="off">
