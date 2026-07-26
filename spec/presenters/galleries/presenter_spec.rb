@@ -48,6 +48,34 @@ module Galleries
           }
         ])
       end
+
+      context "when the record is not a top level record e.g. a season" do
+        it "correctly sets the view more path to include parent records" do
+          season = FactoryBot.create(
+            :season,
+            number: 1,
+            posters: [Rack::Test::UploadedFile.new("spec/support/assets/300x450.png", "image/png")],
+            videos: [FactoryBot.build(:video, thumbnail_url: "/example.png").tap { it.save(validate: false) }]
+          )
+          presenter = Presenter.new(season)
+          expect(presenter.tabs).to match([
+            {
+              name: "Posters",
+              images: [be_a(ActiveStorage::VariantWithRecord)],
+              aspect: "min-w-40 max-w-40 aspect-2/3",
+              view_more_path: "/shows/#{season.show.slug}/seasons/1/galleries/posters",
+              partial: "shared/gallery"
+            },
+            {
+              name: "Videos",
+              images: season.videos.to_a,
+              aspect: "min-w-[425px] max-w-[425px] aspect-video",
+              view_more_path: "/shows/#{season.show.slug}/seasons/1/galleries/videos",
+              partial: "shared/video_gallery"
+            }
+          ])
+        end
+      end
     end
   end
 end
