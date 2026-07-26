@@ -45,7 +45,7 @@ module Galleries
     def available_galleries = @record.respond_to?(:available_galleries) ? @record.available_galleries : []
 
     def view_more_path(image_type)
-      record_type = @record.related_records.keys.reverse.map(&:to_s).join("_")
+      record_type = @record.related_records.keys.reverse.join("_")
       send("#{image_type}_#{record_type}_galleries_path", *@record.records_for_polymorphic_paths)
     rescue
       ""

@@ -252,14 +252,10 @@ RSpec.feature "Show form", type: :system, js: true do
     # Companies
     click_link "Companies"
     expect(page).to have_css("a[data-active='true']", text: "Companies")
-    find("div.ss-main").click
-    expect(page).to have_css("div.ss-option", text: "Company 1")
-    expect(page).to have_css("div.ss-option", text: "Company 2")
-    find("div.ss-search>input").send_keys("ny 2")
-    expect(page).not_to have_css("div.ss-option", text: "Company 1")
-    expect(page).to have_css("div.ss-option", text: "Company 2")
-    find("div.ss-option", text: "Company 2").click
-    expect(page).to have_css("div.ss-single", text: "Company 2")
+    fill_in "company", with: "Company 2"
+    expect(page).to have_css("li.p-2", text: "Company 2")
+    expect(page).not_to have_css("li.p-2", text: "Company 1") # Applies searching
+    find("li.p-2", text: "Company 2").click
     find("button[role='submit']").click
     using_wait_time 5 do
       expect(page).to have_css "div.tabulator-cell", text: "Company 2"

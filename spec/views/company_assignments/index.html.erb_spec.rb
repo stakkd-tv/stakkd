@@ -22,7 +22,7 @@ RSpec.describe "company_assignments/index", type: :view do
   it "renders the new company assignment form" do
     render
     assert_select "form[action='#{movie_company_assignments_path(relatable)}']" do
-      assert_select "select[name='company_assignment[company_id]']"
+      assert_select "input[name='company_assignment[company_id]']"
     end
   end
 end

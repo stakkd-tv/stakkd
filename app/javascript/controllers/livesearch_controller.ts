@@ -6,11 +6,21 @@ import { infiniteHits } from '../helpers/livesearch/infinite_hits'
 
 // Connects to data-controller="livesearch"
 export default class extends Controller {
-  static values = { queryBy: String, collectionName: String, displayAttributes: Array }
+  static values = {
+    queryBy: String,
+    collectionName: String,
+    displayAttributes: Array,
+    inputClasses: String,
+    placeholder: String
+  }
 
   declare queryByValue: string
   declare collectionNameValue: string
   declare displayAttributesValue: string[]
+  declare inputClassesValue: string
+  declare hasInputClassesValue: boolean
+  declare placeholderValue: string
+  declare hasPlaceholderValue: boolean
 
   declare searchInput: HTMLInputElement | null | undefined
   declare searchResults: HTMLElement
@@ -21,15 +31,19 @@ export default class extends Controller {
     const searchInputWrapper = this.element.parentElement?.querySelector('.search-input') as HTMLElement
     const searchResultsWrapper = this.element.parentElement?.querySelector('.search-results') as HTMLElement
 
+    let inputCssClasses = 'livesearch-input'
+    if (this.hasInputClassesValue) {
+      inputCssClasses += ` ${this.inputClassesValue}`
+    }
     const env = getRailsEnv()
     const widgets = [
       searchBox({
         container: searchInputWrapper,
-        placeholder: '',
+        placeholder: this.hasPlaceholderValue ? this.placeholderValue : '',
         showSubmit: false,
         showReset: false,
         cssClasses: {
-          input: 'livesearch-input'
+          input: inputCssClasses
         }
       }),
       infiniteHits({
