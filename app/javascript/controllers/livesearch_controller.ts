@@ -94,9 +94,8 @@ export default class extends Controller {
   createSelectedText () {
     this.selectedText = document.createElement('small')
     this.selectedText.innerText = 'Nothing selected'
-    this.element.parentElement?.appendChild(this.selectedText)
-    if (!this.showSelectedTextValue) {
-      this.selectedText.classList.add('hidden')
+    if (this.showSelectedTextValue) {
+      this.element.parentElement?.appendChild(this.selectedText)
     }
   }
 
