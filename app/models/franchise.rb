@@ -15,6 +15,7 @@ class Franchise < ApplicationRecord
 
   # Associations
   has_many :franchise_items, dependent: :destroy
+  has_many :ordered_franchise_items, -> { ordered }, class_name: "FranchiseItem"
   has_galleries :posters, :backgrounds, :logos
 
   # Validations

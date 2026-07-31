@@ -9,6 +9,9 @@ class FranchiseItem < ApplicationRecord
   # Callbacks
   before_validation :set_date
 
+  # Scopes
+  scope :ordered, -> { order(:date) }
+
   private
 
   def set_date

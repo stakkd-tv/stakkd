@@ -36,4 +36,16 @@ RSpec.describe FranchiseItem, type: :model do
       end
     end
   end
+
+  describe ".ordered" do
+    it "orders by date with nil dates at the end" do
+      show1 = FactoryBot.create(:show, :with_premiere_date, date_for_premiere: Date.tomorrow)
+      item1 = FactoryBot.create(:franchise_item, record: show1)
+      movie = FactoryBot.create(:movie, :with_release_date, date_for_release: Date.today)
+      item2 = FactoryBot.create(:franchise_item, record: movie)
+      show2 = FactoryBot.create(:show)
+      item3 = FactoryBot.create(:franchise_item, record: show2)
+      expect(FranchiseItem.ordered).to eq([item2, item1, item3])
+    end
+  end
 end

@@ -3,13 +3,14 @@ require_relative "shared_examples/slugify"
 require_relative "shared_examples/has_galleries"
 
 RSpec.describe Franchise, type: :model do
+  describe "associations" do
+    it { should have_many(:franchise_items).dependent(:destroy) }
+    it { should have_many(:ordered_franchise_items).class_name("FranchiseItem") }
+  end
+
   describe "validations" do
     it { should validate_presence_of(:translated_title) }
     it { should validate_presence_of(:original_title) }
-  end
-
-  describe "associations" do
-    it { should have_many(:franchise_items).dependent(:destroy) }
   end
 
   it_behaves_like "a model with galleries", :franchise, [:posters, :backgrounds, :logos]
