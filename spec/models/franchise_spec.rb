@@ -12,6 +12,16 @@ RSpec.describe Franchise, type: :model do
 
   it_behaves_like "a slugified model", :franchise, :translated_title
 
+  describe ".search_schema" do
+    it "returns the search schema" do
+      expect(Franchise.search_schema).to eq([
+        {"name" => "original_title", "type" => "string"},
+        {"name" => "translated_title", "type" => "string", "sort" => true},
+        {"name" => "slug", "type" => "string"}
+      ])
+    end
+  end
+
   describe "#slug=" do
     it "sets the title_kebab" do
       fran = Franchise.new

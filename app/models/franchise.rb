@@ -1,6 +1,17 @@
 class Franchise < ApplicationRecord
+  include Searchable
   include Slugify
   include HasGalleries
+
+  searchable do
+    attributes :original_title, :translated_title, :slug
+
+    set_schema [
+      {"name" => "original_title", "type" => "string"},
+      {"name" => "translated_title", "type" => "string", "sort" => true},
+      {"name" => "slug", "type" => "string"}
+    ]
+  end
 
   # Associations
   has_galleries :posters, :backgrounds, :logos
