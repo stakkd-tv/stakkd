@@ -605,6 +605,7 @@ DEPENDENCIES
   capybara (~> 3.38)
   cssbundling-rails
   debug
+  dotenv
   erb_lint
   factory_bot_rails
   google-api-client (~> 0.53.0)

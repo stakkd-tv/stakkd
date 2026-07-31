@@ -54,7 +54,6 @@ jobs:
           --enable-cors
     env:
       RAILS_ENV: test
-      RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
       TEST_PGHOST: 127.0.0.1
       TEST_PGPORT: 5432
       TEST_PGUSER: rails
@@ -64,6 +63,8 @@ jobs:
       TYPESENSE_HOST: localhost
       TYPESENSE_PORT: 8108
       TYPESENSE_PROTOCOL: http
+      YOUTUBE_API_KEY: DUMMY
+      SECRET_KEY_BASE: DUMMY
     steps:
       - name: Checkout code
         uses: actions/checkout@v7

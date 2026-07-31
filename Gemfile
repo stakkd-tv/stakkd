@@ -100,6 +100,9 @@ group :development, :test do
 
   # Mock HTTP requests
   gem "webmock", "~> 3.26"
+
+  # Load environment variables from .env files
+  gem "dotenv"
 end
 
 group :development do
