@@ -20,7 +20,7 @@ module Videos
 
     def youtube_api_client
       @youtube_api_client ||= Google::Apis::YoutubeV3::YouTubeService.new.tap do |client|
-        client.key = ENV["YOUTUBE_API_KEY"]
+        client.key = AppConfig::YOUTUBE_API_KEY
       end
     end
 

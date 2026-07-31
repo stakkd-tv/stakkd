@@ -1,10 +1,10 @@
 Typesense.configuration = {
   nodes: [{
-    host: ENV["TYPESENSE_HOST"],
-    port: ENV["TYPESENSE_PORT"],
-    protocol: ENV["TYPESENSE_PROTOCOL"]
+    host: AppConfig::TYPESENSE_HOST,
+    port: AppConfig::TYPESENSE_PORT,
+    protocol: AppConfig::TYPESENSE_PROTOCOL
   }],
-  api_key: ENV["TYPESENSE_API_KEY"],
+  api_key: AppConfig::TYPESENSE_API_KEY,
   connection_timeout_seconds: 2,
   log_level: :info,
   pagination_backend: :will_paginate
