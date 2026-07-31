@@ -22,6 +22,7 @@ RSpec.describe Show, type: :model do
     it { should have_many(:seasons_without_specials).class_name("Season") }
     it { should have_many(:non_special_episodes).through(:seasons_without_specials) }
     it { should have_many(:episodes).through(:seasons) }
+    it { should have_one(:franchise_item).dependent(:destroy) }
   end
 
   describe "validations" do
@@ -41,6 +42,18 @@ RSpec.describe Show, type: :model do
         expect(season.number).to eq 0
         expect(season.translated_name).to eq "Specials"
         expect(season.original_name).to eq "Specials"
+      end
+    end
+
+    describe "after_save :update_franchise_item_date" do
+      context "when the show has a franchise item" do
+        it "updates the franchise item date" do
+          show = FactoryBot.create(:show, :with_premiere_date, date_for_premiere: Date.today)
+          franchise_item = FactoryBot.create(:franchise_item, record: show)
+          expect(franchise_item.date).to eq show.premiere_date
+          show.seasons_without_specials.first.update(premiere_date: Date.tomorrow)
+          expect(franchise_item.reload.date).to eq Date.tomorrow
+        end
       end
     end
   end
@@ -147,6 +160,13 @@ RSpec.describe Show, type: :model do
       show = FactoryBot.create(:show)
       show.seasons.includes(:season_regulars).destroy_all
       expect(show.reload.latest_season_number).to eq 0
+    end
+  end
+
+  describe "#release_date" do
+    it "returns the shows premiere_date" do
+      show = FactoryBot.create(:show, :with_premiere_date)
+      expect(show.release_date).to eq show.premiere_date
     end
   end
 end

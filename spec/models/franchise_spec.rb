@@ -8,6 +8,10 @@ RSpec.describe Franchise, type: :model do
     it { should validate_presence_of(:original_title) }
   end
 
+  describe "associations" do
+    it { should have_many(:franchise_items).dependent(:destroy) }
+  end
+
   it_behaves_like "a model with galleries", :franchise, [:posters, :backgrounds, :logos]
 
   it_behaves_like "a slugified model", :franchise, :translated_title

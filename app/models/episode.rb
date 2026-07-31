@@ -23,7 +23,8 @@ class Episode < ApplicationRecord
   validates :runtime, numericality: {greater_than_or_equal_to: 0}
 
   # Callbacks
-  after_save :set_season_premiere_date
+  after_save :set_season_premiere_date, if: :seasons_first_episode?
+  before_destroy :reset_season_premiere_date, if: :seasons_first_episode?
 
   # Scopes
   scope :ordered, -> { order(number: :asc) }
@@ -51,6 +52,8 @@ class Episode < ApplicationRecord
 
   def year = original_air_date&.year
 
+  def seasons_first_episode? = season.ordered_episodes.first == self
+
   TYPES.each do |type|
     define_method "#{type}?" do
       episode_type == type
@@ -60,8 +63,10 @@ class Episode < ApplicationRecord
   private
 
   def set_season_premiere_date
-    if season.ordered_episodes.first == self
-      season.update(premiere_date: original_air_date)
-    end
+    season.update(premiere_date: original_air_date)
+  end
+
+  def reset_season_premiere_date
+    season.update(premiere_date: nil)
   end
 end

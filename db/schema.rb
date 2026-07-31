@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_31_163142) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_31_171054) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -159,6 +159,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_31_163142) do
     t.datetime "updated_at", null: false
     t.index ["season_id", "number"], name: "index_unique_episodes_number_season", unique: true
     t.index ["season_id"], name: "index_episodes_on_season_id"
+  end
+
+  create_table "franchise_items", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.date "date"
+    t.bigint "franchise_id", null: false
+    t.bigint "record_id", null: false
+    t.string "record_type", null: false
+    t.datetime "updated_at", null: false
+    t.index ["franchise_id"], name: "index_franchise_items_on_franchise_id"
+    t.index ["record_type", "record_id"], name: "index_franchise_items_on_record"
+    t.index ["record_type", "record_id"], name: "index_unique_franchise_items", unique: true
   end
 
   create_table "franchises", force: :cascade do |t|
@@ -376,6 +388,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_31_163142) do
   add_foreign_key "crew_members", "jobs"
   add_foreign_key "crew_members", "people"
   add_foreign_key "episodes", "seasons"
+  add_foreign_key "franchise_items", "franchises"
   add_foreign_key "genre_assignments", "genres"
   add_foreign_key "releases", "certifications"
   add_foreign_key "releases", "movies"

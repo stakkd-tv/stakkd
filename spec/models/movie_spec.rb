@@ -17,6 +17,7 @@ RSpec.describe Movie, type: :model do
     it { should have_many(:companies).through(:company_assignments) }
     it { should have_many(:releases).dependent(:destroy) }
     it { should have_many(:taglines).dependent(:destroy) }
+    it { should have_one(:franchise_item).dependent(:destroy) }
   end
 
   describe "validations" do
@@ -39,6 +40,24 @@ RSpec.describe Movie, type: :model do
         release = FactoryBot.create(:release, movie:, type: Release::THEATRICAL, certification: cert_uk, date: Date.today)
         movie.save # This line isn't needed due to callback on release model, but will keep for clarity
         expect(movie.release_date).to eq release.date
+      end
+
+      context "when the movie is part of a franchise (has a franchise item)" do
+        it "updates the date stored on the franchise item" do
+          uk = FactoryBot.create(:country, code: "UK")
+          cert_uk = FactoryBot.create(:certification, country: uk)
+          movie = FactoryBot.create(:movie, country: uk)
+          release = FactoryBot.create(:release, movie:, type: Release::THEATRICAL, certification: cert_uk, date: Date.today)
+          franchise_item = FactoryBot.create(:franchise_item, record: movie)
+          # Reload release to clear its associated movie's in-memory association cache.
+          # This ensures movie.franchise_item is queried from the DB rather than returning
+          # the nil cached prior to franchise_item creation. This should not cause any real
+          # world problems as Rails fetches fresh records on every request.
+          release.reload
+          expect(franchise_item.reload.date).to eq Date.today
+          release.update!(date: Date.tomorrow)
+          expect(franchise_item.reload.date).to eq Date.tomorrow
+        end
       end
     end
 

@@ -14,6 +14,7 @@ class Franchise < ApplicationRecord
   end
 
   # Associations
+  has_many :franchise_items, dependent: :destroy
   has_galleries :posters, :backgrounds, :logos
 
   # Validations

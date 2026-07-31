@@ -39,6 +39,36 @@ RSpec.describe Release, type: :model do
     end
   end
 
+  describe "after_destroy :trigger_movie_update" do
+    context "when the release is considered the main release for the movie" do
+      it "should update the movie's release_date" do
+        uk = FactoryBot.create(:country, code: "UK")
+        cert_uk = FactoryBot.create(:certification, country: uk)
+        movie = FactoryBot.create(:movie, country: uk)
+        release = FactoryBot.create(:release, movie:, type: Release::THEATRICAL, certification: cert_uk, date: Date.today)
+        expect(movie.reload.release_date).to eq release.date
+        release.destroy
+        expect(movie.reload.release_date).to be_nil
+      end
+    end
+
+    context "when the release is not considered the main release for the movie" do
+      it "does not update the movies release date" do
+        uk = FactoryBot.create(:country, code: "UK")
+        cert_uk = FactoryBot.create(:certification, country: uk)
+        movie = FactoryBot.create(:movie, country: uk)
+        FactoryBot.create(:release, movie:, type: Release::PHYSICAL, certification: cert_uk, date: Date.yesterday)
+        expect(movie.reload.release_date).to be_nil
+        release = FactoryBot.create(:release, movie:, type: Release::THEATRICAL, certification: cert_uk, date: Date.today)
+        expect(movie.reload.release_date).to eq release.date
+        release2 = FactoryBot.create(:release, movie:, type: Release::TV, certification: cert_uk, date: Date.today)
+        expect(movie.reload.release_date).to eq release.date
+        release2.destroy
+        expect(movie.reload.release_date).to eq release.date
+      end
+    end
+  end
+
   describe ".inheritance_column" do
     it "should be empty" do
       expect(Release.inheritance_column).to be_nil
