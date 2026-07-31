@@ -103,6 +103,7 @@
         <p class="block sm:hidden text-xl font-domine">Overview:</p>
         <%= simple_format @movie.overview %>
       </div>
+      <%= render "shared/actions/actions" %>
 
       <%= render "shared/cast_members", cast_members: @cast_members, full_cast_path: cast_movie_path(@movie) %>
 

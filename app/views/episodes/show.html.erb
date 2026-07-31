@@ -30,6 +30,9 @@
     <% end %>
   </div>
 
+  <div class="mb-6">
+    <%= render "shared/actions/actions" %>
+  </div>
   <div class="bg-background-darker p-4 rounded-lg flex flex-col mb-6">
     <div class="leading-6 text-sm md:text-base flex flex-col gap-6">
       <%= simple_format(@episode.overview.presence || @season.overview.presence || @show.overview.presence) %>

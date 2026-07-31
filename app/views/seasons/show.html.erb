@@ -58,6 +58,7 @@
         <p class="block sm:hidden text-xl font-domine">Overview:</p>
         <%= simple_format(@season.overview.presence || @show.overview.presence) %>
       </div>
+      <%= render "shared/actions/actions" %>
 
       <%= render "shared/paginated_items", presenter: @pagination %>
 
