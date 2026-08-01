@@ -25,6 +25,8 @@ class Franchise < ApplicationRecord
     self.title_kebab = value
   end
 
+  def to_s = translated_title
+
   private
 
   def slug_source = translated_title

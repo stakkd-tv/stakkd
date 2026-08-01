@@ -34,4 +34,11 @@ RSpec.describe Franchise, type: :model do
       expect(fran.title_kebab).to eq "test"
     end
   end
+
+  describe "#to_s" do
+    it "returns the translated title" do
+      fran = Franchise.new(translated_title: "Test Franchise")
+      expect(fran.to_s).to eq "Test Franchise"
+    end
+  end
 end
