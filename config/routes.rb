@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   resource :session
   resources :passwords, param: :token
+
   resources :movies, except: [:destroy] do
     resources :alternative_names, only: [:index, :create, :update], path: "alternative-names"
     resources :cast_members, only: [:index, :create, :update, :destroy], path: "cast-members" do
@@ -37,6 +38,7 @@ Rails.application.routes.draw do
     get :logos, on: :member
     get :cast, on: :member
   end
+
   resources :shows, except: [:destroy] do
     resources :alternative_names, only: [:index, :create, :update], path: "alternative-names"
     resources :cast_members, only: [:index, :create, :update, :destroy], path: "cast-members" do
@@ -87,26 +89,37 @@ Rails.application.routes.draw do
     get :logos, on: :member
     get :cast, on: :member
   end
+
+  resources :franchises, except: [:destroy] do
+    get :posters, on: :member
+    get :backgrounds, on: :member
+    get :logos, on: :member
+  end
+
   resources :users, only: [:show, :new, :create, :update] do
     get :confirm, on: :collection
   end
   get "settings", to: "users#settings", as: :user_settings
   resources :confirmation_tokens, only: [:new, :create], path: "confirmations"
+
   resources :genres, only: [:index]
   resources :countries, only: [:index]
   resources :languages, only: [:index]
+
   resources :people, except: [:destroy] do
     get :images, on: :member
     resources :galleries, only: [] do
       get :images, on: :collection
     end
   end
+
   resources :companies, except: [:destroy] do
     get :logos, on: :member
     resources :galleries, only: [] do
       get :logos, on: :collection
     end
   end
+
   resources :search, only: [:index, :show]
 
   get "about" => "pages#about", :as => :about
