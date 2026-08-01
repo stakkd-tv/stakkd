@@ -65,7 +65,7 @@ class Movie < ApplicationRecord
 
   def tagline = taglines.first&.tagline
 
-  def release = @release ||= theatrical_release || digital_release
+  def release = @release ||= possible_releases_for_release_date.first
 
   def release_dates_for_country
     @release_dates_for_country ||= releases.includes(certification: :country).where(certification: {country:}).order(date: :asc)
@@ -83,12 +83,11 @@ class Movie < ApplicationRecord
     franchise_item&.save
   end
 
-  def theatrical_release
-    releases.includes(certification: :country).where(certification: {country:}, type: Release::THEATRICAL).first
-  end
-
-  def digital_release
-    releases.includes(certification: :country).where(certification: {country:}, type: Release::DIGITAL).first
+  def possible_releases_for_release_date
+    releases
+      .includes(certification: :country)
+      .where(certification: {country:}, type: [Release::THEATRICAL, Release::DIGITAL])
+      .order(date: :asc)
   end
 
   def slug_source = translated_title

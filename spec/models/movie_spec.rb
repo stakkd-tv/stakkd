@@ -147,6 +147,16 @@ RSpec.describe Movie, type: :model do
       FactoryBot.create(:release, movie:, type: Release::DIGITAL, certification: cert_uk)
       expect(movie.release).to eq release
     end
+
+    it "returns the first release when there is both a theatrical and digital release" do
+      uk = FactoryBot.create(:country, code: "UK")
+      cert_uk = FactoryBot.create(:certification, country: uk)
+
+      movie = FactoryBot.create(:movie, country: uk)
+      FactoryBot.create(:release, movie:, type: Release::THEATRICAL, certification: cert_uk, date: Date.tomorrow)
+      release = FactoryBot.create(:release, movie:, type: Release::DIGITAL, certification: cert_uk, date: Date.today)
+      expect(movie.release).to eq release
+    end
   end
 
   describe "#release_dates_for_country" do
