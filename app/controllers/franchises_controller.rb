@@ -46,9 +46,6 @@ class FranchisesController < ApplicationController
   def logos
   end
 
-  def items
-  end
-
   private
 
   def franchise_params

@@ -10,7 +10,7 @@ RSpec.describe "franchises/_form_nav", type: :view do
       assert_select "a[href='#{posters_franchise_path(franchise)}'][data-active='false']"
       assert_select "a[href='#{backgrounds_franchise_path(franchise)}'][data-active='false']"
       assert_select "a[href='#{logos_franchise_path(franchise)}'][data-active='false']"
-      assert_select "a[href='#{items_franchise_path(franchise)}'][data-active='false']"
+      assert_select "a[href='#{editor_franchise_franchise_items_path(franchise)}'][data-active='false']"
     end
   end
 

@@ -1,0 +1,38 @@
+<% content_for :title, "Stakkd - #{@franchise} itemss" %>
+
+<%= render "franchises/header", {franchise: @franchise} %>
+
+<div class="max-w-7xl mx-auto my-8 px-6">
+  <div class="form">
+    <%= render "franchises/form_nav", {franchise: @franchise} %>
+
+    <%= render "shared/table_editor", table_presenter: @table_presenter, path_prefix: franchise_franchise_items_path(@franchise) %>
+
+    <%= form_with model: [@franchise, FranchiseItem.new] do |form| %>
+      <h4 class="font-bold text-2xl">Add a new item</h4>
+
+      <div class="relative">
+        <%= form.text_field :record_id,
+              required: true,
+              autocomplete: "off",
+              data: {
+                controller: "livesearch",
+                livesearch_query_by_value: "translated_title,original_title",
+                livesearch_collection_name_value: "Show",
+                livesearch_display_attributes_value: ["translated_title"].to_json,
+                livesearch_input_classes_value: "w-full h-[46px] p-4 focus:outline-pop focus:outline-2",
+                livesearch_placeholder_value: "Search for an item to add",
+                livesearch_show_selected_text_value: true,
+                livesearch_extra_collections_value: ["Movie"].to_json
+              } %>
+        <%= form.hidden_field :record_type, class: "search-result-type", required: true %>
+        <div class="search-input"></div>
+        <div class="search-results"></div>
+      </div>
+
+      <div>
+        <%= form.submit "Save" %>
+      </div>
+    <% end %>
+  </div>
+</div>
