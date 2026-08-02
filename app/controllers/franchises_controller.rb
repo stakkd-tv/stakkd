@@ -30,6 +30,11 @@ class FranchisesController < ApplicationController
   end
 
   def update
+    if @franchise.update(franchise_params)
+      redirect_to @franchise, notice: "Franchise was successfully updated."
+    else
+      render :edit, status: :unprocessable_content
+    end
   end
 
   def posters
