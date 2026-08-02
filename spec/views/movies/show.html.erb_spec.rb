@@ -208,6 +208,7 @@ RSpec.describe "movies/show", type: :view do
       assert_select "p", text: "PART OF THE"
       assert_select "p", text: "Franchise Title"
       assert_select "p", text: "FRANCHISE"
+      assert_select "a[href='#{franchise_path(Franchise.last)}']"
     end
   end
 
