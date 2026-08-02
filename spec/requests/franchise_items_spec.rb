@@ -78,7 +78,7 @@ RSpec.describe "FranchiseItems", type: :request do
         it "redirects to the franchise items editor path with a flash alert" do
           post franchise_franchise_items_path(franchise_id: franchise), params: {franchise_item: invalid_attributes}
           expect(response).to redirect_to editor_franchise_franchise_items_path(franchise_id: franchise)
-          expect(flash[:alert]).to eq "Item could not be added."
+          expect(flash[:alert]).to eq "This show/movie already belongs to a different franchise."
         end
       end
 

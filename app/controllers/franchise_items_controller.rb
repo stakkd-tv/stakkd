@@ -13,7 +13,7 @@ class FranchiseItemsController < ApplicationController
     if @franchise_item.save
       redirect_to editor_franchise_franchise_items_path(@franchise)
     else
-      redirect_to editor_franchise_franchise_items_path(@franchise), alert: "Item could not be added."
+      redirect_to editor_franchise_franchise_items_path(@franchise), alert: "This show/movie already belongs to a different franchise."
     end
   end
 
