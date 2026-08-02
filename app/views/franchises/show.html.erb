@@ -1,4 +1,4 @@
-<% content_for :title, "Stakkd - #{@franchise.translated_title}" %>
+<% content_for :title, "Stakkd - #{@franchise.translated_title} franchise" %>
 
 <% poster = @franchise.poster(variant: :medium) %>
 <%= render "shared/colour_from_image", image: poster %>
