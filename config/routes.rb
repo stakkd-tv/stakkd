@@ -100,6 +100,7 @@ Rails.application.routes.draw do
     get :posters, on: :member
     get :backgrounds, on: :member
     get :logos, on: :member
+    get :items, on: :member
   end
 
   resources :users, only: [:show, :new, :create, :update] do

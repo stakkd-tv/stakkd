@@ -1,13 +1,13 @@
 require "rails_helper"
 
-RSpec.describe "movies/edit", type: :view do
+RSpec.describe "movies/new", type: :view do
   let(:movie) { Movie.new }
 
   before(:each) do
     assign(:movie, movie)
   end
 
-  it "renders the edit movie form" do
+  it "renders the new movie form" do
     render
 
     assert_select "form[action='#{movies_path}'][method='post']" do

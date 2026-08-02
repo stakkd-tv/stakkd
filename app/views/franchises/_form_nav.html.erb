@@ -1,0 +1,9 @@
+<% if franchise.persisted? %>
+  <div class="form-nav" id="form-nav">
+    <%= link_to "Details", edit_franchise_path(franchise), data: {active: action_name == "edit"} %>
+    <%= link_to "Posters", posters_franchise_path(franchise), data: {active: action_name == "posters"} %>
+    <%= link_to "Backgrounds", backgrounds_franchise_path(franchise), data: {active: action_name == "backgrounds"} %>
+    <%= link_to "Logos", logos_franchise_path(franchise), data: {active: action_name == "logos"} %>
+    <%= link_to "Items", items_franchise_path(franchise), data: {active: action_name == "items"} %>
+  </div>
+<% end %>

@@ -41,5 +41,9 @@ RSpec.describe FranchisesController, type: :routing do
     it "routes to #logos" do
       expect(get: "/franchises/1/logos").to route_to("franchises#logos", id: "1")
     end
+
+    it "routes to #items" do
+      expect(get: "/franchises/1/items").to route_to("franchises#items", id: "1")
+    end
   end
 end

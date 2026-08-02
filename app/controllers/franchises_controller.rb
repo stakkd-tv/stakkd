@@ -13,12 +13,20 @@ class FranchisesController < ApplicationController
   end
 
   def new
+    @franchise = Franchise.new
   end
 
   def edit
   end
 
   def create
+    @franchise = Franchise.new(franchise_params)
+
+    if @franchise.save
+      redirect_to edit_franchise_path(@franchise), notice: "Franchise was successfully created, you can now add items to it."
+    else
+      render :new, status: :unprocessable_content
+    end
   end
 
   def update
@@ -33,7 +41,14 @@ class FranchisesController < ApplicationController
   def logos
   end
 
+  def items
+  end
+
   private
+
+  def franchise_params
+    params.expect(franchise: [:original_title, :translated_title, :overview, :homepage])
+  end
 
   def set_movie
     @franchise = Franchise.includes(franchise_items: :record).from_slug(params.expect(:id))

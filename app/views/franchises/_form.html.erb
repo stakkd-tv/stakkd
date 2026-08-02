@@ -1,0 +1,30 @@
+<div class="form">
+<%= render "form_nav", franchise: %>
+<%= form_with model: franchise do |form| %>
+  <div class="flex flex-col xs:flex-row gap-6">
+    <div class="basis-1/2">
+      <%= form.label :translated_title %>
+      <%= form.text_field :translated_title, required: true %>
+    </div>
+
+    <div class="basis-1/2">
+      <%= form.label :original_title %>
+      <%= form.text_field :original_title, required: true %>
+    </div>
+  </div>
+
+  <div>
+    <%= form.label :overview %>
+    <%= form.text_area :overview, class: "h-60" %>
+  </div>
+
+  <div>
+    <%= form.label :homepage %>
+    <%= form.text_field :homepage %>
+  </div>
+
+  <div>
+    <%= form.submit "Save" %>
+  </div>
+<% end %>
+</div>
