@@ -180,4 +180,79 @@ RSpec.describe "Franchises", type: :request do
       end
     end
   end
+
+  describe "GET /franchises/:id/posters" do
+    context "when the user is signed in" do
+      before do
+        user = FactoryBot.create(:user)
+        session = Session.new(user:)
+        allow(Current).to receive(:session).and_return(session)
+        allow(Current).to receive(:user).and_return(user)
+      end
+
+      it "renders a successful response" do
+        franchise = FactoryBot.create(:franchise)
+        get posters_franchise_url(franchise)
+        expect(response).to be_successful
+      end
+    end
+
+    context "when the user is not signed in" do
+      it "redirects to the sign in page" do
+        franchise = FactoryBot.create(:franchise)
+        get posters_franchise_url(franchise)
+        expect(response).to redirect_to new_session_path
+      end
+    end
+  end
+
+  describe "GET /franchises/:id/backgrounds" do
+    context "when the user is signed in" do
+      before do
+        user = FactoryBot.create(:user)
+        session = Session.new(user:)
+        allow(Current).to receive(:session).and_return(session)
+        allow(Current).to receive(:user).and_return(user)
+      end
+
+      it "renders a successful response" do
+        franchise = FactoryBot.create(:franchise)
+        get backgrounds_franchise_url(franchise)
+        expect(response).to be_successful
+      end
+    end
+
+    context "when the user is not signed in" do
+      it "redirects to the sign in page" do
+        franchise = FactoryBot.create(:franchise)
+        get backgrounds_franchise_url(franchise)
+        expect(response).to redirect_to new_session_path
+      end
+    end
+  end
+
+  describe "GET /franchises/:id/logos" do
+    context "when the user is signed in" do
+      before do
+        user = FactoryBot.create(:user)
+        session = Session.new(user:)
+        allow(Current).to receive(:session).and_return(session)
+        allow(Current).to receive(:user).and_return(user)
+      end
+
+      it "renders a successful response" do
+        franchise = FactoryBot.create(:franchise)
+        get logos_franchise_url(franchise)
+        expect(response).to be_successful
+      end
+    end
+
+    context "when the user is not signed in" do
+      it "redirects to the sign in page" do
+        franchise = FactoryBot.create(:franchise)
+        get logos_franchise_url(franchise)
+        expect(response).to redirect_to new_session_path
+      end
+    end
+  end
 end
