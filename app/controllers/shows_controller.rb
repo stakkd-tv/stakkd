@@ -75,7 +75,7 @@ class ShowsController < ApplicationController
 
   def set_show
     @show = Show.includes(
-      :seasons_without_specials, :taglines, :videos, :keywords, :season_regulars, :genres, :companies
+      :seasons_without_specials, :taglines, :videos, :keywords, :season_regulars, :genres, :companies, :franchise
     ).from_slug(params.expect(:id))
   end
 

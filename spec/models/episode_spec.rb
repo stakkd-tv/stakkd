@@ -46,6 +46,34 @@ RSpec.describe Episode, type: :model do
     end
   end
 
+  describe "before_destroy :reset_season_premiere_date" do
+    context "when episode is the first episode in the season" do
+      it "resets the seasons premiere date" do
+        show = FactoryBot.create(:show)
+        specials = show.seasons.first
+        expect(specials.premiere_date).to be_nil
+        episode = FactoryBot.create(:episode, season: specials, original_air_date: Date.today)
+        expect(specials.premiere_date).to eq episode.original_air_date
+        episode.destroy
+        expect(specials.premiere_date).to be_nil
+      end
+    end
+
+    context "when episode is not the first episode in the season" do
+      it "does not set the seasons premiere date" do
+        show = FactoryBot.create(:show)
+        specials = show.seasons.first
+        expect(specials.premiere_date).to be_nil
+        episode = FactoryBot.create(:episode, number: 1, season: specials, original_air_date: Date.today)
+        expect(specials.premiere_date).to eq episode.original_air_date
+        episode2 = FactoryBot.create(:episode, number: 2, season: specials, original_air_date: Date.tomorrow)
+        expect(specials.premiere_date).to eq episode.original_air_date
+        episode2.destroy
+        expect(specials.premiere_date).to eq episode.original_air_date
+      end
+    end
+  end
+
   describe ".ordered" do
     it "returns the seasons in order of number" do
       episode2 = FactoryBot.create(:episode, number: 2)
@@ -157,6 +185,16 @@ RSpec.describe Episode, type: :model do
     it "returns nil when the release date is nil" do
       episode = FactoryBot.create(:episode, original_air_date: nil)
       expect(episode.year).to be_nil
+    end
+  end
+
+  describe "#seasons_first_episode?" do
+    it "returns true or false depending on the episode's position in the season" do
+      season = FactoryBot.create(:season)
+      episode1 = FactoryBot.create(:episode, number: 2, season:)
+      episode2 = FactoryBot.create(:episode, number: 1, season:)
+      expect(episode1.seasons_first_episode?).to be_falsey
+      expect(episode2.seasons_first_episode?).to be_truthy
     end
   end
 

@@ -1,13 +1,13 @@
 require "rails_helper"
 
-RSpec.describe "shows/edit", type: :view do
+RSpec.describe "shows/new", type: :view do
   let(:show) { Show.new }
 
   before(:each) do
     assign(:show, show)
   end
 
-  it "renders the edit show form" do
+  it "renders the new show form" do
     render
 
     assert_select "form[action='#{shows_path}'][method='post']" do

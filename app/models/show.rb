@@ -56,6 +56,8 @@ class Show < ApplicationRecord
   has_many :seasons_without_specials, -> { without_specials }, class_name: "Season"
   has_many :non_special_episodes, through: :seasons_without_specials, source: :episodes
   has_many :episodes, through: :seasons
+  has_one :franchise_item, as: :record, dependent: :destroy
+  has_one :franchise, through: :franchise_item
   has_galleries :posters, :backgrounds, :logos, :videos
   # TODO: Acts as taggable on does not seem to support strict loading. Keep an eye on
   # https://github.com/mbleigh/acts-as-taggable-on/issues/1176 and update this if it
@@ -70,6 +72,7 @@ class Show < ApplicationRecord
 
   # Callbacks
   after_create :create_specials_season
+  after_save :update_franchise_item_date
 
   def self.inheritance_column = nil
 
@@ -91,6 +94,9 @@ class Show < ApplicationRecord
 
   def latest_season_number = seasons.maximum(:number) || 0
 
+  # NOTE: This is for duck-typing with Movie
+  def release_date = premiere_date
+
   private
 
   def slug_source = translated_title
@@ -99,5 +105,9 @@ class Show < ApplicationRecord
 
   def create_specials_season
     seasons.create(number: 0, translated_name: "Specials", original_name: "Specials")
+  end
+
+  def update_franchise_item_date
+    FranchiseItem.where(record: self).update(date: premiere_date)
   end
 end

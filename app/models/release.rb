@@ -19,6 +19,7 @@ class Release < ApplicationRecord
 
   # Callbacks
   after_save :trigger_movie_update
+  after_destroy :trigger_movie_update
 
   def self.inheritance_column = nil
 

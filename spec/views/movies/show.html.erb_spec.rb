@@ -9,6 +9,7 @@ RSpec.describe "movies/show", type: :view do
   let(:alternative_names) { {} }
   let(:release) { FactoryBot.create(:release, date: Date.new(2022, 1, 1)) }
   let(:imdb_id) { nil }
+  let(:has_franchise) { false }
 
   before(:each) do
     def view.authenticated? = false
@@ -35,6 +36,10 @@ RSpec.describe "movies/show", type: :view do
     cert = FactoryBot.create(:certification, country: @movie.country, code: "ABCODE")
     release1 = FactoryBot.create(:release, movie: @movie, type: Release::THEATRICAL, certification: cert, date: Date.new(2022, 2, 1), note: "This is a note")
     gallery_presenter = Galleries::Presenter.new(@movie)
+    if has_franchise
+      franchise = FactoryBot.create(:franchise, translated_title: "Franchise Title")
+      FactoryBot.create(:franchise_item, record: @movie, franchise:)
+    end
     assign(:movie, @movie)
     assign(:alternative_names, alternative_names)
     assign(:gallery_presenter, gallery_presenter)
@@ -192,6 +197,28 @@ RSpec.describe "movies/show", type: :view do
     it "does not render the IMDb link" do
       render
       assert_select "a.link-imdb", count: 0
+    end
+  end
+
+  context "when the movie has a franchise" do
+    let(:has_franchise) { true }
+
+    it "renders the franchise title" do
+      render
+      assert_select "p", text: "PART OF THE"
+      assert_select "p", text: "Franchise Title"
+      assert_select "p", text: "FRANCHISE"
+      assert_select "a[href='#{franchise_path(Franchise.last)}']"
+    end
+  end
+
+  context "when the movie does not have a franchise" do
+    let(:has_franchise) { false }
+
+    it "does not render the franchise cta" do
+      render
+      assert_select "p", text: "PART OF THE", count: 0
+      assert_select "p", text: "FRANCHISE", count: 0
     end
   end
 end

@@ -8,6 +8,7 @@ RSpec.describe "shows/show", type: :view do
   let(:videos) { [] }
   let(:alternative_names) { {} }
   let(:imdb_id) { nil }
+  let(:has_franchise) { false }
 
   before(:each) do
     def view.authenticated? = false
@@ -29,6 +30,10 @@ RSpec.describe "shows/show", type: :view do
     )
     FactoryBot.create(:cast_member, record: @show, person: FactoryBot.build(:person, translated_name: "John Doe"), character: "Bob")
     gallery_presenter = Galleries::Presenter.new(@show)
+    if has_franchise
+      franchise = FactoryBot.create(:franchise, translated_title: "Franchise Title")
+      FactoryBot.create(:franchise_item, record: @show, franchise:)
+    end
     assign(:show, @show)
     assign(:alternative_names, alternative_names)
     assign(:gallery_presenter, gallery_presenter)
@@ -174,6 +179,28 @@ RSpec.describe "shows/show", type: :view do
     it "does not render the IMDb link" do
       render
       assert_select "a.link-imdb", count: 0
+    end
+  end
+
+  context "when the show has a franchise" do
+    let(:has_franchise) { true }
+
+    it "renders the franchise title" do
+      render
+      assert_select "p", text: "PART OF THE"
+      assert_select "p", text: "Franchise Title"
+      assert_select "p", text: "FRANCHISE"
+      assert_select "a[href='#{franchise_path(Franchise.last)}']"
+    end
+  end
+
+  context "when the show does not have a franchise" do
+    let(:has_franchise) { false }
+
+    it "does not render the franchise cta" do
+      render
+      assert_select "p", text: "PART OF THE", count: 0
+      assert_select "p", text: "FRANCHISE", count: 0
     end
   end
 end

@@ -107,8 +107,6 @@
 
       <%= render "shared/cast_members", cast_members: @cast_members, full_cast_path: cast_movie_path(@movie) %>
 
-      <%= render "shared/alternative_names", names_grouped_by_country: @alternative_names %>
-
       <% if @release_dates_for_country.any? %>
         <div class="rounded-lg border-2 border-pop bg-background overflow-hidden">
           <div class="flex gap-4 p-4 border-b-2 border-pop bg-background-darker">
@@ -140,6 +138,10 @@
           </div>
         </div>
       <% end %>
+
+      <%= render "shared/franchise_cta", franchise: @movie.franchise %>
+
+      <%= render "shared/alternative_names", names_grouped_by_country: @alternative_names %>
 
       <%= render "shared/galleries", presenter: @gallery_presenter %>
 

@@ -1,0 +1,83 @@
+<% content_for :title, "Stakkd - #{@franchise.translated_title} franchise" %>
+
+<% poster = @franchise.poster(variant: :medium) %>
+<%= render "shared/colour_from_image", image: poster %>
+
+<% items_count = @franchise.franchise_items.size %>
+
+<% if @franchise.background(use_fallback: false) %>
+  <div class="absolute -z-10 w-full h-96 overflow-hidden flex items-center justify-center">
+    <%= image_tag @franchise.background(use_fallback: false), class: "w-full min-h-96 object-cover blur-xs" %>
+    <div class="absolute w-full h-full bg-linear-to-t from-background to-background/35"></div>
+  </div>
+<% end %>
+
+<div class="max-w-7xl mx-auto my-8 px-6 pt-10">
+  <div class="grid grid-cols-1 md:grid-cols-4 md:gap-8 md:min-h-screen">
+    <div class="col-span-1 bg-background-darker rounded-lg p-4 flex flex-col gap-10 items-center md:items-start">
+      <%= image_tag poster, class: "max-h-40 w-fit md:w-full md:max-h-none rounded-lg" %>
+      <div class="block md:hidden w-full">
+        <h3 class="text-2xl font-bold font-domine text-white">
+          <i class="fa-solid fa-toolbox text-2xl mr-6"></i>
+          <%= @franchise.translated_title %>
+        </h3>
+      </div>
+      <div class="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-1 gap-10">
+        <div>
+          <p class="font-domine"><b>Items:</b></p>
+          <p><%= items_count %></p>
+        </div>
+      </div>
+      <div class="flex gap-4 flex-col w-full">
+        <%= link_to "Edit", edit_franchise_path(@franchise), class: "link" %>
+        <div class="flex gap-4 w-full">
+          <% if @franchise.homepage.present? %>
+            <%= link_to @franchise.homepage, class: "link link-flex justify-center w-full" do %>
+              <i class="fa-solid fa-globe text-2xl"></i>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-span-3 flex flex-col gap-10">
+      <div class="hidden md:block">
+        <h3 class="text-4xl font-bold font-domine text-white mt-10 md:mt-4">
+          <i class="fa-solid fa-toolbox text-4xl mr-6"></i>
+          <%= @franchise.translated_title %>
+        </h3>
+      </div>
+      <div class="mt-10 md:mt-0 leading-6 text-sm md:text-base flex flex-col gap-6">
+        <p class="block sm:hidden text-xl font-domine">Overview:</p>
+        <%= simple_format @franchise.overview %>
+      </div>
+
+      <div class="flex flex-col gap-4" id="franchise_items">
+        <div class="flex justify-between mt-10 md:mt-4">
+          <h4 class="text-2xl font-bold font-domine text-white">
+            <%= "#{items_count} #{"Item".pluralize(items_count)}" %>
+          </h4>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+          <%# TODO: Test ordering of all views %>
+          <% @franchise.ordered_franchise_items.includes(record: {posters_attachments: {blob: :variant_records}}).each do |item| %>
+            <div class="flex flex-col gap-2">
+              <%# NOTE: polymorphic_path assumes that record will be a top-level record (e.g. Movie, Show). This should always be the case. %>
+              <%= link_to polymorphic_path(item.record) do %>
+                <div class="h-full aspect-2/3 border border-pop rounded-lg overflow-hidden">
+                  <%= image_tag item.record.poster(variant: :small), class: "w-full" %>
+                </div>
+              <% end %>
+              <p class="text-center whitespace-nowrap overflow-hidden text-ellipsis"><%= item.record.translated_title %></p>
+              <% if item.date %>
+                <small class="text-center"><%= item.date.strftime("%B %d, %Y") %></small>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <%= render "shared/galleries", presenter: @gallery_presenter %>
+    </div>
+  </div>
+</div>

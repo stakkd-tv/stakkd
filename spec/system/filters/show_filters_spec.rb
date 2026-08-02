@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.feature "Show filters", type: :system, js: true do
-  scenario "Filtering movies" do
+  scenario "Filtering shows" do
     action = FactoryBot.create(:genre, name: "Action")
     comedy = FactoryBot.create(:genre, name: "Comedy")
     company = FactoryBot.create(:company, name: "Universal Pictures")

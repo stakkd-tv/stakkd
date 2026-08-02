@@ -1,4 +1,6 @@
 class SearchPresenter
+  # TODO: Move tabs to Searchable concern? We already have the `searchable` method for assigning
+  # attributes and schemas, so each model can define it's search configuration instead.
   TABS = {
     movies: {
       klass: Movie,
@@ -10,6 +12,12 @@ class SearchPresenter
       klass: Show,
       query_by: "translated_title,original_title,alternative_names",
       collection: "Show",
+      image: ->(record) { record.poster(variant: :medium) }
+    },
+    franchises: {
+      klass: Franchise,
+      query_by: "translated_title,original_title",
+      collection: "Franchise",
       image: ->(record) { record.poster(variant: :medium) }
     },
     people: {
