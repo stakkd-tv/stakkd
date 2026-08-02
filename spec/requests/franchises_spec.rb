@@ -7,4 +7,12 @@ RSpec.describe "Franchises", type: :request do
       expect(response).to be_successful
     end
   end
+
+  describe "GET /franchises/:id" do
+    it "renders a successful response" do
+      franchise = FactoryBot.create(:franchise)
+      get franchise_path(franchise)
+      expect(response).to be_successful
+    end
+  end
 end

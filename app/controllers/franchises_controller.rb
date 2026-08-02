@@ -9,6 +9,7 @@ class FranchisesController < ApplicationController
   end
 
   def show
+    @gallery_presenter = Galleries::Presenter.new(@franchise)
   end
 
   def new
