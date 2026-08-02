@@ -1,7 +1,8 @@
 class FranchiseItemsController < ApplicationController
   before_action :require_authentication
   before_action :set_franchise
-  before_action :set_franchise_item, only: [:update, :destroy]
+  before_action :set_franchise_item, only: [:destroy]
+  before_action :validate_record_type, only: [:create]
 
   def editor
     @table_presenter = Tabulator::FranchiseItemsPresenter.new(@franchise.ordered_franchise_items.includes(:record))
@@ -13,15 +14,6 @@ class FranchiseItemsController < ApplicationController
       redirect_to editor_franchise_franchise_items_path(@franchise)
     else
       redirect_to editor_franchise_franchise_items_path(@franchise), alert: "Item could not be added."
-    end
-  end
-
-  def update
-    if @franchise_item.update(franchise_item_params)
-      render json: {success: true}, status: 200
-    else
-      errors = @franchise_item.errors.group_by_attribute.each_pair.map { |field, errors| {field => errors.map(&:full_message)} }
-      render json: {success: false, errors:}, status: 422
     end
   end
 
@@ -42,5 +34,12 @@ class FranchiseItemsController < ApplicationController
 
   def set_franchise
     @franchise = Franchise.from_slug(params.expect(:franchise_id))
+  end
+
+  def validate_record_type
+    record_type = franchise_item_params[:record_type]
+    unless ["Movie", "Show"].include?(record_type)
+      redirect_to editor_franchise_franchise_items_path(@franchise), alert: "Record type is invalid."
+    end
   end
 end

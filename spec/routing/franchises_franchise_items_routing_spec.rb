@@ -10,10 +10,6 @@ RSpec.describe FranchiseItemsController, type: :routing do
       expect(post: "/franchises/1/items").to route_to("franchise_items#create", franchise_id: "1")
     end
 
-    it "routes to #update" do
-      expect(patch: "/franchises/1/items/1").to route_to("franchise_items#update", franchise_id: "1", id: "1")
-    end
-
     it "routes to #destroy" do
       expect(delete: "/franchises/1/items/1").to route_to("franchise_items#destroy", franchise_id: "1", id: "1")
     end

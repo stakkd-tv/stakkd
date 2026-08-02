@@ -12,7 +12,6 @@ RSpec.describe "FranchiseItems", type: :request do
 
   let(:invalid_attributes) {
     valid_attributes.merge({
-      record_type: nil,
       record_id: nil
     })
   }
@@ -82,73 +81,19 @@ RSpec.describe "FranchiseItems", type: :request do
           expect(flash[:alert]).to eq "Item could not be added."
         end
       end
-    end
-  end
 
-  describe "PATCH /franchises/:franchise_id/items/:id" do
-    let(:new_record) { FactoryBot.create(:show) }
-    let(:new_attributes) {
-      {
-        record_id: new_record.id,
-        record_type: new_record.class.name
-      }
-    }
-
-    context "when user is not signed in" do
-      it "redirects to the user sign in page" do
-        franchise_item = franchise.franchise_items.create!(new_attributes)
-        patch franchise_franchise_item_path(franchise_item, franchise_id: franchise), params: {franchise_item: new_attributes}
-        expect(response).to redirect_to new_session_path
-      end
-    end
-
-    context "when user is signed in" do
-      before do
-        user = FactoryBot.create(:user)
-        session = Session.new(user:)
-        allow(Current).to receive(:session).and_return(session)
-        allow(Current).to receive(:user).and_return(user)
-      end
-
-      context "with valid params" do
-        it "updates the franchise item" do
-          franchise_item = franchise.franchise_items.create!(valid_attributes)
-          patch franchise_franchise_item_path(franchise_item, franchise_id: franchise), params: {franchise_item: new_attributes}
-          franchise_item.reload
-          expect(franchise_item.record).to eq new_record
-          expect(franchise_item.franchise).to eq franchise
+      context "when record type is not valid" do
+        it "does not create a franchise item" do
+          season = FactoryBot.create(:season)
+          post franchise_franchise_items_path(franchise_id: franchise), params: {franchise_item: {record_id: season.id, record_type: season.class.name}}
+          expect(FranchiseItem.count).to eq 0
         end
 
-        it "renders json" do
-          franchise_item = franchise.franchise_items.create!(valid_attributes)
-          patch franchise_franchise_item_path(franchise_item, franchise_id: franchise), params: {franchise_item: new_attributes}
-          expect(response).to be_successful
-          json = JSON.parse(response.body)
-          expect(json).to eq({
-            "success" => true
-          })
-        end
-      end
-
-      context "with invalid params" do
-        it "does not update the franchise_item" do
-          franchise_item = franchise.franchise_items.create!(valid_attributes)
-          patch franchise_franchise_item_path(franchise_item, franchise_id: franchise), params: {franchise_item: invalid_attributes}
-          franchise_item.reload
-          expect(franchise_item.record).to eq movie
-        end
-
-        it "renders json with errors" do
-          franchise_item = franchise.franchise_items.create!(valid_attributes)
-          patch franchise_franchise_item_path(franchise_item, franchise_id: franchise), params: {franchise_item: invalid_attributes}
-          expect(response.status).to eq 422
-          json = JSON.parse(response.body)
-          expect(json).to eq({
-            "success" => false,
-            "errors" => [
-              {"record" => ["Record must exist"]}
-            ]
-          })
+        it "redirects to the franchise items editor path with a flash alert" do
+          season = FactoryBot.create(:season)
+          post franchise_franchise_items_path(franchise_id: franchise), params: {franchise_item: {record_id: season.id, record_type: season.class.name}}
+          expect(response).to redirect_to editor_franchise_franchise_items_path(franchise_id: franchise)
+          expect(flash[:alert]).to eq "Record type is invalid."
         end
       end
     end

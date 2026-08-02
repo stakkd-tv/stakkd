@@ -96,7 +96,7 @@ Rails.application.routes.draw do
       get :backgrounds, on: :collection
       get :logos, on: :collection
     end
-    resources :franchise_items, only: [:create, :update, :destroy], path: "items" do
+    resources :franchise_items, only: [:create, :destroy], path: "items" do
       get :editor, on: :collection
     end
 
