@@ -43,6 +43,7 @@ class Movie < ApplicationRecord
   has_many :releases, dependent: :destroy
   has_many :taglines, -> { order(position: :asc) }, as: :record, dependent: :destroy
   has_one :franchise_item, as: :record, dependent: :destroy
+  has_one :franchise, through: :franchise_item
   has_galleries :posters, :backgrounds, :logos, :videos
   # TODO: Acts as taggable on does not seem to support strict loading. Keep an eye on
   # https://github.com/mbleigh/acts-as-taggable-on/issues/1176 and update this if it

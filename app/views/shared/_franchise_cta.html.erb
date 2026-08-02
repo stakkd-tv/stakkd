@@ -1,0 +1,14 @@
+<% if franchise %>
+  <div class="rounded-lg border-2 border-pop min-h-80 sm:min-h-96 relative overflow-hidden flex items-center justify-center bg-background-darker">
+    <% background = franchise.background(use_fallback: false) %>
+    <% if background %>
+      <%= image_tag background, class: "absolute size-full object-cover object-center blur-xs" %>
+    <% end %>
+    <div class="absolute inset-0 bg-black/50 flex flex-col gap-4 items-center justify-center">
+      <p class="font-bold font-domine tracking-wide">PART OF THE</p>
+      <p class="font-domine text-2xl sm:text-3xl"><%= franchise.translated_title %></p>
+      <p class="font-bold font-domine tracking-wide">FRANCHISE</p>
+      <%= link_to "Check it out", franchise_path(franchise), class: "link block bg-background" %>
+    </div>
+  </div>
+<% end %>

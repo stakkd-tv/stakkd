@@ -123,6 +123,8 @@
         </div>
       </div>
 
+      <%= render "shared/franchise_cta", franchise: @show.franchise %>
+
       <%= render "shared/alternative_names", names_grouped_by_country: @alternative_names %>
 
       <%= render "shared/galleries", presenter: @gallery_presenter %>
