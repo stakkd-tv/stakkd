@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe "Franchises", type: :request do
   describe "GET /franchises" do
     it "renders a successful response" do
-      get shows_url
+      get franchises_path
       expect(response).to be_successful
     end
   end
