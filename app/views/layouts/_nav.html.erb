@@ -133,65 +133,65 @@
       <div class="w-9 h-9 aspect-square overflow-hidden rounded-full">
         <%= image_tag current_user.avatar, class: "w-full h-full object-cover object-center", data: {settings_target: "profilePictureImage"} %>
       </div>
-      <div class="flex items-center justify-center w-9 h-9 rounded-full cursor-pointer hover:bg-pop/50" id="close-sidebar">
+      <div class="flex items-center justify-center w-9 h-9 rounded-full cursor-pointer hover:bg-pop/50 focus:bg-pop/50 transition duration-300 ease-in-out" id="close-sidebar">
         <i class="fa-solid fa-xmark text-xl"></i>
       </div>
     </div>
 
-    <%= link_to user_path("me"), class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50" do %>
+    <%= link_to user_path("me"), class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50 focus:bg-pop/50 transition duration-300 ease-in-out" do %>
       <i class="fa-solid fa-user w-2/20"></i>
       Profile
     <% end %>
     <hr class="border-pop my-2">
-    <%= link_to movies_path, class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50" do %>
+    <%= link_to movies_path, class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50 focus:bg-pop/50 transition duration-300 ease-in-out" do %>
       <i class="fa-solid fa-video w-2/20"></i>
       Movies
     <% end %>
-    <%= link_to shows_path, class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50" do %>
+    <%= link_to shows_path, class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50 focus:bg-pop/50 transition duration-300 ease-in-out" do %>
       <i class="fa-solid fa-tv w-2/20"></i>
       Shows
     <% end %>
     <hr class="border-pop my-2">
-    <%= link_to people_path, class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50" do %>
+    <%= link_to people_path, class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50 focus:bg-pop/50 transition duration-300 ease-in-out" do %>
       <i class="fa-solid fa-person w-2/20"></i>
       People
     <% end %>
-    <%= link_to companies_path, class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50" do %>
+    <%= link_to companies_path, class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50 focus:bg-pop/50 transition duration-300 ease-in-out" do %>
       <i class="fa-solid fa-building w-2/20"></i>
       Companies
     <% end %>
-    <%= link_to franchises_path, class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50" do %>
+    <%= link_to franchises_path, class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50 focus:bg-pop/50 transition duration-300 ease-in-out" do %>
       <i class="fa-solid fa-toolbox w-2/20"></i>
       Franchises
     <% end %>
-    <%= link_to "/", class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50" do %>
+    <%= link_to "/", class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50 focus:bg-pop/50 transition duration-300 ease-in-out" do %>
       <i class="fa-solid fa-list-check w-2/20"></i>
       Stacks
     <% end %>
     <details class="rounded-lg border border-pop group">
-      <summary class="link-flex p-2 rounded-lg outline outline-pop hover:bg-pop/50 cursor-pointer group-open:bg-pop/50">
+      <summary class="link-flex p-2 rounded-lg outline outline-pop hover:bg-pop/50 focus:bg-pop/50 transition duration-300 ease-in-out cursor-pointer group-open:bg-pop/50">
         <i class="fa-solid fa-plus w-2/20"></i>
         More
       </summary>
-      <%= link_to genres_path, class: "link-flex p-2 border border-transparent hover:bg-pop/50" do %>
+      <%= link_to genres_path, class: "link-flex p-2 border border-transparent hover:bg-pop/50 focus:bg-pop/50 transition duration-300 ease-in-out" do %>
         <i class="fa-solid fa-masks-theater w-2/20"></i>
         Genres
       <% end %>
-      <%= link_to countries_path, class: "link-flex p-2 border border-transparent hover:bg-pop/50" do %>
+      <%= link_to countries_path, class: "link-flex p-2 border border-transparent hover:bg-pop/50 focus:bg-pop/50 transition duration-300 ease-in-out" do %>
         <i class="fa-solid fa-earth-europe w-2/20"></i>
         Countries
       <% end %>
-      <%= link_to languages_path, class: "link-flex p-2 border border-transparent hover:bg-pop/50" do %>
+      <%= link_to languages_path, class: "link-flex p-2 border border-transparent hover:bg-pop/50 focus:bg-pop/50 transition duration-300 ease-in-out" do %>
         <i class="fa-solid fa-language w-2/20"></i>
         Languages
       <% end %>
     </details>
     <hr class="border-pop my-2">
-    <%= link_to user_settings_path, class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50" do %>
+    <%= link_to user_settings_path, class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50 focus:bg-pop/50 transition duration-300 ease-in-out" do %>
       <i class="fa-solid fa-gear w-2/20"></i>
       Settings
     <% end %>
-    <%= link_to session_path, class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50", data: {turbo_method: :delete} do %>
+    <%= link_to session_path, class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50 focus:bg-pop/50 transition duration-300 ease-in-out", data: {turbo_method: :delete} do %>
       <i class="fa-solid fa-right-from-bracket w-2/20"></i>
       Sign out
     <% end %>

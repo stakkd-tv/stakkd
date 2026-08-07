@@ -1,14 +1,39 @@
-<div class="flex gap-2 bg-background-darker p-2 border border-pop rounded-lg w-fit">
-  <button class="cursor-pointer border border-watch p-2 w-20 sm:w-40 rounded-md hover:bg-watch/75 transition-all duration-300 ease-in-out" title="Mark as watched">
+<div class="flex gap-2 bg-background-darker p-2 border border-pop rounded-xl w-fit relative">
+  <button class="z-1 cursor-pointer border border-watch p-2 w-20 sm:w-40 rounded-lg focus:bg-watch/75 hover:bg-watch/75 transition-all duration-300 ease-in-out" title="Mark as watched">
     <i class="fa-regular fa-square-check text-xl transition-all duration-300 ease-in-out"></i>
   </button>
-  <button class="cursor-pointer p-2 h-full min-w-10.5 aspect-square rounded-md hover:bg-black/75 transition-all duration-300 ease-in-out" title="Add to watchlist">
+  <button class="z-1 cursor-pointer p-2 h-full min-w-10.5 aspect-square rounded-lg focus:bg-black/75 hover:bg-black/75 transition-all duration-300 ease-in-out" title="Add to watchlist">
     <i class="fa-regular fa-bookmark text-xl transition-all duration-300 ease-in-out"></i>
   </button>
-  <button class="cursor-pointer p-2 h-full min-w-10.5 aspect-square rounded-md hover:bg-black/75 transition-all duration-300 ease-in-out" title="Add to collection">
+  <button class="z-1 cursor-pointer p-2 h-full min-w-10.5 aspect-square rounded-lg focus:bg-black/75 hover:bg-black/75 transition-all duration-300 ease-in-out" title="Add to collection">
     <i class="fa-regular fa-folder text-xl transition-all duration-300 ease-in-out"></i>
   </button>
-  <button class="cursor-pointer p-2 h-full min-w-10.5 aspect-square rounded-md hover:bg-black/75 transition-all duration-300 ease-in-out" title="More options">
+  <button class="peer z-1 cursor-pointer p-2 h-full min-w-10.5 aspect-square rounded-lg focus:bg-black/75 hover:bg-black/75 transition-all duration-300 ease-in-out" title="More options">
     <i class="fa-solid fa-ellipsis-vertical text-xl transition-all duration-300 ease-in-out"></i>
   </button>
+
+  <% desktop = "sm:-left-[1px] sm:w-[calc(100%+2px)]" %>
+  <% mobile = "-left-[0.5px] w-[calc(100%+1px)]" %>
+  <% classes = "opacity-0 peer-focus:opacity-100 transition-opacity duration-300 ease-in-out absolute top-[calc(100%-9px)] #{mobile} #{desktop} -mt-[1px] bg-background-darker border-r border-l border-b border-pop rounded-b-xl flex flex-col gap-2 p-2 pt-3" %>
+  <div class="<%= classes %>">
+    <%= link_to "#", class: "link w-full" do %>
+      <i class="fa-solid fa-clock mr-2"></i>
+      View history
+    <% end %>
+
+    <%= link_to "#", class: "link w-full" do %>
+      <i class="fa-solid fa-list-check mr-2"></i>
+      Add to stack
+    <% end %>
+
+    <%= link_to "#", class: "link w-full" do %>
+      <i class="fa-solid fa-share mr-2"></i>
+      Share
+    <% end %>
+
+    <%= link_to "#", class: "link w-full" do %>
+      <i class="fa-solid fa-flag mr-2"></i>
+      Report
+    <% end %>
+  </div>
 </div>
