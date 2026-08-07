@@ -1,4 +1,4 @@
-<div class="flex gap-2 bg-background-darker p-2 border border-pop rounded-xl w-fit relative">
+<div class="flex gap-2 bg-background-darker p-2 border-2 border-pop rounded-xl w-fit relative">
   <button class="z-1 cursor-pointer border border-watch p-2 w-20 sm:w-40 rounded-lg focus:bg-watch/75 hover:bg-watch/75 transition-all duration-300 ease-in-out" title="Mark as watched">
     <i class="fa-regular fa-square-check text-xl transition-all duration-300 ease-in-out"></i>
   </button>
@@ -16,9 +16,9 @@
     <i class="fa-solid fa-ellipsis-vertical text-xl transition-all duration-300 ease-in-out"></i>
   </button>
 
-  <% desktop = "sm:-left-[1px] sm:w-[calc(100%+2px)]" %>
-  <% mobile = "-left-[0.5px] w-[calc(100%+1px)]" %>
-  <% classes = "opacity-0 pointer-events-none transition-all duration-300 ease-in-out absolute top-[calc(100%-9px)] #{mobile} #{desktop} -mt-[1px] bg-background-darker border-r border-l border-b border-pop rounded-b-xl flex flex-col gap-2 p-2 pt-3" %>
+  <% desktop = "sm:-left-[2px] sm:w-[calc(100%+4px)]" %>
+  <% mobile = "-left-[1.75px] w-[calc(100%+3.5px)]" %>
+  <% classes = "opacity-0 pointer-events-none transition-all duration-300 ease-in-out absolute top-[calc(100%-9px)] #{mobile} #{desktop} -mt-[1px] bg-background-darker border-r-2 border-l-2 border-b-2 border-pop rounded-b-xl flex flex-col gap-2 p-2 pt-3" %>
   <div class="<%= classes %>" id="actions-more-options">
     <%= link_to "#", class: "link w-full" do %>
       <i class="fa-solid fa-clock mr-2"></i>
