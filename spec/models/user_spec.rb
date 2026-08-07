@@ -7,6 +7,7 @@ RSpec.describe User, type: :model do
     it { should belong_to(:banned_by).class_name("User").optional(true) }
     it { should have_many(:sessions).dependent(:destroy) }
     it { should have_many(:confirmation_tokens).dependent(:destroy) }
+    it { should have_many(:history_items).dependent(:destroy) }
     it { should have_one_attached(:profile_picture) }
     it { should have_one_attached(:background) }
   end

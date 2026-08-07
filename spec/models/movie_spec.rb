@@ -17,6 +17,7 @@ RSpec.describe Movie, type: :model do
     it { should have_many(:companies).through(:company_assignments) }
     it { should have_many(:releases).dependent(:destroy) }
     it { should have_many(:taglines).dependent(:destroy) }
+    it { should have_many(:history_items).dependent(:destroy) }
     it { should have_one(:franchise_item).dependent(:destroy) }
     it { should have_one(:franchise).through(:franchise_item) }
   end
