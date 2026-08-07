@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_31_171054) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_07_185610) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -199,6 +199,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_31_171054) do
     t.string "name"
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_genres_on_name", unique: true
+  end
+
+  create_table "history_items", force: :cascade do |t|
+    t.datetime "consumed_at"
+    t.datetime "created_at", null: false
+    t.bigint "item_id", null: false
+    t.string "item_type", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["item_type", "item_id", "consumed_at"], name: "index_history_items_on_item_type_and_item_id_and_consumed_at"
+    t.index ["item_type", "item_id"], name: "index_history_items_on_item"
+    t.index ["user_id", "consumed_at"], name: "index_history_items_on_user_id_and_consumed_at"
+    t.index ["user_id", "item_type", "item_id"], name: "index_history_items_on_user_id_and_item_type_and_item_id"
+    t.index ["user_id"], name: "index_history_items_on_user_id"
   end
 
   create_table "jobs", force: :cascade do |t|
@@ -390,6 +404,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_31_171054) do
   add_foreign_key "episodes", "seasons"
   add_foreign_key "franchise_items", "franchises"
   add_foreign_key "genre_assignments", "genres"
+  add_foreign_key "history_items", "users"
   add_foreign_key "releases", "certifications"
   add_foreign_key "releases", "movies"
   add_foreign_key "seasons", "shows"
