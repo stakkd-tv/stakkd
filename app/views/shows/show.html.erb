@@ -116,7 +116,7 @@
                   <%= image_tag season.poster(variant: :small), class: "w-full" %>
                 </div>
               <% end %>
-              <%= render "shared/actions/compact_actions" %>
+              <%= render "shared/actions/compact_actions", record: season %>
               <p class="text-center whitespace-nowrap overflow-hidden text-ellipsis"><%= season.translated_name %></p>
               <small class="text-center"><%= season.episodes.size %> <%= "episode".pluralize(season.episodes.size) %></small>
             </div>

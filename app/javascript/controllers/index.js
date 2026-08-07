@@ -10,6 +10,7 @@ import FormNavController from './form_nav_controller'
 import JumpToController from './jump_to_controller'
 import LivesearchController from './livesearch_controller'
 import MarkdownRendererController from './markdown_renderer_controller'
+import MoreOptionsController from './more_options_controller'
 import NavController from './nav_controller'
 import SlimSelectController from './slim_select_controller'
 import SearchResultsController from './search_results_controller'
@@ -24,6 +25,7 @@ application.register('form-nav', FormNavController)
 application.register('jump-to', JumpToController)
 application.register('livesearch', LivesearchController)
 application.register('markdown-renderer', MarkdownRendererController)
+application.register('more-options', MoreOptionsController)
 application.register('nav', NavController)
 application.register('slim-select', SlimSelectController)
 application.register('search-results', SearchResultsController)

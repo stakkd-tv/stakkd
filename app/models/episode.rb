@@ -32,6 +32,8 @@ class Episode < ApplicationRecord
 
   def self.associations_to_load = [season: [:ordered_episodes, show: :seasons_without_specials]]
 
+  def to_s = translated_name
+
   def to_param = number.to_s
 
   # TODO: If the episode is the last episode in the season, check if there is a next season and

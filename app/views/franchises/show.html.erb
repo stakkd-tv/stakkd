@@ -68,7 +68,7 @@
                   <%= image_tag item.record.poster(variant: :small), class: "w-full" %>
                 </div>
               <% end %>
-              <%= render "shared/actions/compact_actions" %>
+              <%= render "shared/actions/compact_actions", record: item.record %>
               <p class="text-center whitespace-nowrap overflow-hidden text-ellipsis"><%= item.record.translated_title %></p>
               <% if item.date %>
                 <small class="text-center"><%= item.date.strftime("%B %d, %Y") %></small>

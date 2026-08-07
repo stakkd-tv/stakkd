@@ -92,6 +92,13 @@ RSpec.describe Episode, type: :model do
 
   it_behaves_like "a model with imdb_id", Episode
 
+  describe "#to_s" do
+    it "returns the translated_name" do
+      episode = Episode.new(translated_name: "Test Episode")
+      expect(episode.to_s).to eq "Test Episode"
+    end
+  end
+
   describe "#to_param" do
     it "returns the episode number as a string" do
       expect(Episode.new(number: 2).to_param).to eq "2"
