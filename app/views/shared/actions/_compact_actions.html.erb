@@ -1,47 +1,49 @@
-<% selector = "#{record.class}-#{record.id}-more-options" %>
-<div class="flex gap-2 w-full sm:relative">
-  <button class="cursor-pointer border border-watch p-2 w-full rounded-lg focus:bg-watch/75 hover:bg-watch/75 transition-all duration-300 ease-in-out" title="Mark as watched">
-    <i class="fa-regular fa-square-check text-xl transition-all duration-300 ease-in-out"></i>
-  </button>
-  <button
-    class="cursor-pointer p-2 h-full min-w-10.5 aspect-square rounded-lg border border-transparent focus:bg-black/75 hover:bg-black/75 transition-all duration-300 ease-in-out"
-    title="More options"
-    data-controller="more-options"
-    data-more-options-selector-value=".<%= selector %>">
-    <i class="fa-solid fa-ellipsis-vertical text-xl transition-all duration-300 ease-in-out"></i>
-  </button>
+<% if authenticated? %>
+  <% selector = "#{record.class}-#{record.id}-more-options" %>
+  <div class="flex gap-2 w-full sm:relative">
+    <button class="cursor-pointer border border-watch p-2 w-full rounded-lg focus:bg-watch/75 hover:bg-watch/75 transition-all duration-300 ease-in-out" title="Mark as watched">
+      <i class="fa-regular fa-square-check text-xl transition-all duration-300 ease-in-out"></i>
+    </button>
+    <button
+      class="cursor-pointer p-2 h-full min-w-10.5 aspect-square rounded-lg border border-transparent focus:bg-black/75 hover:bg-black/75 transition-all duration-300 ease-in-out"
+      title="More options"
+      data-controller="more-options"
+      data-more-options-selector-value=".<%= selector %>">
+      <i class="fa-solid fa-ellipsis-vertical text-xl transition-all duration-300 ease-in-out"></i>
+    </button>
 
-  <div class="<%= selector %> mt-2 z-1 opacity-0 pointer-events-none transition-all duration-300 ease-in-out fixed sm:absolute bottom-0 left-0 h-fit w-full sm:w-50 sm:top-full sm:right-0 sm:left-auto flex flex-col gap-2 p-2 bg-background-darker border-t sm:border border-pop sm:rounded-lg">
-    <p class="sm:hidden text-xl font-domine my-4"><%= record %></p>
+    <div class="<%= selector %> mt-2 z-1 opacity-0 pointer-events-none transition-all duration-300 ease-in-out fixed sm:absolute bottom-0 left-0 h-fit w-full sm:w-50 sm:top-full sm:right-0 sm:left-auto flex flex-col gap-2 p-2 bg-background-darker border-t-2 sm:border-2 border-pop sm:rounded-lg">
+      <p class="sm:hidden text-xl font-domine my-4"><%= record %></p>
 
-    <%= link_to "#", class: "link w-full" do %>
-      <i class="fa-solid fa-clock mr-2"></i>
-      View history
-    <% end %>
+      <%= link_to "#", class: "link w-full" do %>
+        <i class="fa-solid fa-clock mr-2"></i>
+        View history
+      <% end %>
 
-    <%= link_to "#", class: "link w-full" do %>
-      <i class="fa-regular fa-bookmark mr-2"></i>
-      Add to watchlist
-    <% end %>
+      <%= link_to "#", class: "link w-full" do %>
+        <i class="fa-regular fa-bookmark mr-2"></i>
+        Add to watchlist
+      <% end %>
 
-    <%= link_to "#", class: "link w-full" do %>
-      <i class="fa-regular fa-folder mr-2"></i>
-      Add to collection
-    <% end %>
+      <%= link_to "#", class: "link w-full" do %>
+        <i class="fa-regular fa-folder mr-2"></i>
+        Add to collection
+      <% end %>
 
-    <%= link_to "#", class: "link w-full" do %>
-      <i class="fa-solid fa-list-check mr-2"></i>
-      Add to stack
-    <% end %>
+      <%= link_to "#", class: "link w-full" do %>
+        <i class="fa-solid fa-list-check mr-2"></i>
+        Add to stack
+      <% end %>
 
-    <%= link_to "#", class: "link w-full" do %>
-      <i class="fa-solid fa-share mr-2"></i>
-      Share
-    <% end %>
+      <%= link_to "#", class: "link w-full" do %>
+        <i class="fa-solid fa-share mr-2"></i>
+        Share
+      <% end %>
 
-    <%= link_to "#", class: "link w-full" do %>
-      <i class="fa-solid fa-flag mr-2"></i>
-      Report
-    <% end %>
+      <%= link_to "#", class: "link w-full" do %>
+        <i class="fa-solid fa-flag mr-2"></i>
+        Report
+      <% end %>
+    </div>
   </div>
-</div>
+<% end %>
