@@ -17,7 +17,7 @@ class User < ApplicationRecord
   belongs_to :banned_by, class_name: "User", optional: true
   has_many :sessions, dependent: :destroy
   has_many :confirmation_tokens, dependent: :destroy
-  has_many :history_items, dependent: :destroy
+  has_many :history_items, dependent: :delete_all
   has_one_attached :profile_picture
   has_one_attached :background
 
