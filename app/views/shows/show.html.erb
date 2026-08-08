@@ -93,7 +93,7 @@
         <p class="block sm:hidden text-xl font-domine">Overview:</p>
         <%= simple_format @show.overview %>
       </div>
-      <%= render "shared/actions/actions" %>
+      <%= render "shared/actions/actions", record: @show %>
 
       <%= render "shared/cast_members", cast_members: @cast_members, full_cast_path: cast_show_path(@show) %>
 
@@ -138,3 +138,5 @@
     </div>
   </div>
 </div>
+
+<%= render "shared/actions/dialogs/history" %>

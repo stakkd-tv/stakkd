@@ -47,6 +47,17 @@ RSpec.describe "episodes/show", type: :view do
     assert_select "a[href='#{cast_show_season_episode_path(@episode, season_id: @season, show_id: @show)}']"
   end
 
+  it "renders the add to history dialog" do
+    render
+    assert_select "dialog[data-controller='history-dialog']"
+  end
+
+  it "renders the add to history button when authenticated" do
+    allow(view).to receive(:authenticated?).and_return(true)
+    render
+    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_season_episode_path(@show, @season, @episode)}']"
+  end
+
   context "when episode has no air date" do
     let(:original_air_date) { nil }
 

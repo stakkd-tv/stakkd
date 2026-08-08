@@ -76,6 +76,26 @@ RSpec.describe "shows/show", type: :view do
     end
   end
 
+  it "renders the add to history dialog" do
+    render
+    assert_select "dialog[data-controller='history-dialog']"
+  end
+
+  it "renders the add to history button when authenticated" do
+    allow(view).to receive(:authenticated?).and_return(true)
+    render
+    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_path(@show)}']"
+  end
+
+  context "when there are seasons" do
+    it "renders the add to history buttons for each season when authenticated" do
+      allow(view).to receive(:authenticated?).and_return(true)
+      season = FactoryBot.create(:season, show: @show)
+      render
+      assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_season_path(@show, season)}']"
+    end
+  end
+
   context "when the show has creators" do
     before do
       job = FactoryBot.create(:job, name: Job::CREATOR)

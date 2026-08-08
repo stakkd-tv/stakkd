@@ -1,0 +1,32 @@
+<dialog
+  data-controller="history-dialog"
+  data-action="history-button:open@window->history-dialog#open"
+  class="w-full max-w-full md:max-w-lg mt-auto md:m-auto open:flex open:flex-col open:gap-4 open:p-0 open:bg-transparent backdrop:backdrop-blur-sm">
+  <div class="bg-background border-t-2 md:border-2 border-watch text-white md:rounded-lg relative">
+    <div class="border-b-2 border-background-darker p-4 font-domine text-xl">Add to history</div>
+    <form data-history-dialog-target="form" data-action="submit->history-dialog#submit">
+      <input type="hidden" name="consumed_at_type" value="now" data-history-dialog-target="consumedAtType">
+      <div class="p-4">
+        <p>When did you watch this?</p>
+        <div class="flex flex-wrap gap-2 my-2">
+          <button type="button" data-action="history-dialog#setOption" data-option="now" data-active="true" class="text-sm whitespace-n bg-background-darker data-[active=true]:bg-watch rounded py-1 px-2 cursor-pointer transition duration-300 ease-in-out">Now</button>
+          <button type="button" data-action="history-dialog#setOption" data-option="release_date" data-active="false" class="text-sm whitespace-nowrap bg-background-darker data-[active=true]:bg-watch rounded py-1 px-2 cursor-pointer transition duration-300 ease-in-out">Release date</button>
+          <button type="button" data-action="history-dialog#setOption" data-option="date" data-active="false" class="text-sm whitespace-nowrap bg-background-darker data-[active=true]:bg-watch rounded py-1 px-2 cursor-pointer transition duration-300 ease-in-out">Other date</button>
+          <button type="button" data-action="history-dialog#setOption" data-option="unknown" data-active="false" class="text-sm whitespace-nowrap bg-background-darker data-[active=true]:bg-watch rounded py-1 px-2 cursor-pointer transition duration-300 ease-in-out">Unknown</button>
+        </div>
+        <div data-history-dialog-target="consumedAtInputContainer" class="hidden">
+          <label for="consumed_at" class="text-sm mb-1">Select a date and time</label>
+          <input type="date"
+            name="consumed_at"
+            id="consumed_at"
+            class="w-full p-2 border border-watch rounded-lg focus:outline-watch focus:outline"
+            data-history-dialog-target="consumedAtInput">
+        </div>
+      </div>
+      <div class="p-4 border-t-2 border-background-darker flex gap-2 justify-end">
+        <button type="button" data-action="click->history-dialog#close" class="bg-background-darker rounded-lg py-2 px-4 cursor-pointer">Cancel</button>
+        <input type="submit" value="Confirm" class="bg-watch rounded-lg py-2 px-4 cursor-pointer">
+      </div>
+    </form>
+  </div>
+</dialog>

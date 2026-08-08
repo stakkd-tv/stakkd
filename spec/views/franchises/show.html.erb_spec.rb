@@ -17,12 +17,12 @@ RSpec.describe "franchises/show", type: :view do
       backgrounds:,
       logos:
     )
-    movie = FactoryBot.create(:movie, :with_release_date, date_for_release: Date.today, translated_title: "Great Movie")
-    FactoryBot.create(:franchise_item, franchise: @franchise, record: movie)
-    show = FactoryBot.create(:show, :with_premiere_date, date_for_premiere: Date.tomorrow, translated_title: "Great Show")
-    FactoryBot.create(:franchise_item, franchise: @franchise, record: show)
-    show_no_air_date = FactoryBot.create(:show, translated_title: "No air date")
-    FactoryBot.create(:franchise_item, franchise: @franchise, record: show_no_air_date)
+    @movie = FactoryBot.create(:movie, :with_release_date, date_for_release: Date.today, translated_title: "Great Movie")
+    FactoryBot.create(:franchise_item, franchise: @franchise, record: @movie)
+    @show = FactoryBot.create(:show, :with_premiere_date, date_for_premiere: Date.tomorrow, translated_title: "Great Show")
+    FactoryBot.create(:franchise_item, franchise: @franchise, record: @show)
+    @show_no_air_date = FactoryBot.create(:show, translated_title: "No air date")
+    FactoryBot.create(:franchise_item, franchise: @franchise, record: @show_no_air_date)
     gallery_presenter = Galleries::Presenter.new(@franchise)
     assign(:franchise, @franchise)
     assign(:gallery_presenter, gallery_presenter)
@@ -48,6 +48,19 @@ RSpec.describe "franchises/show", type: :view do
       assert_select "p", text: "No air date"
       assert_select "a[href='#{show_path(Show.second)}']"
     end
+  end
+
+  it "renders the add to history dialog" do
+    render
+    assert_select "dialog[data-controller='history-dialog']"
+  end
+
+  it "renders the add to history buttons for each history item when authenticated" do
+    allow(view).to receive(:authenticated?).and_return(true)
+    render
+    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_movie_path(@movie)}']"
+    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_path(@show)}']"
+    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_path(@show_no_air_date)}']"
   end
 
   context "when the franchise has a background" do

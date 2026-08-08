@@ -58,7 +58,7 @@
         <p class="block sm:hidden text-xl font-domine">Overview:</p>
         <%= simple_format(@season.overview.presence || @show.overview.presence) %>
       </div>
-      <%= render "shared/actions/actions" %>
+      <%= render "shared/actions/actions", record: @season %>
 
       <%= render "shared/paginated_items", presenter: @pagination %>
 
@@ -106,3 +106,5 @@
     </div>
   </div>
 </div>
+
+<%= render "shared/actions/dialogs/history" %>

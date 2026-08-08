@@ -14,7 +14,7 @@ RSpec.describe "seasons/show", type: :view do
     )
     @show.ordered_seasons.first.destroy # Destroy specials season, not needed for this test
     @season = FactoryBot.create(:season, show: @show, number: 1, posters:, overview: "This is overview", translated_name:)
-    FactoryBot.create(
+    @episode1 = FactoryBot.create(
       :episode,
       number: 1,
       season: @season,
@@ -23,7 +23,7 @@ RSpec.describe "seasons/show", type: :view do
       translated_name: "Pilot",
       backgrounds: [Rack::Test::UploadedFile.new("spec/support/assets/1280x720.png", "image/png")]
     )
-    FactoryBot.create(
+    @episode2 = FactoryBot.create(
       :episode,
       number: 2,
       season: @season,
@@ -57,6 +57,24 @@ RSpec.describe "seasons/show", type: :view do
     assert_select "p", text: "John Doe"
     assert_select "small", text: "Bob"
     assert_select "a[href='#{cast_show_season_path(@season, show_id: @show)}']"
+  end
+
+  it "renders the add to history dialog" do
+    render
+    assert_select "dialog[data-controller='history-dialog']"
+  end
+
+  it "renders the add to history button when authenticated" do
+    allow(view).to receive(:authenticated?).and_return(true)
+    render
+    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_season_path(@show, @season)}']"
+  end
+
+  it "renders the add to history buttons for each episode when authenticated" do
+    allow(view).to receive(:authenticated?).and_return(true)
+    render
+    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_season_episode_path(@show, @season, @episode1)}']"
+    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_season_episode_path(@show, @season, @episode2)}']"
   end
 
   context "when name matches the potential name" do

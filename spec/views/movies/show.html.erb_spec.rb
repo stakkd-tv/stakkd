@@ -70,6 +70,17 @@ RSpec.describe "movies/show", type: :view do
     assert_select "a[href='#{cast_movie_path(@movie)}']"
   end
 
+  it "renders the add to history dialog" do
+    render
+    assert_select "dialog[data-controller='history-dialog']"
+  end
+
+  it "renders the add to history button when authenticated" do
+    allow(view).to receive(:authenticated?).and_return(true)
+    render
+    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_movie_path(@movie)}']"
+  end
+
   context "when there is no release for the country" do
     it "does not render the release date" do
       render
