@@ -98,7 +98,7 @@ class Show < ApplicationRecord
   # NOTE: This is for duck-typing with Movie
   def release_date = premiere_date
 
-  def items_for_history = non_special_episodes.where.not(original_air_date: nil)
+  def items_for_history = non_special_episodes.released
 
   def history_release_date = premiere_date
 

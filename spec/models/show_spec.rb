@@ -72,6 +72,8 @@ RSpec.describe Show, type: :model do
     let(:record) { FactoryBot.create(:show, :with_premiere_date) }
     let!(:special_episode) { FactoryBot.create(:episode, season: record.ordered_seasons.first) }
     let!(:non_special_episode) { record.ordered_seasons.second.episodes.first }
+    let!(:no_release_date) { FactoryBot.create(:episode, number: 2, season: non_special_episode.season, original_air_date: nil) }
+    let!(:not_released) { FactoryBot.create(:episode, number: 3, season: non_special_episode.season, original_air_date: Time.current + 1.day) }
     let(:items_for_history) { [non_special_episode] }
     let(:release_date) { record.premiere_date }
   end

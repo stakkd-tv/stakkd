@@ -6,10 +6,8 @@ RSpec.describe Season, type: :model do
   describe "associations" do
     it { should belong_to(:show) }
     it { should have_many(:season_regulars).class_name("CastMember").dependent(:destroy) }
-    # it { should have_many(:videos).dependent(:destroy) }
     it { should have_many(:episodes).dependent(:destroy) }
     it { should have_many(:ordered_episodes) }
-    # it { should have_many_attached(:posters) }
   end
 
   describe "validations" do
@@ -23,6 +21,8 @@ RSpec.describe Season, type: :model do
   it_behaves_like "a model that can be added to history" do
     let(:record) { FactoryBot.create(:season, :with_premiere_date) }
     let!(:episode) { record.episodes.first }
+    let!(:no_release_date) { FactoryBot.create(:episode, number: 2, season: record, original_air_date: nil) }
+    let!(:not_released) { FactoryBot.create(:episode, number: 3, season: record, original_air_date: Time.current + 1.day) }
     let(:items_for_history) { [episode] }
     let(:release_date) { record.premiere_date }
   end

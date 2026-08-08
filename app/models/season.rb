@@ -46,7 +46,7 @@ class Season < ApplicationRecord
 
   def latest_episode_number = episodes.maximum(:number) || 0
 
-  def items_for_history = episodes.where.not(original_air_date: nil)
+  def items_for_history = episodes.released
 
   def history_release_date = premiere_date
 
