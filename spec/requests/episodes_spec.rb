@@ -1,4 +1,5 @@
 require "rails_helper"
+require_relative "shared_examples/actions/history"
 
 RSpec.describe "/shows/:show_id/seasons/:season_id/episodes", type: :request do
   let(:season) { FactoryBot.create(:season) }
@@ -243,6 +244,14 @@ RSpec.describe "/shows/:show_id/seasons/:season_id/episodes", type: :request do
       assert_select "h4", text: "Art"
       assert_select "h5", text: "Charlie Doe"
       assert_select "p", text: "Painter"
+    end
+  end
+
+  it_behaves_like "a model with history actions" do
+    let(:record) { FactoryBot.create(:episode, original_air_date: Date.new(2026, 1, 1)) }
+
+    def perform
+      post add_to_history_show_season_episode_path(record, season_id: record.season, show_id: record.show), params: params
     end
   end
 end

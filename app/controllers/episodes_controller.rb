@@ -1,4 +1,6 @@
 class EpisodesController < ApplicationController
+  include Actions::History
+
   before_action :require_authentication, except: [:show, :cast]
   before_action :set_show
   before_action :set_season
@@ -56,6 +58,8 @@ class EpisodesController < ApplicationController
   def set_episode
     @episode = @season.episodes.find_by!(number: params.expect(:id))
   end
+
+  def record = @episode
 
   def episode_params
     params.expect(episode: [:number, :translated_name, :original_name, :overview, :original_air_date, :episode_type, :runtime, :production_code, :imdb_id])

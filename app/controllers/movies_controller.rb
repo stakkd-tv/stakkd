@@ -1,4 +1,6 @@
 class MoviesController < ApplicationController
+  include Actions::History
+
   before_action :require_authentication, except: [:index, :show, :cast, :poster]
   before_action :set_movie, except: [:index, :new, :create]
 
@@ -77,6 +79,8 @@ class MoviesController < ApplicationController
   def set_movie
     @movie = Movie.includes(:country, :taglines, :videos, :keywords, :genres, :companies, :franchise).from_slug(params.expect(:id))
   end
+
+  def record = @movie
 
   def movie_params
     params.expect(movie: [:language_id, :country_id, :original_title, :translated_title, :overview, :status, :runtime, :revenue, :budget, :homepage, :imdb_id])

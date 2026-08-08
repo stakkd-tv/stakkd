@@ -1,4 +1,6 @@
 class SeasonsController < ApplicationController
+  include Actions::History
+
   before_action :require_authentication, except: [:show, :cast]
   before_action :set_show
   before_action :set_season, except: [:new, :create]
@@ -53,6 +55,8 @@ class SeasonsController < ApplicationController
   def set_season
     @season = @show.seasons.find_by!(number: params.expect(:id))
   end
+
+  def record = @season
 
   def season_params
     params.expect(season: [:number, :translated_name, :original_name, :overview])

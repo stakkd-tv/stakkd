@@ -1,4 +1,5 @@
 require "rails_helper"
+require_relative "shared_examples/actions/history"
 
 RSpec.describe "/shows", type: :request do
   let(:country) { FactoryBot.create(:country) }
@@ -314,6 +315,14 @@ RSpec.describe "/shows", type: :request do
         expect(response.content_type).to eq "text/html; charset=utf-8"
         expect(response).to redirect_to url_for(poster)
       end
+    end
+  end
+
+  it_behaves_like "a model with history actions" do
+    let(:record) { FactoryBot.create(:show, :with_premiere_date, date_for_premiere: Date.new(2026, 1, 1)) }
+
+    def perform
+      post add_to_history_show_path(record), params: params
     end
   end
 end

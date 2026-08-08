@@ -1,4 +1,6 @@
 class ShowsController < ApplicationController
+  include Actions::History
+
   before_action :require_authentication, except: [:index, :show, :cast, :poster]
   before_action :set_show, except: [:index, :new, :create]
 
@@ -78,6 +80,8 @@ class ShowsController < ApplicationController
       :seasons_without_specials, :taglines, :videos, :keywords, :season_regulars, :genres, :companies, :franchise
     ).from_slug(params.expect(:id))
   end
+
+  def record = @show
 
   def show_params
     params.expect(show: [:language_id, :country_id, :homepage, :imdb_id, :original_title, :overview, :status, :translated_title, :type])
