@@ -212,3 +212,19 @@ span.flatpickr-weekday {
 .flatpickr-months .flatpickr-next-month {
     fill: white;
 }
+
+.flatpickr-calendar.hasTime .flatpickr-time {
+    border-top: 1px solid var(--color-pop);
+}
+
+.flatpickr-time input:hover, .flatpickr-time .flatpickr-am-pm:hover, .flatpickr-time input:focus, .flatpickr-time .flatpickr-am-pm:focus {
+    background-color: var(--color-background-darker);
+}
+
+.flatpickr-time input {
+    color: white;
+}
+
+.flatpickr-time .flatpickr-time-separator, .flatpickr-time .flatpickr-am-pm {
+    color: white;
+}
