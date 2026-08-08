@@ -246,5 +246,9 @@ RSpec.describe "/shows/:show_id/seasons", type: :request do
     def perform
       post add_to_history_show_season_path(record, show_id: record.show), params: params
     end
+
+    def mark_as_not_released
+      record.episodes.destroy_all
+    end
   end
 end

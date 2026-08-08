@@ -27,6 +27,18 @@ RSpec.shared_examples "a model with history actions" do
       end
     end
 
+    context "when the record is not released" do
+      let(:consumed_at_type) { "now" }
+
+      it "returns a 422 error" do
+        mark_as_not_released
+        perform
+        expect(response.status).to eq 422
+        json = JSON.parse(response.body)
+        expect(json).to eq({"success" => false, "errors" => ["Cannot add to history for a record that has not been released"]})
+      end
+    end
+
     context "when consumed at type is 'now'" do
       let(:consumed_at) { nil }
       let(:consumed_at_type) { "now" }

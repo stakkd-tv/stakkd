@@ -253,5 +253,9 @@ RSpec.describe "/shows/:show_id/seasons/:season_id/episodes", type: :request do
     def perform
       post add_to_history_show_season_episode_path(record, season_id: record.season, show_id: record.show), params: params
     end
+
+    def mark_as_not_released
+      record.assign_attributes(original_air_date: nil)
+    end
   end
 end

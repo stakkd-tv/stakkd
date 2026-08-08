@@ -332,5 +332,9 @@ RSpec.describe "Movies", type: :request do
     def perform
       post add_to_history_movie_path(record), params: params
     end
+
+    def mark_as_not_released
+      record.releases.destroy_all
+    end
   end
 end

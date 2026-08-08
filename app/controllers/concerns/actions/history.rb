@@ -3,6 +3,10 @@ module Actions
     extend ActiveSupport::Concern
 
     def add_to_history
+      unless record.released?
+        render json: {success: false, errors: ["Cannot add to history for a record that has not been released"]}, status: 422
+        return
+      end
       record.add_to_history!(current_user, consumed_at: resolve_consumed_at)
       render json: {success: true}, status: 200
     rescue
