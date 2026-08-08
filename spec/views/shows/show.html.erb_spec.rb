@@ -83,8 +83,18 @@ RSpec.describe "shows/show", type: :view do
 
   it "renders the add to history button when authenticated" do
     allow(view).to receive(:authenticated?).and_return(true)
+    FactoryBot.create(:season, :with_premiere_date, show: @show)
     render
     assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_path(@show)}']"
+    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_path(@show)}'][disabled]", count: 0
+  end
+
+  context "when the show has no release date" do
+    it "renders the add to history button in a disabled state" do
+      allow(view).to receive(:authenticated?).and_return(true)
+      render
+      assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_path(@show)}'][disabled]", count: 1
+    end
   end
 
   context "when there are seasons" do

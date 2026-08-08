@@ -216,4 +216,21 @@ RSpec.describe Movie, type: :model do
       expect(movie.year).to be_nil
     end
   end
+
+  describe "#released?" do
+    it "returns true when the release date is in the past" do
+      movie = FactoryBot.create(:movie, :with_release_date, date_for_release: Date.yesterday)
+      expect(movie.released?).to be true
+    end
+
+    it "returns true when the release date is today" do
+      movie = FactoryBot.create(:movie, :with_release_date, date_for_release: Date.today)
+      expect(movie.released?).to be true
+    end
+
+    it "returns false when the release date is in the future" do
+      movie = FactoryBot.create(:movie, :with_release_date, date_for_release: Date.tomorrow)
+      expect(movie.released?).to be false
+    end
+  end
 end

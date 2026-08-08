@@ -24,7 +24,7 @@ RSpec.describe Season, type: :model do
     let!(:no_release_date) { FactoryBot.create(:episode, number: 2, season: record, original_air_date: nil) }
     let!(:not_released) { FactoryBot.create(:episode, number: 3, season: record, original_air_date: Time.current + 1.day) }
     let(:items_for_history) { [episode] }
-    let(:release_date) { record.premiere_date }
+    let(:release_date) { :raises }
   end
 
   it_behaves_like "a model with galleries", :season, [:posters, :videos]
@@ -204,6 +204,23 @@ RSpec.describe Season, type: :model do
     it "returns 0 when there are no episodes" do
       season = FactoryBot.create(:season)
       expect(season.latest_episode_number).to eq 0
+    end
+  end
+
+  describe "#released?" do
+    it "returns true when the release date is in the past" do
+      season = FactoryBot.create(:season, :with_premiere_date, date_for_premiere: Date.yesterday)
+      expect(season.released?).to be true
+    end
+
+    it "returns true when the release date is today" do
+      season = FactoryBot.create(:season, :with_premiere_date, date_for_premiere: Date.today)
+      expect(season.released?).to be true
+    end
+
+    it "returns false when the release date is in the future" do
+      season = FactoryBot.create(:season, :with_premiere_date, date_for_premiere: Date.tomorrow)
+      expect(season.released?).to be false
     end
   end
 end

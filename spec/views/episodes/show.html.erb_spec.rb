@@ -56,6 +56,7 @@ RSpec.describe "episodes/show", type: :view do
     allow(view).to receive(:authenticated?).and_return(true)
     render
     assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_season_episode_path(@show, @season, @episode)}']"
+    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_season_episode_path(@show, @season, @episode)}'][disabled]", count: 0
   end
 
   context "when episode has no air date" do
@@ -64,6 +65,12 @@ RSpec.describe "episodes/show", type: :view do
     it "renders TBA" do
       render
       expect(rendered).to match(/TBA/)
+    end
+
+    it "renders the add to history button in a disabled state" do
+      allow(view).to receive(:authenticated?).and_return(true)
+      render
+      assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_season_episode_path(@show, @season, @episode)}'][disabled]", count: 1
     end
   end
 

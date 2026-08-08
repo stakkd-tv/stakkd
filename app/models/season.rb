@@ -48,7 +48,7 @@ class Season < ApplicationRecord
 
   def items_for_history = episodes.released
 
-  def history_release_date = premiere_date
+  def released? = premiere_date && premiere_date <= Date.today
 
   private
 

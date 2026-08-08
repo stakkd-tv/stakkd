@@ -10,6 +10,7 @@ RSpec.describe "movies/show", type: :view do
   let(:release) { FactoryBot.create(:release, date: Date.new(2022, 1, 1)) }
   let(:imdb_id) { nil }
   let(:has_franchise) { false }
+  let(:has_release) { true }
 
   before(:each) do
     def view.authenticated? = false
@@ -33,8 +34,10 @@ RSpec.describe "movies/show", type: :view do
       releases: [release]
     )
     FactoryBot.create(:cast_member, record: @movie, person: FactoryBot.build(:person, translated_name: "John Doe"), character: "Bob")
-    cert = FactoryBot.create(:certification, country: @movie.country, code: "ABCODE")
-    release1 = FactoryBot.create(:release, movie: @movie, type: Release::THEATRICAL, certification: cert, date: Date.new(2022, 2, 1), note: "This is a note")
+    if has_release
+      cert = FactoryBot.create(:certification, country: @movie.country, code: "ABCODE")
+      release1 = FactoryBot.create(:release, movie: @movie, type: Release::THEATRICAL, certification: cert, date: Date.new(2022, 2, 1), note: "This is a note")
+    end
     gallery_presenter = Galleries::Presenter.new(@movie)
     if has_franchise
       franchise = FactoryBot.create(:franchise, translated_title: "Franchise Title")
@@ -79,6 +82,17 @@ RSpec.describe "movies/show", type: :view do
     allow(view).to receive(:authenticated?).and_return(true)
     render
     assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_movie_path(@movie)}']"
+    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_movie_path(@movie)}'][disabled]", count: 0
+  end
+
+  context "when the movie has no release date" do
+    let(:has_release) { false }
+
+    it "renders the add to history button in a disabled state" do
+      allow(view).to receive(:authenticated?).and_return(true)
+      render
+      assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_movie_path(@movie)}'][disabled]", count: 1
+    end
   end
 
   context "when there is no release for the country" do

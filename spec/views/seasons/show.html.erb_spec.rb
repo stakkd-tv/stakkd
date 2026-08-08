@@ -4,6 +4,7 @@ RSpec.describe "seasons/show", type: :view do
   let(:posters) { [] }
   let(:backgrounds) { [] }
   let(:translated_name) { "The OG season" }
+  let(:has_episodes) { true }
 
   before(:each) do
     def view.authenticated? = false
@@ -14,24 +15,26 @@ RSpec.describe "seasons/show", type: :view do
     )
     @show.ordered_seasons.first.destroy # Destroy specials season, not needed for this test
     @season = FactoryBot.create(:season, show: @show, number: 1, posters:, overview: "This is overview", translated_name:)
-    @episode1 = FactoryBot.create(
-      :episode,
-      number: 1,
-      season: @season,
-      original_air_date: Date.new(2023, 1, 1),
-      runtime: 30,
-      translated_name: "Pilot",
-      backgrounds: [Rack::Test::UploadedFile.new("spec/support/assets/1280x720.png", "image/png")]
-    )
-    @episode2 = FactoryBot.create(
-      :episode,
-      number: 2,
-      season: @season,
-      original_air_date: Date.new(2023, 1, 2),
-      runtime: 30,
-      translated_name: "Ringtoneers",
-      backgrounds: [Rack::Test::UploadedFile.new("spec/support/assets/1280x720.png", "image/png")]
-    )
+    if has_episodes
+      @episode1 = FactoryBot.create(
+        :episode,
+        number: 1,
+        season: @season,
+        original_air_date: Date.new(2023, 1, 1),
+        runtime: 30,
+        translated_name: "Pilot",
+        backgrounds: [Rack::Test::UploadedFile.new("spec/support/assets/1280x720.png", "image/png")]
+      )
+      @episode2 = FactoryBot.create(
+        :episode,
+        number: 2,
+        season: @season,
+        original_air_date: Date.new(2023, 1, 2),
+        runtime: 30,
+        translated_name: "Ringtoneers",
+        backgrounds: [Rack::Test::UploadedFile.new("spec/support/assets/1280x720.png", "image/png")]
+      )
+    end
     FactoryBot.create(:cast_member, record: @season, person: FactoryBot.build(:person, translated_name: "John Doe"), character: "Bob")
     gallery_presenter = Galleries::Presenter.new(@season)
     assign(:show, @show)
@@ -68,6 +71,7 @@ RSpec.describe "seasons/show", type: :view do
     allow(view).to receive(:authenticated?).and_return(true)
     render
     assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_season_path(@show, @season)}']"
+    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_season_path(@show, @season)}'][disabled]", count: 0
   end
 
   it "renders the add to history buttons for each episode when authenticated" do
@@ -75,6 +79,16 @@ RSpec.describe "seasons/show", type: :view do
     render
     assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_season_episode_path(@show, @season, @episode1)}']"
     assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_season_episode_path(@show, @season, @episode2)}']"
+  end
+
+  context "when season has no release date" do
+    let(:has_episodes) { false }
+
+    it "renders the add to history button in a disabled state" do
+      allow(view).to receive(:authenticated?).and_return(true)
+      render
+      assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_season_path(@show, @season)}'][disabled]", count: 1
+    end
   end
 
   context "when name matches the potential name" do

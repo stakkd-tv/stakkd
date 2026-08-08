@@ -75,7 +75,7 @@ RSpec.describe Show, type: :model do
     let!(:no_release_date) { FactoryBot.create(:episode, number: 2, season: non_special_episode.season, original_air_date: nil) }
     let!(:not_released) { FactoryBot.create(:episode, number: 3, season: non_special_episode.season, original_air_date: Time.current + 1.day) }
     let(:items_for_history) { [non_special_episode] }
-    let(:release_date) { record.premiere_date }
+    let(:release_date) { :raises }
   end
 
   it_behaves_like "a model with galleries", :show, [:posters, :backgrounds, :logos, :videos]
@@ -179,6 +179,23 @@ RSpec.describe Show, type: :model do
     it "returns the shows premiere_date" do
       show = FactoryBot.create(:show, :with_premiere_date)
       expect(show.release_date).to eq show.premiere_date
+    end
+  end
+
+  describe "#released?" do
+    it "returns true when the release date is in the past" do
+      show = FactoryBot.create(:show, :with_premiere_date, date_for_premiere: Date.yesterday)
+      expect(show.released?).to be true
+    end
+
+    it "returns true when the release date is today" do
+      show = FactoryBot.create(:show, :with_premiere_date, date_for_premiere: Date.today)
+      expect(show.released?).to be true
+    end
+
+    it "returns false when the release date is in the future" do
+      show = FactoryBot.create(:show, :with_premiere_date, date_for_premiere: Date.tomorrow)
+      expect(show.released?).to be false
     end
   end
 end

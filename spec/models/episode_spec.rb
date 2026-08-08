@@ -222,6 +222,23 @@ RSpec.describe Episode, type: :model do
     end
   end
 
+  describe "#released?" do
+    it "returns true when the release date is in the past" do
+      episode = FactoryBot.create(:episode, original_air_date: Date.yesterday)
+      expect(episode.released?).to be true
+    end
+
+    it "returns true when the release date is today" do
+      episode = FactoryBot.create(:episode, original_air_date: Date.today)
+      expect(episode.released?).to be true
+    end
+
+    it "returns false when the release date is in the future" do
+      episode = FactoryBot.create(:episode, original_air_date: Date.tomorrow)
+      expect(episode.released?).to be false
+    end
+  end
+
   Episode::TYPES.each do |type|
     describe "##{type}?" do
       it "returns true when the episode type matches" do

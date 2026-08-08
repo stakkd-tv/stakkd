@@ -26,8 +26,12 @@ RSpec.shared_examples_for "a model that can be added to history" do
 
   describe "#history_release_date" do
     it "returns the items release date" do
-      expect(record.history_release_date).not_to be_nil
-      expect(record.history_release_date).to eq release_date
+      if release_date == :raises
+        expect { record.history_release_date }.to raise_error(NotImplementedError)
+      else
+        expect(record.history_release_date).not_to be_nil
+        expect(record.history_release_date).to eq release_date
+      end
     end
   end
 end

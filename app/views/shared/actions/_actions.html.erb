@@ -2,12 +2,13 @@
   <% watched = local_assigns.fetch(:watched, false) %>
   <div class="flex gap-2 bg-background-darker p-2 border-2 border-pop rounded-xl w-fit relative">
     <button
-      class="data-[added=true]:bg-watch z-1 cursor-pointer border border-watch p-2 w-20 sm:w-40 rounded-lg focus:bg-watch/75 hover:bg-watch/75 transition-all duration-300 ease-in-out"
+      class="data-[added=true]:bg-watch z-1 cursor-pointer border border-watch p-2 w-20 sm:w-40 rounded-lg disabled:border-white disabled:hover:bg-background-darker disabled:cursor-default focus:bg-watch/75 hover:bg-watch/75 transition-all duration-300 ease-in-out"
       title="Add to history"
       data-added="<%= watched %>"
       data-controller="history-button"
       data-action="history-button#open history-dialog:added@window->history-button#added"
-      data-history-button-add-to-history-url-value="<%= polymorphic_add_to_history_path(record) %>">
+      data-history-button-add-to-history-url-value="<%= polymorphic_add_to_history_path(record) %>"
+      <%= record.released? ? "" : "disabled" %>>
       <i class="fa-regular fa-square-check text-xl transition-all duration-300 ease-in-out"></i>
     </button>
 

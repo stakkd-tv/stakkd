@@ -100,7 +100,7 @@ class Show < ApplicationRecord
 
   def items_for_history = non_special_episodes.released
 
-  def history_release_date = premiere_date
+  def released? = premiere_date && premiere_date <= Date.today
 
   private
 

@@ -63,6 +63,8 @@ class Episode < ApplicationRecord
 
   def history_release_date = original_air_date
 
+  def released? = original_air_date && original_air_date <= Date.today
+
   TYPES.each do |type|
     define_method "#{type}?" do
       episode_type == type
