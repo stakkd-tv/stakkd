@@ -31,6 +31,7 @@ class Episode < ApplicationRecord
   # Scopes
   scope :ordered, -> { order(number: :asc) }
   scope :nested, ->(number) { where(number:) }
+  scope :released, -> { where(original_air_date: ..Time.current) }
 
   def self.associations_to_load = [season: [:ordered_episodes, show: :seasons_without_specials]]
 

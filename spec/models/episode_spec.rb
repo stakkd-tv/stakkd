@@ -98,6 +98,15 @@ RSpec.describe Episode, type: :model do
     end
   end
 
+  describe ".released" do
+    it "returns only released episodes" do
+      released = FactoryBot.create(:episode, original_air_date: Time.current)
+      FactoryBot.create(:episode, original_air_date: nil)
+      FactoryBot.create(:episode, original_air_date: Time.current + 1.day)
+      expect(Episode.released).to eq [released]
+    end
+  end
+
   it_behaves_like "a model with imdb_id", Episode
 
   describe "#to_s" do
