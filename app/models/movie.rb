@@ -3,6 +3,7 @@ class Movie < ApplicationRecord
   include Slugify
   include HasImdb
   include HasGalleries
+  include History
 
   acts_as_taggable_on :keywords
 
@@ -76,6 +77,10 @@ class Movie < ApplicationRecord
   def directors = @directors ||= crew_members.includes(:job, :person).where(job: {name: Job::DIRECTOR})
 
   def year = release_date&.year
+
+  def items_for_history = [self]
+
+  def history_release_date = release_date
 
   private
 

@@ -1,6 +1,7 @@
 require "rails_helper"
 require_relative "shared_examples/has_imdb"
 require_relative "shared_examples/has_galleries"
+require_relative "shared_examples/history"
 
 RSpec.describe Episode, type: :model do
   describe "associations" do
@@ -22,6 +23,12 @@ RSpec.describe Episode, type: :model do
   end
 
   it_behaves_like "a model with galleries", :episode, [:backgrounds, :videos]
+
+  it_behaves_like "a model that can be added to history" do
+    let(:record) { FactoryBot.create(:episode, original_air_date: Date.today) }
+    let(:items_for_history) { [record] }
+    let(:release_date) { record.original_air_date }
+  end
 
   describe "after_save :set_season_premiere_date" do
     context "when episode is the first episode in the season" do

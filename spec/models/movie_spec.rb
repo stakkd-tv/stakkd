@@ -2,6 +2,7 @@ require "rails_helper"
 require_relative "shared_examples/slugify"
 require_relative "shared_examples/has_imdb"
 require_relative "shared_examples/has_galleries"
+require_relative "shared_examples/history"
 
 RSpec.describe Movie, type: :model do
   describe "associations" do
@@ -32,6 +33,12 @@ RSpec.describe Movie, type: :model do
   end
 
   it_behaves_like "a model with galleries", :movie, [:posters, :backgrounds, :logos, :videos]
+
+  it_behaves_like "a model that can be added to history" do
+    let(:record) { FactoryBot.create(:movie, :with_release_date) }
+    let(:items_for_history) { [record] }
+    let(:release_date) { record.release_date }
+  end
 
   describe "before_validation :denormalize_release_date" do
     context "when there is a release" do

@@ -1,5 +1,6 @@
 class Season < ApplicationRecord
   include HasGalleries
+  include History
 
   # Associations
   belongs_to :show
@@ -44,6 +45,10 @@ class Season < ApplicationRecord
   def year = premiere_date&.year
 
   def latest_episode_number = episodes.maximum(:number) || 0
+
+  def items_for_history = episodes.where.not(original_air_date: nil)
+
+  def history_release_date = premiere_date
 
   private
 

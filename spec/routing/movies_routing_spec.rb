@@ -49,5 +49,9 @@ RSpec.describe MoviesController, type: :routing do
     it "routes to #poster" do
       expect(get: "/movies/1/poster").to route_to("movies#poster", id: "1")
     end
+
+    it "routes to #add_to_history" do
+      expect(post: "/movies/1/add_to_history").to route_to("movies#add_to_history", id: "1")
+    end
   end
 end

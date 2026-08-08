@@ -37,6 +37,8 @@ Rails.application.routes.draw do
     get :backgrounds, on: :member
     get :logos, on: :member
     get :cast, on: :member
+
+    post :add_to_history, on: :member
   end
 
   resources :shows, except: [:destroy] do

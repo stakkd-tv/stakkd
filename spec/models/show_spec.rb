@@ -2,6 +2,7 @@ require "rails_helper"
 require_relative "shared_examples/slugify"
 require_relative "shared_examples/has_imdb"
 require_relative "shared_examples/has_galleries"
+require_relative "shared_examples/history"
 
 RSpec.describe Show, type: :model do
   describe "associations" do
@@ -65,6 +66,14 @@ RSpec.describe Show, type: :model do
     it "should be empty" do
       expect(Show.inheritance_column).to be_nil
     end
+  end
+
+  it_behaves_like "a model that can be added to history" do
+    let(:record) { FactoryBot.create(:show, :with_premiere_date) }
+    let!(:special_episode) { FactoryBot.create(:episode, season: record.ordered_seasons.first) }
+    let!(:non_special_episode) { record.ordered_seasons.second.episodes.first }
+    let(:items_for_history) { [non_special_episode] }
+    let(:release_date) { record.premiere_date }
   end
 
   it_behaves_like "a model with galleries", :show, [:posters, :backgrounds, :logos, :videos]

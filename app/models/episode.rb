@@ -1,6 +1,7 @@
 class Episode < ApplicationRecord
   include HasImdb
   include HasGalleries
+  include History
 
   TYPES = [
     STANDARD = "standard",
@@ -56,6 +57,10 @@ class Episode < ApplicationRecord
   def year = original_air_date&.year
 
   def seasons_first_episode? = season.ordered_episodes.first == self
+
+  def items_for_history = [self]
+
+  def history_release_date = original_air_date
 
   TYPES.each do |type|
     define_method "#{type}?" do

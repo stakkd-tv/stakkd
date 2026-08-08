@@ -3,6 +3,7 @@ class Show < ApplicationRecord
   include Slugify
   include HasImdb
   include HasGalleries
+  include History
 
   acts_as_taggable_on :keywords
 
@@ -96,6 +97,10 @@ class Show < ApplicationRecord
 
   # NOTE: This is for duck-typing with Movie
   def release_date = premiere_date
+
+  def items_for_history = non_special_episodes.where.not(original_air_date: nil)
+
+  def history_release_date = premiere_date
 
   private
 

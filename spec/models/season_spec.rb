@@ -1,5 +1,6 @@
 require "rails_helper"
 require_relative "shared_examples/has_galleries"
+require_relative "shared_examples/history"
 
 RSpec.describe Season, type: :model do
   describe "associations" do
@@ -17,6 +18,13 @@ RSpec.describe Season, type: :model do
     it { should validate_presence_of(:original_name) }
     it { should validate_uniqueness_of(:number).scoped_to([:show_id]) }
     it { should validate_numericality_of(:number).is_greater_than_or_equal_to(0) }
+  end
+
+  it_behaves_like "a model that can be added to history" do
+    let(:record) { FactoryBot.create(:season, :with_premiere_date) }
+    let!(:episode) { record.episodes.first }
+    let(:items_for_history) { [episode] }
+    let(:release_date) { record.premiere_date }
   end
 
   it_behaves_like "a model with galleries", :season, [:posters, :videos]
