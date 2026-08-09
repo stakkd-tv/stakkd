@@ -48,14 +48,14 @@ RSpec.shared_examples "a model with history actions" do
 
         it "ignores the consumed at and sets to current time" do
           expect_any_instance_of(Manage::History).to receive(:add!)
-            .with(record.items_for_history, consumed_at: Time.current)
+            .with(record, consumed_at: Time.current)
           perform
         end
       end
 
       it "adds to history at the current time" do
         expect_any_instance_of(Manage::History).to receive(:add!)
-          .with(record.items_for_history, consumed_at: Time.current)
+          .with(record, consumed_at: Time.current)
         perform
       end
 
@@ -76,14 +76,14 @@ RSpec.shared_examples "a model with history actions" do
 
         it "ignores the consumed at and sets to release date" do
           expect_any_instance_of(Manage::History).to receive(:add!)
-            .with(record.items_for_history, consumed_at: :release_date)
+            .with(record, consumed_at: :release_date)
           perform
         end
       end
 
       it "adds to history at the release date" do
         expect_any_instance_of(Manage::History).to receive(:add!)
-          .with(record.items_for_history, consumed_at: :release_date)
+          .with(record, consumed_at: :release_date)
         perform
       end
 
@@ -101,7 +101,7 @@ RSpec.shared_examples "a model with history actions" do
 
       it "adds to history at the date given" do
         expect_any_instance_of(Manage::History).to receive(:add!)
-          .with(record.items_for_history, consumed_at:)
+          .with(record, consumed_at:)
         perform
       end
 
@@ -122,14 +122,14 @@ RSpec.shared_examples "a model with history actions" do
 
         it "ignores the consumed at and sets unknown" do
           expect_any_instance_of(Manage::History).to receive(:add!)
-            .with(record.items_for_history, consumed_at: nil)
+            .with(record, consumed_at: nil)
           perform
         end
       end
 
       it "adds to history at an unknown time" do
         expect_any_instance_of(Manage::History).to receive(:add!)
-          .with(record.items_for_history, consumed_at: nil)
+          .with(record, consumed_at: nil)
         perform
       end
 
