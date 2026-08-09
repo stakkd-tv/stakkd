@@ -198,7 +198,7 @@ module Manage
       end
     end
 
-    fdescribe "#statuses_for" do
+    describe "#statuses_for" do
       subject { history.statuses_for(items) }
 
       context "when user is nil" do
