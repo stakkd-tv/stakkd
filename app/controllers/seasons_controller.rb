@@ -9,6 +9,8 @@ class SeasonsController < ApplicationController
     @gallery_presenter = Galleries::Presenter.new(@season)
     @cast_members = CastMembers::Season.new(@season).cast_members
     @pagination = Pagination::Seasons.new(@season, @show)
+    @watch_status = @season.status_for(current_user)
+    @episode_watch_statuses = Manage::History.new(current_user).statuses_for(@season.episodes)
   end
 
   def new

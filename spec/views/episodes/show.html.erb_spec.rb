@@ -5,6 +5,7 @@ RSpec.describe "episodes/show", type: :view do
   let(:backgrounds) { [] }
   let(:original_air_date) { Date.new(2023, 1, 1) }
   let(:imdb_id) { nil }
+  let(:watch_status) { :not_watched }
 
   before(:each) do
     def view.authenticated? = false
@@ -28,6 +29,7 @@ RSpec.describe "episodes/show", type: :view do
     assign(:gallery_presenter, gallery_presenter)
     assign(:cast_members, CastMembers::Episode.new(@episode).cast_members)
     assign(:pagination, Pagination::Episodes.new(@episode, @season, @show))
+    assign(:watch_status, watch_status)
   end
 
   it "renders attributes in <p>" do
@@ -57,6 +59,26 @@ RSpec.describe "episodes/show", type: :view do
     render
     assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_season_episode_path(@show, @season, @episode)}']"
     assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_season_episode_path(@show, @season, @episode)}'][disabled]", count: 0
+  end
+
+  context "when the episode is watched" do
+    let(:watch_status) { :watched }
+
+    it "renders the button in a watched state" do
+      allow(view).to receive(:authenticated?).and_return(true)
+      render
+      assert_select "button[title='Add to history'][data-status='watched']"
+    end
+  end
+
+  context "when the episode is not watched" do
+    let(:watch_status) { :not_watched }
+
+    it "renders the button in an unwatched state" do
+      allow(view).to receive(:authenticated?).and_return(true)
+      render
+      assert_select "button[title='Add to history'][data-status='not_watched']"
+    end
   end
 
   context "when episode has no air date" do

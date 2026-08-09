@@ -1,11 +1,11 @@
 <% if authenticated? %>
-  <% watched = local_assigns.fetch(:watched, false) %>
+  <% watch_status = local_assigns.fetch(:watch_status, :not_watched) %>
   <% selector = "#{record.class}-#{record.id}-more-options" %>
   <div class="flex gap-2 w-full sm:relative">
     <button
-      class="data-[added=true]:bg-watch cursor-pointer border border-watch p-2 w-20 sm:w-40 rounded-lg disabled:border-white disabled:hover:bg-background-darker disabled:cursor-default focus:bg-watch/75 hover:bg-watch/75 transition-all duration-300 ease-in-out"
+      class="data-[status=partially\_watched]:bg-watch/50 data-[status=watched]:bg-watch cursor-pointer border border-watch p-2 w-20 sm:w-40 rounded-lg disabled:border-white disabled:hover:bg-background-darker disabled:cursor-default focus:bg-watch/75 hover:bg-watch/75 transition-all duration-300 ease-in-out"
       title="Add to history"
-      data-added="<%= watched %>"
+      data-status="<%= watch_status %>"
       data-controller="history-button"
       data-action="history-button#open history-dialog:added@window->history-button#added"
       data-history-button-add-to-history-url-value="<%= polymorphic_add_to_history_path(record) %>"

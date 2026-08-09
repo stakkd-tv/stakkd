@@ -58,7 +58,7 @@
         <p class="block sm:hidden text-xl font-domine">Overview:</p>
         <%= simple_format(@season.overview.presence || @show.overview.presence) %>
       </div>
-      <%= render "shared/actions/actions", record: @season %>
+      <%= render "shared/actions/actions", record: @season, watch_status: @watch_status %>
 
       <%= render "shared/paginated_items", presenter: @pagination %>
 
@@ -89,7 +89,8 @@
                   <% end %>
                 </div>
                 <div class="w-40">
-                  <%= render "shared/actions/compact_actions", record: episode %>
+                  <% watch_status = @episode_watch_statuses[episode] || :not_watched %>
+                  <%= render "shared/actions/compact_actions", record: episode, watch_status: watch_status %>
                 </div>
               </div>
               <p class="px-4 pt-2 text-sm line-clamp-2 sm:line-clamp-3 md:line-clamp-4"><%= episode.overview %></p>

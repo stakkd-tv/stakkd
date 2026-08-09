@@ -11,6 +11,7 @@ RSpec.describe "movies/show", type: :view do
   let(:imdb_id) { nil }
   let(:has_franchise) { false }
   let(:has_release) { true }
+  let(:watch_status) { :not_watched }
 
   before(:each) do
     def view.authenticated? = false
@@ -48,6 +49,7 @@ RSpec.describe "movies/show", type: :view do
     assign(:gallery_presenter, gallery_presenter)
     assign(:release_dates_for_country, [release1])
     assign(:cast_members, CastMembers::Movie.new(@movie).cast_members)
+    assign(:watch_status, watch_status)
   end
 
   it "renders attributes in <p>" do
@@ -83,6 +85,26 @@ RSpec.describe "movies/show", type: :view do
     render
     assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_movie_path(@movie)}']"
     assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_movie_path(@movie)}'][disabled]", count: 0
+  end
+
+  context "when the movie is watched" do
+    let(:watch_status) { :watched }
+
+    it "renders the add to history button in a disabled state" do
+      allow(view).to receive(:authenticated?).and_return(true)
+      render
+      assert_select "button[title='Add to history'][data-status='watched']"
+    end
+  end
+
+  context "when the movies is not watched" do
+    let(:watch_status) { :not_watched }
+
+    it "renders the add to history button" do
+      allow(view).to receive(:authenticated?).and_return(true)
+      render
+      assert_select "button[title='Add to history'][data-status='not_watched']"
+    end
   end
 
   context "when the movie has no release date" do

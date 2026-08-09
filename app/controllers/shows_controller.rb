@@ -21,6 +21,8 @@ class ShowsController < ApplicationController
     @alternative_names = @show.alternative_names.includes(:country).group_by(&:country)
     @gallery_presenter = Galleries::Presenter.new(@show)
     @cast_members = CastMembers::Show.new(@show).cast_members
+    @watch_status = @show.status_for(current_user)
+    @season_watch_statuses = Manage::History.new(current_user).statuses_for(@show.ordered_seasons)
   end
 
   def new
@@ -77,7 +79,8 @@ class ShowsController < ApplicationController
 
   def set_show
     @show = Show.includes(
-      :seasons_without_specials, :taglines, :videos, :keywords, :season_regulars, :genres, :companies, :franchise
+      :seasons_without_specials, :ordered_seasons, :taglines, :videos,
+      :keywords, :season_regulars, :genres, :companies, :franchise
     ).from_slug(params.expect(:id))
   end
 
