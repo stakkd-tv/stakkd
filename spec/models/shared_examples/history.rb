@@ -18,6 +18,16 @@ RSpec.shared_examples_for "a model that can be added to history" do
     end
   end
 
+  describe "#status_for" do
+    it "retrieves the status" do
+      user = User.new
+      history = Manage::History.new(user)
+      allow(Manage::History).to receive(:new).with(user).and_return(history)
+      expect(history).to receive(:status_for).with(record)
+      record.status_for(user)
+    end
+  end
+
   describe "#items_for_history" do
     it "returns the items that need to be added to history" do
       expect(record.items_for_history).to eq items_for_history

@@ -5,6 +5,8 @@ module History
 
   def add_to_history!(user, consumed_at:) = history_manager_for(user).add!(self, consumed_at:)
 
+  def status_for(user) = history_manager_for(user).status_for(self)
+
   def items_for_history = raise NotImplementedError
 
   def history_release_date = raise NotImplementedError
