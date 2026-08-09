@@ -13,7 +13,7 @@ RSpec.shared_examples_for "a model that can be added to history" do
       user = User.new
       history = Manage::History.new(user)
       allow(Manage::History).to receive(:new).with(user).and_return(history)
-      expect(history).to receive(:add!).with(items_for_history, consumed_at: nil)
+      expect(history).to receive(:add!).with(record, consumed_at: nil)
       record.add_to_history!(user, consumed_at: nil)
     end
   end

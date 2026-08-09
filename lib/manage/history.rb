@@ -8,7 +8,8 @@ module Manage
       @user = user
     end
 
-    def add!(items, consumed_at:)
+    def add!(item, consumed_at:)
+      items = item.items_for_history
       items.each_slice(BATCH_SIZE) do |batch|
         insert_batch(batch, consumed_at)
       end

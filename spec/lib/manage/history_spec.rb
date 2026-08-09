@@ -8,12 +8,20 @@ module Manage
     let(:history) { History.new(user) }
 
     describe "#add!" do
-      let(:episode1) { FactoryBot.create(:episode) }
-      let(:episode2) { FactoryBot.create(:episode) }
-      let(:items) { [episode1, episode2] }
+      let(:episode1) { item.ordered_episodes.first }
+      let(:episode2) { item.ordered_episodes.second }
+      let(:item) {
+        FactoryBot.create(
+          :season,
+          episodes: [
+            FactoryBot.build(:episode, number: 1, original_air_date: Date.today),
+            FactoryBot.build(:episode, number: 2, original_air_date: Date.today)
+          ]
+        )
+      }
       let(:consumed_at) { DateTime.new(2026, 1, 1, 10) }
 
-      subject { history.add!(items, consumed_at:) }
+      subject { history.add!(item, consumed_at:) }
 
       before do
         travel_to(Time.current)
@@ -63,7 +71,7 @@ module Manage
       context "when consumed_at is :release_date" do
         let(:consumed_at) { :release_date }
         let(:episode) { FactoryBot.create(:episode, original_air_date: Date.new(2026, 2, 2)) }
-        let(:items) { [episode] }
+        let(:item) { episode.season }
 
         it "sets the consumed_at for each history item to the items release date" do
           subject

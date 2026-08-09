@@ -3,7 +3,7 @@ module History
 
   def history_manager_for(user) = Manage::History.new(user)
 
-  def add_to_history!(user, consumed_at:) = history_manager_for(user).add!(items_for_history, consumed_at:)
+  def add_to_history!(user, consumed_at:) = history_manager_for(user).add!(self, consumed_at:)
 
   def items_for_history = raise NotImplementedError
 
