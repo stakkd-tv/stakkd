@@ -13,6 +13,11 @@ module Actions
       render json: {success: false, errors: ["Could not add #{record.class.to_s.downcase} to history"]}, status: 422
     end
 
+    def remove_from_history
+      record.remove_all_from_history(current_user)
+      render json: {success: true}, status: 200
+    end
+
     private
 
     def resolve_consumed_at

@@ -80,6 +80,77 @@ module Manage
       end
     end
 
+    describe "#remove_all" do
+      subject { history.remove_all(item) }
+
+      context "when item is a movie" do
+        let(:item) { FactoryBot.create(:movie) }
+
+        before do
+          FactoryBot.create(:history_item, item:, user:)
+          FactoryBot.create(:history_item, item:, user:)
+          FactoryBot.create(:history_item, item:) # For another user
+        end
+
+        it "removes all history items for that user" do
+          subject
+          expect(user.history_items).to be_empty
+          expect(HistoryItem.count).to eq 1
+        end
+      end
+
+      context "when item is an episode" do
+        let(:item) { FactoryBot.create(:episode) }
+
+        before do
+          FactoryBot.create(:history_item, item:, user:)
+          FactoryBot.create(:history_item, item:, user:)
+          FactoryBot.create(:history_item, item:) # For another user
+        end
+
+        it "removes all history items for that user" do
+          subject
+          expect(user.history_items).to be_empty
+          expect(HistoryItem.count).to eq 1
+        end
+      end
+
+      context "when item is a season" do
+        let(:item) { FactoryBot.create(:season) }
+
+        before do
+          episode = FactoryBot.create(:episode, season: item)
+          FactoryBot.create(:history_item, item: episode, user:)
+          FactoryBot.create(:history_item, item: episode, user:)
+          FactoryBot.create(:history_item, item: episode) # For another user
+        end
+
+        it "removes all history items for that user" do
+          subject
+          expect(user.history_items).to be_empty
+          expect(HistoryItem.count).to eq 1
+        end
+      end
+
+      context "when item is a show" do
+        let(:item) { FactoryBot.create(:show) }
+
+        before do
+          season = FactoryBot.create(:season, show: item)
+          episode = FactoryBot.create(:episode, season:)
+          FactoryBot.create(:history_item, item: episode, user:)
+          FactoryBot.create(:history_item, item: episode, user:)
+          FactoryBot.create(:history_item, item: episode) # For another user
+        end
+
+        it "removes all history items for that user" do
+          subject
+          expect(user.history_items).to be_empty
+          expect(HistoryItem.count).to eq 1
+        end
+      end
+    end
+
     describe "#status_for" do
       subject { history.status_for(item) }
 

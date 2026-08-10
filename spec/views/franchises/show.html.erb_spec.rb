@@ -20,12 +20,14 @@ RSpec.describe "franchises/show", type: :view do
     @movie = FactoryBot.create(:movie, :with_release_date, date_for_release: Date.today, translated_title: "Great Movie")
     FactoryBot.create(:franchise_item, franchise: @franchise, record: @movie)
     @show = FactoryBot.create(:show, :with_premiere_date, date_for_premiere: Date.tomorrow, translated_title: "Great Show")
+    FactoryBot.create(:episode, season: @show.ordered_seasons.last, number: 2, original_air_date: Date.tomorrow)
     FactoryBot.create(:franchise_item, franchise: @franchise, record: @show)
     @show_no_air_date = FactoryBot.create(:show, translated_title: "No air date")
     FactoryBot.create(:franchise_item, franchise: @franchise, record: @show_no_air_date)
     gallery_presenter = Galleries::Presenter.new(@franchise)
     assign(:franchise, @franchise)
     assign(:gallery_presenter, gallery_presenter)
+    assign(:watch_statuses, {@movie => :watched, @show => :not_watched, @show_no_air_date => :partially_watched})
   end
 
   it "renders attributes" do
@@ -55,12 +57,12 @@ RSpec.describe "franchises/show", type: :view do
     assert_select "dialog[data-controller='history-dialog']"
   end
 
-  it "renders the add to history buttons for each history item when authenticated" do
+  it "renders the add to history buttons for each history item with the correct status when authenticated" do
     allow(view).to receive(:authenticated?).and_return(true)
     render
-    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_movie_path(@movie)}']"
-    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_path(@show)}']"
-    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_path(@show_no_air_date)}']"
+    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_movie_path(@movie)}'][data-status='watched']"
+    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_path(@show)}'][data-status='not_watched']"
+    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_path(@show_no_air_date)}'][data-status='partially_watched']"
   end
 
   context "when the franchise has a background" do

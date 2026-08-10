@@ -329,8 +329,12 @@ RSpec.describe "Movies", type: :request do
   it_behaves_like "a model with history actions" do
     let(:record) { FactoryBot.create(:movie, :with_release_date, date_for_release: Date.new(2026, 1, 1)) }
 
-    def perform
+    def perform_add_to_history
       post add_to_history_movie_path(record), params: params
+    end
+
+    def perform_remove_from_history
+      delete remove_from_history_movie_path(record)
     end
 
     def mark_as_not_released

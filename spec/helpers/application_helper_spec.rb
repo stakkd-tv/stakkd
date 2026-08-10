@@ -10,25 +10,25 @@ RSpec.describe ApplicationHelper, type: :helper do
     end
   end
 
-  describe "#polymorphic_add_to_history_path" do
+  describe "#polymorphic_history_path" do
     context "when record is a movie" do
       it "returns the correct path for the record" do
         record = FactoryBot.build_stubbed(:movie)
-        expect(helper.polymorphic_add_to_history_path(record)).to eq(add_to_history_movie_path(record))
+        expect(helper.polymorphic_history_path(record, "add_to_history")).to eq(add_to_history_movie_path(record))
       end
     end
 
     context "when record is a show" do
       it "returns the correct path for the record" do
         record = FactoryBot.build_stubbed(:show)
-        expect(helper.polymorphic_add_to_history_path(record)).to eq(add_to_history_show_path(record))
+        expect(helper.polymorphic_history_path(record, "add_to_history")).to eq(add_to_history_show_path(record))
       end
     end
 
     context "when record is a season" do
       it "returns the correct path for the record" do
         record = FactoryBot.build_stubbed(:season)
-        expect(helper.polymorphic_add_to_history_path(record)).to eq(add_to_history_show_season_path(record.show, record))
+        expect(helper.polymorphic_history_path(record, "add_to_history")).to eq(add_to_history_show_season_path(record.show, record))
       end
     end
 
@@ -37,7 +37,7 @@ RSpec.describe ApplicationHelper, type: :helper do
         show = FactoryBot.create(:show)
         season = FactoryBot.create(:season, show:)
         record = FactoryBot.create(:episode, season:)
-        expect(helper.polymorphic_add_to_history_path(record)).to eq(add_to_history_show_season_episode_path(show, season, record))
+        expect(helper.polymorphic_history_path(record, "add_to_history")).to eq(add_to_history_show_season_episode_path(show, season, record))
       end
     end
   end

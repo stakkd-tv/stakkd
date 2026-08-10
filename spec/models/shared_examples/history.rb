@@ -18,6 +18,16 @@ RSpec.shared_examples_for "a model that can be added to history" do
     end
   end
 
+  describe "#remove_all_from_history" do
+    it "removes all items from the history" do
+      user = User.new
+      history = Manage::History.new(user)
+      allow(Manage::History).to receive(:new).with(user).and_return(history)
+      expect(history).to receive(:remove_all).with(record)
+      record.remove_all_from_history(user)
+    end
+  end
+
   describe "#status_for" do
     it "retrieves the status" do
       user = User.new

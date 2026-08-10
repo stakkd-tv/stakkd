@@ -39,6 +39,8 @@ Rails.application.routes.draw do
     get :cast, on: :member
 
     post :add_to_history, on: :member
+
+    delete :remove_from_history, on: :member
   end
 
   resources :shows, except: [:destroy] do
@@ -81,12 +83,16 @@ Rails.application.routes.draw do
         get :cast, on: :member
 
         post :add_to_history, on: :member
+
+        delete :remove_from_history, on: :member
       end
 
       get :posters, on: :member
       get :cast, on: :member
 
       post :add_to_history, on: :member
+
+      delete :remove_from_history, on: :member
     end
 
     get :posters, on: :member
@@ -96,6 +102,8 @@ Rails.application.routes.draw do
     get :cast, on: :member
 
     post :add_to_history, on: :member
+
+    delete :remove_from_history, on: :member
   end
 
   resources :franchises, except: [:destroy] do

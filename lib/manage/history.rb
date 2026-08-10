@@ -17,6 +17,11 @@ module Manage
       end
     end
 
+    def remove_all(item)
+      items = item.items_for_history
+      HistoryItem.where(user:, item: items).delete_all
+    end
+
     def status_for(item)
       statuses_for([item])[item]
     end

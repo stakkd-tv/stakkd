@@ -250,8 +250,12 @@ RSpec.describe "/shows/:show_id/seasons/:season_id/episodes", type: :request do
   it_behaves_like "a model with history actions" do
     let(:record) { FactoryBot.create(:episode, original_air_date: Date.new(2026, 1, 1)) }
 
-    def perform
+    def perform_add_to_history
       post add_to_history_show_season_episode_path(record, season_id: record.season, show_id: record.show), params: params
+    end
+
+    def perform_remove_from_history
+      delete remove_from_history_show_season_episode_path(record, season_id: record.season, show_id: record.show)
     end
 
     def mark_as_not_released
