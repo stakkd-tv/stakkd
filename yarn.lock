@@ -1378,14 +1378,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"algoliasearch-helper@npm:3.29.1":
-  version: 3.29.1
-  resolution: "algoliasearch-helper@npm:3.29.1"
+"algoliasearch-helper@npm:3.29.2":
+  version: 3.29.2
+  resolution: "algoliasearch-helper@npm:3.29.2"
   dependencies:
     "@algolia/events": "npm:^4.0.1"
   peerDependencies:
     algoliasearch: ">= 3.1 < 6"
-  checksum: 10c0/671cd2a0a4f338162537483a6c21ef9aad80e5abfaf1e4fe233fb18f59d1f54d933fe5c1786e6f9bc3aef7e4e790a71850e4aad55d92776abc36744911245476
+  checksum: 10c0/2d486e1046961953802cea049fdc3c8c9e882b42b9aa9ba1d8fcab5726950ef7dbd85668cbe3ba42dc05b281695efd2606e8455a227cfc9d43894600812b92ed
   languageName: node
   linkType: hard
 
@@ -1434,7 +1434,7 @@ __metadata:
     eslint-plugin-n: "npm:^18.2.2"
     eslint-plugin-promise: "npm:^7.3.0"
     flatpickr: "npm:^4.6.13"
-    instantsearch.js: "npm:^4.104.0"
+    instantsearch.js: "npm:^4.108.0"
     marked: "npm:^18.0.5"
     marked-inline-spoilers: "npm:^1.0.1"
     sanitize-html: "npm:^2.17.4"
@@ -2958,19 +2958,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"instantsearch-ui-components@npm:0.33.0":
-  version: 0.33.0
-  resolution: "instantsearch-ui-components@npm:0.33.0"
+"instantsearch-ui-components@npm:0.33.2":
+  version: 0.33.2
+  resolution: "instantsearch-ui-components@npm:0.33.2"
   dependencies:
     "@swc/helpers": "npm:0.5.18"
     markdown-to-jsx: "npm:^7.7.15"
-  checksum: 10c0/5a75b371477589433f2c90a286db706b7ab3f9bf47c61888f709fcee5796118d431f8b1b9f723b51a71dd3008ae7f2538f2e7a3cea8568e45864ffa1c692cbc3
+  checksum: 10c0/c1daee5c034ba284648aa8ece99601d9e228d8079a1c71bdb34d14968409e74dd6b71731e7c5b92677081f193f00bd99dcb1c7a6f57bfd513cdc70de2f722cdc
   languageName: node
   linkType: hard
 
-"instantsearch.js@npm:^4.104.0":
-  version: 4.104.0
-  resolution: "instantsearch.js@npm:4.104.0"
+"instantsearch.js@npm:^4.108.0":
+  version: 4.108.0
+  resolution: "instantsearch.js@npm:4.108.0"
   dependencies:
     "@algolia/events": "npm:^4.0.1"
     "@swc/helpers": "npm:0.5.18"
@@ -2978,17 +2978,17 @@ __metadata:
     "@types/google.maps": "npm:^3.55.12"
     "@types/hogan.js": "npm:^3.0.0"
     "@types/qs": "npm:^6.5.3"
-    algoliasearch-helper: "npm:3.29.1"
+    algoliasearch-helper: "npm:3.29.2"
     hogan.js: "npm:^3.0.2"
     htm: "npm:^3.0.0"
-    instantsearch-ui-components: "npm:0.33.0"
+    instantsearch-ui-components: "npm:0.33.2"
     preact: "npm:^10.10.0"
     qs: "npm:^6.5.1"
     react: "npm:>= 0.14.0"
     search-insights: "npm:^2.17.2"
   peerDependencies:
     algoliasearch: ">= 3.1 < 6"
-  checksum: 10c0/cfc652dfef9152893e4272305af31e87a8d974d7de619a42f80b2b750da421f54d1c43971227da42984eaca03e98683e8c357aed253230f6a5daf82530435068
+  checksum: 10c0/ff1d2ddbf1718752d310b28ee43ea05b9ff0f603aab0e163eefb0f534206c8462868f9647cc4fa15d02818e0fc5648076117048119bd7b0e429785aa992fbb90
   languageName: node
   linkType: hard
 
