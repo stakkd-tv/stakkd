@@ -8,17 +8,23 @@ module Actions
         return
       end
       record.add_to_history!(current_user, consumed_at: resolve_consumed_at)
-      render json: {success: true}, status: 200
+      statuses = Manage::History.new(current_user).statuses_for(record.history_status_items)
+      render json: {success: true, affected_items: serialize_statuses(statuses)}, status: 200
     rescue
       render json: {success: false, errors: ["Could not add #{record.class.to_s.downcase} to history"]}, status: 422
     end
 
     def remove_from_history
       record.remove_all_from_history(current_user)
-      render json: {success: true}, status: 200
+      statuses = Manage::History.new(current_user).statuses_for(record.history_status_items)
+      render json: {success: true, affected_items: serialize_statuses(statuses)}, status: 200
     end
 
     private
+
+    def serialize_statuses(statuses)
+      statuses.map { |record, status| ["#{record.class.polymorphic_name}:#{record.id}", status] }.to_h
+    end
 
     def resolve_consumed_at
       case params[:consumed_at_type]

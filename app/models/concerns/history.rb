@@ -12,4 +12,6 @@ module History
   def items_for_history = raise NotImplementedError
 
   def history_release_date = raise NotImplementedError
+
+  def history_status_items = raise NotImplementedError
 end

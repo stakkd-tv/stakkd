@@ -76,6 +76,7 @@ RSpec.describe Show, type: :model do
     let!(:not_released) { FactoryBot.create(:episode, number: 3, season: non_special_episode.season, original_air_date: Time.current + 1.day) }
     let(:items_for_history) { [non_special_episode] }
     let(:release_date) { :raises }
+    let(:status_items) { [record, *record.seasons] }
   end
 
   it_behaves_like "a model with galleries", :show, [:posters, :backgrounds, :logos, :videos]

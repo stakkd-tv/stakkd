@@ -28,6 +28,7 @@ RSpec.describe Episode, type: :model do
     let(:record) { FactoryBot.create(:episode, original_air_date: Date.today) }
     let(:items_for_history) { [record] }
     let(:release_date) { record.original_air_date }
+    let(:status_items) { [record, record.season, record.show] }
   end
 
   describe "after_save :set_season_premiere_date" do

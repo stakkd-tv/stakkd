@@ -38,6 +38,7 @@ RSpec.describe Movie, type: :model do
     let(:record) { FactoryBot.create(:movie, :with_release_date) }
     let(:items_for_history) { [record] }
     let(:release_date) { record.release_date }
+    let(:status_items) { [record] }
   end
 
   describe "before_validation :denormalize_release_date" do

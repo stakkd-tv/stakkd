@@ -59,10 +59,14 @@ RSpec.shared_examples "a model with history actions" do
         perform_add_to_history
       end
 
-      it "renders json with a success code" do
+      it "renders json with the statuses of the affected items" do
+        statuses = {record => :watched}
+        affected_items = {"#{record.class.polymorphic_name}:#{record.id}" => "watched"}
+        expect_any_instance_of(Manage::History).to receive(:statuses_for)
+          .with(record.history_status_items).and_return(statuses)
         perform_add_to_history
         json = JSON.parse(response.body)
-        expect(json).to eq({"success" => true})
+        expect(json).to eq({"success" => true, "affected_items" => affected_items})
         expect(response).to be_successful
       end
     end
@@ -87,10 +91,14 @@ RSpec.shared_examples "a model with history actions" do
         perform_add_to_history
       end
 
-      it "renders json with a success code" do
+      it "renders json with the statuses of the affected items" do
+        statuses = {record => :watched}
+        affected_items = {"#{record.class.polymorphic_name}:#{record.id}" => "watched"}
+        expect_any_instance_of(Manage::History).to receive(:statuses_for)
+          .with(record.history_status_items).and_return(statuses)
         perform_add_to_history
         json = JSON.parse(response.body)
-        expect(json).to eq({"success" => true})
+        expect(json).to eq({"success" => true, "affected_items" => affected_items})
         expect(response).to be_successful
       end
     end
@@ -105,10 +113,14 @@ RSpec.shared_examples "a model with history actions" do
         perform_add_to_history
       end
 
-      it "renders json with a success code" do
+      it "renders json with the statuses of the affected items" do
+        statuses = {record => :watched}
+        affected_items = {"#{record.class.polymorphic_name}:#{record.id}" => "watched"}
+        expect_any_instance_of(Manage::History).to receive(:statuses_for)
+          .with(record.history_status_items).and_return(statuses)
         perform_add_to_history
         json = JSON.parse(response.body)
-        expect(json).to eq({"success" => true})
+        expect(json).to eq({"success" => true, "affected_items" => affected_items})
         expect(response).to be_successful
       end
     end
@@ -133,10 +145,14 @@ RSpec.shared_examples "a model with history actions" do
         perform_add_to_history
       end
 
-      it "renders json with a success code" do
+      it "renders json with the statuses of the affected items" do
+        statuses = {record => :watched}
+        affected_items = {"#{record.class.polymorphic_name}:#{record.id}" => "watched"}
+        expect_any_instance_of(Manage::History).to receive(:statuses_for)
+          .with(record.history_status_items).and_return(statuses)
         perform_add_to_history
         json = JSON.parse(response.body)
-        expect(json).to eq({"success" => true})
+        expect(json).to eq({"success" => true, "affected_items" => affected_items})
         expect(response).to be_successful
       end
     end
@@ -188,10 +204,14 @@ RSpec.shared_examples "a model with history actions" do
         perform_remove_from_history
       end
 
-      it "renders json with a success status" do
+      it "renders json with the statuses of the affected items" do
+        statuses = {record => :watched}
+        affected_items = {"#{record.class.polymorphic_name}:#{record.id}" => "watched"}
+        expect_any_instance_of(Manage::History).to receive(:statuses_for)
+          .with(record.history_status_items).and_return(statuses)
         perform_remove_from_history
         json = JSON.parse(response.body)
-        expect(json).to eq({"success" => true})
+        expect(json).to eq({"success" => true, "affected_items" => affected_items})
         expect(response).to be_successful
       end
     end

@@ -82,6 +82,8 @@ class Movie < ApplicationRecord
 
   def history_release_date = release_date
 
+  def history_status_items = [self]
+
   def released? = release_date && release_date <= Date.today
 
   private

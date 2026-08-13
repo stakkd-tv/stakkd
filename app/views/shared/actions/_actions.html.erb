@@ -4,9 +4,11 @@
     <button
       class="data-[status=partially\_watched]:bg-watch/50 data-[status=watched]:bg-watch z-1 cursor-pointer border border-watch p-2 w-20 sm:w-40 rounded-lg disabled:border-white disabled:hover:bg-background-darker disabled:cursor-default focus:bg-watch/75 hover:bg-watch/75 transition-all duration-300 ease-in-out"
       title="Add to history"
+      data-record-type="<%= record.class.polymorphic_name %>"
+      data-record-id="<%= record.id %>"
       data-status="<%= watch_status %>"
       data-controller="history-button"
-      data-action="history-button#open history-dialog:added@window->history-button#added history-dialog:removed@window->history-button#removed"
+      data-action="history-button#open history-dialog:status-update@window->history-button#updateStatus"
       data-history-button-add-to-history-url-value="<%= polymorphic_history_path(record, "add_to_history") %>"
       data-history-button-remove-from-history-url-value="<%= polymorphic_history_path(record, "remove_from_history") %>"
       <%= record.released? ? "" : "disabled" %>>

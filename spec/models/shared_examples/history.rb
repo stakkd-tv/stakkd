@@ -54,4 +54,11 @@ RSpec.shared_examples_for "a model that can be added to history" do
       end
     end
   end
+
+  describe "#history_status_items" do
+    it "returns the status items" do
+      expect(record.history_status_items).not_to be_nil
+      expect(record.history_status_items).to contain_exactly(*status_items)
+    end
+  end
 end
