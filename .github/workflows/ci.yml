@@ -6,6 +6,14 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    env:
+      # These are needed to load the Rails application
+      TYPESENSE_API_KEY: DUMMY
+      TYPESENSE_SEARCH_API_KEY: DUMMY
+      TYPESENSE_HOST: localhost
+      TYPESENSE_PORT: 8108
+      TYPESENSE_PROTOCOL: http
+      SECRET_KEY_BASE: DUMMY
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
