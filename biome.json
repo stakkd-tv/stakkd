@@ -362,7 +362,19 @@
         }
       }
     },
-    { "includes": ["**/*.ts"], "javascript": { "globals": [] } }
+    { "includes": ["**/*.ts"], "javascript": { "globals": [] } },
+    {
+      "includes": ["vendor/bundle/*"],
+      "linter": {
+        "enabled": false
+      },
+      "formatter": {
+        "enabled": false
+      },
+      "assist": {
+        "enabled": false
+      }
+    }
   ],
   "assist": {
     "enabled": true,
