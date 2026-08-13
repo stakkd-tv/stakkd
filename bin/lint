@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require "open3"
+
 # Lints the codebase using standardrb, biome, and erb_lint
 # Pass --fix to automatically fix linting errors
 # If any command fails, exit with a non-zero status code
@@ -31,7 +33,12 @@ def lint_routes!
     "/resume_historical_location",
     "/refresh_historical_location"
   ]
-  lines = `bin/rails routes`.split("\n")
+  stdout, stderr, status = Open3.capture3("bin/rails routes")
+  unless status.success?
+    $stderr.puts stderr
+    exit status.exitstatus || 1
+  end
+  lines = stdout.split("\n")
   errors = Set.new
   warnings = Set.new
   lines.each do |line|
