@@ -1,4 +1,8 @@
-import { CellComponent, EmptyCallback, ValueBooleanCallback } from 'tabulator-tables'
+import {
+  CellComponent,
+  EmptyCallback,
+  ValueBooleanCallback
+} from 'tabulator-tables'
 
 export interface EditorParams {
   values: {
@@ -22,7 +26,13 @@ export class DropdownEditor {
   declare selectedOption: HTMLDivElement | null
   declare options: HTMLDivElement[]
 
-  constructor (cell: CellComponent, editorParams: EditorParams, success: ValueBooleanCallback, parent: Element, onRendered: EmptyCallback) {
+  constructor(
+    cell: CellComponent,
+    editorParams: EditorParams,
+    success: ValueBooleanCallback,
+    parent: Element,
+    onRendered: EmptyCallback
+  ) {
     this.cell = cell
     this.cellElement = cell.getElement()
     this.editorParams = editorParams
@@ -63,10 +73,16 @@ export class DropdownEditor {
         option.classList.remove('hidden')
       })
 
-      if (this.input.value.trim() === '') { return }
+      if (this.input.value.trim() === '') {
+        return
+      }
 
       this.options.forEach((option) => {
-        if (!option.innerText.toLowerCase().includes(this.input.value.toLowerCase())) {
+        if (
+          !option.innerText
+            .toLowerCase()
+            .includes(this.input.value.toLowerCase())
+        ) {
           option.classList.add('hidden')
         }
       })
@@ -90,8 +106,10 @@ export class DropdownEditor {
     })
   }
 
-  setupPositioning () {
-    const value = getComputedStyle(document.documentElement).getPropertyValue('--breakpoint-sm')
+  setupPositioning() {
+    const value = getComputedStyle(document.documentElement).getPropertyValue(
+      '--breakpoint-sm'
+    )
     if (window.innerWidth <= this._convertRemToPixels(value)) {
       this.editor.style.left = '0'
       this.editor.style.top = '0'
@@ -104,10 +122,14 @@ export class DropdownEditor {
     }
   }
 
-  observeResize () {
+  observeResize() {
     this.resizeObserver = new ResizeObserver(() => {
-      const value = getComputedStyle(document.documentElement).getPropertyValue('--breakpoint-sm')
-      if (window.innerWidth <= this._convertRemToPixels(value)) { return }
+      const value = getComputedStyle(document.documentElement).getPropertyValue(
+        '--breakpoint-sm'
+      )
+      if (window.innerWidth <= this._convertRemToPixels(value)) {
+        return
+      }
       const rect = this.cellElement.getBoundingClientRect()
       this.editor.style.left = `${rect.left}px`
       this.editor.style.width = `${rect.width}px`
@@ -115,15 +137,20 @@ export class DropdownEditor {
     this.resizeObserver.observe(this.cellElement)
   }
 
-  buildOptions () {
+  buildOptions() {
     const { label: currentLabel, scope: currentScope } = this.cell.getValue()
-    Array.from(this.editorParams.values).forEach(data => {
+    Array.from(this.editorParams.values).forEach((data) => {
       const { label, value, scope } = data
 
       if (scope !== currentScope) return
 
       const elm = document.createElement('div')
-      elm.classList.add('px-[10px]', 'py-[15px]', 'hover:bg-background-darker', 'dropdown-option')
+      elm.classList.add(
+        'px-[10px]',
+        'py-[15px]',
+        'hover:bg-background-darker',
+        'dropdown-option'
+      )
       if (label === currentLabel) {
         elm.classList.remove('hover:bg-background-darker')
         elm.classList.add('bg-pop/50')
@@ -139,7 +166,7 @@ export class DropdownEditor {
     })
   }
 
-  setupOutsideClickHandler () {
+  setupOutsideClickHandler() {
     setTimeout(() => {
       this.onMouseDown = (event) => {
         const target = event.target as HTMLElement
@@ -155,13 +182,13 @@ export class DropdownEditor {
     }, 0)
   }
 
-  destroy () {
+  destroy() {
     this.editor.remove()
     this.resizeObserver.disconnect()
     document.removeEventListener('mousedown', this.onMouseDown)
   }
 
-  getDisplayElement () {
+  getDisplayElement() {
     const newCellElement = document.createElement('div')
     const value = this.cell.getValue()
     newCellElement.innerText = typeof value === 'object' ? value.label : value
@@ -169,7 +196,10 @@ export class DropdownEditor {
     return newCellElement
   }
 
-  _convertRemToPixels (rem: string) {
-    return parseFloat(rem) * parseFloat(getComputedStyle(document.documentElement).fontSize)
+  _convertRemToPixels(rem: string) {
+    return (
+      parseFloat(rem) *
+      parseFloat(getComputedStyle(document.documentElement).fontSize)
+    )
   }
 }

@@ -1,9 +1,9 @@
 import { Controller } from '@hotwired/stimulus'
-import { index, IndexWidget, searchBox } from 'instantsearch.js/es/widgets'
-import { setupLiveSearch } from '../helpers/livesearch'
-import { getRailsEnv } from '../helpers/rails'
-import { infiniteHits } from '../helpers/livesearch/infinite_hits'
 import { BaseHit } from 'instantsearch.js'
+import { IndexWidget, index, searchBox } from 'instantsearch.js/es/widgets'
+import { setupLiveSearch } from '../helpers/livesearch'
+import { infiniteHits } from '../helpers/livesearch/infinite_hits'
+import { getRailsEnv } from '../helpers/rails'
 
 // Connects to data-controller="livesearch"
 export default class extends Controller {
@@ -33,11 +33,15 @@ export default class extends Controller {
   declare selectedText: HTMLElement
   declare searchResultType: HTMLInputElement | null | undefined
 
-  connect () {
+  connect() {
     this.element.classList.add('hidden')
 
-    const searchInputWrapper = this.element.parentElement?.querySelector('.search-input') as HTMLElement
-    const searchResultsWrapper = this.element.parentElement?.querySelector('.search-results') as HTMLElement
+    const searchInputWrapper = this.element.parentElement?.querySelector(
+      '.search-input'
+    ) as HTMLElement
+    const searchResultsWrapper = this.element.parentElement?.querySelector(
+      '.search-results'
+    ) as HTMLElement
     this.createSelectedText()
 
     let inputCssClasses = 'livesearch-input'
@@ -58,8 +62,10 @@ export default class extends Controller {
       }),
       infiniteHits({
         container: searchResultsWrapper,
-        transformItems (items, { results }) {
-          if (results && results.query === '*') { return [] }
+        transformItems(items, { results }) {
+          if (results && results.query === '*') {
+            return []
+          }
           return items
         },
         getItemText: this.getItemText.bind(this),
@@ -79,11 +85,20 @@ export default class extends Controller {
       additionalSearchParameters
     })
 
-    this.searchInput = this.element.parentElement?.querySelector<HTMLInputElement>('input.livesearch-input')
-    this.searchResultType = this.element.parentElement?.querySelector<HTMLInputElement>('input.search-result-type')
+    this.searchInput =
+      this.element.parentElement?.querySelector<HTMLInputElement>(
+        'input.livesearch-input'
+      )
+    this.searchResultType =
+      this.element.parentElement?.querySelector<HTMLInputElement>(
+        'input.search-result-type'
+      )
     this.searchResults = searchResultsWrapper
 
-    const name = this.element.getAttribute('name')?.replace('[]', '')?.split('[')
+    const name = this.element
+      .getAttribute('name')
+      ?.replace('[]', '')
+      ?.split('[')
     if (name) {
       const normalizedName = name[name.length - 1]
         .replace('_ids', '')
@@ -94,13 +109,15 @@ export default class extends Controller {
     this.searchInput?.addEventListener('focusin', () => this.restartSearch())
   }
 
-  getItemText (item: Record<string, string>): string {
-    return this.displayAttributesValue.map(attr => {
-      return item[attr]
-    }).join(' - ')
+  getItemText(item: Record<string, string>): string {
+    return this.displayAttributesValue
+      .map((attr) => {
+        return item[attr]
+      })
+      .join(' - ')
   }
 
-  createSelectedText () {
+  createSelectedText() {
     this.selectedText = document.createElement('small')
     this.selectedText.innerText = 'Nothing selected'
     if (this.showSelectedTextValue) {
@@ -108,14 +125,14 @@ export default class extends Controller {
     }
   }
 
-  restartSearch () {
+  restartSearch() {
     this.element.removeAttribute('value')
     this.searchResults.classList.remove('hidden')
     this.selectedText.innerText = 'Nothing selected'
     this.searchResultType?.setAttribute('value', '')
   }
 
-  onItemClick (item: BaseHit) {
+  onItemClick(item: BaseHit) {
     this.element.setAttribute('value', item.id)
     this.searchResults.classList.add('hidden')
     this.selectedText.innerText = `Selected: ${this.getItemText(item)}`
@@ -130,10 +147,10 @@ export default class extends Controller {
     }
   }
 
-  extraCollections (env: string) {
+  extraCollections(env: string) {
     const indexes: IndexWidget[] = []
     if (this.hasExtraCollectionsValue) {
-      this.extraCollectionsValue.forEach(collection => {
+      this.extraCollectionsValue.forEach((collection) => {
         indexes.push(index({ indexName: `${collection}_${env}` }))
       })
     }

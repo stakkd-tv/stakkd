@@ -1,11 +1,17 @@
 import { Controller } from '@hotwired/stimulus'
 import EasyMDE from 'easymde'
-import { sanitize } from '../helpers/sanitize_html'
 import { MARKED_CONFIG } from '../helpers/marked'
+import { sanitize } from '../helpers/sanitize_html'
 
 // Connects to data-controller="settings"
 export default class extends Controller {
-  static targets = ['profilePictureUpload', 'profilePictureImage', 'backgroundUpload', 'backgroundImage', 'biographyInput']
+  static targets = [
+    'profilePictureUpload',
+    'profilePictureImage',
+    'backgroundUpload',
+    'backgroundImage',
+    'biographyInput'
+  ]
 
   declare profilePictureUploadTarget: HTMLInputElement
   declare profilePictureImageTarget: HTMLImageElement
@@ -13,7 +19,7 @@ export default class extends Controller {
   declare backgroundImageTarget: HTMLImageElement
   declare biographyInputTarget: HTMLTextAreaElement
 
-  connect () {
+  connect() {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const _ = new EasyMDE({
       element: this.biographyInputTarget,
@@ -26,27 +32,33 @@ export default class extends Controller {
       }
     })
 
-    this.profilePictureUploadTarget.addEventListener('change', this.uploadProfilePicture.bind(this))
-    this.backgroundUploadTarget.addEventListener('change', this.uploadBackground.bind(this))
+    this.profilePictureUploadTarget.addEventListener(
+      'change',
+      this.uploadProfilePicture.bind(this)
+    )
+    this.backgroundUploadTarget.addEventListener(
+      'change',
+      this.uploadBackground.bind(this)
+    )
   }
 
-  triggerProfilePicture () {
+  triggerProfilePicture() {
     this.profilePictureUploadTarget.click()
   }
 
-  triggerBackground () {
+  triggerBackground() {
     this.backgroundUploadTarget.click()
   }
 
-  uploadProfilePicture () {
+  uploadProfilePicture() {
     this.upload(this.profilePictureUploadTarget, this.profilePictureImageTarget)
   }
 
-  uploadBackground () {
+  uploadBackground() {
     this.upload(this.backgroundUploadTarget, this.backgroundImageTarget)
   }
 
-  upload (uploadTarget: HTMLInputElement, imageTarget: HTMLImageElement) {
+  upload(uploadTarget: HTMLInputElement, imageTarget: HTMLImageElement) {
     const file = uploadTarget.files?.[0]
     if (file) {
       const reader = new FileReader()

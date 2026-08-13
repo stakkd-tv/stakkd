@@ -8,18 +8,18 @@ export default class extends Controller {
   declare readonly toggleContainerTarget: HTMLElement
   declare readonly toggleHandleTarget: HTMLElement
 
-  connect () {
+  connect() {
     this.toggle(this.checkboxTarget.checked)
   }
 
-  triggerToggle () {
+  triggerToggle() {
     const checked = !this.checkboxTarget.checked
     this.checkboxTarget.checked = checked
 
     this.toggle(checked)
   }
 
-  toggle (checked: boolean) {
+  toggle(checked: boolean) {
     if (checked) {
       this.toggleContainerTarget.classList.remove('bg-background')
       this.toggleContainerTarget.classList.add('bg-pop')

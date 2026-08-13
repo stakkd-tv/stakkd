@@ -1,10 +1,16 @@
 import { Controller } from '@hotwired/stimulus'
-import { CellComponent, ColumnDefinition, Options, RowComponent, TabulatorFull as Tabulator } from 'tabulator-tables'
-import { listEditor } from '../helpers/tabulator/list_editor'
+import {
+  CellComponent,
+  ColumnDefinition,
+  Options,
+  RowComponent,
+  TabulatorFull as Tabulator
+} from 'tabulator-tables'
 import { dateEditor } from '../helpers/tabulator/date_editor'
+import { listEditor } from '../helpers/tabulator/list_editor'
 
 interface RowData {
-  [key: string]: object;
+  [key: string]: object
 }
 
 interface Response {
@@ -15,7 +21,14 @@ interface Response {
 // Connects to data-controller="table-editor"
 export default class extends Controller {
   static targets = ['tableContainer']
-  static values = { tableData: Array, tableColumns: Array, pathPrefix: String, modelName: String, movable: Boolean, groupBy: String }
+  static values = {
+    tableData: Array,
+    tableColumns: Array,
+    pathPrefix: String,
+    modelName: String,
+    movable: Boolean,
+    groupBy: String
+  }
 
   declare readonly tableContainerTarget: HTMLElement
 
@@ -28,8 +41,11 @@ export default class extends Controller {
 
   declare hasGroupByValue: boolean
 
-  async saveRecord (rowData: RowData): Promise<Response> {
-    const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? ''
+  async saveRecord(rowData: RowData): Promise<Response> {
+    const token =
+      document
+        .querySelector('meta[name="csrf-token"]')
+        ?.getAttribute('content') ?? ''
     const { id, ...data } = rowData
     const url = `${this.pathPrefixValue}/${id}`
     const body = Object.entries(data).reduce((acc, [key, value]) => {
@@ -57,8 +73,11 @@ export default class extends Controller {
     return json
   }
 
-  async removeRow (_event: UIEvent, cell: CellComponent): Promise<void> {
-    const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? ''
+  async removeRow(_event: UIEvent, cell: CellComponent): Promise<void> {
+    const token =
+      document
+        .querySelector('meta[name="csrf-token"]')
+        ?.getAttribute('content') ?? ''
     const { id } = cell.getRow().getData()
     const url = `${this.pathPrefixValue}/${id}`
     const response = await fetch(url, {
@@ -71,9 +90,12 @@ export default class extends Controller {
     }
   }
 
-  async moveRow (row: RowComponent) {
+  async moveRow(row: RowComponent) {
     const newPosition = row.getPosition()
-    const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? ''
+    const token =
+      document
+        .querySelector('meta[name="csrf-token"]')
+        ?.getAttribute('content') ?? ''
     const { id } = row.getData()
     const url = `${this.pathPrefixValue}/${id}/move`
     await fetch(url, {
@@ -83,9 +105,11 @@ export default class extends Controller {
     })
   }
 
-  imageFormatter (cell: CellComponent) {
+  imageFormatter(cell: CellComponent) {
     const cellValue = cell.getValue()
-    if (typeof cellValue !== 'object') { return '' }
+    if (typeof cellValue !== 'object') {
+      return ''
+    }
     const { value: imgSrc, label } = cellValue
     const parent = document.createElement('div')
     parent.classList.add('flex', 'h-full', 'items-center', 'gap-4')
@@ -103,7 +127,7 @@ export default class extends Controller {
     return parent
   }
 
-  translateColumnsValue (): ColumnDefinition[] {
+  translateColumnsValue(): ColumnDefinition[] {
     return this.tableColumnsValue.map((columnData) => {
       if (columnData.editor === 'list') {
         columnData.editor = listEditor.bind(this)
@@ -125,9 +149,11 @@ export default class extends Controller {
     })
   }
 
-  handleError (data: Response, cell: CellComponent) {
+  handleError(data: Response, cell: CellComponent) {
     const cells = cell.getRow().getCells()
-    const errorKeys = data.errors!.map((errorHash) => Object.keys(errorHash)).flat()
+    const errorKeys = data
+      .errors!.map((errorHash) => Object.keys(errorHash))
+      .flat()
     cells.forEach((cell) => {
       const field = cell.getField()
       if (errorKeys.includes(field)) {
@@ -136,12 +162,12 @@ export default class extends Controller {
     })
   }
 
-  connect () {
+  connect() {
     const table = new Tabulator(this.tableContainerTarget, this.buildOptions())
     table.on('cellEdited', (cell) => {
       const data = cell.getRow().getData()
       this.saveRecord(data)
-        .then(data => console.log('Saved:', data))
+        .then((data) => console.log('Saved:', data))
         .catch((data: Response) => this.handleError(data, cell))
     })
     table.on('rowMoved', (row) => {
@@ -151,7 +177,7 @@ export default class extends Controller {
     })
   }
 
-  buildOptions (): Options {
+  buildOptions(): Options {
     const options: Options = {
       data: this.tableDataValue,
       layout: 'fitColumns',
@@ -160,7 +186,14 @@ export default class extends Controller {
     }
     if (this.movableValue) {
       options.movableRows = true
-      options.rowHeader = { rowHandle: true, width: 40, minWidth: 40, headerSort: false, resizable: false, formatter: 'handle' }
+      options.rowHeader = {
+        rowHandle: true,
+        width: 40,
+        minWidth: 40,
+        headerSort: false,
+        resizable: false,
+        formatter: 'handle'
+      }
     }
     if (this.hasGroupByValue) {
       options.groupBy = (data) => {

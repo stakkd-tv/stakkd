@@ -92,7 +92,7 @@ form .ss-main.filter {
 }
 
 .ss-content .ss-search .ss-addable {
-    aspect-ratio: 1/1;
+    aspect-ratio: 1 / 1;
     border: none;
     background-color: var(--color-background-darker);
     border-radius: 0;

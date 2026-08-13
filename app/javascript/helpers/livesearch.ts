@@ -1,27 +1,38 @@
-import instantsearch, { Widget, IndexWidget } from 'instantsearch.js'
+import instantsearch, { IndexWidget, Widget } from 'instantsearch.js'
 import TypesenseInstantsearchAdapter from 'typesense-instantsearch-adapter'
 
-type AdapterOptions = ConstructorParameters<typeof TypesenseInstantsearchAdapter>[0];
+type AdapterOptions = ConstructorParameters<
+  typeof TypesenseInstantsearchAdapter
+>[0]
 
-type AdditionalSearchParameters = AdapterOptions['additionalSearchParameters'];
-type CollectionSpecificSearchParameters = AdapterOptions['collectionSpecificSearchParameters'];
+type AdditionalSearchParameters = AdapterOptions['additionalSearchParameters']
+type CollectionSpecificSearchParameters =
+  AdapterOptions['collectionSpecificSearchParameters']
 
 type LiveSearchOptions = {
-  widgets: (Widget | IndexWidget | (Widget | IndexWidget)[])[],
-  union?: boolean | null,
-  indexName?: string,
-  additionalSearchParameters?: AdditionalSearchParameters,
+  widgets: (Widget | IndexWidget | (Widget | IndexWidget)[])[]
+  union?: boolean | null
+  indexName?: string
+  additionalSearchParameters?: AdditionalSearchParameters
   collectionSpecificSearchParameters?: CollectionSpecificSearchParameters
 }
 
-export function setupLiveSearch ({ widgets, union, indexName, additionalSearchParameters, collectionSpecificSearchParameters }: LiveSearchOptions) {
+export function setupLiveSearch({
+  widgets,
+  union,
+  indexName,
+  additionalSearchParameters,
+  collectionSpecificSearchParameters
+}: LiveSearchOptions) {
   const typesenseConfig = document.getElementById('typesense-config')
   const apiKey = typesenseConfig?.getAttribute('data-api-key')
   const host = typesenseConfig?.getAttribute('data-host')
   const port = typesenseConfig?.getAttribute('data-port')
   const protocol = typesenseConfig?.getAttribute('data-protocol')
   if (!apiKey || !host || !port || !protocol) {
-    throw new Error(`Typesense config not valid. ${apiKey}, ${host}, ${port}, ${protocol}`)
+    throw new Error(
+      `Typesense config not valid. ${apiKey}, ${host}, ${port}, ${protocol}`
+    )
   }
 
   const adapter = new TypesenseInstantsearchAdapter({

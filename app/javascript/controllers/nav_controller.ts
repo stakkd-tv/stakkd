@@ -1,6 +1,11 @@
 import { Controller } from '@hotwired/stimulus'
 import { setupLiveSearch } from '../helpers/livesearch'
-import { buildSearchUrl, NAV_SEARCH_PLACEHOLDER, NAV_SEARCHING_PLACEHOLDER, widgetsForNavLiveSearch } from '../helpers/livesearch/nav'
+import {
+  buildSearchUrl,
+  NAV_SEARCH_PLACEHOLDER,
+  NAV_SEARCHING_PLACEHOLDER,
+  widgetsForNavLiveSearch
+} from '../helpers/livesearch/nav'
 import { getRailsEnv } from '../helpers/rails'
 
 // Connects to data-controller="nav"
@@ -12,7 +17,7 @@ export default class extends Controller {
   declare readonly buttonTargets: HTMLElement[]
   declare readonly hasUserTarget: boolean
 
-  connect () {
+  connect() {
     const env = getRailsEnv()
     const widgets = widgetsForNavLiveSearch(this.element)
     const additionalSearchParameters = {
@@ -25,7 +30,8 @@ export default class extends Controller {
       indexName: `Show_${env}`,
       additionalSearchParameters
     })
-    const searchInput = this.element.querySelector<HTMLInputElement>('.nav-search')
+    const searchInput =
+      this.element.querySelector<HTMLInputElement>('.nav-search')
     const hits = this.element.querySelector<HTMLInputElement>('.hits')
     if (!searchInput || !hits) return
 
@@ -39,7 +45,8 @@ export default class extends Controller {
       this.buttonTargets.forEach((btn) => {
         btn.classList.remove('hidden!')
       })
-      hits.style.width = (this.searchWrapperTarget.getBoundingClientRect().width + 3) + 'px'
+      hits.style.width =
+        this.searchWrapperTarget.getBoundingClientRect().width + 3 + 'px'
       hits.classList.add('hidden')
     }
 
@@ -53,7 +60,8 @@ export default class extends Controller {
       this.buttonTargets.forEach((btn) => {
         btn.classList.add('hidden!')
       })
-      hits.style.width = (this.searchWrapperTarget.getBoundingClientRect().width + 3) + 'px'
+      hits.style.width =
+        this.searchWrapperTarget.getBoundingClientRect().width + 3 + 'px'
       hits.classList.remove('hidden')
     })
 
@@ -102,7 +110,9 @@ export default class extends Controller {
 
     const sidebar = document.getElementById('sidebar')
     if (this.hasUserTarget && sidebar) {
-      const closeSidebar = document.getElementById('close-sidebar') as HTMLElement
+      const closeSidebar = document.getElementById(
+        'close-sidebar'
+      ) as HTMLElement
 
       closeSidebar.addEventListener('click', () => {
         sidebar.classList.add('hidden')
@@ -116,8 +126,17 @@ export default class extends Controller {
     }
   }
 
-  handleKeydown (event: KeyboardEvent, hits: HTMLElement, searchInput: HTMLInputElement) {
-    if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp' && event.key !== 'Enter') return
+  handleKeydown(
+    event: KeyboardEvent,
+    hits: HTMLElement,
+    searchInput: HTMLInputElement
+  ) {
+    if (
+      event.key !== 'ArrowDown' &&
+      event.key !== 'ArrowUp' &&
+      event.key !== 'Enter'
+    )
+      return
 
     const links = Array.from(hits.querySelectorAll<HTMLAnchorElement>('a'))
     if (links.length === 0) return
@@ -135,7 +154,10 @@ export default class extends Controller {
           window.location.href = buildSearchUrl(query)
         }
       }
-    } else if (activeElement instanceof HTMLAnchorElement && links.includes(activeElement)) {
+    } else if (
+      activeElement instanceof HTMLAnchorElement &&
+      links.includes(activeElement)
+    ) {
       if (event.key === 'ArrowDown') {
         event.preventDefault()
         const currentIndex = links.indexOf(activeElement)

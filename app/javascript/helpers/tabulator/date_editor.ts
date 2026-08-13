@@ -1,12 +1,17 @@
 import flatpickr from 'flatpickr'
-import { CellComponent, EmptyCallback, ValueBooleanCallback } from 'tabulator-tables'
+import {
+  CellComponent,
+  EmptyCallback,
+  ValueBooleanCallback
+} from 'tabulator-tables'
 
-export function dateEditor (cell: CellComponent, onRendered: EmptyCallback, success: ValueBooleanCallback): HTMLElement {
+export function dateEditor(
+  cell: CellComponent,
+  onRendered: EmptyCallback,
+  success: ValueBooleanCallback
+): HTMLElement {
   const editor = document.createElement('input')
-  editor.classList.add(
-    'py-[15px]',
-    'px-[10px]'
-  )
+  editor.classList.add('py-[15px]', 'px-[10px]')
   editor.value = cell.getValue()
 
   flatpickr(editor, {

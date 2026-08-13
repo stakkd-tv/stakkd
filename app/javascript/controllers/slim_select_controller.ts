@@ -9,18 +9,20 @@ export default class extends Controller {
 
   declare slim: SlimSelect
 
-  connect () {
+  connect() {
     const options: Config = {
       select: this.element
     }
     if (this.addableValue) {
       options.events = {}
-      options.events.addable = (value) => { return value }
+      options.events.addable = (value) => {
+        return value
+      }
     }
     this.slim = new SlimSelect(options)
   }
 
-  disconnect () {
+  disconnect() {
     this.slim.destroy()
   }
 }

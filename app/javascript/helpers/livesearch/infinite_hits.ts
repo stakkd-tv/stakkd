@@ -1,5 +1,7 @@
 import { BaseHit, RendererOptions } from 'instantsearch.js'
-import connectInfiniteHits, { InfiniteHitsRenderState } from 'instantsearch.js/es/connectors/infinite-hits/connectInfiniteHits'
+import connectInfiniteHits, {
+  InfiniteHitsRenderState
+} from 'instantsearch.js/es/connectors/infinite-hits/connectInfiniteHits'
 
 export interface InfiniteHitsWidgetParams<THit extends BaseHit = BaseHit> {
   container: HTMLElement
@@ -7,19 +9,32 @@ export interface InfiniteHitsWidgetParams<THit extends BaseHit = BaseHit> {
   onItemClick: (item: THit) => void
 }
 
-let lastRenderArgs: InfiniteHitsRenderState<BaseHit> & RendererOptions<InfiniteHitsWidgetParams>
+let lastRenderArgs: InfiniteHitsRenderState<BaseHit> &
+  RendererOptions<InfiniteHitsWidgetParams>
 export const infiniteHits = connectInfiniteHits<BaseHit>(
   (renderArgs, isFirstRender) => {
     const { items, showMore, widgetParams } = renderArgs
     const container = widgetParams.container as HTMLElement
 
-    lastRenderArgs = renderArgs as InfiniteHitsRenderState<BaseHit> & RendererOptions<InfiniteHitsWidgetParams>
+    lastRenderArgs = renderArgs as InfiniteHitsRenderState<BaseHit> &
+      RendererOptions<InfiniteHitsWidgetParams>
 
     if (isFirstRender) {
       const sentinel = document.createElement('div')
       sentinel.classList.add('sentinel')
       const ul = document.createElement('ul')
-      ul.classList.add('rounded-lg', 'bg-background-darker', 'border', 'border-pop', 'absolute', 'w-full', 'mt-2', 'max-h-96', 'overflow-y-auto', 'z-1')
+      ul.classList.add(
+        'rounded-lg',
+        'bg-background-darker',
+        'border',
+        'border-pop',
+        'absolute',
+        'w-full',
+        'mt-2',
+        'max-h-96',
+        'overflow-y-auto',
+        'z-1'
+      )
       container.appendChild(ul)
       ul.appendChild(sentinel)
 
@@ -46,7 +61,16 @@ export const infiniteHits = connectInfiniteHits<BaseHit>(
       ul.classList.remove('hidden')
       items.forEach((item) => {
         const element = document.createElement('li')
-        element.classList.add('result', 'p-2', 'flex', 'items-center', 'cursor-pointer', 'hover:bg-pop/75', 'focus:bg-pop/75', 'focus:outline-none')
+        element.classList.add(
+          'result',
+          'p-2',
+          'flex',
+          'items-center',
+          'cursor-pointer',
+          'hover:bg-pop/75',
+          'focus:bg-pop/75',
+          'focus:outline-none'
+        )
         element.innerText = widgetParams.getItemText(item)
         element.addEventListener('click', () => {
           widgetParams.onItemClick(item)

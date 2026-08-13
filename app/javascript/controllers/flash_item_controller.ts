@@ -6,7 +6,7 @@ export default class extends Controller {
 
   declare readonly removeTarget: HTMLElement
 
-  connect () {
+  connect() {
     this.removeTarget.addEventListener('click', () => {
       this.element.remove()
     })

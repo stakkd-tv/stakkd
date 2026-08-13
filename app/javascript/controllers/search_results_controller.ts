@@ -9,16 +9,16 @@ export default class extends Controller {
 
   declare currentTab: HTMLElement
 
-  connect () {
+  connect() {
     this.setCurrentTab(this.tabTargets[0])
   }
 
-  updateTab (event: Event) {
+  updateTab(event: Event) {
     const newTab = event.currentTarget as HTMLElement
     this.setCurrentTab(newTab)
   }
 
-  setCurrentTab (newTab: HTMLElement) {
+  setCurrentTab(newTab: HTMLElement) {
     const previousTab = this.currentTab
     if (previousTab) {
       previousTab.setAttribute('data-sidetab-active', 'false')
@@ -28,11 +28,11 @@ export default class extends Controller {
     this.toggleGridVisibility()
   }
 
-  toggleGridVisibility () {
+  toggleGridVisibility() {
     const activeTabName = this.currentTab.getAttribute('data-tab')
     if (!activeTabName) return
 
-    this.resultsGridTargets.forEach(grid => {
+    this.resultsGridTargets.forEach((grid) => {
       if (grid.id === `${activeTabName}-results-container`) {
         grid.classList.remove('hidden')
       } else {

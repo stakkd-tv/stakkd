@@ -6,9 +6,10 @@ export default class extends Controller {
 
   declare selectTarget: HTMLSelectElement
 
-  connect () {
+  connect() {
     this.selectTarget.addEventListener('change', () => {
-      const selectedOption = this.selectTarget.options[this.selectTarget.selectedIndex]
+      const selectedOption =
+        this.selectTarget.options[this.selectTarget.selectedIndex]
       window.location.href = selectedOption.value
     })
   }

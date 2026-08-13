@@ -7,18 +7,18 @@ export default class extends Controller {
 
   declare selectorValue: string
 
-  connect () {
+  connect() {
     this.onDocumentClick = this.onDocumentClick.bind(this)
 
     this.element.addEventListener('click', this.toggle.bind(this))
     document.addEventListener('click', this.onDocumentClick)
   }
 
-  disconnect () {
+  disconnect() {
     document.removeEventListener('click', this.onDocumentClick)
   }
 
-  toggle (event: Event) {
+  toggle(event: Event) {
     event.stopPropagation()
 
     const menu = document.querySelector(this.selectorValue)
@@ -29,14 +29,11 @@ export default class extends Controller {
     this.element.classList.toggle('border-pop')
   }
 
-  onDocumentClick (event: Event) {
+  onDocumentClick(event: Event) {
     const menu = document.querySelector(this.selectorValue)
     const target = event.target as Node
 
-    if (
-      this.element.contains(target) ||
-      menu?.contains(target)
-    ) {
+    if (this.element.contains(target) || menu?.contains(target)) {
       return
     }
 

@@ -17,7 +17,7 @@ export default class extends Controller {
   declare readonly imageTemplateTarget: HTMLDivElement
   declare readonly imagesTarget: HTMLDivElement
 
-  connect () {
+  connect() {
     this.inputTarget.addEventListener('change', async (event) => {
       const rawFiles = (event.target as HTMLInputElement).files ?? []
       const files = Array.from(rawFiles)
@@ -28,7 +28,7 @@ export default class extends Controller {
     })
   }
 
-  async handleFile (file: File) {
+  async handleFile(file: File) {
     const formData = new FormData()
     formData.append('image', file)
     formData.append('record_type', this.recordTypeValue)
@@ -47,7 +47,10 @@ export default class extends Controller {
     this.statusesTarget.appendChild(result)
 
     try {
-      const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? ''
+      const token =
+        document
+          .querySelector('meta[name="csrf-token"]')
+          ?.getAttribute('content') ?? ''
       const response = await fetch('/uploads', {
         method: 'POST',
         headers: { 'X-CSRF-Token': token },
@@ -65,7 +68,9 @@ export default class extends Controller {
         successElement.classList.remove('hidden!')
         textElement.textContent = `${file.name} uploaded`
 
-        const newImgElement = this.imageTemplateTarget.cloneNode(true) as HTMLElement
+        const newImgElement = this.imageTemplateTarget.cloneNode(
+          true
+        ) as HTMLElement
         newImgElement.classList.remove('hidden')
         const img = newImgElement.querySelector('.newImg') as HTMLImageElement
         img.src = json.image

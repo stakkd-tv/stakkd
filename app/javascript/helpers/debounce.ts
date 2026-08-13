@@ -1,6 +1,6 @@
-export function debounce (fn: () => void, delay: number) {
+export function debounce(fn: () => void, delay: number) {
   let timer: number | null = null
-  return function debouncer (...args: unknown[]) {
+  return function debouncer(...args: unknown[]) {
     if (timer) clearTimeout(timer)
     timer = setTimeout(() => {
       timer = null
