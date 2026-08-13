@@ -1,7 +1,10 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.5.8/schema.json",
   "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
-  "files": { "ignoreUnknown": false },
+  "files": {
+    "ignoreUnknown": false,
+    "includes": ["app/javascript/**", "app/assets/stylesheets/**"]
+  },
   "formatter": { "enabled": true, "indentStyle": "space", "indentWidth": 2 },
   "linter": {
     "enabled": true,
@@ -209,10 +212,13 @@
     "formatter": { "indentStyle": "space", "indentWidth": 4 }
   },
   "overrides": [
-    { "includes": ["**/*.ts"], "javascript": { "globals": ["exports"] } },
-    { "includes": ["**/*.ts"], "javascript": { "globals": [] } },
     {
-      "includes": ["**/*.ts"],
+      "includes": ["app/javascript/**/*.ts"],
+      "javascript": { "globals": ["exports"] }
+    },
+    { "includes": ["app/javascript/**/*.ts"], "javascript": { "globals": [] } },
+    {
+      "includes": ["app/javascript/**/*.ts"],
       "javascript": { "globals": ["navigator", "document", "window"] },
       "linter": {
         "rules": {
@@ -304,9 +310,9 @@
         }
       }
     },
-    { "includes": ["**/*.ts"], "javascript": { "globals": [] } },
+    { "includes": ["app/javascript/**/*.ts"], "javascript": { "globals": [] } },
     {
-      "includes": ["**/*.ts"],
+      "includes": ["app/javascript/**/*.ts"],
       "linter": {
         "rules": {
           "complexity": { "noArguments": "error" },
@@ -338,7 +344,7 @@
       }
     },
     {
-      "includes": ["**/*.ts"],
+      "includes": ["app/javascript/**/*.ts"],
       "linter": {
         "rules": {
           "complexity": { "noUselessTypeConstraint": "error" },
@@ -362,19 +368,7 @@
         }
       }
     },
-    { "includes": ["**/*.ts"], "javascript": { "globals": [] } },
-    {
-      "includes": ["vendor/bundle/*"],
-      "linter": {
-        "enabled": false
-      },
-      "formatter": {
-        "enabled": false
-      },
-      "assist": {
-        "enabled": false
-      }
-    }
+    { "includes": ["app/javascript/**/*.ts"], "javascript": { "globals": [] } }
   ],
   "assist": {
     "enabled": true,
