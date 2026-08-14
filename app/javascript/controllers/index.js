@@ -7,6 +7,8 @@ import { application } from './application'
 import DetailsAutoOpenController from './details_auto_open_controller'
 import FlashItemController from './flash_item_controller'
 import FormNavController from './form_nav_controller'
+import HistoryButtonController from './history_button_controller'
+import HistoryDialogController from './history_dialog_controller'
 import JumpToController from './jump_to_controller'
 import LivesearchController from './livesearch_controller'
 import MarkdownRendererController from './markdown_renderer_controller'
@@ -22,6 +24,8 @@ import UploadsController from './uploads_controller'
 application.register('details-auto-open', DetailsAutoOpenController)
 application.register('flash-item', FlashItemController)
 application.register('form-nav', FormNavController)
+application.register('history-button', HistoryButtonController)
+application.register('history-dialog', HistoryDialogController)
 application.register('jump-to', JumpToController)
 application.register('livesearch', LivesearchController)
 application.register('markdown-renderer', MarkdownRendererController)
