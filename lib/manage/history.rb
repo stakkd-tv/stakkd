@@ -67,7 +67,7 @@ module Manage
     end
 
     def default_statuses(items)
-      items.index_with { :not_watched }
+      items.index_with { :not_consumed }
     end
 
     def items_for_history(items)
@@ -102,16 +102,16 @@ module Manage
 
     def status_for_items(items, history_items)
       total = items.size
-      return :not_watched if total.zero?
+      return :not_consumed if total.zero?
 
       history_count = items.count do |sub_item|
         history_items.include?([sub_item.class.polymorphic_name, sub_item.id])
       end
 
       case history_count
-      when 0 then :not_watched
-      when total then :watched
-      else :partially_watched
+      when 0 then :not_consumed
+      when total then :consumed
+      else :partially_consumed
       end
     end
   end

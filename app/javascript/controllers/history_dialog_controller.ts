@@ -64,8 +64,8 @@ export default class extends Controller {
   }) {
     this.triggeredBy = event.detail.button
     if (
-      this.triggeredBy.dataset.status === 'watched' ||
-      this.triggeredBy.dataset.status === 'partially_watched'
+      this.triggeredBy.dataset.status === 'consumed' ||
+      this.triggeredBy.dataset.status === 'partially_consumed'
     ) {
       this.removeFromHistoryButtonTarget.classList.remove('hidden')
     } else {

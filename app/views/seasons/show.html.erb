@@ -89,7 +89,7 @@
                   <% end %>
                 </div>
                 <div class="w-40">
-                  <% watch_status = @episode_watch_statuses[episode] || :not_watched %>
+                  <% watch_status = @episode_watch_statuses[episode] || :not_consumed %>
                   <%= render "shared/actions/compact_actions", record: episode, watch_status: watch_status %>
                 </div>
               </div>

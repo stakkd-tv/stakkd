@@ -16,7 +16,7 @@ RSpec.feature "Movie actions", type: :system, js: true do
     expect(page).to have_css "dialog[data-controller='history-dialog']"
     click_button "Remove from history"
     expect(page).not_to have_css "dialog[data-controller='history-dialog']"
-    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Movie'][data-record-id='#{@movie.id}'][data-status='not_watched']"
+    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Movie'][data-record-id='#{@movie.id}'][data-status='not_consumed']"
     expect(@user.history_items.count).to eq 0
   end
 
@@ -35,8 +35,8 @@ RSpec.feature "Movie actions", type: :system, js: true do
     visit movie_path(@movie)
     expect(page).to have_content @movie.translated_title
 
-    # Now signed in, add to history button is on the page, not watched state
-    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Movie'][data-record-id='#{@movie.id}'][data-status='not_watched']"
+    # Now signed in, add to history button is on the page, not consumed state
+    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Movie'][data-record-id='#{@movie.id}'][data-status='not_consumed']"
 
     # Movie has not been released, add to history is disabled
     expect(page).to have_css "button[data-controller='history-button'][disabled]"
@@ -64,7 +64,7 @@ RSpec.feature "Movie actions", type: :system, js: true do
     # Dialog is now hidden
     expect(page).not_to have_css "dialog[data-controller='history-dialog']"
     # Add to history button state is updated
-    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Movie'][data-record-id='#{@movie.id}'][data-status='watched']"
+    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Movie'][data-record-id='#{@movie.id}'][data-status='consumed']"
     expect(@user.history_items.count).to eq 1
     expect(@user.history_items.first.item).to eq @movie
     expect(@user.history_items.first.consumed_at).to eq Time.current
@@ -79,7 +79,7 @@ RSpec.feature "Movie actions", type: :system, js: true do
     # Dialog is now hidden
     expect(page).not_to have_css "dialog[data-controller='history-dialog']"
     # Add to history button state is updated
-    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Movie'][data-record-id='#{@movie.id}'][data-status='watched']"
+    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Movie'][data-record-id='#{@movie.id}'][data-status='consumed']"
     expect(@user.history_items.count).to eq 1
     expect(@user.history_items.first.item).to eq @movie
     expect(@user.history_items.first.consumed_at).to eq Date.today.beginning_of_day
@@ -101,7 +101,7 @@ RSpec.feature "Movie actions", type: :system, js: true do
     # Dialog is now hidden
     expect(page).not_to have_css "dialog[data-controller='history-dialog']"
     # Add to history button state is updated
-    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Movie'][data-record-id='#{@movie.id}'][data-status='watched']"
+    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Movie'][data-record-id='#{@movie.id}'][data-status='consumed']"
     expect(@user.history_items.count).to eq 1
     expect(@user.history_items.first.item).to eq @movie
     expect(@user.history_items.first.consumed_at).to eq DateTime.new(2026, 8, 14, 13, 5)
@@ -116,7 +116,7 @@ RSpec.feature "Movie actions", type: :system, js: true do
     # Dialog is now hidden
     expect(page).not_to have_css "dialog[data-controller='history-dialog']"
     # Add to history button state is updated
-    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Movie'][data-record-id='#{@movie.id}'][data-status='watched']"
+    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Movie'][data-record-id='#{@movie.id}'][data-status='consumed']"
     expect(@user.history_items.count).to eq 1
     expect(@user.history_items.first.item).to eq @movie
     expect(@user.history_items.first.consumed_at).to be_nil

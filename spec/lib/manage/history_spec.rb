@@ -158,14 +158,14 @@ module Manage
         let(:user) { nil }
         let(:item) { FactoryBot.create(:movie) }
 
-        it { should eq :not_watched }
+        it { should eq :not_consumed }
       end
 
       context "when item is a movie" do
         let(:item) { FactoryBot.create(:movie) }
 
         context "when item has not been added to history" do
-          it { should eq :not_watched }
+          it { should eq :not_consumed }
         end
 
         context "when item has been added to history" do
@@ -173,7 +173,7 @@ module Manage
             FactoryBot.create(:history_item, user:, item:)
           end
 
-          it { should eq :watched }
+          it { should eq :consumed }
         end
       end
 
@@ -181,7 +181,7 @@ module Manage
         let(:item) { FactoryBot.create(:episode) }
 
         context "when item has not been added to history" do
-          it { should eq :not_watched }
+          it { should eq :not_consumed }
         end
 
         context "when item has been added to history" do
@@ -189,7 +189,7 @@ module Manage
             FactoryBot.create(:history_item, user:, item:)
           end
 
-          it { should eq :watched }
+          it { should eq :consumed }
         end
       end
 
@@ -198,8 +198,8 @@ module Manage
         let!(:episode1) { item.episodes.first }
         let!(:episode2) { FactoryBot.create(:episode, season: item, number: episode1.number + 1) }
 
-        context "when no episodes have been watched" do
-          it { should eq :not_watched }
+        context "when no episodes have been consumed" do
+          it { should eq :not_consumed }
         end
 
         context "when item has been partially added to history" do
@@ -207,17 +207,17 @@ module Manage
             FactoryBot.create(:history_item, user:, item: episode2)
           end
 
-          it { should eq :partially_watched }
+          it { should eq :partially_consumed }
         end
 
-        context "when an episode has been watched multiple times" do
+        context "when an episode has been consumed multiple times" do
           before do
-            # Item watched the same amount of times as there are episodes, but only counted once
+            # Item consumed the same amount of times as there are episodes, but only counted once
             FactoryBot.create(:history_item, user:, item: episode2)
             FactoryBot.create(:history_item, user:, item: episode2)
           end
 
-          it { should eq :partially_watched }
+          it { should eq :partially_consumed }
         end
 
         context "when all episodes have been added to history" do
@@ -226,7 +226,7 @@ module Manage
             FactoryBot.create(:history_item, user:, item: episode2)
           end
 
-          it { should eq :watched }
+          it { should eq :consumed }
         end
       end
 
@@ -237,7 +237,7 @@ module Manage
         let(:episode2) { FactoryBot.create(:episode, season:, number: episode1.number + 1) }
 
         context "when item has not been added to history" do
-          it { should eq :not_watched }
+          it { should eq :not_consumed }
         end
 
         context "when item has been partially added to history" do
@@ -245,17 +245,17 @@ module Manage
             FactoryBot.create(:history_item, user:, item: episode2)
           end
 
-          it { should eq :partially_watched }
+          it { should eq :partially_consumed }
         end
 
-        context "when an episode has been watched multiple times" do
+        context "when an episode has been consumed multiple times" do
           before do
-            # Item watched the same amount of times as there are episodes, but only counted once
+            # Item consumed the same amount of times as there are episodes, but only counted once
             FactoryBot.create(:history_item, user:, item: episode2)
             FactoryBot.create(:history_item, user:, item: episode2)
           end
 
-          it { should eq :partially_watched }
+          it { should eq :partially_consumed }
         end
 
         context "when all episodes have been added to history" do
@@ -264,7 +264,7 @@ module Manage
             FactoryBot.create(:history_item, user:, item: episode2)
           end
 
-          it { should eq :watched }
+          it { should eq :consumed }
         end
       end
     end
@@ -277,7 +277,7 @@ module Manage
         let(:movie) { FactoryBot.create(:movie, :with_release_date) }
         let(:items) { [movie] }
 
-        it { should eq({movie => :not_watched}) }
+        it { should eq({movie => :not_consumed}) }
       end
 
       context "when items are nil" do
@@ -298,7 +298,7 @@ module Manage
         let(:items) { [movie1, movie2] }
 
         context "when there is no history for the movies" do
-          it { should eq({movie1 => :not_watched, movie2 => :not_watched}) }
+          it { should eq({movie1 => :not_consumed, movie2 => :not_consumed}) }
         end
 
         context "when user has added some of the movies to history" do
@@ -307,7 +307,7 @@ module Manage
             FactoryBot.create(:history_item, user:, item: movie1)
           end
 
-          it { should eq({movie1 => :watched, movie2 => :not_watched}) }
+          it { should eq({movie1 => :consumed, movie2 => :not_consumed}) }
         end
 
         context "when user has added all movies to history" do
@@ -316,7 +316,7 @@ module Manage
             FactoryBot.create(:history_item, user:, item: movie2)
           end
 
-          it { should eq({movie1 => :watched, movie2 => :watched}) }
+          it { should eq({movie1 => :consumed, movie2 => :consumed}) }
         end
       end
 
@@ -326,7 +326,7 @@ module Manage
         let(:items) { [episode1, episode2] }
 
         context "when there is no history for the episodes" do
-          it { should eq({episode1 => :not_watched, episode2 => :not_watched}) }
+          it { should eq({episode1 => :not_consumed, episode2 => :not_consumed}) }
         end
 
         context "when user has added some of the episodes to history" do
@@ -335,7 +335,7 @@ module Manage
             FactoryBot.create(:history_item, user:, item: episode1)
           end
 
-          it { should eq({episode1 => :watched, episode2 => :not_watched}) }
+          it { should eq({episode1 => :consumed, episode2 => :not_consumed}) }
         end
 
         context "when user has added all episodes to history" do
@@ -344,7 +344,7 @@ module Manage
             FactoryBot.create(:history_item, user:, item: episode2)
           end
 
-          it { should eq({episode1 => :watched, episode2 => :watched}) }
+          it { should eq({episode1 => :consumed, episode2 => :consumed}) }
         end
       end
 
@@ -354,7 +354,7 @@ module Manage
           let(:season2) { FactoryBot.create(:season) }
           let(:items) { [season1, season2] }
 
-          it { should eq({season1 => :not_watched, season2 => :not_watched}) }
+          it { should eq({season1 => :not_consumed, season2 => :not_consumed}) }
         end
 
         context "when user has no history items for episodes in the season" do
@@ -362,7 +362,7 @@ module Manage
           let(:season2) { FactoryBot.create(:season, :with_premiere_date) }
           let(:items) { [season1, season2] }
 
-          it { should eq({season1 => :not_watched, season2 => :not_watched}) }
+          it { should eq({season1 => :not_consumed, season2 => :not_consumed}) }
         end
 
         context "when user has history items for some (not all) episodes in the season" do
@@ -376,7 +376,7 @@ module Manage
             HistoryItem.create(user:, item: episode2)
           end
 
-          it { should eq({season => :partially_watched}) }
+          it { should eq({season => :partially_consumed}) }
         end
 
         context "when user has history items for all released episodes in the season" do
@@ -390,7 +390,7 @@ module Manage
             HistoryItem.create(user:, item: episode2)
           end
 
-          it { should eq({season => :watched}) }
+          it { should eq({season => :consumed}) }
         end
 
         context "when evaluating multiple seasons with different statuses" do
@@ -405,7 +405,7 @@ module Manage
             FactoryBot.create(:history_item, user:, item: season2.ordered_episodes.first)
           end
 
-          it { should eq({season1 => :partially_watched, season2 => :watched, season3 => :not_watched}) }
+          it { should eq({season1 => :partially_consumed, season2 => :consumed, season3 => :not_consumed}) }
         end
       end
 
@@ -415,7 +415,7 @@ module Manage
           let(:show2) { FactoryBot.create(:show) }
           let(:items) { [show1, show2] }
 
-          it { should eq({show1 => :not_watched, show2 => :not_watched}) }
+          it { should eq({show1 => :not_consumed, show2 => :not_consumed}) }
         end
 
         context "when there are no history items for any episodes in the show" do
@@ -423,10 +423,10 @@ module Manage
           let(:show2) { FactoryBot.create(:show, :with_premiere_date) }
           let(:items) { [show1, show2] }
 
-          it { should eq({show1 => :not_watched, show2 => :not_watched}) }
+          it { should eq({show1 => :not_consumed, show2 => :not_consumed}) }
         end
 
-        context "when user has watched some episodes across seasons" do
+        context "when user has consumed some episodes across seasons" do
           let(:show) { FactoryBot.create(:show, :with_premiere_date) }
           let(:season1) { show.seasons_without_specials.ordered.first }
           let(:season2) { FactoryBot.create(:season, :with_premiere_date, show:, number: 2) }
@@ -436,10 +436,10 @@ module Manage
             FactoryBot.create(:history_item, user:, item: season2.episodes.first)
           end
 
-          it { should eq({show => :partially_watched}) }
+          it { should eq({show => :partially_consumed}) }
         end
 
-        context "when user has watched all releases episodes" do
+        context "when user has consumed all releases episodes" do
           let(:show) { FactoryBot.create(:show, :with_premiere_date) }
           let(:season1) { show.seasons_without_specials.ordered.first }
           let(:season2) { FactoryBot.create(:season, :with_premiere_date, show:, number: 2) }
@@ -450,7 +450,7 @@ module Manage
             FactoryBot.create(:history_item, user:, item: season2.episodes.first)
           end
 
-          it { should eq({show => :watched}) }
+          it { should eq({show => :consumed}) }
         end
 
         context "when evaluating multiple shows with mixed statuses" do
@@ -465,7 +465,7 @@ module Manage
             FactoryBot.create(:history_item, user:, item: show2.non_special_episodes.ordered.first)
           end
 
-          it { should eq({show1 => :partially_watched, show2 => :watched, show3 => :not_watched}) }
+          it { should eq({show1 => :partially_consumed, show2 => :consumed, show3 => :not_consumed}) }
         end
       end
 
@@ -478,7 +478,7 @@ module Manage
           FactoryBot.create(:history_item, user:, item: movie)
         end
 
-        it { should eq({movie => :watched, episode => :not_watched}) }
+        it { should eq({movie => :consumed, episode => :not_consumed}) }
       end
     end
   end

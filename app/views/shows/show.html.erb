@@ -116,7 +116,7 @@
                   <%= image_tag season.poster(variant: :small), class: "w-full" %>
                 </div>
               <% end %>
-              <% watch_status = @season_watch_statuses[season] || :not_watched %>
+              <% watch_status = @season_watch_statuses[season] || :not_consumed %>
               <%= render "shared/actions/compact_actions", record: season, watch_status: watch_status %>
               <p class="text-center whitespace-nowrap overflow-hidden text-ellipsis"><%= season.translated_name %></p>
               <small class="text-center"><%= season.episodes.size %> <%= "episode".pluralize(season.episodes.size) %></small>

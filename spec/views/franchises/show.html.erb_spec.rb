@@ -27,7 +27,7 @@ RSpec.describe "franchises/show", type: :view do
     gallery_presenter = Galleries::Presenter.new(@franchise)
     assign(:franchise, @franchise)
     assign(:gallery_presenter, gallery_presenter)
-    assign(:watch_statuses, {@movie => :watched, @show => :not_watched, @show_no_air_date => :partially_watched})
+    assign(:watch_statuses, {@movie => :consumed, @show => :not_consumed, @show_no_air_date => :partially_consumed})
   end
 
   it "renders attributes" do
@@ -60,9 +60,9 @@ RSpec.describe "franchises/show", type: :view do
   it "renders the add to history buttons for each history item with the correct status when authenticated" do
     allow(view).to receive(:authenticated?).and_return(true)
     render
-    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_movie_path(@movie)}'][data-status='watched']"
-    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_path(@show)}'][data-status='not_watched']"
-    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_path(@show_no_air_date)}'][data-status='partially_watched']"
+    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_movie_path(@movie)}'][data-status='consumed']"
+    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_path(@show)}'][data-status='not_consumed']"
+    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_path(@show_no_air_date)}'][data-status='partially_consumed']"
   end
 
   context "when the franchise has a background" do

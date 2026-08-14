@@ -12,17 +12,17 @@ RSpec.feature "Episode actions", type: :system, js: true do
   end
 
   def remove_from_history(episode = nil, expected_history_count: 0)
-    episode = episode || @episode
+    episode ||= @episode
     open_add_to_history_dialog(episode)
     expect(page).to have_css "dialog[data-controller='history-dialog']"
     click_button "Remove from history"
     expect(page).not_to have_css "dialog[data-controller='history-dialog']"
-    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Episode'][data-record-id='#{episode.id}'][data-status='not_watched']"
+    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Episode'][data-record-id='#{episode.id}'][data-status='not_consumed']"
     expect(@user.history_items.count).to eq expected_history_count
   end
 
   def open_add_to_history_dialog(episode = nil)
-    episode = episode || @episode
+    episode ||= @episode
     find("button[title='Add to history'][data-record-type='Episode'][data-record-id='#{episode.id}']").click
   end
 
@@ -37,8 +37,8 @@ RSpec.feature "Episode actions", type: :system, js: true do
     visit show_season_episode_path(@episode, show_id: @episode.show, season_id: @episode.season)
     expect(page).to have_content @episode.translated_name
 
-    # Now signed in, add to history button is on the page, not watched state
-    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Episode'][data-record-id='#{@episode.id}'][data-status='not_watched']"
+    # Now signed in, add to history button is on the page, not consumed state
+    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Episode'][data-record-id='#{@episode.id}'][data-status='not_consumed']"
 
     # Episode has not been released, add to history is disabled
     expect(page).to have_css "button[data-controller='history-button'][data-record-type='Episode'][data-record-id='#{@episode.id}'][disabled]"
@@ -65,7 +65,7 @@ RSpec.feature "Episode actions", type: :system, js: true do
     # Dialog is now hidden
     expect(page).not_to have_css "dialog[data-controller='history-dialog']"
     # Add to history button state is updated
-    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Episode'][data-record-id='#{@episode.id}'][data-status='watched']"
+    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Episode'][data-record-id='#{@episode.id}'][data-status='consumed']"
     expect(@user.history_items.count).to eq 1
     expect(@user.history_items.first.item).to eq @episode
     expect(@user.history_items.first.consumed_at).to eq Time.current
@@ -80,7 +80,7 @@ RSpec.feature "Episode actions", type: :system, js: true do
     # Dialog is now hidden
     expect(page).not_to have_css "dialog[data-controller='history-dialog']"
     # Add to history button state is updated
-    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Episode'][data-record-id='#{@episode.id}'][data-status='watched']"
+    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Episode'][data-record-id='#{@episode.id}'][data-status='consumed']"
     expect(@user.history_items.count).to eq 1
     expect(@user.history_items.first.item).to eq @episode
     expect(@user.history_items.first.consumed_at).to eq Date.today.beginning_of_day
@@ -102,7 +102,7 @@ RSpec.feature "Episode actions", type: :system, js: true do
     # Dialog is now hidden
     expect(page).not_to have_css "dialog[data-controller='history-dialog']"
     # Add to history button state is updated
-    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Episode'][data-record-id='#{@episode.id}'][data-status='watched']"
+    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Episode'][data-record-id='#{@episode.id}'][data-status='consumed']"
     expect(@user.history_items.count).to eq 1
     expect(@user.history_items.first.item).to eq @episode
     expect(@user.history_items.first.consumed_at).to eq DateTime.new(2026, 8, 14, 13, 5)
@@ -117,7 +117,7 @@ RSpec.feature "Episode actions", type: :system, js: true do
     # Dialog is now hidden
     expect(page).not_to have_css "dialog[data-controller='history-dialog']"
     # Add to history button state is updated
-    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Episode'][data-record-id='#{@episode.id}'][data-status='watched']"
+    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Episode'][data-record-id='#{@episode.id}'][data-status='consumed']"
     expect(@user.history_items.count).to eq 1
     expect(@user.history_items.first.item).to eq @episode
     expect(@user.history_items.first.consumed_at).to be_nil
@@ -141,8 +141,8 @@ RSpec.feature "Episode actions", type: :system, js: true do
     visit show_season_path(@episode.season, show_id: @episode.show)
     expect(page).to have_content "Season #{@episode.season.number}"
 
-    # Season is not watched at all
-    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Season'][data-record-id='#{@episode.season.id}'][data-status='not_watched']"
+    # Season is not consumed at all
+    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Season'][data-record-id='#{@episode.season.id}'][data-status='not_consumed']"
 
     # Episode 3 has not been released, so its add to history button is disabled
     expect(page).to have_css "button[data-controller='history-button'][data-record-type='Episode'][data-record-id='#{episode3.id}'][disabled]"
@@ -153,12 +153,12 @@ RSpec.feature "Episode actions", type: :system, js: true do
     # Dialog is now hidden
     expect(page).not_to have_css "dialog[data-controller='history-dialog']"
     # Add to history button state is updated
-    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Episode'][data-record-id='#{@episode.id}'][data-status='watched']"
+    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Episode'][data-record-id='#{@episode.id}'][data-status='consumed']"
     expect(@user.history_items.count).to eq 1
     expect(@user.history_items.first.item).to eq @episode
     expect(@user.history_items.first.consumed_at).to eq Time.current
-    # The season is now partially watched
-    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Season'][data-record-id='#{@episode.season.id}'][data-status='partially_watched']"
+    # The season is now partially consumed
+    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Season'][data-record-id='#{@episode.season.id}'][data-status='partially_consumed']"
 
     # Adding episode 2 to history
     open_add_to_history_dialog(episode2)
@@ -166,21 +166,21 @@ RSpec.feature "Episode actions", type: :system, js: true do
     # Dialog is now hidden
     expect(page).not_to have_css "dialog[data-controller='history-dialog']"
     # Add to history button state is updated
-    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Episode'][data-record-id='#{episode2.id}'][data-status='watched']"
+    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Episode'][data-record-id='#{episode2.id}'][data-status='consumed']"
     expect(@user.history_items.count).to eq 2
     expect(@user.history_items.second.item).to eq episode2
     expect(@user.history_items.first.consumed_at).to eq Time.current
-    # The season is now fully watched as episode 3 is not yet released
-    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Season'][data-record-id='#{@episode.season.id}'][data-status='watched']"
+    # The season is now fully consumed as episode 3 is not yet released
+    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Season'][data-record-id='#{@episode.season.id}'][data-status='consumed']"
 
     # Removing episode 1 from history
-    remove_from_history(expected_history_count: 1) # Episode 2 is still watched, history count is 1
-    # Season is now partially watched as only episode 2 is watched
-    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Season'][data-record-id='#{@episode.season.id}'][data-status='partially_watched']"
+    remove_from_history(expected_history_count: 1) # Episode 2 is still consumed, history count is 1
+    # Season is now partially consumed as only episode 2 is consumed
+    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Season'][data-record-id='#{@episode.season.id}'][data-status='partially_consumed']"
 
     # Removing episode 2 from history
     remove_from_history(episode2)
-    # Season is now not watched as no episodes are watched
-    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Season'][data-record-id='#{@episode.season.id}'][data-status='not_watched']"
+    # Season is now not consumed as no episodes are consumed
+    expect(page).to have_css "button[data-controller='history-button'][data-record-type='Season'][data-record-id='#{@episode.season.id}'][data-status='not_consumed']"
   end
 end

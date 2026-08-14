@@ -11,7 +11,7 @@ RSpec.describe "movies/show", type: :view do
   let(:imdb_id) { nil }
   let(:has_franchise) { false }
   let(:has_release) { true }
-  let(:watch_status) { :not_watched }
+  let(:watch_status) { :not_consumed }
 
   before(:each) do
     def view.authenticated? = false
@@ -87,23 +87,23 @@ RSpec.describe "movies/show", type: :view do
     assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_movie_path(@movie)}'][disabled]", count: 0
   end
 
-  context "when the movie is watched" do
-    let(:watch_status) { :watched }
+  context "when the movie is consumed" do
+    let(:watch_status) { :consumed }
 
     it "renders the add to history button in a disabled state" do
       allow(view).to receive(:authenticated?).and_return(true)
       render
-      assert_select "button[title='Add to history'][data-status='watched']"
+      assert_select "button[title='Add to history'][data-status='consumed']"
     end
   end
 
-  context "when the movies is not watched" do
-    let(:watch_status) { :not_watched }
+  context "when the movies is not consumed" do
+    let(:watch_status) { :not_consumed }
 
     it "renders the add to history button" do
       allow(view).to receive(:authenticated?).and_return(true)
       render
-      assert_select "button[title='Add to history'][data-status='not_watched']"
+      assert_select "button[title='Add to history'][data-status='not_consumed']"
     end
   end
 

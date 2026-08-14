@@ -60,8 +60,8 @@ RSpec.shared_examples "a model with history actions" do
       end
 
       it "renders json with the statuses of the affected items" do
-        statuses = {record => :watched}
-        affected_items = {"#{record.class.polymorphic_name}:#{record.id}" => "watched"}
+        statuses = {record => :consumed}
+        affected_items = {"#{record.class.polymorphic_name}:#{record.id}" => "consumed"}
         expect_any_instance_of(Manage::History).to receive(:statuses_for)
           .with(record.history_status_items).and_return(statuses)
         perform_add_to_history
@@ -92,8 +92,8 @@ RSpec.shared_examples "a model with history actions" do
       end
 
       it "renders json with the statuses of the affected items" do
-        statuses = {record => :watched}
-        affected_items = {"#{record.class.polymorphic_name}:#{record.id}" => "watched"}
+        statuses = {record => :consumed}
+        affected_items = {"#{record.class.polymorphic_name}:#{record.id}" => "consumed"}
         expect_any_instance_of(Manage::History).to receive(:statuses_for)
           .with(record.history_status_items).and_return(statuses)
         perform_add_to_history
@@ -114,8 +114,8 @@ RSpec.shared_examples "a model with history actions" do
       end
 
       it "renders json with the statuses of the affected items" do
-        statuses = {record => :watched}
-        affected_items = {"#{record.class.polymorphic_name}:#{record.id}" => "watched"}
+        statuses = {record => :consumed}
+        affected_items = {"#{record.class.polymorphic_name}:#{record.id}" => "consumed"}
         expect_any_instance_of(Manage::History).to receive(:statuses_for)
           .with(record.history_status_items).and_return(statuses)
         perform_add_to_history
@@ -146,8 +146,8 @@ RSpec.shared_examples "a model with history actions" do
       end
 
       it "renders json with the statuses of the affected items" do
-        statuses = {record => :watched}
-        affected_items = {"#{record.class.polymorphic_name}:#{record.id}" => "watched"}
+        statuses = {record => :consumed}
+        affected_items = {"#{record.class.polymorphic_name}:#{record.id}" => "consumed"}
         expect_any_instance_of(Manage::History).to receive(:statuses_for)
           .with(record.history_status_items).and_return(statuses)
         perform_add_to_history
@@ -205,8 +205,8 @@ RSpec.shared_examples "a model with history actions" do
       end
 
       it "renders json with the statuses of the affected items" do
-        statuses = {record => :watched}
-        affected_items = {"#{record.class.polymorphic_name}:#{record.id}" => "watched"}
+        statuses = {record => :consumed}
+        affected_items = {"#{record.class.polymorphic_name}:#{record.id}" => "consumed"}
         expect_any_instance_of(Manage::History).to receive(:statuses_for)
           .with(record.history_status_items).and_return(statuses)
         perform_remove_from_history

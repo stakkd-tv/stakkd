@@ -5,7 +5,7 @@ RSpec.describe "seasons/show", type: :view do
   let(:backgrounds) { [] }
   let(:translated_name) { "The OG season" }
   let(:has_episodes) { true }
-  let(:watch_status) { :not_watched }
+  let(:watch_status) { :not_consumed }
 
   before(:each) do
     def view.authenticated? = false
@@ -35,7 +35,7 @@ RSpec.describe "seasons/show", type: :view do
         translated_name: "Ringtoneers",
         backgrounds: [Rack::Test::UploadedFile.new("spec/support/assets/1280x720.png", "image/png")]
       )
-      @episode_watch_statuses = {@episode1 => :not_watched, @episode2 => :watched}
+      @episode_watch_statuses = {@episode1 => :not_consumed, @episode2 => :consumed}
     end
     @episode_watch_statuses ||= {}
     FactoryBot.create(:cast_member, record: @season, person: FactoryBot.build(:person, translated_name: "John Doe"), character: "Bob")
@@ -82,27 +82,27 @@ RSpec.describe "seasons/show", type: :view do
   it "renders the add to history buttons for each episode with the correct status when authenticated" do
     allow(view).to receive(:authenticated?).and_return(true)
     render
-    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_season_episode_path(@show, @season, @episode1)}'][data-status='not_watched']"
-    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_season_episode_path(@show, @season, @episode2)}'][data-status='watched']"
+    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_season_episode_path(@show, @season, @episode1)}'][data-status='not_consumed']"
+    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_season_episode_path(@show, @season, @episode2)}'][data-status='consumed']"
   end
 
-  context "when the season is watched" do
-    let(:watch_status) { :watched }
+  context "when the season is consumed" do
+    let(:watch_status) { :consumed }
 
     it "renders the add to history button in a disabled state" do
       allow(view).to receive(:authenticated?).and_return(true)
       render
-      assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_season_path(@show, @season)}'][data-status='watched']"
+      assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_season_path(@show, @season)}'][data-status='consumed']"
     end
   end
 
-  context "when the season is not watched" do
-    let(:watch_status) { :not_watched }
+  context "when the season is not consumed" do
+    let(:watch_status) { :not_consumed }
 
     it "renders the add to history button" do
       allow(view).to receive(:authenticated?).and_return(true)
       render
-      assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_season_path(@show, @season)}'][data-status='not_watched']"
+      assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_season_path(@show, @season)}'][data-status='not_consumed']"
     end
   end
 

@@ -68,7 +68,7 @@
                   <%= image_tag item.record.poster(variant: :small), class: "w-full" %>
                 </div>
               <% end %>
-              <% watch_status = @watch_statuses[item.record] || :not_watched %>
+              <% watch_status = @watch_statuses[item.record] || :not_consumed %>
               <%= render "shared/actions/compact_actions", record: item.record, watch_status: watch_status %>
               <p class="text-center whitespace-nowrap overflow-hidden text-ellipsis"><%= item.record.translated_title %></p>
               <% if item.date %>
