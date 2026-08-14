@@ -15,7 +15,7 @@ RSpec.feature "Episode actions", type: :system, js: true do
     episode ||= @episode
     open_add_to_history_dialog(episode)
     expect(page).to have_css "dialog[data-controller='history-dialog']"
-    click_button "Remove from history"
+    click_button "Clear history"
     expect(page).not_to have_css "dialog[data-controller='history-dialog']"
     expect(page).to have_css "button[data-controller='history-button'][data-record-type='Episode'][data-record-id='#{episode.id}'][data-status='not_consumed']"
     expect(@user.history_items.count).to eq expected_history_count

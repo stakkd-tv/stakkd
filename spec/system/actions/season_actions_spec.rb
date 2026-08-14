@@ -15,7 +15,7 @@ RSpec.feature "Season actions", type: :system, js: true do
     season ||= @season
     open_add_to_history_dialog(season)
     expect(page).to have_css "dialog[data-controller='history-dialog']"
-    click_button "Remove from history"
+    click_button "Clear history"
     expect(page).not_to have_css "dialog[data-controller='history-dialog']"
     expect(page).to have_css "button[data-controller='history-button'][data-record-type='Season'][data-record-id='#{season.id}'][data-status='not_consumed']"
     expect(@user.history_items.count).to eq expected_history_count

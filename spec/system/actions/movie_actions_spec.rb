@@ -14,7 +14,7 @@ RSpec.feature "Movie actions", type: :system, js: true do
   def remove_from_history
     open_add_to_history_dialog
     expect(page).to have_css "dialog[data-controller='history-dialog']"
-    click_button "Remove from history"
+    click_button "Clear history"
     expect(page).not_to have_css "dialog[data-controller='history-dialog']"
     expect(page).to have_css "button[data-controller='history-button'][data-record-type='Movie'][data-record-id='#{@movie.id}'][data-status='not_consumed']"
     expect(@user.history_items.count).to eq 0
