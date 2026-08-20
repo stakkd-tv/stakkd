@@ -15,15 +15,40 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Check for existing Yarn update PR
+        id: existing-pr
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          count=$(
+            gh pr list \
+              --state open \
+              --json headRefName \
+              --jq '[.[] | select(.headRefName | startswith("chore/update-yarn-"))] | length'
+          )
+
+          if [ "$count" -gt 0 ]; then
+            echo "An existing Yarn update PR is already open. Skipping."
+            echo "found=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "No existing Yarn update PR found."
+            echo "found=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Checkout
+        if: steps.existing-pr.outputs.found != 'true'
         uses: actions/checkout@v4
 
       - name: Set up Node.js
+        if: steps.existing-pr.outputs.found != 'true'
         uses: actions/setup-node@v7
         with:
           node-version: 25
 
       - name: Get latest Yarn release
+        if: steps.existing-pr.outputs.found != 'true'
         id: yarn
         shell: bash
         run: |
@@ -47,6 +72,7 @@ jobs:
           echo "version=$latest" >> "$GITHUB_OUTPUT"
 
       - name: Get current Yarn version
+        if: steps.existing-pr.outputs.found != 'true'
         id: current
         shell: bash
         run: |
@@ -66,7 +92,7 @@ jobs:
           echo "version=$current" >> "$GITHUB_OUTPUT"
 
       - name: Update packageManager
-        if: steps.current.outputs.version != steps.yarn.outputs.version
+        if: steps.existing-pr.outputs.found != 'true' && steps.current.outputs.version != steps.yarn.outputs.version
         env:
           YARN_VERSION: ${{ steps.yarn.outputs.version }}
         run: |
@@ -77,15 +103,15 @@ jobs:
           mv package.json.tmp package.json
 
       - name: Enable Corepack
-        if: steps.current.outputs.version != steps.yarn.outputs.version
+        if: steps.existing-pr.outputs.found != 'true' && steps.current.outputs.version != steps.yarn.outputs.version
         run: corepack enable
 
       - name: Install dependencies
-        if: steps.current.outputs.version != steps.yarn.outputs.version
+        if: steps.existing-pr.outputs.found != 'true' && steps.current.outputs.version != steps.yarn.outputs.version
         run: yarn install --no-immutable
 
       - name: Create pull request
-        if: steps.current.outputs.version != steps.yarn.outputs.version
+        if: steps.existing-pr.outputs.found != 'true' && steps.current.outputs.version != steps.yarn.outputs.version
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
