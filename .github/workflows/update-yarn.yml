@@ -90,7 +90,6 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: chore/update-yarn-${{ steps.yarn.outputs.version }}
-          delete-branch: true
           commit-message: "Bump Yarn from ${{ steps.current.outputs.version }} to ${{ steps.yarn.outputs.version }}"
           title: "Bump Yarn from ${{ steps.current.outputs.version }} to ${{ steps.yarn.outputs.version }}"
           body: |
