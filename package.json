@@ -19,7 +19,7 @@
     "@hotwired/turbo-rails": "^8.0.23",
     "@tailwindcss/cli": "^4.3.2",
     "@types/tabulator-tables": "^6.3.6",
-    "algoliasearch": "^5.55.1",
+    "algoliasearch": "^5.56.0",
     "easymde": "^2.21.0",
     "flatpickr": "^4.6.13",
     "instantsearch.js": "^4.108.0",
