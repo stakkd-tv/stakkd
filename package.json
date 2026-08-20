@@ -31,5 +31,5 @@
     "tailwindcss": "^4.3.2",
     "typesense-instantsearch-adapter": "github:typesense/typesense-instantsearch-adapter#5855720f05df6b5af79e1e4e550de86369b09805"
   },
-  "packageManager": "yarn@4.13.0"
+  "packageManager": "yarn@4.18.0"
 }
