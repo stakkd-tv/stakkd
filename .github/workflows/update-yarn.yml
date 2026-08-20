@@ -82,7 +82,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.current.outputs.version != steps.yarn.outputs.version
-        run: yarn install
+        run: yarn install --no-immutable
 
       - name: Create pull request
         if: steps.current.outputs.version != steps.yarn.outputs.version
