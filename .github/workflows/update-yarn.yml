@@ -18,6 +18,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 25
+
       - name: Get latest Yarn release
         id: yarn
         shell: bash
@@ -70,6 +75,14 @@ jobs:
             package.json > package.json.tmp
 
           mv package.json.tmp package.json
+
+      - name: Enable Corepack
+        if: steps.current.outputs.version != steps.yarn.outputs.version
+        run: corepack enable
+
+      - name: Install dependencies
+        if: steps.current.outputs.version != steps.yarn.outputs.version
+        run: yarn install
 
       - name: Create pull request
         if: steps.current.outputs.version != steps.yarn.outputs.version
