@@ -1,0 +1,92 @@
+name: Update package manager
+
+on:
+  schedule:
+    # Check every Monday at 09:00 UTC
+    - cron: "0 9 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-yarn:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get latest Yarn release
+        id: yarn
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          latest=$(
+            curl --fail --silent --show-error \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              https://api.github.com/repos/yarnpkg/berry/releases/latest |
+            jq -r '.tag_name' |
+            sed 's|^.*/||'
+          )
+
+          if [ -z "$latest" ] || [ "$latest" = "null" ]; then
+            echo "Could not determine latest Yarn release"
+            exit 1
+          fi
+
+          echo "Latest Yarn version: $latest"
+          echo "version=$latest" >> "$GITHUB_OUTPUT"
+
+      - name: Get current Yarn version
+        id: current
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          package_manager=$(jq -r '.packageManager // empty' package.json)
+
+          if [[ ! "$package_manager" =~ ^yarn@.+$ ]]; then
+            echo "package.json does not contain a Yarn packageManager entry"
+            echo "Found: $package_manager"
+            exit 1
+          fi
+
+          current="${package_manager#yarn@}"
+
+          echo "Current Yarn version: $current"
+          echo "version=$current" >> "$GITHUB_OUTPUT"
+
+      - name: Update packageManager
+        if: steps.current.outputs.version != steps.yarn.outputs.version
+        env:
+          YARN_VERSION: ${{ steps.yarn.outputs.version }}
+        run: |
+          jq --arg version "yarn@$YARN_VERSION" \
+            '.packageManager = $version' \
+            package.json > package.json.tmp
+
+          mv package.json.tmp package.json
+
+      - name: Create pull request
+        if: steps.current.outputs.version != steps.yarn.outputs.version
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: chore/update-yarn-${{ steps.yarn.outputs.version }}
+          delete-branch: true
+          commit-message: "Bump Yarn from ${{ steps.current.outputs.version }} to ${{ steps.yarn.outputs.version }}"
+          title: "Bump Yarn from ${{ steps.current.outputs.version }} to ${{ steps.yarn.outputs.version }}"
+          body: |
+            Updates Yarn from `${{ steps.current.outputs.version }}` to `${{ steps.yarn.outputs.version }}`.
+
+            This PR was created automatically.
+
+            If this is a major version update, check the Yarn migration guide
+            and release notes for breaking changes.
+          labels: |
+            dependencies
+            javascript
