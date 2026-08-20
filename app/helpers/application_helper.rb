@@ -18,7 +18,6 @@ module ApplicationHelper
   end
 
   def polymorphic_history_path(record, action)
-    record_type = record.related_records.keys.reverse.join("_")
-    send("#{action}_#{record_type}_path", *record.records_for_polymorphic_paths)
+    send("#{action}_#{record.route_name}_path", record.records_for_polymorphic_paths)
   end
 end

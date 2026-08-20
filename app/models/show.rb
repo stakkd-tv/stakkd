@@ -4,6 +4,7 @@ class Show < ApplicationRecord
   include HasImdb
   include HasGalleries
   include History
+  include Routable
 
   acts_as_taggable_on :keywords
 

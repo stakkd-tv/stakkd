@@ -2,6 +2,7 @@ class Franchise < ApplicationRecord
   include Searchable
   include Slugify
   include HasGalleries
+  include Routable
 
   searchable do
     attributes :original_title, :translated_title, :slug

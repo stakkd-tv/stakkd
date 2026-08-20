@@ -3,6 +3,7 @@ require_relative "shared_examples/slugify"
 require_relative "shared_examples/has_imdb"
 require_relative "shared_examples/has_galleries"
 require_relative "shared_examples/history"
+require_relative "shared_examples/routable"
 
 RSpec.describe Show, type: :model do
   describe "associations" do
@@ -95,6 +96,15 @@ RSpec.describe Show, type: :model do
     it "returns the translated title" do
       expect(Show.new(translated_title: "Test name").to_s).to eq "Test name"
     end
+  end
+
+  it_behaves_like "a routable model" do
+    let(:record) { FactoryBot.create(:show) }
+    let(:ordered_related_records) { [record] }
+    let(:route_name) { "show" }
+    let(:related_records) { {show: record} }
+    let(:records_for_polymorphic_paths) { {id: record} }
+    let(:records_for_polymorphic_paths_with_full_id) { {show_id: record} }
   end
 
   describe "#tagline" do

@@ -2,6 +2,7 @@ class Company < ApplicationRecord
   include Slugify
   include HasGalleries
   include Searchable
+  include Routable
 
   searchable do
     attributes :name, :slug

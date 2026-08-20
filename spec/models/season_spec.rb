@@ -1,6 +1,7 @@
 require "rails_helper"
 require_relative "shared_examples/has_galleries"
 require_relative "shared_examples/history"
+require_relative "shared_examples/routable"
 
 RSpec.describe Season, type: :model do
   describe "associations" do
@@ -118,18 +119,13 @@ RSpec.describe Season, type: :model do
     end
   end
 
-  describe "#related_records" do
-    it "includes the show in the hash" do
-      season = FactoryBot.create(:season)
-      expect(season.related_records).to eq({show: season.show, season:})
-    end
-  end
-
-  describe "#records_for_polymorphic_paths" do
-    it "includes the show in the array ordered by depth" do
-      season = FactoryBot.create(:season)
-      expect(season.records_for_polymorphic_paths).to eq([season.show, season])
-    end
+  it_behaves_like "a routable model" do
+    let(:record) { FactoryBot.create(:season) }
+    let(:ordered_related_records) { [record.show, record] }
+    let(:route_name) { "show_season" }
+    let(:related_records) { {show: record.show, season: record} }
+    let(:records_for_polymorphic_paths) { {show_id: record.show, id: record} }
+    let(:records_for_polymorphic_paths_with_full_id) { {show_id: record.show, season_id: record} }
   end
 
   describe "#to_s" do

@@ -2,6 +2,7 @@ class Episode < ApplicationRecord
   include HasImdb
   include HasGalleries
   include History
+  include Routable
 
   TYPES = [
     STANDARD = "standard",
@@ -47,9 +48,7 @@ class Episode < ApplicationRecord
   # if there is, get the last episode of that season as the previous episode.
   def previous_episode = @previous_episode ||= season.episodes.where(number: number - 1).first
 
-  def related_records = super.merge(season:, show:)
-
-  def records_for_polymorphic_paths = [show, season, self]
+  def ordered_related_records = [show, season, self]
 
   def directors = @directors ||= crew_members.includes(:job, :person).where(job: {name: Job::DIRECTOR})
 

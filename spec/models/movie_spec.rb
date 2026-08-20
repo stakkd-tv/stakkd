@@ -3,6 +3,7 @@ require_relative "shared_examples/slugify"
 require_relative "shared_examples/has_imdb"
 require_relative "shared_examples/has_galleries"
 require_relative "shared_examples/history"
+require_relative "shared_examples/routable"
 
 RSpec.describe Movie, type: :model do
   describe "associations" do
@@ -96,6 +97,15 @@ RSpec.describe Movie, type: :model do
     it "returns the translated title" do
       expect(Movie.new(translated_title: "Test name").to_s).to eq "Test name"
     end
+  end
+
+  it_behaves_like "a routable model" do
+    let(:record) { FactoryBot.create(:movie) }
+    let(:ordered_related_records) { [record] }
+    let(:route_name) { "movie" }
+    let(:related_records) { {movie: record} }
+    let(:records_for_polymorphic_paths) { {id: record} }
+    let(:records_for_polymorphic_paths_with_full_id) { {movie_id: record} }
   end
 
   describe "#tagline" do

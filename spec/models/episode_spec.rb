@@ -2,6 +2,7 @@ require "rails_helper"
 require_relative "shared_examples/has_imdb"
 require_relative "shared_examples/has_galleries"
 require_relative "shared_examples/history"
+require_relative "shared_examples/routable"
 
 RSpec.describe Episode, type: :model do
   describe "associations" do
@@ -153,18 +154,13 @@ RSpec.describe Episode, type: :model do
     end
   end
 
-  describe "#related_records" do
-    it "includes the show and season in the hash" do
-      episode = FactoryBot.create(:episode)
-      expect(episode.related_records).to eq({show: episode.show, season: episode.season, episode:})
-    end
-  end
-
-  describe "#records_for_polymorphic_paths" do
-    it "includes the show and season in the array ordered by depth" do
-      episode = FactoryBot.create(:episode)
-      expect(episode.records_for_polymorphic_paths).to eq([episode.show, episode.season, episode])
-    end
+  it_behaves_like "a routable model" do
+    let(:record) { FactoryBot.create(:episode) }
+    let(:ordered_related_records) { [record.show, record.season, record] }
+    let(:route_name) { "show_season_episode" }
+    let(:related_records) { {show: record.show, season: record.season, episode: record} }
+    let(:records_for_polymorphic_paths) { {show_id: record.show, season_id: record.season, id: record} }
+    let(:records_for_polymorphic_paths_with_full_id) { {show_id: record.show, season_id: record.season, episode_id: record} }
   end
 
   describe "#directors" do

@@ -1,6 +1,7 @@
 class Season < ApplicationRecord
   include HasGalleries
   include History
+  include Routable
 
   # Associations
   belongs_to :show
@@ -28,11 +29,7 @@ class Season < ApplicationRecord
 
   def specials? = number.zero?
 
-  def related_records
-    super.merge(show:)
-  end
-
-  def records_for_polymorphic_paths = [show, self]
+  def ordered_related_records = [show, self]
 
   def to_s = "#{show} - Season #{number}"
 

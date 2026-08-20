@@ -1,6 +1,7 @@
 require "rails_helper"
 require_relative "shared_examples/slugify"
 require_relative "shared_examples/has_galleries"
+require_relative "shared_examples/routable"
 
 RSpec.describe Franchise, type: :model do
   describe "associations" do
@@ -40,5 +41,14 @@ RSpec.describe Franchise, type: :model do
       fran = Franchise.new(translated_title: "Test Franchise")
       expect(fran.to_s).to eq "Test Franchise"
     end
+  end
+
+  it_behaves_like "a routable model" do
+    let(:record) { FactoryBot.create(:franchise) }
+    let(:ordered_related_records) { [record] }
+    let(:route_name) { "franchise" }
+    let(:related_records) { {franchise: record} }
+    let(:records_for_polymorphic_paths) { {id: record} }
+    let(:records_for_polymorphic_paths_with_full_id) { {franchise_id: record} }
   end
 end

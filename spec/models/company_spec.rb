@@ -1,6 +1,7 @@
 require "rails_helper"
 require_relative "shared_examples/slugify"
 require_relative "shared_examples/has_galleries"
+require_relative "shared_examples/routable"
 
 RSpec.describe Company, type: :model do
   describe "associations" do
@@ -20,6 +21,15 @@ RSpec.describe Company, type: :model do
       company = Company.new(name: "Acme Corp")
       expect(company.to_s).to eq("Acme Corp")
     end
+  end
+
+  it_behaves_like "a routable model" do
+    let(:record) { FactoryBot.create(:company) }
+    let(:ordered_related_records) { [record] }
+    let(:route_name) { "company" }
+    let(:related_records) { {company: record} }
+    let(:records_for_polymorphic_paths) { {id: record} }
+    let(:records_for_polymorphic_paths_with_full_id) { {company_id: record} }
   end
 
   describe "#logo_url" do

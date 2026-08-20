@@ -3,6 +3,7 @@ class Person < ApplicationRecord
   include Slugify
   include HasImdb
   include HasGalleries
+  include Routable
 
   CREDITS = [
     WRITING = "writing",

@@ -2,6 +2,7 @@ require "rails_helper"
 require_relative "shared_examples/slugify"
 require_relative "shared_examples/has_imdb"
 require_relative "shared_examples/has_galleries"
+require_relative "shared_examples/routable"
 
 RSpec.describe Person, type: :model do
   include ActiveSupport::Testing::TimeHelpers
@@ -26,6 +27,15 @@ RSpec.describe Person, type: :model do
       person = Person.new(translated_name: "John Doe")
       expect(person.to_s).to eq("John Doe")
     end
+  end
+
+  it_behaves_like "a routable model" do
+    let(:record) { FactoryBot.create(:person) }
+    let(:ordered_related_records) { [record] }
+    let(:route_name) { "person" }
+    let(:related_records) { {person: record} }
+    let(:records_for_polymorphic_paths) { {id: record} }
+    let(:records_for_polymorphic_paths_with_full_id) { {person_id: record} }
   end
 
   describe "#image_url" do
