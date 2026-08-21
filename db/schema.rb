@@ -336,6 +336,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_21_142147) do
   create_table "stacks", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "name", null: false
+    t.boolean "private", default: false, null: false
     t.string "sorting_method", default: "added_at", null: false
     t.string "type", default: "standard", null: false
     t.datetime "updated_at", null: false
