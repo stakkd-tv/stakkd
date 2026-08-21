@@ -1,5 +1,6 @@
 class SeasonsController < ApplicationController
   include Actions::History
+  include Actions::Stacks
 
   before_action :require_authentication, except: [:show, :cast]
   before_action :set_show

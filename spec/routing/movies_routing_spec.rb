@@ -54,8 +54,20 @@ RSpec.describe MoviesController, type: :routing do
       expect(post: "/movies/1/add_to_history").to route_to("movies#add_to_history", id: "1")
     end
 
+    it "routes to #add_to_stack" do
+      expect(post: "/movies/1/add_to_stack").to route_to("movies#add_to_stack", id: "1")
+    end
+
+    it "routes to #create_and_add_to_stack" do
+      expect(post: "/movies/1/create_and_add_to_stack").to route_to("movies#create_and_add_to_stack", id: "1")
+    end
+
     it "routes to #remove_from_history" do
       expect(delete: "/movies/1/remove_from_history").to route_to("movies#remove_from_history", id: "1")
+    end
+
+    it "routes to #remove_from_stack" do
+      expect(delete: "/movies/1/remove_from_stack").to route_to("movies#remove_from_stack", id: "1")
     end
   end
 end

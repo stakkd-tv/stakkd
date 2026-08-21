@@ -5,6 +5,7 @@ class Show < ApplicationRecord
   include HasGalleries
   include History
   include Routable
+  include Stackable
 
   acts_as_taggable_on :keywords
 

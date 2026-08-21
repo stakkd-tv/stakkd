@@ -1,5 +1,6 @@
 require "rails_helper"
 require_relative "shared_examples/actions/history"
+require_relative "shared_examples/actions/stacks"
 
 RSpec.describe "Movies", type: :request do
   let(:country) { FactoryBot.create(:country) }
@@ -339,6 +340,25 @@ RSpec.describe "Movies", type: :request do
 
     def mark_as_not_released
       record.releases.destroy_all
+    end
+  end
+
+  it_behaves_like "stackable actions" do
+    let(:item) { FactoryBot.create(:movie) }
+
+    def perform_add_to_stack
+      params = {stack_id:}
+      post add_to_stack_movie_path(item), params: params
+    end
+
+    def perform_create_and_add_to_stack
+      params = {stack_name:}
+      post create_and_add_to_stack_movie_path(item), params: params
+    end
+
+    def perform_remove_from_stack
+      params = {stack_id:}
+      delete remove_from_stack_movie_path(item), params: params
     end
   end
 end

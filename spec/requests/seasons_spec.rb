@@ -1,5 +1,6 @@
 require "rails_helper"
 require_relative "shared_examples/actions/history"
+require_relative "shared_examples/actions/stacks"
 
 RSpec.describe "/shows/:show_id/seasons", type: :request do
   let(:show) { FactoryBot.create(:show) }
@@ -253,6 +254,25 @@ RSpec.describe "/shows/:show_id/seasons", type: :request do
 
     def mark_as_not_released
       record.episodes.destroy_all
+    end
+  end
+
+  it_behaves_like "stackable actions" do
+    let(:item) { FactoryBot.create(:season) }
+
+    def perform_add_to_stack
+      params = {stack_id:}
+      post add_to_stack_show_season_path(item, show_id: item.show), params: params
+    end
+
+    def perform_create_and_add_to_stack
+      params = {stack_name:}
+      post create_and_add_to_stack_show_season_path(item, show_id: item.show), params: params
+    end
+
+    def perform_remove_from_stack
+      params = {stack_id:}
+      delete remove_from_stack_show_season_path(item, show_id: item.show), params: params
     end
   end
 end

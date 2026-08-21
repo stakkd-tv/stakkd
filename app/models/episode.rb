@@ -3,6 +3,7 @@ class Episode < ApplicationRecord
   include HasGalleries
   include History
   include Routable
+  include Stackable
 
   TYPES = [
     STANDARD = "standard",

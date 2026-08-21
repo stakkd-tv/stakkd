@@ -1,5 +1,6 @@
 class MoviesController < ApplicationController
   include Actions::History
+  include Actions::Stacks
 
   before_action :require_authentication, except: [:index, :show, :cast, :poster]
   before_action :set_movie, except: [:index, :new, :create]

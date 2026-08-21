@@ -38,16 +38,22 @@ resources :shows, except: [:destroy] do
       get :cast, on: :member
 
       post :add_to_history, on: :member
+      post :add_to_stack, on: :member
+      post :create_and_add_to_stack, on: :member
 
       delete :remove_from_history, on: :member
+      delete :remove_from_stack, on: :member
     end
 
     get :posters, on: :member
     get :cast, on: :member
 
     post :add_to_history, on: :member
+    post :add_to_stack, on: :member
+    post :create_and_add_to_stack, on: :member
 
     delete :remove_from_history, on: :member
+    delete :remove_from_stack, on: :member
   end
 
   get :posters, on: :member
@@ -57,6 +63,9 @@ resources :shows, except: [:destroy] do
   get :cast, on: :member
 
   post :add_to_history, on: :member
+  post :add_to_stack, on: :member
+  post :create_and_add_to_stack, on: :member
 
   delete :remove_from_history, on: :member
+  delete :remove_from_stack, on: :member
 end

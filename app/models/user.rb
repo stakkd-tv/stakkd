@@ -1,4 +1,9 @@
 class User < ApplicationRecord
+  # It makes sense to disable strict loading for users because
+  # at request time we don't actually know what associations
+  # we'll need to load.
+  self.strict_loading_by_default = false
+
   include Searchable
 
   USERNAME_EXCLUSIONS = ["me", "admin"].freeze

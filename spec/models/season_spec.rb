@@ -2,6 +2,7 @@ require "rails_helper"
 require_relative "shared_examples/has_galleries"
 require_relative "shared_examples/history"
 require_relative "shared_examples/routable"
+require_relative "shared_examples/stackable"
 
 RSpec.describe Season, type: :model do
   describe "associations" do
@@ -220,5 +221,9 @@ RSpec.describe Season, type: :model do
       season = FactoryBot.create(:season, :with_premiere_date, date_for_premiere: Date.tomorrow)
       expect(season.released?).to be false
     end
+  end
+
+  it_behaves_like "a stackable model" do
+    let(:item) { FactoryBot.create(:season) }
   end
 end

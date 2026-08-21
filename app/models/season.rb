@@ -2,6 +2,7 @@ class Season < ApplicationRecord
   include HasGalleries
   include History
   include Routable
+  include Stackable
 
   # Associations
   belongs_to :show

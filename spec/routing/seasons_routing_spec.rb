@@ -38,8 +38,20 @@ RSpec.describe SeasonsController, type: :routing do
       expect(post: "/shows/1/seasons/1/add_to_history").to route_to("seasons#add_to_history", id: "1", show_id: "1")
     end
 
+    it "routes to #add_to_stack" do
+      expect(post: "/shows/1/seasons/1/add_to_stack").to route_to("seasons#add_to_stack", id: "1", show_id: "1")
+    end
+
+    it "routes to #create_and_add_to_stack" do
+      expect(post: "/shows/1/seasons/1/create_and_add_to_stack").to route_to("seasons#create_and_add_to_stack", id: "1", show_id: "1")
+    end
+
     it "routes to #remove_from_history" do
       expect(delete: "/shows/1/seasons/1/remove_from_history").to route_to("seasons#remove_from_history", id: "1", show_id: "1")
+    end
+
+    it "routes to #remove_from_stack" do
+      expect(delete: "/shows/1/seasons/1/remove_from_stack").to route_to("seasons#remove_from_stack", id: "1", show_id: "1")
     end
   end
 end

@@ -3,6 +3,7 @@ require_relative "shared_examples/has_imdb"
 require_relative "shared_examples/has_galleries"
 require_relative "shared_examples/history"
 require_relative "shared_examples/routable"
+require_relative "shared_examples/stackable"
 
 RSpec.describe Episode, type: :model do
   describe "associations" do
@@ -235,6 +236,10 @@ RSpec.describe Episode, type: :model do
       episode = FactoryBot.create(:episode, original_air_date: Date.tomorrow)
       expect(episode.released?).to be false
     end
+  end
+
+  it_behaves_like "a stackable model" do
+    let(:item) { FactoryBot.create(:episode) }
   end
 
   Episode::TYPES.each do |type|
