@@ -14,6 +14,7 @@ class Stack < ApplicationRecord
 
   # Associations
   belongs_to :user, optional: true
+  has_many :stack_items, dependent: :delete_all
 
   # Validations
   validates_presence_of :name

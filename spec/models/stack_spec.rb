@@ -3,6 +3,7 @@ require "rails_helper"
 RSpec.describe Stack, type: :model do
   describe "associations" do
     it { should belong_to(:user).optional }
+    it { should have_many(:stack_items).dependent(:delete_all) }
   end
 
   describe "validations" do
