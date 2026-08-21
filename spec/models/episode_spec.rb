@@ -10,6 +10,7 @@ RSpec.describe Episode, type: :model do
     it { should have_many(:guest_stars).class_name("CastMember") }
     it { should have_many(:crew_members).dependent(:destroy) }
     it { should have_many(:history_items).dependent(:destroy) }
+    it { should have_many(:stack_items).dependent(:destroy) }
     it { should have_one(:show).through(:season) }
   end
 

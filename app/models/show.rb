@@ -58,6 +58,7 @@ class Show < ApplicationRecord
   has_many :seasons_without_specials, -> { without_specials }, class_name: "Season"
   has_many :non_special_episodes, through: :seasons_without_specials, source: :episodes
   has_many :episodes, through: :seasons
+  has_many :stack_items, as: :item, dependent: :destroy
   has_one :franchise_item, as: :record, dependent: :destroy
   has_one :franchise, through: :franchise_item
   has_galleries :posters, :backgrounds, :logos, :videos

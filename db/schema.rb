@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_21_135818) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_21_142147) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -318,6 +318,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_21_135818) do
     t.index ["language_id"], name: "index_shows_on_language_id"
   end
 
+  create_table "stack_items", force: :cascade do |t|
+    t.datetime "added_at", null: false
+    t.datetime "created_at", null: false
+    t.bigint "item_id", null: false
+    t.string "item_type", null: false
+    t.integer "position", default: 0, null: false
+    t.bigint "stack_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_type", "item_id"], name: "index_stack_items_on_item"
+    t.index ["item_type", "item_id"], name: "index_stack_items_on_item_type_and_item_id"
+    t.index ["stack_id", "item_type", "item_id"], name: "index_stack_items_on_stack_id_and_item_type_and_item_id", unique: true
+    t.index ["stack_id", "position"], name: "index_stack_items_on_stack_id_and_position"
+    t.index ["stack_id"], name: "index_stack_items_on_stack_id"
+  end
+
   create_table "stacks", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "name", null: false
@@ -422,6 +437,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_21_135818) do
   add_foreign_key "sessions", "users"
   add_foreign_key "shows", "countries"
   add_foreign_key "shows", "languages"
+  add_foreign_key "stack_items", "stacks"
   add_foreign_key "stacks", "users"
   add_foreign_key "taggings", "tags"
   add_foreign_key "users", "users", column: "banned_by_id"

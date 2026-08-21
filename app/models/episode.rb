@@ -15,6 +15,7 @@ class Episode < ApplicationRecord
   has_many :guest_stars, -> { order(position: :asc) }, as: :record, class_name: "CastMember", dependent: :destroy
   has_many :crew_members, as: :record, dependent: :destroy
   has_many :history_items, as: :item, dependent: :destroy
+  has_many :stack_items, as: :item, dependent: :destroy
   has_one :show, through: :season
   has_galleries :backgrounds, :videos
 
