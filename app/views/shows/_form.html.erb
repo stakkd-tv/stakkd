@@ -16,12 +16,12 @@
     <div class="flex flex-col md:flex-row gap-6">
       <div class="basis-1/2">
         <%= form.label :language_id %>
-        <%= form.collection_select :language_id, Language.order(:code), :id, :translated_name %>
+        <%= form.collection_select :language_id, Language.order(:translated_name), :id, :translated_name %>
       </div>
 
       <div class="basis-1/2">
         <%= form.label :country_id %>
-        <%= form.collection_select :country_id, Country.order(:code), :id, :translated_name %>
+        <%= form.collection_select :country_id, Country.order(:translated_name), :id, :translated_name %>
       </div>
     </div>
 

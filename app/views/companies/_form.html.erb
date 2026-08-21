@@ -20,7 +20,7 @@
       </div>
       <div class="basis-1/2">
         <%= form.label :country_id %>
-        <%= form.collection_select :country_id, Country.order(:code), :id, :translated_name %>
+        <%= form.collection_select :country_id, Country.order(:translated_name), :id, :translated_name %>
       </div>
     </div>
 

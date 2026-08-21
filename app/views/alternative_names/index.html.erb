@@ -24,7 +24,7 @@
 
         <div class="basis-full sm:basis-1/3">
           <%= form.label :country_id %>
-          <%= form.collection_select :country_id, Country.order(:code), :id, :translated_name, {}, {autocomplete: "off"} %>
+          <%= form.collection_select :country_id, Country.order(:translated_name), :id, :translated_name, {}, {autocomplete: "off"} %>
         </div>
       </div>
 
