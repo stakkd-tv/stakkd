@@ -17,7 +17,7 @@ module ApplicationHelper
       end
   end
 
-  def polymorphic_history_path(record, action)
+  def polymorphic_record_path(record, action)
     send("#{action}_#{record.route_name}_path", record.records_for_polymorphic_paths)
   end
 end

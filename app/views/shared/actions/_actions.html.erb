@@ -9,8 +9,8 @@
       data-status="<%= watch_status %>"
       data-controller="history-button"
       data-action="history-button#open history-dialog:status-update@window->history-button#updateStatus"
-      data-history-button-add-to-history-url-value="<%= polymorphic_history_path(record, "add_to_history") %>"
-      data-history-button-remove-from-history-url-value="<%= polymorphic_history_path(record, "remove_from_history") %>"
+      data-history-button-add-to-history-url-value="<%= polymorphic_record_path(record, "add_to_history") %>"
+      data-history-button-remove-from-history-url-value="<%= polymorphic_record_path(record, "remove_from_history") %>"
       <%= record.released? ? "" : "disabled" %>>
       <i class="fa-regular fa-square-check text-xl transition-all duration-300 ease-in-out"></i>
     </button>
