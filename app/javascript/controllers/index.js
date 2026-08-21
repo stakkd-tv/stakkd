@@ -2,13 +2,14 @@
 // Run that command whenever you add a new controller or create them with
 // ./bin/rails generate stimulus controllerName
 
-import { application } from './application'
+// Actions
+import HistoryButtonController from './actions/history_button_controller'
+import HistoryDialogController from './actions/history_dialog_controller'
 
+import { application } from './application'
 import DetailsAutoOpenController from './details_auto_open_controller'
 import FlashItemController from './flash_item_controller'
 import FormNavController from './form_nav_controller'
-import HistoryButtonController from './history_button_controller'
-import HistoryDialogController from './history_dialog_controller'
 import JumpToController from './jump_to_controller'
 import LivesearchController from './livesearch_controller'
 import MarkdownRendererController from './markdown_renderer_controller'
@@ -21,11 +22,12 @@ import TableEditorController from './table_editor_controller'
 import ToggleController from './toggle_controller'
 import UploadsController from './uploads_controller'
 
+application.register('history-button', HistoryButtonController)
+application.register('history-dialog', HistoryDialogController)
+
 application.register('details-auto-open', DetailsAutoOpenController)
 application.register('flash-item', FlashItemController)
 application.register('form-nav', FormNavController)
-application.register('history-button', HistoryButtonController)
-application.register('history-dialog', HistoryDialogController)
 application.register('jump-to', JumpToController)
 application.register('livesearch', LivesearchController)
 application.register('markdown-renderer', MarkdownRendererController)
