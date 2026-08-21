@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_07_185610) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_21_135818) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -318,6 +318,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_07_185610) do
     t.index ["language_id"], name: "index_shows_on_language_id"
   end
 
+  create_table "stacks", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.string "sorting_method", default: "added_at", null: false
+    t.string "type", default: "standard", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index ["user_id", "type"], name: "index_stacks_on_user_id_and_type"
+    t.index ["user_id"], name: "index_stacks_on_user_id"
+  end
+
   create_table "taggings", force: :cascade do |t|
     t.string "context", limit: 128
     t.datetime "created_at", precision: nil
@@ -411,6 +422,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_07_185610) do
   add_foreign_key "sessions", "users"
   add_foreign_key "shows", "countries"
   add_foreign_key "shows", "languages"
+  add_foreign_key "stacks", "users"
   add_foreign_key "taggings", "tags"
   add_foreign_key "users", "users", column: "banned_by_id"
 end

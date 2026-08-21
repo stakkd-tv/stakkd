@@ -8,6 +8,7 @@ RSpec.describe User, type: :model do
     it { should have_many(:sessions).dependent(:destroy) }
     it { should have_many(:confirmation_tokens).dependent(:destroy) }
     it { should have_many(:history_items).dependent(:delete_all) }
+    it { should have_many(:stacks).dependent(:delete_all) }
     it { should have_one_attached(:profile_picture) }
     it { should have_one_attached(:background) }
   end

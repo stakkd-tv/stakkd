@@ -18,6 +18,7 @@ class User < ApplicationRecord
   has_many :sessions, dependent: :destroy
   has_many :confirmation_tokens, dependent: :destroy
   has_many :history_items, dependent: :delete_all
+  has_many :stacks, dependent: :delete_all
   has_one_attached :profile_picture
   has_one_attached :background
 
