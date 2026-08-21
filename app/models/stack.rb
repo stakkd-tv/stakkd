@@ -25,4 +25,17 @@ class Stack < ApplicationRecord
   scope :official, -> { where(user_id: nil) }
 
   def self.inheritance_column = nil
+
+  def add!(item, added_at: Time.current)
+    StackItem.create!(
+      stack: self,
+      item:,
+      added_at:
+    )
+  end
+
+  def remove!(item)
+    stack_item = stack_items.find_by!(item:)
+    stack_item.destroy
+  end
 end
