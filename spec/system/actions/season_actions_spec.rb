@@ -224,4 +224,107 @@ RSpec.feature "Season actions", type: :system, js: true do
     # Show is now not consumed as no episodes are consumed
     expect(page).to have_css "button[data-controller='history-button'][data-record-type='Show'][data-record-id='#{@season.show.id}'][data-status='not_consumed']"
   end
+
+  scenario "adding to and removing from stacks" do
+    stack1 = FactoryBot.create(:stack, user: @user, name: "Amazing Stack")
+    stack2 = FactoryBot.create(:stack, user: @user, name: "Great Stack")
+    episode = FactoryBot.create(:episode, season: @season)
+
+    # Not signed in, so actions are not available
+    expect(page).not_to have_css "button[title='More options']"
+
+    sign_in @user
+    visit show_season_path(@season, show_id: @season.show)
+    expect(page).to have_content "Season #{@season.number}"
+
+    # Now signed in, actions are available
+    expect(page).to have_css "button[title='More options']"
+
+    # Dialog is not shown
+    expect(page).not_to have_css "dialog[data-controller='stack-dialog']"
+
+    click_button "Season_#{@season.id}_more_options"
+    click_button "Add to stack"
+
+    # Dialog is now shown
+    expect(page).to have_css "dialog[data-controller='stack-dialog']"
+
+    # Adding to 'Amazing Stack'
+    click_button "Amazing Stack"
+    expect(page).to have_css "button[data-stack-id='#{stack1.id}'][data-active='true']"
+    expect(StackItem.count).to eq 1
+
+    # It does not affect actions for episodes
+    click_button "Close"
+    click_button "Episode_#{episode.id}_more_options"
+    click_button "Add to stack"
+    expect(page).to have_css "button[data-stack-id='#{stack1.id}'][data-active='false']"
+    click_button "Close"
+    expect(page).not_to have_css "dialog[data-controller='stack-dialog']"
+
+    # Adding to 'Great Stack'
+    click_button "Season_#{@season.id}_more_options"
+    expect(page).to have_css "div#actions-more-options"
+    click_button "Add to stack"
+    click_button "Great Stack"
+    expect(page).to have_css "button[data-stack-id='#{stack2.id}'][data-active='true']"
+    expect(StackItem.count).to eq 2
+
+    # Close the dialog
+    click_button "Close"
+
+    # Open the dialog again
+    click_button "Season_#{@season.id}_more_options"
+    click_button "Add to stack"
+    # Counts are updated
+    expect(page).to have_css "small[data-stack-button-target='stackCount']", text: "2"
+
+    # The stacks are still in active state
+    expect(page).to have_css "button[data-stack-id='#{stack1.id}'][data-active='true']"
+    expect(page).to have_css "button[data-stack-id='#{stack2.id}'][data-active='true']"
+
+    # Removing from 'Amazing Stack'
+    click_button "Amazing Stack"
+    expect(page).to have_css "button[data-stack-id='#{stack1.id}'][data-active='false']"
+    expect(StackItem.count).to eq 1
+
+    # Removing from 'Great Stack'
+    click_button "Great Stack"
+    expect(page).to have_css "button[data-stack-id='#{stack2.id}'][data-active='false']"
+    expect(StackItem.count).to eq 0
+
+    # Creating a stack and adding it
+    fill_in "stack_name", with: "   "
+    click_button "Create and add"
+    # It does not add a stack with an empty name
+    expect(page).to have_css "button[data-stack-id]", count: 2
+
+    fill_in "stack_name", with: "Bad Stack"
+    click_button "Create and add"
+    expect(page).to have_css "button[data-stack-id]", count: 3
+    new_stack = Stack.last
+    expect(new_stack.name).to eq "Bad Stack"
+    expect(new_stack.stack_items.count).to eq 1
+    expect(page).to have_css "button[data-stack-id='#{new_stack.id}'][data-active='true']"
+
+    # Close the dialog
+    click_button "Close"
+
+    # Open the dialog again
+    click_button "Season_#{@season.id}_more_options"
+    click_button "Add to stack"
+
+    # New stack is still there, that is active
+    expect(page).to have_css "button[data-stack-id='#{new_stack.id}'][data-active='true']"
+
+    # Remove from 'Bad Stack'
+    click_button "Bad Stack"
+    expect(page).to have_css "button[data-stack-id='#{new_stack.id}'][data-active='false']"
+    expect(StackItem.count).to eq 0
+
+    click_button "Close"
+    click_button "Season_#{@season.id}_more_options"
+    # Counts are updated
+    expect(page).to have_css "small[data-stack-button-target='stackCount']", text: "0", visible: false
+  end
 end

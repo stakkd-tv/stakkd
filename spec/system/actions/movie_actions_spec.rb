@@ -130,4 +130,95 @@ RSpec.feature "Movie actions", type: :system, js: true do
     # Does not add any history items
     expect(@user.history_items.count).to eq 0
   end
+
+  scenario "adding to and removing from stacks" do
+    stack1 = FactoryBot.create(:stack, user: @user, name: "Amazing Stack")
+    stack2 = FactoryBot.create(:stack, user: @user, name: "Great Stack")
+
+    # Not signed in, so actions are not available
+    expect(page).not_to have_css "button[title='More options']"
+
+    sign_in @user
+    visit movie_path(@movie)
+    expect(page).to have_content @movie.translated_title
+
+    # Now signed in, actions are available
+    expect(page).to have_css "button[title='More options']"
+
+    # Dialog is not shown
+    expect(page).not_to have_css "dialog[data-controller='stack-dialog']"
+
+    click_button "Movie_#{@movie.id}_more_options"
+    click_button "Add to stack"
+
+    # Dialog is now shown
+    expect(page).to have_css "dialog[data-controller='stack-dialog']"
+
+    # Adding to 'Amazing Stack'
+    click_button "Amazing Stack"
+    expect(page).to have_css "button[data-stack-id='#{stack1.id}'][data-active='true']"
+    expect(StackItem.count).to eq 1
+
+    # Adding to 'Great Stack'
+    click_button "Great Stack"
+    expect(page).to have_css "button[data-stack-id='#{stack2.id}'][data-active='true']"
+    expect(StackItem.count).to eq 2
+
+    # Close the dialog
+    click_button "Close"
+
+    # Open the dialog again
+    click_button "Movie_#{@movie.id}_more_options"
+    click_button "Add to stack"
+    # Counts are updated
+    expect(page).to have_css "small[data-stack-button-target='stackCount']", text: "2"
+
+    # The stacks are still in active state
+    expect(page).to have_css "button[data-stack-id='#{stack1.id}'][data-active='true']"
+    expect(page).to have_css "button[data-stack-id='#{stack2.id}'][data-active='true']"
+
+    # Removing from 'Amazing Stack'
+    click_button "Amazing Stack"
+    expect(page).to have_css "button[data-stack-id='#{stack1.id}'][data-active='false']"
+    expect(StackItem.count).to eq 1
+
+    # Removing from 'Great Stack'
+    click_button "Great Stack"
+    expect(page).to have_css "button[data-stack-id='#{stack2.id}'][data-active='false']"
+    expect(StackItem.count).to eq 0
+
+    # Creating a stack and adding it
+    fill_in "stack_name", with: "   "
+    click_button "Create and add"
+    # It does not add a stack with an empty name
+    expect(page).to have_css "button[data-stack-id]", count: 2
+
+    fill_in "stack_name", with: "Bad Stack"
+    click_button "Create and add"
+    expect(page).to have_css "button[data-stack-id]", count: 3
+    new_stack = Stack.last
+    expect(new_stack.name).to eq "Bad Stack"
+    expect(new_stack.stack_items.count).to eq 1
+    expect(page).to have_css "button[data-stack-id='#{new_stack.id}'][data-active='true']"
+
+    # Close the dialog
+    click_button "Close"
+
+    # Open the dialog again
+    click_button "Movie_#{@movie.id}_more_options"
+    click_button "Add to stack"
+
+    # New stack is still there, that is active
+    expect(page).to have_css "button[data-stack-id='#{new_stack.id}'][data-active='true']"
+
+    # Remove from 'Bad Stack'
+    click_button "Bad Stack"
+    expect(page).to have_css "button[data-stack-id='#{new_stack.id}'][data-active='false']"
+    expect(StackItem.count).to eq 0
+
+    click_button "Close"
+    click_button "Movie_#{@movie.id}_more_options"
+    # Counts are updated
+    expect(page).to have_css "small[data-stack-button-target='stackCount']", text: "0", visible: false
+  end
 end

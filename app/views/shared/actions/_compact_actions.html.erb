@@ -20,7 +20,8 @@
       class="cursor-pointer p-2 h-full min-w-10.5 aspect-square rounded-lg border border-transparent focus:bg-black/75 hover:bg-black/75 transition-all duration-300 ease-in-out"
       title="More options"
       data-controller="more-options"
-      data-more-options-selector-value=".<%= selector %>">
+      data-more-options-selector-value=".<%= selector %>"
+      id="<%= "#{record.class}_#{record.id}_more_options" %>">
       <i class="fa-solid fa-ellipsis-vertical text-xl transition-all duration-300 ease-in-out"></i>
     </button>
 

@@ -5,6 +5,8 @@
 // Actions
 import HistoryButtonController from './actions/history_button_controller'
 import HistoryDialogController from './actions/history_dialog_controller'
+import StackButtonController from './actions/stack_button_controller'
+import StackDialogController from './actions/stack_dialog_controller'
 
 import { application } from './application'
 import DetailsAutoOpenController from './details_auto_open_controller'
@@ -24,6 +26,8 @@ import UploadsController from './uploads_controller'
 
 application.register('history-button', HistoryButtonController)
 application.register('history-dialog', HistoryDialogController)
+application.register('stack-button', StackButtonController)
+application.register('stack-dialog', StackDialogController)
 
 application.register('details-auto-open', DetailsAutoOpenController)
 application.register('flash-item', FlashItemController)
