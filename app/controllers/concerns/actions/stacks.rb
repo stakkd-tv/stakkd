@@ -17,7 +17,7 @@ module Actions
       return render json: {success: false, errors: ["Could not create stack"]}, status: 422 unless stack.valid?
 
       stack.add!(record)
-      render json: {success: true, stacks_for_this_record: record.user_stacks(current_user)}
+      render json: {success: true, stack: {id: stack.id, name: stack.name}, stacks_for_this_record: record.user_stacks(current_user)}
     rescue
       render json: {success: false, errors: ["Failed to add to stack"]}, status: 422
     end

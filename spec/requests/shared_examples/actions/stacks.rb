@@ -101,7 +101,7 @@ RSpec.shared_examples "stackable actions" do
           perform_create_and_add_to_stack
           expect(response).to have_http_status(:ok)
           json = JSON.parse(response.body)
-          expect(json).to eq({"success" => true, "stacks_for_this_record" => [Stack.last.id]})
+          expect(json).to eq({"success" => true, "stack" => {"id" => Stack.last.id, "name" => stack_name}, "stacks_for_this_record" => [Stack.last.id]})
         end
       end
     end
