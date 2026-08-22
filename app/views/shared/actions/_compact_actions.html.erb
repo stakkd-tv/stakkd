@@ -2,19 +2,7 @@
   <% watch_status = local_assigns.fetch(:watch_status, :not_consumed) %>
   <% selector = "#{record.class}-#{record.id}-more-options" %>
   <div class="flex gap-2 w-full sm:relative">
-    <button
-      class="data-[status=partially\_consumed]:bg-watch/50 data-[status=consumed]:bg-watch cursor-pointer border border-watch p-2 w-20 sm:w-40 rounded-lg disabled:border-white disabled:hover:bg-background-darker disabled:cursor-default focus:bg-watch/75 hover:bg-watch/75 transition-all duration-300 ease-in-out"
-      title="Add to history"
-      data-record-type="<%= record.class.polymorphic_name %>"
-      data-record-id="<%= record.id %>"
-      data-status="<%= watch_status %>"
-      data-controller="history-button"
-      data-action="history-button#open history-dialog:status-update@window->history-button#updateStatus"
-      data-history-button-add-to-history-url-value="<%= polymorphic_record_path(record, "add_to_history") %>"
-      data-history-button-remove-from-history-url-value="<%= polymorphic_record_path(record, "remove_from_history") %>"
-      <%= record.released? ? "" : "disabled" %>>
-      <i class="fa-regular fa-square-check text-xl transition-all duration-300 ease-in-out"></i>
-    </button>
+    <%= render "shared/actions/buttons/add_to_history", record: record, watch_status: watch_status %>
 
     <button
       class="cursor-pointer p-2 h-full min-w-10.5 aspect-square rounded-lg border border-transparent focus:bg-black/75 hover:bg-black/75 transition-all duration-300 ease-in-out"
