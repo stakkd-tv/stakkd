@@ -15,6 +15,7 @@ RSpec.describe "movies/show", type: :view do
 
   before(:each) do
     def view.authenticated? = false
+    def view.current_user = nil
     @movie = FactoryBot.create(
       :movie,
       country:,
@@ -80,11 +81,28 @@ RSpec.describe "movies/show", type: :view do
     assert_select "dialog[data-controller='history-dialog']"
   end
 
+  it "renders the add to stack dialog" do
+    render
+    assert_select "dialog[data-controller='stack-dialog']"
+  end
+
   it "renders the add to history button when authenticated" do
     allow(view).to receive(:authenticated?).and_return(true)
     render
     assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_movie_path(@movie)}']"
     assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_movie_path(@movie)}'][disabled]", count: 0
+  end
+
+  it "renders the add to stack button when authenticated" do
+    allow(view).to receive(:authenticated?).and_return(true)
+    render
+    assert_select "button[title='Add to stack'][data-stack-button-add-to-stack-url-value='#{add_to_stack_movie_path(@movie)}']"
+  end
+
+  it "does not render the add to stack button when not authenticated" do
+    allow(view).to receive(:authenticated?).and_return(false)
+    render
+    assert_select "button[title='Add to stack'][data-stack-button-add-to-stack-url-value='#{add_to_stack_movie_path(@movie)}']", count: 0
   end
 
   context "when the movie is consumed" do

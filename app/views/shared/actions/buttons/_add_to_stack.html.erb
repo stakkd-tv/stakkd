@@ -1,0 +1,18 @@
+<% stacks_for_this_record = record.user_stacks(current_user) %>
+<button
+  title="Add to stack"
+  class="link w-full relative"
+  data-controller="stack-button"
+  data-action="stack-button#open stack-dialog:updated-stacks@window->stack-button#updateStacksForThisRecord"
+  data-stack-button-stacks-for-this-record-value="<%= stacks_for_this_record.to_json %>"
+  data-stack-button-add-to-stack-url-value="<%= polymorphic_record_path(record, "add_to_stack") %>"
+  data-stack-button-create-and-add-to-stack-url-value="<%= polymorphic_record_path(record, "create_and_add_to_stack") %>"
+  data-stack-button-remove-from-stack-url-value="<%= polymorphic_record_path(record, "remove_from_stack") %>">
+  <i class="fa-solid fa-list-check mr-2"></i>
+  Add to stack
+  <small
+    class="absolute -right-1 -top-1 flex items-center justify-center bg-background-darker border border-watch font-bold px-1 aspect-square max-h-[24px] max-w-[24px] h-full rounded-full"
+    data-stack-button-target="stackCount">
+    <%= stacks_for_this_record.size %>
+  </small>
+</button>

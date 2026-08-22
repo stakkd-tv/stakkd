@@ -9,6 +9,7 @@ RSpec.describe "seasons/show", type: :view do
 
   before(:each) do
     def view.authenticated? = false
+    def view.current_user = nil
     @show = FactoryBot.create(
       :show,
       translated_title: "Translated Title",
@@ -72,11 +73,32 @@ RSpec.describe "seasons/show", type: :view do
     assert_select "dialog[data-controller='history-dialog']"
   end
 
+  it "renders the add to stack dialog" do
+    render
+    assert_select "dialog[data-controller='stack-dialog']"
+  end
+
   it "renders the add to history button when authenticated" do
     allow(view).to receive(:authenticated?).and_return(true)
     render
     assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_season_path(@show, @season)}']"
     assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_season_path(@show, @season)}'][disabled]", count: 0
+  end
+
+  it "renders the add to stack button when authenticated" do
+    allow(view).to receive(:authenticated?).and_return(true)
+    episode = FactoryBot.create(:episode, season: @season, number: 3)
+    render
+    assert_select "button[title='Add to stack'][data-stack-button-add-to-stack-url-value='#{add_to_stack_show_season_path(@show, @season)}']"
+    assert_select "button[title='Add to stack'][data-stack-button-add-to-stack-url-value='#{add_to_stack_show_season_episode_path(@show, @season, episode)}']"
+  end
+
+  it "does not render the add to stack button when not authenticated" do
+    allow(view).to receive(:authenticated?).and_return(false)
+    episode = FactoryBot.create(:episode, season: @season, number: 3)
+    render
+    assert_select "button[title='Add to stack'][data-stack-button-add-to-stack-url-value='#{add_to_stack_show_season_path(@show, @season)}']", count: 0
+    assert_select "button[title='Add to stack'][data-stack-button-add-to-stack-url-value='#{add_to_stack_show_season_episode_path(@show, @season, episode)}']", count: 0
   end
 
   it "renders the add to history buttons for each episode with the correct status when authenticated" do

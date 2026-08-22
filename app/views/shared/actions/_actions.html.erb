@@ -40,10 +40,7 @@
         View history
       <% end %>
 
-      <%= link_to "#", class: "link w-full" do %>
-        <i class="fa-solid fa-list-check mr-2"></i>
-        Add to stack
-      <% end %>
+      <%= render "shared/actions/buttons/add_to_stack", record: record %>
 
       <%= link_to "#", class: "link w-full" do %>
         <i class="fa-solid fa-share mr-2"></i>

@@ -7,6 +7,7 @@ RSpec.describe "franchises/show", type: :view do
 
   before(:each) do
     def view.authenticated? = false
+    def view.current_user = nil
     @franchise = FactoryBot.create(
       :franchise,
       original_title: "Original Title",
@@ -57,12 +58,33 @@ RSpec.describe "franchises/show", type: :view do
     assert_select "dialog[data-controller='history-dialog']"
   end
 
+  it "renders the add to stack dialog" do
+    render
+    assert_select "dialog[data-controller='stack-dialog']"
+  end
+
   it "renders the add to history buttons for each history item with the correct status when authenticated" do
     allow(view).to receive(:authenticated?).and_return(true)
     render
     assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_movie_path(@movie)}'][data-status='consumed']"
     assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_path(@show)}'][data-status='not_consumed']"
     assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_path(@show_no_air_date)}'][data-status='partially_consumed']"
+  end
+
+  it "renders the add to stack buttons for each franchise item when authenticated" do
+    allow(view).to receive(:authenticated?).and_return(true)
+    render
+    assert_select "button[title='Add to stack'][data-stack-button-add-to-stack-url-value='#{add_to_stack_movie_path(@movie)}']"
+    assert_select "button[title='Add to stack'][data-stack-button-add-to-stack-url-value='#{add_to_stack_show_path(@show)}']"
+    assert_select "button[title='Add to stack'][data-stack-button-add-to-stack-url-value='#{add_to_stack_show_path(@show_no_air_date)}']"
+  end
+
+  it "does not render the add to stack buttons when not authenticated" do
+    allow(view).to receive(:authenticated?).and_return(false)
+    render
+    assert_select "button[title='Add to stack'][data-stack-button-add-to-stack-url-value='#{add_to_stack_movie_path(@movie)}']", count: 0
+    assert_select "button[title='Add to stack'][data-stack-button-add-to-stack-url-value='#{add_to_stack_show_path(@show)}']", count: 0
+    assert_select "button[title='Add to stack'][data-stack-button-add-to-stack-url-value='#{add_to_stack_show_path(@show_no_air_date)}']", count: 0
   end
 
   context "when the franchise has a background" do

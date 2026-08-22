@@ -1,0 +1,40 @@
+<%# NOTE: This is tested via system specs %>
+<dialog
+  data-controller="stack-dialog"
+  data-action="stack-button:open@window->stack-dialog#open"
+  class="w-full max-w-full md:max-w-lg mt-auto md:m-auto open:flex open:flex-col open:gap-4 open:p-0 open:bg-transparent backdrop:backdrop-blur-sm">
+  <div class="bg-background border-t-2 md:border-2 border-watch text-white md:rounded-lg relative">
+    <div class="border-b-2 border-background-darker p-4 flex flex-wrap gap-2 justify-between items-center">
+      <p class="font-domine text-xl">Add to stack</p>
+    </div>
+    <div>
+      <div class="p-4">
+        <p>Add to an existing stack, or create a new one. You can learn more about stacks <a href="#" class="underline">here</a>.</p>
+        <div class="flex flex-wrap gap-2 my-4" data-stack-dialog-target="availableStacks">
+          <button type="button" data-stack-dialog-target="stackPlaceholder" data-action="stack-dialog#select" data-stack-id="" data-active="false" class="hidden text-sm whitespace-nowrap bg-background-darker data-[active=true]:border-watch border border-transparent rounded py-1 px-2 cursor-pointer transition duration-300 ease-in-out"></button>
+          <% stacks = current_user&.stacks || [] %>
+          <% stacks.each do |stack| %>
+            <button type="button" data-stack-dialog-target="stack" data-action="stack-dialog#select" data-stack-id="<%= stack.id %>" data-active="false" class="text-sm whitespace-nowrap bg-background-darker data-[active=true]:border-watch border border-transparent rounded py-1 px-2 cursor-pointer transition duration-300 ease-in-out"><%= stack.name %></button>
+          <% end %>
+        </div>
+        <div class="my-4">
+          <form data-stack-dialog-target="createStackForm" data-action="submit->stack-dialog#createAndAddToStack">
+            <label for="stack_name" class="text-sm">Create a new stack</label>
+            <input type="text"
+              autocomplete="off"
+              name="stack_name"
+              id="stack_name"
+              placeholder="Enter a name for your stack"
+              required
+              class="w-full mt-2 p-2 border border-watch rounded-lg focus:outline-watch focus:outline">
+            <button type="submit" class="bg-background-darker border border-watch text-sm rounded-lg py-1 px-2 mt-2 cursor-pointer">Create and add</button>
+          </form>
+        </div>
+        <a href="#" class="underline"><small>See your stacks</small></a>
+      </div>
+      <div class="p-4 border-t-2 border-background-darker flex flex-wrap gap-2 justify-end">
+        <button type="button" data-action="click->stack-dialog#close" class="bg-watch rounded-lg py-2 px-4 cursor-pointer font-bold">Close</button>
+      </div>
+    </div>
+  </div>
+</dialog>
