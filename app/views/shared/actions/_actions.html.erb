@@ -1,7 +1,7 @@
 <% if authenticated? %>
   <% watch_status = local_assigns.fetch(:watch_status, :not_consumed) %>
   <div class="flex gap-2 bg-background-darker p-2 border-2 border-pop rounded-xl w-fit relative">
-    <%= render "shared/actions/buttons/add_to_history", record: record, watch_status: watch_status %>
+    <%= render "shared/actions/buttons/add_to_history", record: record, watch_status: watch_status, extra_classes: "z-1" %>
 
     <button class="z-1 cursor-pointer p-2 h-full min-w-10.5 aspect-square rounded-lg focus:bg-black/75 hover:bg-black/75 transition-all duration-300 ease-in-out" title="Add to watchlist">
       <i class="fa-regular fa-bookmark text-xl transition-all duration-300 ease-in-out"></i>
@@ -11,14 +11,7 @@
       <i class="fa-regular fa-folder text-xl transition-all duration-300 ease-in-out"></i>
     </button>
 
-    <button
-      class="z-1 cursor-pointer p-2 h-full min-w-10.5 aspect-square rounded-lg border border-transparent focus:bg-black/75 hover:bg-black/75 transition-all duration-300 ease-in-out"
-      title="More options"
-      data-controller="more-options"
-      data-more-options-selector-value="#actions-more-options"
-      id="<%= "#{record.class}_#{record.id}_more_options" %>">
-      <i class="fa-solid fa-ellipsis-vertical text-xl transition-all duration-300 ease-in-out"></i>
-    </button>
+    <%= render "shared/actions/buttons/more_options", selector: "#actions-more-options", record: record, extra_classes: "z-1" %>
 
     <% desktop = "sm:-left-[2px] sm:w-[calc(100%+4px)]" %>
     <% mobile = "-left-[1.75px] w-[calc(100%+3.5px)]" %>

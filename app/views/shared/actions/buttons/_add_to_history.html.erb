@@ -1,5 +1,6 @@
+<% extra_classes = local_assigns.fetch(:extra_classes, "") %>
 <button
-  class="data-[status=partially\_consumed]:bg-watch/50 data-[status=consumed]:bg-watch z-1 cursor-pointer border border-watch p-2 w-20 sm:w-40 rounded-lg disabled:border-white disabled:hover:bg-background-darker disabled:cursor-default focus:bg-watch/75 hover:bg-watch/75 transition-all duration-300 ease-in-out"
+  class="<%= extra_classes %> data-[status=partially\_consumed]:bg-watch/50 data-[status=consumed]:bg-watch cursor-pointer border border-watch p-2 w-20 sm:w-40 rounded-lg disabled:border-white disabled:hover:bg-background-darker disabled:cursor-default focus:bg-watch/75 hover:bg-watch/75 transition-all duration-300 ease-in-out"
   title="Add to history"
   data-record-type="<%= record.class.polymorphic_name %>"
   data-record-id="<%= record.id %>"
