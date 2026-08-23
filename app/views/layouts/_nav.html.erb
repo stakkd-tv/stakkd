@@ -52,12 +52,6 @@
               <p>Franchises</p>
             <% end %>
           </div>
-          <div class="btn">
-            <%= link_to "/", class: "link-flex p-4" do %>
-              <i class="fa-solid fa-list-check text-xl w-3/20"></i>
-              <p>Stacks</p>
-            <% end %>
-          </div>
           <hr class="border-pop my-2">
           <div class="btn">
             <%= link_to genres_path, class: "link-flex p-4" do %>
@@ -89,6 +83,24 @@
           <%= link_to user_path("me"), class: "link-flex p-4" do %>
             <i class="fa-solid fa-user text-xl w-3/20"></i>
             <p>Profile</p>
+          <% end %>
+        </div>
+        <div class="btn">
+          <%= link_to "/", class: "link-flex p-4" do %>
+            <i class="fa-solid fa-play text-xl w-3/20"></i>
+            <p>History</p>
+          <% end %>
+        </div>
+        <div class="btn">
+          <%= link_to "/", class: "link-flex p-4" do %>
+            <i class="fa-solid fa-layer-group text-xl w-3/20"></i>
+            <p>Stacks</p>
+          <% end %>
+        </div>
+        <div class="btn">
+          <%= link_to "/", class: "link-flex p-4" do %>
+            <i class="fa-solid fa-list-check text-xl w-3/20"></i>
+            <p>Watchlist</p>
           <% end %>
         </div>
         <div class="btn">
@@ -142,6 +154,18 @@
       <i class="fa-solid fa-user w-2/20"></i>
       Profile
     <% end %>
+    <%= link_to "/", class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50 focus:bg-pop/50 transition duration-300 ease-in-out" do %>
+      <i class="fa-solid fa-play w-2/20"></i>
+      History
+    <% end %>
+    <%= link_to "/", class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50 focus:bg-pop/50 transition duration-300 ease-in-out" do %>
+      <i class="fa-solid fa-layer-group w-2/20"></i>
+      Stacks
+    <% end %>
+    <%= link_to "/", class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50 focus:bg-pop/50 transition duration-300 ease-in-out" do %>
+      <i class="fa-solid fa-list-check w-2/20"></i>
+      Watchlist
+    <% end %>
     <hr class="border-pop my-2">
     <%= link_to movies_path, class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50 focus:bg-pop/50 transition duration-300 ease-in-out" do %>
       <i class="fa-solid fa-video w-2/20"></i>
@@ -163,10 +187,6 @@
     <%= link_to franchises_path, class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50 focus:bg-pop/50 transition duration-300 ease-in-out" do %>
       <i class="fa-solid fa-toolbox w-2/20"></i>
       Franchises
-    <% end %>
-    <%= link_to "/", class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50 focus:bg-pop/50 transition duration-300 ease-in-out" do %>
-      <i class="fa-solid fa-list-check w-2/20"></i>
-      Stacks
     <% end %>
     <details class="rounded-lg border border-pop group">
       <summary class="link-flex p-2 rounded-lg outline outline-pop hover:bg-pop/50 focus:bg-pop/50 transition duration-300 ease-in-out cursor-pointer group-open:bg-pop/50">
