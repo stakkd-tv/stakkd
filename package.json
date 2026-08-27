@@ -28,7 +28,7 @@
     "sanitize-html": "^2.17.5",
     "slim-select": "^4.0.7",
     "tabulator-tables": "^6.5.2",
-    "tailwindcss": "^4.3.2",
+    "tailwindcss": "^4.3.3",
     "typesense-instantsearch-adapter": "github:typesense/typesense-instantsearch-adapter#5855720f05df6b5af79e1e4e550de86369b09805"
   },
   "packageManager": "yarn@4.18.0"
