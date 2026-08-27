@@ -25,7 +25,6 @@ RSpec.describe Show, type: :model do
     it { should have_many(:seasons_without_specials).class_name("Season") }
     it { should have_many(:non_special_episodes).through(:seasons_without_specials) }
     it { should have_many(:episodes).through(:seasons) }
-    it { should have_many(:stack_items).dependent(:destroy) }
     it { should have_one(:franchise_item).dependent(:destroy) }
     it { should have_one(:franchise).through(:franchise_item) }
   end

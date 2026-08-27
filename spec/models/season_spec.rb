@@ -10,7 +10,6 @@ RSpec.describe Season, type: :model do
     it { should have_many(:season_regulars).class_name("CastMember").dependent(:destroy) }
     it { should have_many(:episodes).dependent(:destroy) }
     it { should have_many(:ordered_episodes) }
-    it { should have_many(:stack_items).dependent(:destroy) }
   end
 
   describe "validations" do

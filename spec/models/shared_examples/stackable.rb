@@ -1,4 +1,9 @@
 RSpec.shared_examples_for "a stackable model" do
+  describe "associations" do
+    it { should have_many(:stack_items).dependent(:destroy) }
+    it { should have_many(:stacks).through(:stack_items) }
+  end
+
   describe "#user_stacks" do
     context "with no user" do
       let(:user) { nil }
