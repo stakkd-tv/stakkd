@@ -54,20 +54,25 @@ RSpec.shared_examples_for "a stackable model" do
     end
 
     it "returns a hash with only three stacks as keys" do
-      result = item.stacks_with_previews
+      result = item.stacks_with_previews.first
       expect(result.keys).to contain_exactly(@stack2, @stack3, @stack4)
     end
 
     it "returns only three stack items per stack" do
-      result = item.stacks_with_previews
+      result = item.stacks_with_previews.first
       stack3_results = result[@stack3]
       expect(stack3_results.count).to eq 3
     end
 
     it "returns an empty hash when there are no stacks" do
       item.stacks.destroy_all
-      result = item.stacks_with_previews
+      result = item.stacks_with_previews.first
       expect(result).to eq({})
+    end
+
+    it "includes a boolean indicating a next page" do
+      has_more = item.stacks_with_previews.last
+      expect(has_more).to be_truthy
     end
   end
 end

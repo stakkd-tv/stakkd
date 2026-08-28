@@ -21,8 +21,9 @@ module Stackable
       .includes(:item)
       .group_by(&:stack_id)
 
-    initial_stacks.to_h do |stack|
+    with_previews = initial_stacks.to_h do |stack|
       [stack, stack_items.fetch(stack.id, [])]
     end
+    [with_previews, initial_stacks.next_page.present?]
   end
 end
