@@ -1,0 +1,10 @@
+<% if stacks_with_previews.any? %>
+  <div>
+    <h4 class="text-2xl font-bold font-domine mb-4">Top stacks:</h4>
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+      <% stacks_with_previews.each do |stack, stack_items| %>
+        <%= render "shared/stacks/preview", stack: stack, stack_items: stack_items %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

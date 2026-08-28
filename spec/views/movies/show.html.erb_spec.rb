@@ -12,6 +12,7 @@ RSpec.describe "movies/show", type: :view do
   let(:has_franchise) { false }
   let(:has_release) { true }
   let(:watch_status) { :not_consumed }
+  let(:stacks_with_previews) { {} }
 
   before(:each) do
     def view.authenticated? = false
@@ -51,6 +52,7 @@ RSpec.describe "movies/show", type: :view do
     assign(:release_dates_for_country, [release1])
     assign(:cast_members, CastMembers::Movie.new(@movie).cast_members)
     assign(:watch_status, watch_status)
+    assign(:stacks_with_previews, stacks_with_previews)
   end
 
   it "renders attributes in <p>" do
@@ -284,6 +286,27 @@ RSpec.describe "movies/show", type: :view do
       render
       assert_select "p", text: "PART OF THE", count: 0
       assert_select "p", text: "FRANCHISE", count: 0
+    end
+  end
+
+  context "when the movie has some stacks" do
+    let(:stack) { FactoryBot.create(:stack, name: "Amazing Stack") }
+    let(:stack_items) { [FactoryBot.create(:stack_item, item: @movie)] }
+    let(:stacks_with_previews) { {stack => stack_items} }
+
+    it "renders the top stacks section" do
+      render
+      assert_select "h4", text: "Top stacks:"
+      assert_select "h6", text: "Amazing Stack"
+    end
+  end
+
+  context "when the movies does not have any stacks" do
+    let(:stacks_with_previews) { {} }
+
+    it "does not render the top stacks section" do
+      render
+      assert_select "h4", text: "Top stacks:", count: 0
     end
   end
 end

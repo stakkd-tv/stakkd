@@ -1,0 +1,31 @@
+<div class="flex flex-col gap-2">
+  <div class="relative w-full aspect-[3/2] outline-2 outline-pop rounded-lg bg-background-darker overflow-hidden -z-4">
+    <% stack_items.first(3).each_with_index do |stack_item, index| %>
+      <% image = stack_item.item.respond_to?(:poster) ? stack_item.item.poster(variant: :small) : "2:3.png" %>
+      <%= image_tag image,
+        class: "absolute left-0 top-0 h-full w-1/2 object-cover border border-pop rounded-lg",
+        title: stack_item.item,
+        style: "left: #{index * 25}%; z-index: -#{index}" %>
+      <% end %>
+  </div>
+
+  <div class="flex flex-col gap-1.5 py-2">
+    <h6 class="font-domine text-md md:text-lg"><%= stack.name %></h6>
+    <% if stack.user %>
+      <%= link_to stack.user, class: "flex items-center gap-2" do %>
+        <%# TODO: Small avatar variant %>
+        <div class="w-8 h-8 aspect-square overflow-hidden rounded-full outline outline-pop">
+          <%= image_tag stack.user.avatar, alt: "Avatar", class: "w-full h-full object-cover object-center" %>
+        </div>
+        <p class="text-sm underline decoration-pop"><%= stack.user %></p>
+      <% end %>
+    <% else %>
+      <%= link_to "#", class: "flex items-center gap-2" do %>
+        <div class="w-8 h-8 aspect-square overflow-hidden rounded-full outline outline-pop">
+          <%= image_tag "icon.svg", alt: "Avatar", class: "w-full h-full object-cover object-center" %>
+        </div>
+        <p class="text-sm underline decoration-pop">Official stack</p>
+      <% end %>
+    <% end %>
+  </div>
+</div>

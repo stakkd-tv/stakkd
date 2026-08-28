@@ -11,6 +11,7 @@ class EpisodesController < ApplicationController
     @cast_members = CastMembers::Episode.new(@episode).cast_members
     @pagination = Pagination::Episodes.new(@episode, @season, @show)
     @watch_status = @episode.status_for(current_user)
+    @stacks_with_previews = @episode.stacks_with_previews
   end
 
   def new

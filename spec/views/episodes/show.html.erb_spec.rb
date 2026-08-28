@@ -6,6 +6,7 @@ RSpec.describe "episodes/show", type: :view do
   let(:original_air_date) { Date.new(2023, 1, 1) }
   let(:imdb_id) { nil }
   let(:watch_status) { :not_consumed }
+  let(:stacks_with_previews) { {} }
 
   before(:each) do
     def view.authenticated? = false
@@ -31,6 +32,7 @@ RSpec.describe "episodes/show", type: :view do
     assign(:cast_members, CastMembers::Episode.new(@episode).cast_members)
     assign(:pagination, Pagination::Episodes.new(@episode, @season, @show))
     assign(:watch_status, watch_status)
+    assign(:stacks_with_previews, stacks_with_previews)
   end
 
   it "renders attributes in <p>" do
@@ -211,6 +213,27 @@ RSpec.describe "episodes/show", type: :view do
     it "does not render the IMDb link" do
       render
       assert_select "a.link-imdb", count: 0
+    end
+  end
+
+  context "when the episode has some stacks" do
+    let(:stack) { FactoryBot.create(:stack, name: "Amazing Stack") }
+    let(:stack_items) { [FactoryBot.create(:stack_item, item: @episode)] }
+    let(:stacks_with_previews) { {stack => stack_items} }
+
+    it "renders the top stacks section" do
+      render
+      assert_select "h4", text: "Top stacks:"
+      assert_select "h6", text: "Amazing Stack"
+    end
+  end
+
+  context "when the movies does not have any stacks" do
+    let(:stacks_with_previews) { {} }
+
+    it "does not render the top stacks section" do
+      render
+      assert_select "h4", text: "Top stacks:", count: 0
     end
   end
 end

@@ -62,6 +62,10 @@
 
   <%= render "shared/cast_members", cast_members: @cast_members, full_cast_path: cast_show_season_episode_path(@episode, season_id: @season, show_id: @show) %>
 
+  <div class="my-8">
+    <%= render "shared/stacks/previews", stacks_with_previews: @stacks_with_previews %>
+  </div>
+
   <div class="mt-6">
     <%= render "shared/paginated_items", presenter: @pagination %>
   </div>

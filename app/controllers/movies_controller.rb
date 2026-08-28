@@ -24,6 +24,7 @@ class MoviesController < ApplicationController
     @release_dates_for_country = @movie.release_dates_for_country
     @cast_members = CastMembers::Movie.new(@movie).cast_members
     @watch_status = @movie.status_for(current_user)
+    @stacks_with_previews = @movie.stacks_with_previews
   end
 
   def new

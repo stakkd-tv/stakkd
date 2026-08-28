@@ -101,6 +101,8 @@
         <% end %>
       </div>
 
+      <%= render "shared/stacks/previews", stacks_with_previews: @stacks_with_previews %>
+
       <%= render "shared/galleries", presenter: @gallery_presenter %>
 
       <%= render "shared/paginated_items", presenter: @pagination %>

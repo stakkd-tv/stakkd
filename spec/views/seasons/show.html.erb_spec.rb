@@ -6,6 +6,7 @@ RSpec.describe "seasons/show", type: :view do
   let(:translated_name) { "The OG season" }
   let(:has_episodes) { true }
   let(:watch_status) { :not_consumed }
+  let(:stacks_with_previews) { {} }
 
   before(:each) do
     def view.authenticated? = false
@@ -48,6 +49,7 @@ RSpec.describe "seasons/show", type: :view do
     assign(:pagination, Pagination::Seasons.new(@season, @show))
     assign(:watch_status, watch_status)
     assign(:episode_watch_statuses, @episode_watch_statuses)
+    assign(:stacks_with_previews, stacks_with_previews)
   end
 
   it "renders attributes" do
@@ -214,6 +216,27 @@ RSpec.describe "seasons/show", type: :view do
     it "does not render next season link" do
       render
       assert_select "a", text: "Next", count: 0
+    end
+  end
+
+  context "when the season has some stacks" do
+    let(:stack) { FactoryBot.create(:stack, name: "Amazing Stack") }
+    let(:stack_items) { [FactoryBot.create(:stack_item, item: @season)] }
+    let(:stacks_with_previews) { {stack => stack_items} }
+
+    it "renders the top stacks section" do
+      render
+      assert_select "h4", text: "Top stacks:"
+      assert_select "h6", text: "Amazing Stack"
+    end
+  end
+
+  context "when the movies does not have any stacks" do
+    let(:stacks_with_previews) { {} }
+
+    it "does not render the top stacks section" do
+      render
+      assert_select "h4", text: "Top stacks:", count: 0
     end
   end
 end
