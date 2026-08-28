@@ -26,6 +26,7 @@ resources :movies, except: [:destroy] do
   get :backgrounds, on: :member
   get :logos, on: :member
   get :cast, on: :member
+  get :load_more_top_stacks, on: :member, path: "load-more-top-stacks"
 
   post :add_to_history, on: :member
   post :add_to_stack, on: :member

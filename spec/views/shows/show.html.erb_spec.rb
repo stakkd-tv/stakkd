@@ -11,6 +11,7 @@ RSpec.describe "shows/show", type: :view do
   let(:has_franchise) { false }
   let(:watch_status) { :not_consumed }
   let(:stacks_with_previews) { {} }
+  let(:stacks_next_page) { nil }
 
   before(:each) do
     def view.authenticated? = false
@@ -44,6 +45,7 @@ RSpec.describe "shows/show", type: :view do
     assign(:watch_status, watch_status)
     assign(:season_watch_statuses, {})
     assign(:stacks_with_previews, stacks_with_previews)
+    assign(:stacks_next_page, stacks_next_page)
   end
 
   it "renders attributes in <p>" do
@@ -294,7 +296,27 @@ RSpec.describe "shows/show", type: :view do
     it "renders the top stacks section" do
       render
       assert_select "h4", text: "Top stacks:"
-      assert_select "h6", text: "Amazing Stack"
+      assert_select "turbo-frame[id='top_stacks']" do
+        assert_select "h6", text: "Amazing Stack"
+      end
+    end
+
+    context "when more stacks can be loaded" do
+      let(:stacks_next_page) { 2 }
+
+      it "renders the load more button" do
+        render
+        assert_select "turbo-frame[id='load_more_top_stacks']" do
+          assert_select "a[href='#{load_more_top_stacks_show_path(@show, page: 2)}']"
+        end
+      end
+    end
+
+    context "when no more stacks can be loaded" do
+      it "does not render the load more button" do
+        render
+        assert_select "turbo-frame[id='load_more_top_stacks']", count: 0
+      end
     end
   end
 

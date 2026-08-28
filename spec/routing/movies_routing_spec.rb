@@ -69,5 +69,9 @@ RSpec.describe MoviesController, type: :routing do
     it "routes to #remove_from_stack" do
       expect(delete: "/movies/1/remove_from_stack").to route_to("movies#remove_from_stack", id: "1")
     end
+
+    it "routes to #load_more_top_stacks" do
+      expect(get: "/movies/1/load-more-top-stacks").to route_to("movies#load_more_top_stacks", id: "1")
+    end
   end
 end

@@ -360,5 +360,9 @@ RSpec.describe "Movies", type: :request do
       params = {stack_id:}
       delete remove_from_stack_movie_path(item), params: params
     end
+
+    def perform_load_more_top_stacks(format: :html)
+      get load_more_top_stacks_movie_path(item, format: format)
+    end
   end
 end

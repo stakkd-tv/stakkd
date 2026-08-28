@@ -16,6 +16,13 @@ RSpec.describe ApplicationHelper, type: :helper do
         record = FactoryBot.build_stubbed(:movie)
         expect(helper.polymorphic_record_path(record, "add_to_history")).to eq(add_to_history_movie_path(record))
       end
+
+      context "with params" do
+        it "returns the correct path for the record" do
+          record = FactoryBot.build_stubbed(:movie)
+          expect(helper.polymorphic_record_path(record, "add_to_history", page: 1)).to eq(add_to_history_movie_path(record, page: 1))
+        end
+      end
     end
 
     context "when record is a show" do

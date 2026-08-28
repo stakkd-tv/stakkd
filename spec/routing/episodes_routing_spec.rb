@@ -53,5 +53,9 @@ RSpec.describe EpisodesController, type: :routing do
     it "routes to #remove_from_stack" do
       expect(delete: "/shows/1/seasons/1/episodes/1/remove_from_stack").to route_to("episodes#remove_from_stack", id: "1", season_id: "1", show_id: "1")
     end
+
+    it "routes to #load_more_top_stacks" do
+      expect(get: "/shows/1/seasons/1/episodes/1/load-more-top-stacks").to route_to("episodes#load_more_top_stacks", id: "1", season_id: "1", show_id: "1")
+    end
   end
 end

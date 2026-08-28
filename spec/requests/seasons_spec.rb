@@ -274,5 +274,9 @@ RSpec.describe "/shows/:show_id/seasons", type: :request do
       params = {stack_id:}
       delete remove_from_stack_show_season_path(item, show_id: item.show), params: params
     end
+
+    def perform_load_more_top_stacks(format: :html)
+      get load_more_top_stacks_show_season_path(item, show_id: item.show, format: format)
+    end
   end
 end

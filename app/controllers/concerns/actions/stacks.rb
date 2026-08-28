@@ -31,5 +31,16 @@ module Actions
     rescue
       render json: {success: false, errors: ["Failed to remove from stack"]}, status: 422
     end
+
+    def load_more_top_stacks
+      respond_to do |format|
+        format.html { not_found }
+        format.turbo_stream do
+          @stacks_with_previews, @stacks_next_page = record.stacks_with_previews(page: params[:page])
+          @load_more_top_stacks_path = helpers.polymorphic_record_path(record, "load_more_top_stacks", page: @stacks_next_page)
+          render "shared/stacks/more_results"
+        end
+      end
+    end
   end
 end

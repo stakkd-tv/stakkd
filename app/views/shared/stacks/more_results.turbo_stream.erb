@@ -1,0 +1,13 @@
+<%= turbo_stream.append "top_stacks" do %>
+  <% @stacks_with_previews.each do |stack, stack_items| %>
+    <%= render "shared/stacks/preview", stack: stack, stack_items: stack_items %>
+  <% end %>
+<% end %>
+
+<% if @stacks_next_page.present? %>
+  <%= turbo_stream.replace "load_more_top_stacks" do %>
+    <%= render "shared/stacks/load_more", load_more_top_stacks_path: @load_more_top_stacks_path %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.remove "load_more_top_stacks" %>
+<% end %>
