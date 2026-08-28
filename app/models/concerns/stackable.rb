@@ -24,6 +24,6 @@ module Stackable
     with_previews = initial_stacks.to_h do |stack|
       [stack, stack_items.fetch(stack.id, [])]
     end
-    [with_previews, initial_stacks.next_page.present?]
+    [with_previews, initial_stacks.next_page]
   end
 end

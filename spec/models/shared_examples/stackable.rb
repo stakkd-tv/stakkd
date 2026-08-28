@@ -70,9 +70,9 @@ RSpec.shared_examples_for "a stackable model" do
       expect(result).to eq({})
     end
 
-    it "includes a boolean indicating a next page" do
-      has_more = item.stacks_with_previews.last
-      expect(has_more).to be_truthy
+    it "includes the next page" do
+      next_page = item.stacks_with_previews.last
+      expect(next_page).to eq 2
     end
   end
 end
