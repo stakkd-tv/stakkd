@@ -285,6 +285,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_21_142147) do
     t.string "overview"
     t.date "premiere_date"
     t.bigint "show_id", null: false
+    t.string "show_translated_title", null: false
     t.string "translated_name", null: false
     t.datetime "updated_at", null: false
     t.index ["show_id", "number"], name: "index_unique_seasons_number_show", unique: true

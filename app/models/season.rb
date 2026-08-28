@@ -17,6 +17,7 @@ class Season < ApplicationRecord
   validates :number, numericality: {greater_than_or_equal_to: 0}
 
   # Callbacks
+  before_validation :denormalize_show_translated_title, on: :create
   after_save :set_show_premiere_date
 
   # Scopes
@@ -32,7 +33,7 @@ class Season < ApplicationRecord
 
   def ordered_related_records = [show, self]
 
-  def to_s = "#{show} - Season #{number}"
+  def to_s = "#{show_translated_title} - Season #{number}"
 
   def runtime = episodes.sum(:runtime)
 
@@ -63,5 +64,9 @@ class Season < ApplicationRecord
     if first_non_special_number == number
       show.update(premiere_date: premiere_date)
     end
+  end
+
+  def denormalize_show_translated_title
+    self.show_translated_title = show&.translated_title
   end
 end

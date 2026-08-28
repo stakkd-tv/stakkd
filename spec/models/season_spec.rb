@@ -32,38 +32,50 @@ RSpec.describe Season, type: :model do
 
   it_behaves_like "a model with galleries", :season, [:posters, :videos]
 
-  describe "after_save :set_show_premiere_date" do
-    context "when the season is a special" do
-      it "does not update the show premiere date" do
-        show = FactoryBot.create(:show)
-        specials = show.seasons.first
-        expect(show.premiere_date).to be_nil
-        FactoryBot.create(:episode, season: specials, original_air_date: Date.today)
-        expect(show.premiere_date).to be_nil
+  describe "callbacks" do
+    describe "before_validation :denormalize_show_translated_title on :create" do
+      context "when the season is being updated" do
+        it "denormalizes the show translated title" do
+          show = FactoryBot.create(:show, translated_title: "Original Title")
+          season = FactoryBot.create(:season, show:, number: 1)
+          expect(season.reload.show_translated_title).to eq("Original Title")
+        end
       end
     end
 
-    context "when the season is the first non-special season" do
-      it "updates the show premiere date" do
-        show = FactoryBot.create(:show)
-        season = FactoryBot.create(:season, number: 1, show:)
-        expect(show.premiere_date).to be_nil
-        episode = FactoryBot.create(:episode, season:, original_air_date: Date.today)
-        expect(show.premiere_date).to eq episode.original_air_date
+    describe "after_save :set_show_premiere_date" do
+      context "when the season is a special" do
+        it "does not update the show premiere date" do
+          show = FactoryBot.create(:show)
+          specials = show.seasons.first
+          expect(show.premiere_date).to be_nil
+          FactoryBot.create(:episode, season: specials, original_air_date: Date.today)
+          expect(show.premiere_date).to be_nil
+        end
       end
-    end
 
-    context "when the season is not the first non-special season" do
-      it "does not update the premiere date" do
-        show = FactoryBot.create(:show)
-        season = FactoryBot.create(:season, number: 1, show:)
-        expect(show.premiere_date).to be_nil
-        episode = FactoryBot.create(:episode, season:, original_air_date: Date.today)
-        expect(show.premiere_date).to eq episode.original_air_date
+      context "when the season is the first non-special season" do
+        it "updates the show premiere date" do
+          show = FactoryBot.create(:show)
+          season = FactoryBot.create(:season, number: 1, show:)
+          expect(show.premiere_date).to be_nil
+          episode = FactoryBot.create(:episode, season:, original_air_date: Date.today)
+          expect(show.premiere_date).to eq episode.original_air_date
+        end
+      end
 
-        season2 = FactoryBot.create(:season, number: 2, show:)
-        FactoryBot.create(:episode, season: season2, original_air_date: Date.tomorrow)
-        expect(show.premiere_date).to eq episode.original_air_date
+      context "when the season is not the first non-special season" do
+        it "does not update the premiere date" do
+          show = FactoryBot.create(:show)
+          season = FactoryBot.create(:season, number: 1, show:)
+          expect(show.premiere_date).to be_nil
+          episode = FactoryBot.create(:episode, season:, original_air_date: Date.today)
+          expect(show.premiere_date).to eq episode.original_air_date
+
+          season2 = FactoryBot.create(:season, number: 2, show:)
+          FactoryBot.create(:episode, season: season2, original_air_date: Date.tomorrow)
+          expect(show.premiere_date).to eq episode.original_air_date
+        end
       end
     end
   end
@@ -131,7 +143,7 @@ RSpec.describe Season, type: :model do
 
   describe "#to_s" do
     it "returns the season number as a string" do
-      expect(Season.new(number: 2, show: Show.new(translated_title: "Testing")).to_s).to eq "Testing - Season 2"
+      expect(Season.new(number: 2, show_translated_title: "Testing").to_s).to eq "Testing - Season 2"
     end
   end
 

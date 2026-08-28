@@ -60,6 +60,30 @@ RSpec.describe Show, type: :model do
         end
       end
     end
+
+    describe "after_save :denormalize_show_translated_title_on_seasons" do
+      let(:show) { FactoryBot.create(:show, translated_title: "Original Title") }
+      let!(:season1) { FactoryBot.create(:season, show:, number: 1) }
+
+      context "when translated title changes" do
+        it "denormalizes translated title on seasons" do
+          show.update(translated_title: "New Title")
+          expect(season1.reload.show_translated_title).to eq "New Title"
+        end
+
+        it "ensures seasons are loaded" do
+          expect(Season).to receive(:where).with(show: show).and_call_original
+          show.update(translated_title: "New Title")
+        end
+      end
+
+      context "when translated title does not change" do
+        it "does not attempt to update the seasons" do
+          expect(Season).not_to receive(:where)
+          show.update(original_title: "New Title")
+        end
+      end
+    end
   end
 
   it_behaves_like "a slugified model", :show, :translated_title

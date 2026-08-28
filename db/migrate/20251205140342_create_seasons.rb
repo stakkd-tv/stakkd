@@ -7,6 +7,7 @@ class CreateSeasons < ActiveRecord::Migration[8.0]
       t.string :original_name, null: false
       t.string :overview
       t.date :premiere_date
+      t.string :show_translated_title, null: false
 
       t.timestamps
     end

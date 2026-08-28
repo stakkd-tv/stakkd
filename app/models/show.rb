@@ -76,6 +76,7 @@ class Show < ApplicationRecord
   # Callbacks
   after_create :create_specials_season
   after_save :update_franchise_item_date
+  after_save :denormalize_show_translated_title_on_seasons, if: -> { translated_title_previously_changed? }
 
   def self.inheritance_column = nil
 
@@ -118,5 +119,9 @@ class Show < ApplicationRecord
 
   def update_franchise_item_date
     FranchiseItem.where(record: self).update(date: premiere_date)
+  end
+
+  def denormalize_show_translated_title_on_seasons
+    Season.where(show: self).update_all(show_translated_title: translated_title)
   end
 end
