@@ -31,4 +31,43 @@ RSpec.shared_examples_for "a stackable model" do
       end
     end
   end
+
+  describe "#stacks_with_previews" do
+    before do
+      # A stack for this item that is not part of results as outside of 3 per page limit
+      stack1 = FactoryBot.create(:stack)
+      FactoryBot.create(:stack_item, item:, stack: stack1)
+      # A stack for this item
+      @stack2 = FactoryBot.create(:stack)
+      FactoryBot.create(:stack_item, item:, stack: @stack2)
+      # A stack for this item with more than three stack items
+      @stack3 = FactoryBot.create(:stack)
+      FactoryBot.create(:stack_item, item:, stack: @stack3)
+      FactoryBot.create(:stack_item, stack: @stack3)
+      FactoryBot.create(:stack_item, stack: @stack3)
+      FactoryBot.create(:stack_item, stack: @stack3)
+      # A stack for this item
+      @stack4 = FactoryBot.create(:stack)
+      FactoryBot.create(:stack_item, item:, stack: @stack4)
+      # A stack that this item is not a part of
+      FactoryBot.create(:stack)
+    end
+
+    it "returns a hash with only three stacks as keys" do
+      result = item.stacks_with_previews
+      expect(result.keys).to contain_exactly(@stack2, @stack3, @stack4)
+    end
+
+    it "returns only three stack items per stack" do
+      result = item.stacks_with_previews
+      stack3_results = result[@stack3]
+      expect(stack3_results.count).to eq 3
+    end
+
+    it "returns an empty hash when there are no stacks" do
+      item.stacks.destroy_all
+      result = item.stacks_with_previews
+      expect(result).to eq({})
+    end
+  end
 end
