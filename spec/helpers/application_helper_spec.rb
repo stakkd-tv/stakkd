@@ -23,12 +23,26 @@ RSpec.describe ApplicationHelper, type: :helper do
         record = FactoryBot.build_stubbed(:show)
         expect(helper.polymorphic_record_path(record, "add_to_history")).to eq(add_to_history_show_path(record))
       end
+
+      context "with params" do
+        it "returns the correct path for the record" do
+          record = FactoryBot.build_stubbed(:show)
+          expect(helper.polymorphic_record_path(record, "add_to_history", page: 1)).to eq(add_to_history_show_path(record, page: 1))
+        end
+      end
     end
 
     context "when record is a season" do
       it "returns the correct path for the record" do
         record = FactoryBot.build_stubbed(:season)
         expect(helper.polymorphic_record_path(record, "add_to_history")).to eq(add_to_history_show_season_path(record.show, record))
+      end
+
+      context "with params" do
+        it "returns the correct path for the record" do
+          record = FactoryBot.build_stubbed(:season)
+          expect(helper.polymorphic_record_path(record, "add_to_history", page: 1)).to eq(add_to_history_show_season_path(record.show, record, page: 1))
+        end
       end
     end
 
@@ -38,6 +52,15 @@ RSpec.describe ApplicationHelper, type: :helper do
         season = FactoryBot.create(:season, show:)
         record = FactoryBot.create(:episode, season:)
         expect(helper.polymorphic_record_path(record, "add_to_history")).to eq(add_to_history_show_season_episode_path(show, season, record))
+      end
+
+      context "with params" do
+        it "returns the correct path for the record" do
+          show = FactoryBot.create(:show)
+          season = FactoryBot.create(:season, show:)
+          record = FactoryBot.create(:episode, season:)
+          expect(helper.polymorphic_record_path(record, "add_to_history", page: 1)).to eq(add_to_history_show_season_episode_path(show, season, record, page: 1))
+        end
       end
     end
   end
