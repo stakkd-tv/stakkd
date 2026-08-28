@@ -165,32 +165,17 @@ RSpec.shared_examples "stackable actions" do
   end
 
   describe "GET /load-more-top-stacks" do
-    context "when user is not signed in" do
-      it "redirects to the sign in page" do
+    context "when request is html" do
+      it "renders a 404" do
         perform_load_more_top_stacks(format: :html)
-        expect(response).to redirect_to new_session_path
+        expect(response).to have_http_status(:not_found)
       end
     end
 
-    context "when user is signed in" do
-      before do
-        session = Session.new(user:)
-        allow(Current).to receive(:session).and_return(session)
-        allow(Current).to receive(:user).and_return(user)
-      end
-
-      context "when request is html" do
-        it "renders a 404" do
-          perform_load_more_top_stacks(format: :html)
-          expect(response).to have_http_status(:not_found)
-        end
-      end
-
-      context "when request is turbo_stream" do
-        it "renders a successful response" do
-          perform_load_more_top_stacks(format: :turbo_stream)
-          expect(response).to have_http_status(:ok)
-        end
+    context "when request is turbo_stream" do
+      it "renders a successful response" do
+        perform_load_more_top_stacks(format: :turbo_stream)
+        expect(response).to have_http_status(:ok)
       end
     end
   end

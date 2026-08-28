@@ -2,7 +2,7 @@ class ShowsController < ApplicationController
   include Actions::History
   include Actions::Stacks
 
-  before_action :require_authentication, except: [:index, :show, :cast, :poster]
+  before_action :require_authentication, except: [:index, :show, :cast, :poster, :load_more_top_stacks]
   before_action :set_show, except: [:index, :new, :create]
 
   def index

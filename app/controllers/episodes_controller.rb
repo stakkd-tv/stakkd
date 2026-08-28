@@ -2,7 +2,7 @@ class EpisodesController < ApplicationController
   include Actions::History
   include Actions::Stacks
 
-  before_action :require_authentication, except: [:show, :cast]
+  before_action :require_authentication, except: [:show, :cast, :load_more_top_stacks]
   before_action :set_show
   before_action :set_season
   before_action :set_episode, except: [:new, :create]
