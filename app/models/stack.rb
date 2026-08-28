@@ -1,4 +1,6 @@
 class Stack < ApplicationRecord
+  include Slugify
+
   TYPES = [
     "standard",
     "watchlist",
@@ -39,4 +41,16 @@ class Stack < ApplicationRecord
     stack_item = stack_items.find_by!(item:)
     stack_item.destroy
   end
+
+  def slug=(value)
+    self.name_kebab = value
+  end
+
+  def to_s = name
+
+  private
+
+  def slug_source = name
+
+  def _slug = name_kebab
 end

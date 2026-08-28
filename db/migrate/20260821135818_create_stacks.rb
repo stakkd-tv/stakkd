@@ -7,6 +7,7 @@ class CreateStacks < ActiveRecord::Migration[8.1]
       t.string :sorting_method, null: false, default: "added_at"
       t.boolean :private, null: false, default: false
       t.string :description, null: true
+      t.string :name_kebab, null: false
 
       t.timestamps
     end

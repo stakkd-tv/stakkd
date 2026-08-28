@@ -337,6 +337,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_21_142147) do
     t.datetime "created_at", null: false
     t.string "description"
     t.string "name", null: false
+    t.string "name_kebab", null: false
     t.boolean "private", default: false, null: false
     t.string "sorting_method", default: "added_at", null: false
     t.string "type", default: "standard", null: false

@@ -1,4 +1,5 @@
 require "rails_helper"
+require_relative "shared_examples/slugify"
 
 RSpec.describe Stack, type: :model do
   describe "associations" do
@@ -20,6 +21,8 @@ RSpec.describe Stack, type: :model do
       expect(Stack.official).to eq([official_stack])
     end
   end
+
+  it_behaves_like "a slugified model", :stack, :name
 
   describe ".inheritance_column" do
     it "returns nil" do
@@ -70,6 +73,21 @@ RSpec.describe Stack, type: :model do
       it "raises an error" do
         expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
       end
+    end
+  end
+
+  describe "#slug=" do
+    it "sets the name" do
+      stack = Stack.new
+      stack.slug = "test"
+      expect(stack.name_kebab).to eq "test"
+    end
+  end
+
+  describe "#to_s" do
+    it "returns the name" do
+      stack = Stack.new(name: "Test Stack")
+      expect(stack.to_s).to eq "Test Stack"
     end
   end
 end
