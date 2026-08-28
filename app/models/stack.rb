@@ -20,6 +20,7 @@ class Stack < ApplicationRecord
   validates_presence_of :name
   validates_inclusion_of :type, in: TYPES
   validates_inclusion_of :sorting_method, in: SORTING_METHODS
+  validates_length_of :description, maximum: 100
 
   # Scopes
   scope :official, -> { where(user_id: nil) }

@@ -10,6 +10,7 @@ RSpec.describe Stack, type: :model do
     it { should validate_presence_of(:name) }
     it { should validate_inclusion_of(:type).in_array(Stack::TYPES) }
     it { should validate_inclusion_of(:sorting_method).in_array(Stack::SORTING_METHODS) }
+    it { should validate_length_of(:description).is_at_most(100) }
   end
 
   describe ".official" do
