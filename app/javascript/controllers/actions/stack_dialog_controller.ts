@@ -28,6 +28,12 @@ export default class extends Controller {
 
     this.addToStackUrl = ''
     this.removeFromStackUrl = ''
+
+    this.dialog.addEventListener('close', this.close.bind(this))
+  }
+
+  disconnect() {
+    this.dialog.removeEventListener('close', this.close.bind(this))
   }
 
   open(event: {

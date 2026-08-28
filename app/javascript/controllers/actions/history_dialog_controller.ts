@@ -53,6 +53,11 @@ export default class extends Controller {
     )
     this.currentOption = OPTIONS[0]
     this.currentOptionButton = this.optionButtons[0]
+    this.dialog.addEventListener('close', this.close.bind(this))
+  }
+
+  disconnect() {
+    this.dialog.removeEventListener('close', this.close.bind(this))
   }
 
   open(event: {
