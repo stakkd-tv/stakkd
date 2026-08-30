@@ -32,10 +32,6 @@ export default class extends Controller {
     this.dialog.addEventListener('close', this.close.bind(this))
   }
 
-  disconnect() {
-    this.dialog.removeEventListener('close', this.close.bind(this))
-  }
-
   open(event: {
     detail: {
       button: HTMLButtonElement
