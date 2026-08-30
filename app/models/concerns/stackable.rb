@@ -11,7 +11,7 @@ module Stackable
     user.stacks.includes(:stack_items).where(stack_items: {item: self}).pluck(:id)
   end
 
-  def stacks_with_previews(page: 1)
-    Stacks::WithPreviews.new(stacks).fetch(page:)
+  def stacks_with_previews(current_user: nil, page: 1)
+    Stacks::WithPreviews.new(stacks, user: current_user).fetch(page:)
   end
 end

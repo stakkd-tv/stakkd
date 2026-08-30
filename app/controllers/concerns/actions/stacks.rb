@@ -36,7 +36,7 @@ module Actions
       respond_to do |format|
         format.html { not_found }
         format.turbo_stream do
-          @stacks_with_previews, @stacks_next_page = record.stacks_with_previews(page: params[:page])
+          @stacks_with_previews, @stacks_next_page = record.stacks_with_previews(page: params[:page], current_user:)
           @load_more_top_stacks_path = helpers.polymorphic_record_path(record, "load_more_top_stacks", page: @stacks_next_page)
           render "shared/stacks/more_results"
         end

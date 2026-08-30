@@ -40,7 +40,7 @@ RSpec.describe Stack, type: :model do
       it "only returns public stacks" do
         user = nil
         # Private stack
-        private_stack = FactoryBot.create(:stack, private: true)
+        FactoryBot.create(:stack, private: true)
         # Public stack
         public_stack = FactoryBot.create(:stack, private: false)
         expect(Stack.visible_to(user)).to contain_exactly(public_stack)

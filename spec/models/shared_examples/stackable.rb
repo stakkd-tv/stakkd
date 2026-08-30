@@ -33,6 +33,8 @@ RSpec.shared_examples_for "a stackable model" do
   end
 
   describe "#stacks_with_previews" do
+    let(:user) { FactoryBot.create(:user, :confirmed) }
+
     before do
       # A stack for this item that is not part of results as outside of 3 per page limit
       stack1 = FactoryBot.create(:stack)
@@ -51,6 +53,12 @@ RSpec.shared_examples_for "a stackable model" do
       FactoryBot.create(:stack_item, item:, stack: @stack4)
       # A stack that this item is not a part of
       FactoryBot.create(:stack)
+      # A stack for this item that is private so only included in results when current user is the same
+      @private_stack = FactoryBot.create(:stack, user:, private: true)
+      FactoryBot.create(:stack_item, item:, stack: @private_stack)
+      # A completely private stack that is never in results
+      never_in_results = FactoryBot.create(:stack, private: true)
+      FactoryBot.create(:stack_item, item:, stack: never_in_results)
     end
 
     it "returns a hash with only three stacks as keys" do
@@ -73,6 +81,13 @@ RSpec.shared_examples_for "a stackable model" do
     it "includes the next page" do
       next_page = item.stacks_with_previews.last
       expect(next_page).to eq 2
+    end
+
+    context "when a current user is given" do
+      it "includes the current users private stacks" do
+        result = item.stacks_with_previews(current_user: user).first
+        expect(result.keys).to include(@private_stack)
+      end
     end
   end
 end
