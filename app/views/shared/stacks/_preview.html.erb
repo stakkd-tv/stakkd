@@ -12,7 +12,7 @@
   <div class="flex flex-col gap-1.5 py-2">
     <h6 class="font-domine text-md md:text-lg"><%= stack.name %></h6>
     <% if stack.user %>
-      <%= link_to stack.user, class: "flex items-center gap-2" do %>
+      <%= link_to stack.user, class: "flex items-center gap-2", data: { turbo: false } do %>
         <%# TODO: Small avatar variant %>
         <div class="w-8 h-8 aspect-square overflow-hidden rounded-full outline outline-pop">
           <%= image_tag stack.user.avatar, alt: "Avatar", class: "w-full h-full object-cover object-center" %>
@@ -23,7 +23,7 @@
         <p class="text-xs mt-2"><i class="fas fa-lock mr-2"></i> Only you can see this stack</p>
       <% end %>
     <% else %>
-      <%= link_to "#", class: "flex items-center gap-2" do %>
+      <%= link_to "#", class: "flex items-center gap-2", data: { turbo: false } do %>
         <div class="w-8 h-8 aspect-square overflow-hidden rounded-full outline outline-pop">
           <%= image_tag "icon.svg", alt: "Avatar", class: "w-full h-full object-cover object-center" %>
         </div>

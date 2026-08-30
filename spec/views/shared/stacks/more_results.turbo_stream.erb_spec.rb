@@ -8,6 +8,7 @@ RSpec.describe "shared/stacks/more_results.turbo_stream.erb", type: :view do
   let(:load_more_top_stacks_path) { "" }
 
   before do
+    def view.current_user = nil
     assign(:stacks_with_previews, stacks_with_previews)
     assign(:stacks_next_page, stacks_next_page)
     assign(:load_more_top_stacks_path, load_more_top_stacks_path)
