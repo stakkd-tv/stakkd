@@ -10,6 +10,7 @@ module Stacks
     def fetch(page: 1)
       initial_stacks = @stacks
         .visible_to(@user)
+        .standard
         .order(created_at: :desc)
         .paginate(page: page, per_page: @per_page)
       stack_items = StackItem

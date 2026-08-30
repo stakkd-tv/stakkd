@@ -26,6 +26,7 @@ class Stack < ApplicationRecord
 
   # Scopes
   scope :official, -> { where(user_id: nil) }
+  scope :standard, -> { where(type: "standard") }
   scope :visible_to, ->(user) {
     where(private: false)
       .or(where(private: true, user: user))

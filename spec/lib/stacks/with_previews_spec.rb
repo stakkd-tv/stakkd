@@ -18,6 +18,8 @@ module Stacks
           FactoryBot.create(:stack, user:, private: true)
           # A stack for this user
           @stack2 = FactoryBot.create(:stack, user:)
+          # A non-standard stack for this user
+          FactoryBot.create(:stack, user:, type: "watchlist")
           # A stack for this user with more than three stack items
           @stack3 = FactoryBot.create(:stack, user:)
           FactoryBot.create(:stack_item, stack: @stack3)

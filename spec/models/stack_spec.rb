@@ -22,6 +22,15 @@ RSpec.describe Stack, type: :model do
     end
   end
 
+  describe ".standard" do
+    it "returns only standard stacks" do
+      standard_stack = FactoryBot.create(:stack, type: "standard")
+      FactoryBot.create(:stack, type: "watchlist")
+      FactoryBot.create(:stack, type: "collection")
+      expect(Stack.standard).to eq([standard_stack])
+    end
+  end
+
   describe ".visible_to" do
     it "only returns stacks that are visible to the user" do
       user = FactoryBot.create(:user)
