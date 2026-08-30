@@ -11,6 +11,7 @@ RSpec.describe "users/show", type: :view do
       background: Rack::Test::UploadedFile.new(File.join(Rails.root, "spec/support/assets/300x450.png"), "image/png"),
       private:
     )
+    allow(view).to receive(:params).and_return({controller: "users", action: "show"})
     assign(:user, @user)
   end
 
@@ -26,15 +27,14 @@ RSpec.describe "users/show", type: :view do
     it "renders nav links" do
       render
       assert_select "a[data-active='true']", text: "Profile"
-      assert_select "a", text: "History"
-      assert_select "a", text: "Profile"
-      assert_select "a", text: "Progress"
-      assert_select "a", text: "Collection"
-      assert_select "a", text: "Ratings"
-      assert_select "a", text: "Stacks"
-      assert_select "a", text: "Comments"
-      assert_select "a", text: "Followers"
-      assert_select "a", text: "Following"
+      assert_select "a[data-active='false']", text: "History"
+      assert_select "a[data-active='false']", text: "Progress"
+      assert_select "a[data-active='false']", text: "Collection"
+      assert_select "a[data-active='false']", text: "Ratings"
+      assert_select "a[data-active='false']", text: "Stacks"
+      assert_select "a[data-active='false']", text: "Comments"
+      assert_select "a[data-active='false']", text: "Followers"
+      assert_select "a[data-active='false']", text: "Following"
     end
 
     it "renders the biography as markdown" do

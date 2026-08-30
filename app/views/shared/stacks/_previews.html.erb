@@ -1,6 +1,9 @@
 <% if stacks_with_previews.any? %>
+  <% title = local_assigns.fetch(:title, "Top stacks") %>
   <div>
-    <h4 class="text-2xl font-bold font-domine mb-4">Top stacks:</h4>
+    <% if title.present? %>
+      <h4 class="text-2xl font-bold font-domine mb-4"><%= title %>:</h4>
+    <% end %>
     <%= turbo_frame_tag "top_stacks", class: "grid grid-cols-2 sm:grid-cols-3 gap-4" do %>
       <% stacks_with_previews.each do |stack, stack_items| %>
         <%= render "shared/stacks/preview", stack: stack, stack_items: stack_items %>

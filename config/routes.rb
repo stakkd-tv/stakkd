@@ -16,6 +16,8 @@ Rails.application.routes.draw do
   draw :company_routes
 
   resources :users, only: [:show, :new, :create, :update] do
+    resources :stacks, only: [:index], controller: "users/stacks"
+
     get :confirm, on: :collection
   end
   get "settings", to: "users#settings", as: :user_settings
