@@ -28,6 +28,14 @@ RSpec.describe "Users::Stacks", type: :request do
         get user_stacks_path(user)
         expect(response).to have_http_status(:success)
       end
+
+      it "calls for stacks with previews" do
+        user = FactoryBot.create(:user, private: false)
+        with_previews = instance_double(Stacks::WithPreviews)
+        expect(Stacks::WithPreviews).to receive(:new).and_return(with_previews)
+        expect(with_previews).to receive(:fetch).with(page: "2").and_return([{}, nil])
+        get user_stacks_path(user, page: 2)
+      end
     end
   end
 end

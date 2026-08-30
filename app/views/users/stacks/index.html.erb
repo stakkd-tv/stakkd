@@ -2,9 +2,13 @@
   <%= render "users/header", user: @user %>
 
   <h4 class="text-2xl font-bold font-domine mb-4"><%= ((current_user == @user) ? "Your" : "#{@user}'s").to_s %> Stacks</h4>
-  <%= render "shared/stacks/previews",
-        title: "",
-        stacks_with_previews: @stacks_with_previews,
-        stacks_next_page: @stacks_next_page,
-        load_more_top_stacks_path: "" %>
+  <% if @stacks_with_previews.any? %>
+    <%= render "shared/stacks/previews",
+          title: "",
+          stacks_with_previews: @stacks_with_previews,
+          stacks_next_page: @stacks_next_page,
+          load_more_top_stacks_path: user_stacks_path(@user, page: @stacks_next_page) %>
+  <% else %>
+    <p>No stacks yet. Learn more about stacks <a class="underline" href="#">here</a>.</p>
+  <% end %>
 </div>

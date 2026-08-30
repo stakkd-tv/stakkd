@@ -45,6 +45,15 @@ RSpec.describe "users/stacks/index.html.erb", type: :view do
     end
   end
 
+  context "when the user has no stacks" do
+    let(:stacks_with_previews) { {} }
+
+    it "renders a note" do
+      render
+      assert_select "p", text: "No stacks yet. Learn more about stacks here."
+    end
+  end
+
   context "when the user has some stacks" do
     let(:stack) { FactoryBot.create(:stack, name: "Amazing Stack", user:) }
     let(:stacks_with_previews) { {stack => []} }
@@ -62,7 +71,7 @@ RSpec.describe "users/stacks/index.html.erb", type: :view do
       it "renders the load more button" do
         render
         assert_select "turbo-frame[id='load_more_top_stacks']" do
-          assert_select "a[href='']"
+          assert_select "a[href='#{user_stacks_path(user, page: 2)}']"
         end
       end
     end

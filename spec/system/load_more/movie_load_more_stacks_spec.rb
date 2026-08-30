@@ -22,6 +22,9 @@ RSpec.feature "Movie load more stacks", type: :system, js: true do
     expect(page).to have_content("Stack #7")
     expect(page).to have_content("Stack #6")
     expect(page).to have_content("Stack #5")
+    expect(page).not_to have_content("Stack #4")
+    expect(page).not_to have_content("Stack #3")
+    expect(page).not_to have_content("Stack #2")
     expect(page).not_to have_content("Only you can see this stack")
     expect(page).not_to have_content("Private Stack")
     expect(page).to have_css "turbo-frame#load_more_top_stacks", text: "Load more stacks"
@@ -29,6 +32,7 @@ RSpec.feature "Movie load more stacks", type: :system, js: true do
     expect(page).to have_content("Stack #4")
     expect(page).to have_content("Stack #3")
     expect(page).to have_content("Stack #2")
+    expect(page).not_to have_content("Stack #1")
     expect(page).not_to have_content("Only you can see this stack")
     expect(page).not_to have_content("Private Stack")
     click_link "Load more stacks"
