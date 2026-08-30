@@ -26,6 +26,10 @@ class Stack < ApplicationRecord
 
   # Scopes
   scope :official, -> { where(user_id: nil) }
+  scope :visible_to, ->(user) {
+    where(private: false)
+      .or(where(private: true, user: user))
+  }
 
   def self.inheritance_column = nil
 

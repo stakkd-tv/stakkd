@@ -1,13 +1,16 @@
 module Stacks
   class WithPreviews
-    def initialize(stacks, per_page: 3)
+    def initialize(stacks, user: nil, per_page: 3)
       @stacks = stacks
       @per_page = per_page
+      @user = user
     end
 
     # TODO: Order stacks by number of likes
     def fetch(page: 1)
-      initial_stacks = @stacks.order(created_at: :desc)
+      initial_stacks = @stacks
+        .visible_to(@user)
+        .order(created_at: :desc)
         .paginate(page: page, per_page: @per_page)
       stack_items = StackItem
         .where(stack_id: initial_stacks)

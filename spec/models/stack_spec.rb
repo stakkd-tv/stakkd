@@ -22,6 +22,32 @@ RSpec.describe Stack, type: :model do
     end
   end
 
+  describe ".visible_to" do
+    it "only returns stacks that are visible to the user" do
+      user = FactoryBot.create(:user)
+      # Private stack for the user
+      private_stack = FactoryBot.create(:stack, user:, private: true)
+      # Public stack for the user
+      public_stack = FactoryBot.create(:stack, user:, private: false)
+      # Private stack for another user
+      FactoryBot.create(:stack, private: true)
+      # Public stack for another user
+      public_by_other_user = FactoryBot.create(:stack, private: false)
+      expect(Stack.visible_to(user)).to contain_exactly(private_stack, public_stack, public_by_other_user)
+    end
+
+    context "when user is nil" do
+      it "only returns public stacks" do
+        user = nil
+        # Private stack
+        private_stack = FactoryBot.create(:stack, private: true)
+        # Public stack
+        public_stack = FactoryBot.create(:stack, private: false)
+        expect(Stack.visible_to(user)).to contain_exactly(public_stack)
+      end
+    end
+  end
+
   it_behaves_like "a slugified model", :stack, :name
 
   describe ".inheritance_column" do
