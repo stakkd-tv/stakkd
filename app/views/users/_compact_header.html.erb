@@ -1,10 +1,11 @@
 <div class="rounded-lg border-2 border-pop overflow-hidden mb-8">
-  <% if user.background.attached? %>
-    <div class="w-full h-32 md:h-56 border-b-3 border-b-pop">
-      <%= image_tag user.background, alt: "Background", class: "w-full h-full object-cover object-center" %>
-    </div>
-  <% end %>
-  <div class="p-8 flex gap-8">
+  <div class="p-8 flex gap-8 relative">
+    <% if user.background.attached? %>
+      <div class="absolute left-0 top-0 -z-1 w-full h-full overflow-hidden">
+        <%= image_tag user.background, alt: "Background", class: "blur-sm w-full h-full object-cover object-center" %>
+        <div class="absolute left-0 top-0 bg-black/75 w-full h-full"></div>
+      </div>
+    <% end %>
     <div class="min-w-14 w-14 h-14 md:w-24 md:h-24 aspect-square overflow-hidden rounded-full outline-3 outline-pop">
       <%= image_tag user.avatar, alt: "Avatar", class: "w-full h-full object-cover object-center" %>
     </div>

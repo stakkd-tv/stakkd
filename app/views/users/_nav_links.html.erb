@@ -1,0 +1,10 @@
+<%= link_to "Profile", user_path(user), class: "link", data: {active: params[:controller] == "users" && params[:action] == "show"} %>
+<%= link_to "History", "", class: "link", data: {active: false} %>
+<%= link_to "Progress", "", class: "link", data: {active: false} %>
+<%= link_to "Watchlist", "", class: "link", data: {active: false} %>
+<%= link_to "Collection", "", class: "link", data: {active: false} %>
+<%= link_to "Stacks", user_stacks_path(user), class: "link", data: {active: params[:controller] == "users/stacks"} %>
+<%= link_to "Ratings", "", class: "link", data: {active: false} %>
+<%= link_to "Comments", "", class: "link", data: {active: false} %>
+<%= link_to "Followers", "", class: "link", data: {active: false} %>
+<%= link_to "Following", "", class: "link", data: {active: false} %>

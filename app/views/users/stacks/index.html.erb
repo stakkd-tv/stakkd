@@ -1,5 +1,7 @@
+<% content_for :title, "Stakkd - #{@user.username}'s Stacks" %>
+
 <div class="max-w-7xl mx-auto my-8 px-6 pt-10">
-  <%= render "users/header", user: @user %>
+  <%= render "users/compact_header", user: @user %>
 
   <h4 class="text-2xl font-bold font-domine mb-4"><%= ((current_user == @user) ? "Your" : "#{@user}'s").to_s %> Stacks</h4>
   <% if @stacks_with_previews.any? %>
