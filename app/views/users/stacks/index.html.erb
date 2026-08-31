@@ -3,21 +3,23 @@
 <div class="max-w-7xl mx-auto my-8 px-6 pt-10">
   <%= render "users/compact_header", user: @user %>
 
-  <div class="flex flex-col xs:flex-row gap-2 justify-between xs:items-center mb-4">
-    <h4 class="text-2xl font-bold font-domine whitespace-nowrap"><%= ((current_user == @user) ? "Your" : "#{@user}'s").to_s %> Stacks</h4>
-    <% if @user == current_user %>
-      <%= link_to "", class: "link flex items-center whitespace-nowrap w-fit" do %>
-        <i class="fas fa-plus mr-3"></i> Stack
+  <%= turbo_frame_tag :stacks_content do %>
+    <div class="flex flex-col xs:flex-row gap-2 justify-between xs:items-center mb-4">
+      <h4 class="text-2xl font-bold font-domine whitespace-nowrap"><%= ((current_user == @user) ? "Your" : "#{@user}'s").to_s %> stacks</h4>
+      <% if @user == current_user %>
+        <%= link_to new_user_stack_path(@user), class: "link flex items-center whitespace-nowrap w-fit" do %>
+          <i class="fas fa-plus mr-3"></i> Stack
+        <% end %>
       <% end %>
+    </div>
+    <% if @stacks_with_previews.any? %>
+      <%= render "shared/stacks/previews",
+            title: "",
+            stacks_with_previews: @stacks_with_previews,
+            stacks_next_page: @stacks_next_page,
+            load_more_top_stacks_path: user_stacks_path(@user, page: @stacks_next_page) %>
+    <% else %>
+      <p>No stacks yet. Learn more about stacks <a class="underline" href="#">here</a>.</p>
     <% end %>
-  </div>
-  <% if @stacks_with_previews.any? %>
-    <%= render "shared/stacks/previews",
-          title: "",
-          stacks_with_previews: @stacks_with_previews,
-          stacks_next_page: @stacks_next_page,
-          load_more_top_stacks_path: user_stacks_path(@user, page: @stacks_next_page) %>
-  <% else %>
-    <p>No stacks yet. Learn more about stacks <a class="underline" href="#">here</a>.</p>
   <% end %>
 </div>

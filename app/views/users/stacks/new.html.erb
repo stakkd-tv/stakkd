@@ -1,0 +1,35 @@
+<% content_for :title, "Stakkd - New stack" %>
+
+<div class="max-w-7xl mx-auto my-8 px-6 pt-10">
+  <%= render "users/compact_header", user: @user %>
+
+  <%= turbo_frame_tag :stacks_content do %>
+    <div class="flex flex-col xs:flex-row gap-2 justify-between xs:items-center mb-4">
+      <h4 class="text-2xl font-bold font-domine whitespace-nowrap">New stack</h4>
+      <%= link_to user_stacks_path(@user), class: "link flex items-center whitespace-nowrap w-fit" do %>
+        <i class="fas fa-times mr-3"></i> Cancel
+      <% end %>
+    </div>
+    <div class="form">
+      <%= form_with model: [@user, @stack] do |form| %>
+        <div>
+          <%= form.label :name %>
+          <%= form.text_field :name, required: true %>
+        </div>
+
+        <div>
+          <%= form.label :description %>
+          <%= form.text_area :description %>
+        </div>
+
+        <%= render "shared/form_toggle_field", form:, field: :private do %>
+          <small class="inline-block mt-2">Private stacks can only be accessed by you.</small>
+        <% end %>
+
+        <div>
+          <%= form.submit "Save" %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

@@ -19,5 +19,9 @@ module Users
         redirect_to user_path(@user)
       end
     end
+
+    def require_same_user
+      redirect_back fallback_location: user_path(@user) unless current_user == @user
+    end
   end
 end

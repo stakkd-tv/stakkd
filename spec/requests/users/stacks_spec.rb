@@ -1,6 +1,20 @@
 require "rails_helper"
 
 RSpec.describe "Users::Stacks", type: :request do
+  let(:valid_attributes) {
+    {
+      name: "Test Stack",
+      description: "This is a description",
+      private: true
+    }
+  }
+
+  let(:invalid_attributes) {
+    valid_attributes.merge({
+      name: nil
+    })
+  }
+
   describe "GET /users/:username/stacks" do
     context "when the user is private" do
       it "redirects to the user page" do
@@ -35,6 +49,94 @@ RSpec.describe "Users::Stacks", type: :request do
         expect(Stacks::WithPreviews).to receive(:new).and_return(with_previews)
         expect(with_previews).to receive(:fetch).with(page: "2").and_return([{}, nil])
         get user_stacks_path(user, page: 2)
+      end
+
+      it "renders HTML when requested with Turbo Accept headers without page param" do
+        user = FactoryBot.create(:user, private: false)
+        get user_stacks_path(user), headers: {"Accept" => "text/vnd.turbo-stream.html, text/html, application/xhtml+xml"}
+        expect(response).to have_http_status(:success)
+        expect(response.content_type).to include("text/html")
+      end
+
+      it "renders turbo_stream when requested with page param and turbo_stream Accept header" do
+        user = FactoryBot.create(:user, private: false)
+        get user_stacks_path(user, page: 2), headers: {"Accept" => "text/vnd.turbo-stream.html"}
+        expect(response).to have_http_status(:success)
+        expect(response.content_type).to include("text/vnd.turbo-stream.html")
+      end
+    end
+  end
+
+  describe "GET /users/:username/stacks/new" do
+    let(:user) { FactoryBot.create(:user, :confirmed) }
+
+    context "when current user is not the same as the user being viewed" do
+      it "redirects" do
+        user = FactoryBot.create(:user)
+        get new_user_stack_path(user)
+        expect(response).to redirect_to(user_path(user))
+      end
+    end
+
+    context "when the user is the same as the user being viewed" do
+      it "renders a successful response" do
+        user = FactoryBot.create(:user)
+        session = Session.new(user:)
+        allow(Current).to receive(:session).and_return(session)
+        allow(Current).to receive(:user).and_return(user)
+
+        get new_user_stack_path(user)
+        expect(response).to have_http_status(:success)
+      end
+    end
+  end
+
+  describe "POST /users/:username/stacks" do
+    context "when the user is the same as the user for the stack" do
+      before do
+        @user = FactoryBot.create(:user)
+        session = Session.new(user: @user)
+        allow(Current).to receive(:session).and_return(session)
+        allow(Current).to receive(:user).and_return(@user)
+      end
+
+      context "with valid parameters" do
+        it "creates a new Stack" do
+          post user_stacks_path(@user), params: {stack: valid_attributes}
+          stack = Stack.includes(:user).last
+          expect(stack.user).to eq @user
+          expect(stack.name).to eq "Test Stack"
+          expect(stack.description).to eq "This is a description"
+          expect(stack.type).to eq "standard"
+          expect(stack.sorting_method).to eq "added_at"
+          expect(stack.private).to eq true
+        end
+
+        it "redirects to the stacks page" do
+          post user_stacks_path(@user), params: {stack: valid_attributes}
+          expect(response).to redirect_to(user_stacks_path(@user))
+        end
+      end
+
+      context "with invalid parameters" do
+        it "does not create a new stack" do
+          expect {
+            post user_stacks_path(@user), params: {stack: invalid_attributes}
+          }.to change(Stack, :count).by(0)
+        end
+
+        it "renders a response with 422 status (i.e. to display the 'new' template)" do
+          post user_stacks_path(@user), params: {stack: invalid_attributes}
+          expect(response).to have_http_status(:unprocessable_content)
+        end
+      end
+    end
+
+    context "when the user is not the same as the user for this stack" do
+      it "redirects" do
+        user = FactoryBot.create(:user)
+        post user_stacks_path(user), params: {stack: valid_attributes}
+        expect(response).to redirect_to user_path(user)
       end
     end
   end
