@@ -36,12 +36,22 @@ RSpec.describe "users/stacks/index.html.erb", type: :view do
       render
       assert_select "h4", text: "Your Stacks"
     end
+
+    it "renders a link to create a new stack" do
+      render
+      assert_select "a[href='']", text: "Stack"
+    end
   end
 
   context "when the user is not the logged in user" do
     it "renders 'username's Stacks'" do
       render
       assert_select "h4", text: "#{user.username}'s Stacks"
+    end
+
+    it "does not render a link to create a new stack" do
+      render
+      assert_select "a[href='']", text: "Stack", count: 0
     end
   end
 
