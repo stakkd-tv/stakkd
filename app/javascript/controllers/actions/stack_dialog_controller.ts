@@ -29,11 +29,28 @@ export default class extends Controller {
     this.addToStackUrl = ''
     this.removeFromStackUrl = ''
 
-    this.dialog.addEventListener('close', this.resetVariables.bind(this))
+    this.handleKeydown = this.handleKeydown.bind(this)
+    this.handleCancel = this.handleCancel.bind(this)
+
+    document.addEventListener('keydown', this.handleKeydown)
+    this.dialog.addEventListener('cancel', this.handleCancel)
   }
 
   disconnect() {
-    this.dialog.removeEventListener('close', this.resetVariables.bind(this))
+    document.removeEventListener('keydown', this.handleKeydown)
+    this.dialog.removeEventListener('cancel', this.handleCancel)
+  }
+
+  handleKeydown(event: KeyboardEvent) {
+    if (event.key === 'Escape' && this.dialog.open) {
+      event.preventDefault()
+      this.close()
+    }
+  }
+
+  handleCancel(event: Event) {
+    event.preventDefault()
+    this.close()
   }
 
   open(event: {
@@ -60,7 +77,10 @@ export default class extends Controller {
   }
 
   close() {
-    this.dialog.close()
+    if (this.dialog.open) {
+      this.dialog.close()
+    }
+    this.resetVariables()
   }
 
   resetVariables() {
