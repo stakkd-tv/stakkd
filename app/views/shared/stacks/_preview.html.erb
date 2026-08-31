@@ -1,5 +1,5 @@
 <div class="flex flex-col gap-2">
-  <div class="relative w-full aspect-[3/2] outline-2 outline-pop rounded-lg bg-background-darker overflow-hidden -z-4">
+  <div class="relative w-full aspect-3/2 outline-2 outline-pop rounded-lg bg-background-darker overflow-hidden -z-4">
     <%# NOTE: There should only ever be three stack items in the preview %>
     <% stack_items.each_with_index do |stack_item, index| %>
         <% if stack_item.item.respond_to?(:poster) %>
@@ -8,8 +8,10 @@
                 title: stack_item.item,
                 style: "left: #{index * 25}%; z-index: -#{index}" %>
         <% else %>
-          <div class="flex items-center justify-center absolute left-0 top-0 h-full w-1/2 bg-background-darker border border-pop rounded-lg shadow-[4px_0_4px_-2px_rgba(0,0,0,0.3)]">
-            <p class="text-sm font-domine font-bold text-pop"><%= stack_item.item %></p>
+          <div
+            class="flex items-center justify-center absolute left-0 top-0 h-full w-1/2 bg-background-darker border border-pop rounded-lg shadow-[4px_0_4px_-2px_rgba(0,0,0,0.3)]"
+            style="left: <%= index * 25 %>%; z-index: <%= "-#{index}" %>">
+            <p class="text-xs md:text-sm font-domine font-bold text-pop text-center"><%= stack_item.item %></p>
           </div>
         <% end %>
     <% end %>
