@@ -1,10 +1,12 @@
 require "rails_helper"
 
 RSpec.describe "users/stacks/new.html.erb", type: :view do
-  let(:user) { FactoryBot.create(:user, username: "lol") }
+  let(:user) { FactoryBot.create(:user, username: "lol", private:) }
   let(:stack) { user.stacks.new }
+  let(:private) { false }
 
   before(:each) do
+    def view.current_user = nil
     allow(view).to receive(:params).and_return({controller: "users/stacks", action: "new"})
     assign(:user, user)
     assign(:stack, stack)
@@ -34,6 +36,20 @@ RSpec.describe "users/stacks/new.html.erb", type: :view do
       assert_select "input[type='text'][name='stack[name]']"
       assert_select "textarea[name='stack[description]']"
       assert_select "input[type='hidden'][name='stack[private]']"
+    end
+  end
+
+  it "renders a note about private stacks" do
+    render
+    assert_select "small", text: "Private stacks can only be accessed by you."
+  end
+
+  context "when the user is private" do
+    let(:private) { true }
+
+    it "renders an extended note about private stacks and users" do
+      render
+      assert_select "small", text: "Private stacks can only be accessed by you. As your account is private, all your stacks will be private until you choose to make your account public."
     end
   end
 end

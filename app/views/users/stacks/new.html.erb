@@ -23,7 +23,12 @@
         </div>
 
         <%= render "shared/form_toggle_field", form:, field: :private do %>
-          <small class="inline-block mt-2">Private stacks can only be accessed by you.</small>
+          <small class="inline-block mt-2">
+            Private stacks can only be accessed by you.
+            <% if @user.private? %>
+              As your account is private, all your stacks will be private until you choose to make your account public.
+            <% end %>
+          </small>
         <% end %>
 
         <div>
