@@ -181,6 +181,12 @@
             line-height: 20px;
         }
 
+        p:last-child,
+        ul:last-child,
+        ol:last-child {
+            margin-bottom: 0;
+        }
+
         p {
             * {
                 display: inline-block;
