@@ -23,6 +23,13 @@ RSpec.describe ApplicationHelper, type: :helper do
           expect(helper.polymorphic_record_path(record, "add_to_history", page: 1)).to eq(add_to_history_movie_path(record, page: 1))
         end
       end
+
+      context "with no action specified" do
+        it "returns the specific path to the record" do
+          record = FactoryBot.build_stubbed(:movie)
+          expect(helper.polymorphic_record_path(record, "")).to eq(movie_path(record))
+        end
+      end
     end
 
     context "when record is a show" do
@@ -37,6 +44,13 @@ RSpec.describe ApplicationHelper, type: :helper do
           expect(helper.polymorphic_record_path(record, "add_to_history", page: 1)).to eq(add_to_history_show_path(record, page: 1))
         end
       end
+
+      context "with no action specified" do
+        it "returns the specific path to the record" do
+          record = FactoryBot.build_stubbed(:show)
+          expect(helper.polymorphic_record_path(record, "")).to eq(show_path(record))
+        end
+      end
     end
 
     context "when record is a season" do
@@ -49,6 +63,13 @@ RSpec.describe ApplicationHelper, type: :helper do
         it "returns the correct path for the record" do
           record = FactoryBot.build_stubbed(:season)
           expect(helper.polymorphic_record_path(record, "add_to_history", page: 1)).to eq(add_to_history_show_season_path(record.show, record, page: 1))
+        end
+      end
+
+      context "with no action specified" do
+        it "returns the specific path to the record" do
+          record = FactoryBot.build_stubbed(:season)
+          expect(helper.polymorphic_record_path(record, "")).to eq(show_season_path(record.show, record))
         end
       end
     end
@@ -67,6 +88,15 @@ RSpec.describe ApplicationHelper, type: :helper do
           season = FactoryBot.create(:season, show:)
           record = FactoryBot.create(:episode, season:)
           expect(helper.polymorphic_record_path(record, "add_to_history", page: 1)).to eq(add_to_history_show_season_episode_path(show, season, record, page: 1))
+        end
+      end
+
+      context "with no action specified" do
+        it "returns the specific path to the record" do
+          show = FactoryBot.create(:show)
+          season = FactoryBot.create(:season, show:)
+          record = FactoryBot.create(:episode, season:)
+          expect(helper.polymorphic_record_path(record, "")).to eq(show_season_episode_path(show, season, record))
         end
       end
     end

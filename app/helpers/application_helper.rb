@@ -18,6 +18,7 @@ module ApplicationHelper
   end
 
   def polymorphic_record_path(record, action, params = {})
-    send("#{action}_#{record.route_name}_path", record.records_for_polymorphic_paths.merge(params))
+    prefix = action.present? ? "#{action}_" : ""
+    send("#{prefix}#{record.route_name}_path", record.records_for_polymorphic_paths.merge(params))
   end
 end
