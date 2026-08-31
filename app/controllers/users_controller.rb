@@ -17,7 +17,7 @@ class UsersController < ApplicationController
     @recently_watched = @user
       .history_items
       .includes(item: [:show, :season])
-      .order(consumed_at: :desc)
+      .recently_consumed
       .limit(4)
       .map { |item| HistoryItemPresenter.new(item) }
     @stacks, _ = Stacks::WithPreviews.new(@user.stacks, user: current_user, per_page: 2).fetch
