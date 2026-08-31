@@ -53,8 +53,11 @@ export default class extends Controller {
     )
     this.currentOption = OPTIONS[0]
     this.currentOptionButton = this.optionButtons[0]
-    // TODO: Re-enable. Disabled due to flaking spec
-    // this.dialog.addEventListener('close', this.close.bind(this))
+    this.dialog.addEventListener('close', this.resetVariables.bind(this))
+  }
+
+  disconnect() {
+    this.dialog.removeEventListener('close', this.resetVariables.bind(this))
   }
 
   open(event: {
@@ -84,6 +87,9 @@ export default class extends Controller {
 
   close() {
     this.dialog.close()
+  }
+
+  resetVariables() {
     this.triggeredBy = null
     this.formTarget.action = ''
     this.removeFromHistoryButtonTarget.dataset.removeFromHistoryUrl = ''

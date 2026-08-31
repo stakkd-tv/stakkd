@@ -29,8 +29,11 @@ export default class extends Controller {
     this.addToStackUrl = ''
     this.removeFromStackUrl = ''
 
-    // TODO: Re-enable. Disabled due to flaking spec
-    // this.dialog.addEventListener('close', this.close.bind(this))
+    this.dialog.addEventListener('close', this.resetVariables.bind(this))
+  }
+
+  disconnect() {
+    this.dialog.removeEventListener('close', this.resetVariables.bind(this))
   }
 
   open(event: {
@@ -58,6 +61,9 @@ export default class extends Controller {
 
   close() {
     this.dialog.close()
+  }
+
+  resetVariables() {
     this.triggeredBy = null
     this.stacksForThisRecord = []
     this.stackTargets.forEach((target) => {
