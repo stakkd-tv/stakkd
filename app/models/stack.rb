@@ -28,11 +28,18 @@ class Stack < ApplicationRecord
   scope :official, -> { where(user_id: nil) }
   scope :standard, -> { where(type: "standard") }
   scope :visible_to, ->(user) {
-    where(private: false)
-      .or(where(private: true, user: user))
+    joins(:user).where(
+      "NOT stacks.private AND NOT users.private OR stacks.user_id = :user_id",
+      user_id: user&.id
+    )
   }
 
   def self.inheritance_column = nil
+
+  def private?
+    return false unless user # Official stacks are always public
+    private || user.private
+  end
 
   def add!(item, added_at: Time.current)
     StackItem.create!(

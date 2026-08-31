@@ -33,7 +33,8 @@ RSpec.describe Stack, type: :model do
 
   describe ".visible_to" do
     it "only returns stacks that are visible to the user" do
-      user = FactoryBot.create(:user)
+      # Even though the user is private they can still see their own stacks
+      user = FactoryBot.create(:user, private: true)
       # Private stack for the user
       private_stack = FactoryBot.create(:stack, user:, private: true)
       # Public stack for the user
@@ -42,6 +43,10 @@ RSpec.describe Stack, type: :model do
       FactoryBot.create(:stack, private: true)
       # Public stack for another user
       public_by_other_user = FactoryBot.create(:stack, private: false)
+      # Stacks for a private user, disregards private flag on individual stacks
+      private_user = FactoryBot.create(:user, private: true)
+      FactoryBot.create(:stack, user: private_user, private: false)
+      FactoryBot.create(:stack, user: private_user, private: true)
       expect(Stack.visible_to(user)).to contain_exactly(private_stack, public_stack, public_by_other_user)
     end
 
@@ -52,6 +57,9 @@ RSpec.describe Stack, type: :model do
         FactoryBot.create(:stack, private: true)
         # Public stack
         public_stack = FactoryBot.create(:stack, private: false)
+        # Public stack but private user
+        private_user = FactoryBot.create(:user, private: true)
+        FactoryBot.create(:stack, user: private_user, private: false)
         expect(Stack.visible_to(user)).to contain_exactly(public_stack)
       end
     end
@@ -62,6 +70,48 @@ RSpec.describe Stack, type: :model do
   describe ".inheritance_column" do
     it "returns nil" do
       expect(Stack.inheritance_column).to be_nil
+    end
+  end
+
+  describe "private?" do
+    let(:stack) { FactoryBot.create(:stack, user:, private: stack_private) }
+    let(:user) { FactoryBot.create(:user, private: user_private) }
+
+    subject { stack.private? }
+
+    context "when the stack is private and the user is public" do
+      let(:stack_private) { true }
+      let(:user_private) { false }
+
+      it { should be_truthy }
+    end
+
+    context "when the stack is public but the user is private" do
+      let(:stack_private) { false }
+      let(:user_private) { true }
+
+      it { should be_truthy }
+    end
+
+    context "when the stack is public and the user is public" do
+      let(:stack_private) { false }
+      let(:user_private) { false }
+
+      it { should be_falsey }
+    end
+
+    context "when the stack does not have a user and is private" do
+      let(:stack_private) { false }
+      let(:user) { nil }
+
+      it { should be_falsey }
+    end
+
+    context "when the stack does not have a user and is public" do
+      let(:stack_private) { false }
+      let(:user) { nil }
+
+      it { should be_falsey }
     end
   end
 

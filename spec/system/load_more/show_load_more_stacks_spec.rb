@@ -15,7 +15,12 @@ RSpec.feature "Show load more stacks", type: :system, js: true do
     # Make the first stack private
     Stack.first.update(private: true)
     # Private stack for another user
-    FactoryBot.create(:stack, private: true, name: "Private Stack")
+    private_stack = FactoryBot.create(:stack, private: true, name: "Private Stack")
+    FactoryBot.create(:stack_item, item: show, stack: private_stack)
+    # Stack that is not marked as private but the user is
+    private_user = FactoryBot.create(:user, private: true)
+    private_user_stack = FactoryBot.create(:stack, name: "Private User Stack", user: private_user)
+    FactoryBot.create(:stack_item, item: show, stack: private_user_stack)
 
     visit show_path(show)
 
@@ -27,6 +32,7 @@ RSpec.feature "Show load more stacks", type: :system, js: true do
     expect(page).not_to have_content("Stack #2")
     expect(page).not_to have_content("Only you can see this stack")
     expect(page).not_to have_content("Private Stack")
+    expect(page).not_to have_content("Private User Stack")
     expect(page).to have_css "turbo-frame#load_more_top_stacks", text: "Load more stacks"
     click_link "Load more stacks"
     expect(page).to have_content("Stack #4")
@@ -35,10 +41,12 @@ RSpec.feature "Show load more stacks", type: :system, js: true do
     expect(page).not_to have_content("Stack #1")
     expect(page).not_to have_content("Only you can see this stack")
     expect(page).not_to have_content("Private Stack")
+    expect(page).not_to have_content("Private User Stack")
     click_link "Load more stacks"
     expect(page).to have_content("Stack #1")
     expect(page).to have_content("Only you can see this stack")
     expect(page).not_to have_content("Private Stack")
+    expect(page).not_to have_content("Private User Stack")
     expect(page).to have_css "turbo-frame#load_more_top_stacks", count: 0
   end
 end
