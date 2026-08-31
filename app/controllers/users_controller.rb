@@ -12,6 +12,15 @@ class UsersController < ApplicationController
   ]
 
   def show
+    return if @user.private? && current_user != @user # Early return as we don't need the below instance variables for private accounts
+
+    @recently_watched = @user
+      .history_items
+      .includes(item: [:show, :season])
+      .order(consumed_at: :desc)
+      .limit(4)
+      .map { |item| HistoryItemPresenter.new(item) }
+    @stacks, _ = Stacks::WithPreviews.new(@user.stacks, user: current_user, per_page: 2).fetch
   end
 
   def new

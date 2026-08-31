@@ -43,11 +43,16 @@ RSpec.describe "Users", type: :request do
 
       it "displays a private profile" do
         user = FactoryBot.create(:user, username: "private_user", private: true, biography: "This my bio")
+        FactoryBot.create(:stack, user: user)
+        FactoryBot.create(:history_item, user: user)
+
         get user_path(user)
         expect(response).to have_http_status(:success)
         assert_select "h1", text: "private_user"
         assert_select "h4", text: "This user's profile is private. You won't be able to see their activity unless they accept your follow request."
         assert_select "div[data-markdown-renderer-markdown-value='This my bio']", count: 0
+        assert_select "h4.text-xl", text: "Recently watched:", count: 0
+        assert_select "h4.text-xl", text: "Stacks:", count: 0
       end
     end
 
@@ -57,6 +62,9 @@ RSpec.describe "Users", type: :request do
         session = @current_user.sessions.create!(user_agent: "Mozilla/", ip_address: "192.168.0.1")
         allow(Current).to receive(:session).and_return(session)
         allow(Current).to receive(:user).and_return(@current_user)
+
+        FactoryBot.create(:stack, user: @current_user)
+        FactoryBot.create(:history_item, user: @current_user)
       end
 
       it "displays the public profile" do
@@ -65,17 +73,24 @@ RSpec.describe "Users", type: :request do
         assert_select "h1", text: "testing123"
         assert_select "h4", text: "This user's profile is private. You won't be able to see their activity unless they accept your follow request.", count: 0
         assert_select "div[data-markdown-renderer-markdown-value='This my bio']"
+        assert_select "h4.text-xl", text: "Recently watched:"
+        assert_select "h4.text-xl", text: "Stacks:"
       end
     end
 
     context "when the user is not private" do
       it "displays the public profile for the user" do
         user = FactoryBot.create(:user, username: "normal_user", biography: "This my bio")
+        FactoryBot.create(:stack, user: user)
+        FactoryBot.create(:history_item, user: user)
+
         get user_path(user)
         expect(response).to have_http_status(:success)
         assert_select "h1", text: "normal_user"
         assert_select "h4", text: "This user's profile is private. You won't be able to see their activity unless they accept your follow request.", count: 0
         assert_select "div[data-markdown-renderer-markdown-value='This my bio']"
+        assert_select "h4.text-xl", text: "Recently watched:"
+        assert_select "h4.text-xl", text: "Stacks:"
       end
     end
   end

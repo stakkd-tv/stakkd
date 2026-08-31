@@ -1,9 +1,33 @@
 <div class="max-w-7xl mx-auto my-8 px-6 pt-10">
   <%= render "header", user: user %>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div class="grid <%= user.biography.present? ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1" %> gap-8">
     <% if user.biography.present? %>
-      <div class="p-2 md:p-8 rendered-markdown rounded-lg" data-controller="markdown-renderer" data-markdown-renderer-markdown-value="<%= @user.biography %>"></div>
+      <div class="p-2 md:p-8 rendered-markdown rounded-lg h-fit" data-controller="markdown-renderer" data-markdown-renderer-markdown-value="<%= @user.biography %>"></div>
     <% end %>
+    <div class="col-span-auto">
+      <% if @recently_watched.any? %>
+        <div class="flex justify-between items-center mb-4">
+          <h4 class="text-xl font-domine">Recently watched:</h4>
+          <%= link_to "View all ➤", "#", class: "text-sm underline" %>
+        </div>
+        <div class="grid <%= user.biography.present? ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1 md:grid-cols-4" %> gap-4">
+          <% @recently_watched.each do |history_item| %>
+            <%= render "history_item", history_item: history_item %>
+          <% end %>
+        </div>
+      <% end %>
+      <% if @stacks.any? %>
+        <div class="flex justify-between items-center mb-4 mt-8">
+          <h4 class="text-xl font-domine">Stacks:</h4>
+          <%= link_to "View all ➤", user_stacks_path(@user), class: "text-sm underline" %>
+        </div>
+        <div class="grid <%= user.biography.present? ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1 md:grid-cols-4" %> gap-4">
+          <% @stacks.each do |stack, stack_items| %>
+            <%= render "shared/stacks/preview", stack: stack, stack_items: stack_items %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>
