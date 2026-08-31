@@ -1,9 +1,9 @@
 class Users::StacksController < Users::BaseController
-  before_action :require_same_user, only: [:new, :create]
+  before_action :require_same_user, only: [:new, :create, :destroy]
+  before_action :set_stack, only: [:destroy]
 
   # TODO: Edit stack
   # TODO: Show stack
-  # TODO: Delete stack
 
   def index
     @stacks_with_previews, @stacks_next_page = Stacks::WithPreviews
@@ -29,9 +29,21 @@ class Users::StacksController < Users::BaseController
     end
   end
 
+  def destroy
+    @stack.destroy
+    respond_to do |format|
+      format.html { redirect_to user_stacks_path(@user) }
+      format.json { render json: {success: true} }
+    end
+  end
+
   private
 
   def stack_params
     params.require(:stack).permit(:name, :description, :private)
+  end
+
+  def set_stack
+    @stack = current_user.stacks.from_slug(params[:id])
   end
 end
