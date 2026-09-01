@@ -117,6 +117,9 @@ RSpec.feature "Show actions", type: :system, js: true do
     expect(page).to have_css "input#consumed_at"
     page.find("input#consumed_at").click
     expect(page).to have_css ".flatpickr-calendar"
+    # We need to pick the specific month and year as travel_to does not affect client side JS
+    page.find("select.flatpickr-monthDropdown-months").select("August")
+    page.find("input[aria-label='Year']").fill_in(with: "2026")
     page.find("span.flatpickr-day", text: "14").click
     page.find("input.flatpickr-hour").fill_in(with: "13")
     page.find("input.flatpickr-minute").fill_in(with: "05")
