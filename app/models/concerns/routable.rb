@@ -8,9 +8,9 @@ module Routable
   end
 
   def related_records
-    ordered_related_records.map do |record|
+    ordered_related_records.to_h do |record|
       [record.model_name.param_key.to_sym, record]
-    end.to_h
+    end
   end
 
   def records_for_polymorphic_paths
