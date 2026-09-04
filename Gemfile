@@ -48,7 +48,7 @@ gem "image_processing", "~> 2.0"
 gem "ruby-vips", "~> 2.3"
 
 # Extract colours from images, plus other image operations
-gem "mini_magick", "~> 5.3"
+gem "mini_magick", "~> 5.4"
 
 # ActiveRecord tagging
 gem "acts-as-taggable-on", "~> 13.0"
