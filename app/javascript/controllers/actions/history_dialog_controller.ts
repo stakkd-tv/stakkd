@@ -1,11 +1,11 @@
-import { Controller } from '@hotwired/stimulus'
 import flatpickr from 'flatpickr'
 import { Instance } from 'flatpickr/dist/types/instance'
+import DialogController from '../dialog_controller'
 
 const OPTIONS = ['now', 'release_date', 'date', 'unknown']
 
 // Connects to data-controller="history-dialog"
-export default class extends Controller {
+export default class extends DialogController {
   static targets = [
     'form',
     'consumedAtInput',
@@ -20,15 +20,14 @@ export default class extends Controller {
   declare readonly consumedAtTypeTarget: HTMLInputElement
   declare readonly removeFromHistoryButtonTarget: HTMLButtonElement
 
-  declare triggeredBy: HTMLButtonElement | null
   declare optionButtons: HTMLButtonElement[]
-  declare dialog: HTMLDialogElement
   declare currentOption: string
   declare currentOptionButton: HTMLButtonElement
   declare flatpickrInstance: Instance
 
   connect() {
-    this.dialog = this.element as HTMLDialogElement
+    super.connect()
+
     this.flatpickrInstance = flatpickr(this.consumedAtInputTarget, {
       enableTime: true,
       disableMobile: false,
@@ -53,70 +52,32 @@ export default class extends Controller {
     )
     this.currentOption = OPTIONS[0]
     this.currentOptionButton = this.optionButtons[0]
-
-    this.handleKeydown = this.handleKeydown.bind(this)
-    this.handleCancel = this.handleCancel.bind(this)
-
-    document.addEventListener('keydown', this.handleKeydown)
-    this.dialog.addEventListener('cancel', this.handleCancel)
   }
 
-  disconnect() {
-    document.removeEventListener('keydown', this.handleKeydown)
-    this.dialog.removeEventListener('cancel', this.handleCancel)
-  }
-
-  handleKeydown(event: KeyboardEvent) {
-    if (event.key === 'Escape' && this.dialog.open) {
-      event.preventDefault()
-      this.close()
-    }
-  }
-
-  handleCancel(event: Event) {
-    event.preventDefault()
-    this.close()
-  }
-
-  open(event: {
-    detail: {
-      button: HTMLButtonElement
-      addToHistoryUrl: string
-      removeFromHistoryUrl: string
-    }
-  }) {
-    this.triggeredBy = event.detail.button
+  setVariables(detail: {
+    button: HTMLButtonElement
+    addToHistoryUrl: string
+    removeFromHistoryUrl: string
+  }): void {
     if (
-      this.triggeredBy.dataset.status === 'consumed' ||
-      this.triggeredBy.dataset.status === 'partially_consumed'
+      this.triggeredBy?.dataset?.status === 'consumed' ||
+      this.triggeredBy?.dataset?.status === 'partially_consumed'
     ) {
       this.removeFromHistoryButtonTarget.classList.remove('hidden')
     } else {
       this.removeFromHistoryButtonTarget.classList.add('hidden')
     }
 
-    this.formTarget.action = event.detail.addToHistoryUrl
+    this.formTarget.action = detail.addToHistoryUrl
     this.removeFromHistoryButtonTarget.dataset.removeFromHistoryUrl =
-      event.detail.removeFromHistoryUrl
-
-    this.dialog.showModal()
-    document.documentElement.style.overflow = 'hidden'
-  }
-
-  close() {
-    if (this.dialog.open) {
-      this.dialog.close()
-    }
-    this.resetVariables()
+      detail.removeFromHistoryUrl
   }
 
   resetVariables() {
-    this.triggeredBy = null
     this.formTarget.action = ''
     this.removeFromHistoryButtonTarget.dataset.removeFromHistoryUrl = ''
     this._setOption(OPTIONS[0], this.optionButtons[0])
     this.consumedAtInputTarget.value = ''
-    document.documentElement.style.overflow = ''
   }
 
   async removeFromHistory() {
