@@ -54,6 +54,11 @@ RSpec.describe "users/show", type: :view do
       assert_select "div[data-controller='markdown-renderer']", count: 0
     end
 
+    it "renders the deletion dialog" do
+      render
+      assert_select "dialog[data-controller='deletion-dialog']"
+    end
+
     context "when the user does not have any history items" do
       it "does not render the recently watched section" do
         render

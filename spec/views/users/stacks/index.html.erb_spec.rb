@@ -29,6 +29,11 @@ RSpec.describe "users/stacks/index.html.erb", type: :view do
     assert_select "a[data-active='false']", text: "Following"
   end
 
+  it "renders the deletion dialog" do
+    render
+    assert_select "dialog[data-controller='deletion-dialog']"
+  end
+
   context "when the user is the logged in user" do
     let(:logged_in_user) { user }
 
