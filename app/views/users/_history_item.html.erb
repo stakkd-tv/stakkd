@@ -1,8 +1,8 @@
-<%= link_to polymorphic_record_path(history_item.item, nil), class: "group flex flex-col gap-1" do %>
+<%= link_to polymorphic_record_path(history_item.item, nil), class: "group flex flex-col gap-2" do %>
   <div class="relative">
     <%= image_tag history_item.item.background(variant: :small), class: "w-full border border-transparent group-hover:border-pop rounded-lg transition duration-300 ease-in-out" %>
     <small class="absolute left-0 bottom-0 bg-background px-2 py-1 m-1 rounded-full"><%= history_item.formatted_consumed_at %></small>
   </div>
-  <p class="text-sm font-domine"><%= history_item.title %></p>
+  <p class="text-md font-domine"><%= history_item.title %></p>
   <p class="text-xs"><%= history_item.subtitle %></p>
 <% end %>

@@ -18,9 +18,9 @@
     <% end %>
   </div>
 
-  <div class="flex flex-col gap-1.5 py-2">
+  <div class="flex flex-col gap-1.5">
     <div class="flex justify-between items-center relative">
-      <h6 class="font-domine text-md md:text-lg"><%= stack.name %></h6>
+      <h6 class="font-domine text-md"><%= stack.name %></h6>
       <% if stack.user == current_user %>
         <button
           class="cursor-pointer h-full min-w-10.5 aspect-square rounded-lg border border-transparent focus:bg-black/75 hover:bg-black/75 transition-all duration-300 ease-in-out"
