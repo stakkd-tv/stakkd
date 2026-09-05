@@ -60,6 +60,8 @@ class Stack < ApplicationRecord
 
   def to_s = name
 
+  def official? = user.nil?
+
   private
 
   def slug_source = name

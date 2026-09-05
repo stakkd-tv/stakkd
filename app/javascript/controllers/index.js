@@ -3,6 +3,8 @@
 // ./bin/rails generate stimulus controllerName
 
 // Actions
+import DeletionButtonController from './actions/deletion_button_controller'
+import DeletionDialogController from './actions/deletion_dialog_controller'
 import HistoryButtonController from './actions/history_button_controller'
 import HistoryDialogController from './actions/history_dialog_controller'
 import StackButtonController from './actions/stack_button_controller'
@@ -24,6 +26,8 @@ import TableEditorController from './table_editor_controller'
 import ToggleController from './toggle_controller'
 import UploadsController from './uploads_controller'
 
+application.register('deletion-button', DeletionButtonController)
+application.register('deletion-dialog', DeletionDialogController)
 application.register('history-button', HistoryButtonController)
 application.register('history-dialog', HistoryDialogController)
 application.register('stack-button', StackButtonController)

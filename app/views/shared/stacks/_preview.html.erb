@@ -1,4 +1,5 @@
-<div class="flex flex-col gap-2 group">
+<% selector = "Stack_#{stack.id}_options" %>
+<div class="flex flex-col gap-2 group Stack_<%= stack.id %>_card">
   <div class="relative w-full aspect-3/2 outline outline-transparent group-hover:outline-pop rounded-lg bg-background-darker overflow-hidden -z-4 transition duration-300 ease-in-out">
     <%# NOTE: There should only ever be three stack items in the preview %>
     <% stack_items.each_with_index do |stack_item, index| %>
@@ -17,8 +18,39 @@
     <% end %>
   </div>
 
-  <div class="flex flex-col gap-1.5 py-2">
-    <h6 class="font-domine text-md md:text-lg"><%= stack.name %></h6>
+  <div class="flex flex-col gap-1.5">
+    <div class="flex justify-between items-center relative">
+      <h6 class="font-domine text-md"><%= stack.name %></h6>
+      <% if stack.user == current_user %>
+        <button
+          class="cursor-pointer h-full min-w-10.5 aspect-square rounded-lg border border-transparent focus:bg-black/75 hover:bg-black/75 transition-all duration-300 ease-in-out"
+          title="More options"
+          data-controller="more-options"
+          data-more-options-selector-value=".<%= selector %>"
+          id="<%= "Stack_#{stack.id}_more_options" %>">
+          <i class="fa-solid fa-ellipsis-vertical text-xl transition-all duration-300 ease-in-out"></i>
+        </button>
+
+        <div class="<%= selector %> mt-2 z-1 opacity-0 pointer-events-none transition-all duration-300 ease-in-out fixed sm:absolute bottom-0 left-0 h-fit w-full sm:w-50 sm:top-full sm:right-0 sm:left-auto flex flex-col gap-2 p-2 bg-background-darker border-t-2 sm:border-2 border-pop sm:rounded-lg">
+          <p class="sm:hidden text-xl font-domine my-4"><%= stack.name %></p>
+
+          <%= link_to "#", class: "link w-full" do %>
+            <i class="fa-solid fa-pen mr-2"></i>
+            Edit
+          <% end %>
+
+          <button
+            class="link w-full"
+            data-controller="deletion-button"
+            data-action="deletion-button#open deletion-dialog:deleted@window->deletion-button#removeElementFromDOM"
+            data-deletion-button-card-element-selector-value="<%= ".Stack_#{stack.id}_card" %>"
+            data-deletion-button-delete-record-url-value="<%= user_stack_path(stack, user_id: current_user) %>">
+            <i class="fa-solid fa-trash-can mr-2"></i>
+            Delete
+          </button>
+        </div>
+      <% end %>
+    </div>
     <% if stack.user %>
       <%= link_to stack.user, class: "flex items-center gap-2", data: {turbo: false} do %>
         <%# TODO: Small/thumb avatar variant %>

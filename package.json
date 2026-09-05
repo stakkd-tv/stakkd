@@ -25,7 +25,7 @@
     "instantsearch.js": "^4.108.0",
     "marked": "^18.0.5",
     "marked-inline-spoilers": "^1.0.1",
-    "sanitize-html": "^2.17.5",
+    "sanitize-html": "^2.17.7",
     "slim-select": "^4.2.0",
     "tabulator-tables": "^6.5.2",
     "tailwindcss": "^4.3.3",

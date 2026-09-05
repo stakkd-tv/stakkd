@@ -1,7 +1,7 @@
-import { Controller } from '@hotwired/stimulus'
+import DialogController from '../dialog_controller'
 
 // Connects to data-controller="stack-dialog"
-export default class extends Controller {
+export default class extends DialogController {
   static targets = [
     'stack',
     'createStackForm',
@@ -14,8 +14,6 @@ export default class extends Controller {
   declare availableStacksTarget: HTMLDivElement
   declare stackPlaceholderTarget: HTMLButtonElement
 
-  declare triggeredBy: HTMLButtonElement | null
-  declare dialog: HTMLDialogElement
   declare stacksForThisRecord: number[]
 
   // URL values
@@ -23,68 +21,32 @@ export default class extends Controller {
   declare removeFromStackUrl: string
 
   connect() {
-    this.dialog = this.element as HTMLDialogElement
+    super.connect()
+
     this.stacksForThisRecord = []
 
     this.addToStackUrl = ''
     this.removeFromStackUrl = ''
-
-    this.handleKeydown = this.handleKeydown.bind(this)
-    this.handleCancel = this.handleCancel.bind(this)
-
-    document.addEventListener('keydown', this.handleKeydown)
-    this.dialog.addEventListener('cancel', this.handleCancel)
   }
 
-  disconnect() {
-    document.removeEventListener('keydown', this.handleKeydown)
-    this.dialog.removeEventListener('cancel', this.handleCancel)
-  }
-
-  handleKeydown(event: KeyboardEvent) {
-    if (event.key === 'Escape' && this.dialog.open) {
-      event.preventDefault()
-      this.close()
-    }
-  }
-
-  handleCancel(event: Event) {
-    event.preventDefault()
-    this.close()
-  }
-
-  open(event: {
-    detail: {
-      button: HTMLButtonElement
-      stacksForThisRecord: number[]
-      addToStackUrl: string
-      createAndAddToStackUrl: string
-      removeFromStackUrl: string
-    }
-  }) {
-    this.triggeredBy = event.detail.button
-    this.stacksForThisRecord = event.detail.stacksForThisRecord
+  setVariables(detail: {
+    button: HTMLButtonElement
+    stacksForThisRecord: number[]
+    addToStackUrl: string
+    createAndAddToStackUrl: string
+    removeFromStackUrl: string
+  }): void {
+    this.stacksForThisRecord = detail.stacksForThisRecord
     this.stackTargets.forEach((stack) => {
       stack.dataset.active = this._recordIsInStack(stack)
     })
 
-    this.addToStackUrl = event.detail.addToStackUrl
-    this.createStackFormTarget.action = event.detail.createAndAddToStackUrl
-    this.removeFromStackUrl = event.detail.removeFromStackUrl
-
-    this.dialog.showModal()
-    document.documentElement.style.overflow = 'hidden'
-  }
-
-  close() {
-    if (this.dialog.open) {
-      this.dialog.close()
-    }
-    this.resetVariables()
+    this.addToStackUrl = detail.addToStackUrl
+    this.createStackFormTarget.action = detail.createAndAddToStackUrl
+    this.removeFromStackUrl = detail.removeFromStackUrl
   }
 
   resetVariables() {
-    this.triggeredBy = null
     this.stacksForThisRecord = []
     this.stackTargets.forEach((target) => {
       target.dataset.active = 'false'
@@ -92,7 +54,6 @@ export default class extends Controller {
     this.addToStackUrl = ''
     this.createStackFormTarget.action = ''
     this.removeFromStackUrl = ''
-    document.documentElement.style.overflow = ''
   }
 
   async select(event: { currentTarget: HTMLButtonElement }) {
