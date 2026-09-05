@@ -175,4 +175,16 @@ RSpec.describe Stack, type: :model do
       expect(stack.to_s).to eq "Test Stack"
     end
   end
+
+  describe "#official?" do
+    it "returns true for official stacks" do
+      stack = Stack.new(user: nil)
+      expect(stack.official?).to be true
+    end
+
+    it "returns false for user stacks" do
+      stack = Stack.new(user: FactoryBot.create(:user))
+      expect(stack.official?).to be false
+    end
+  end
 end
