@@ -32,7 +32,10 @@ export default class extends Controller {
   removeElementFromDOM(event: { detail: { target: HTMLButtonElement } }) {
     if (event.detail.target !== this.element) return
     this.cardElements.forEach((element) => {
-      element.remove()
+      element.addEventListener('animationend', () => {
+        element.remove()
+      })
+      element.classList.add('animate-fade-out')
     })
   }
 }

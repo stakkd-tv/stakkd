@@ -6,7 +6,7 @@
         <%= link_to crew_member.person, class: "flex items-center gap-4 rounded-lg bg-background-darker border border-transparent hover:border-pop transition duration-300 ease-in-out" do %>
           <%= image_tag crew_member.person.image(variant: :thumb), class: "w-16 min-w-16 h-16 rounded-lg object-cover" %>
           <div>
-            <h5 class="text-lg font-bold"><%= crew_member.person.translated_name %></h5>
+            <h5 class="text-lg font-bold font-domine"><%= crew_member.person.translated_name %></h5>
             <p class="text-pop"><%= crew_member.job.name %></p>
           </div>
         <% end %>

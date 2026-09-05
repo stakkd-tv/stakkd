@@ -10,6 +10,18 @@
 
     --font-fugaz: Fugaz One;
     --font-domine: Domine;
+
+    --animate-fade-out: fadeOut 0.5s ease-in-out forwards;
+
+    @keyframes fadeOut {
+        0% {
+          opacity: 1;
+        }
+
+        100% {
+          opacity: 0;
+        }
+    }
 }
 
 @layer base {
