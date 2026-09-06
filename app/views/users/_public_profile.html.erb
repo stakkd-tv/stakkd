@@ -11,14 +11,14 @@
           <h4 class="text-xl font-domine">Recently watched:</h4>
           <%= link_to "View all ➤", "#", class: "text-sm underline" %>
         </div>
-        <div class="grid <%= user.biography.present? ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1 md:grid-cols-4" %> gap-4">
+        <div class="grid <%= user.biography.present? ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1 md:grid-cols-4" %> gap-4 mb-8">
           <% @recently_watched.each do |history_item| %>
             <%= render "history_item", history_item: history_item %>
           <% end %>
         </div>
       <% end %>
       <% if @stacks.any? %>
-        <div class="flex justify-between items-center mb-4 mt-8">
+        <div class="flex justify-between items-center mb-4">
           <h4 class="text-xl font-domine">Stacks:</h4>
           <%= link_to "View all ➤", user_stacks_path(@user), class: "text-sm underline" %>
         </div>
