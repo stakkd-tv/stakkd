@@ -8,10 +8,18 @@ class Stack < ApplicationRecord
   ]
 
   SORTING_METHODS = [
-    "added_at",
     "position",
-    "release_date"
-    # TODO: Popularities and ratings (community (avg) and user (your own))
+    "added_at",
+    "title",
+    "release_date",
+    "runtime",
+    "popularity",
+    "overall_rating"
+  ]
+
+  SORTING_DIRECTIONS = [
+    "asc",
+    "desc"
   ]
 
   # Associations
@@ -22,6 +30,7 @@ class Stack < ApplicationRecord
   validates_presence_of :name
   validates_inclusion_of :type, in: TYPES
   validates_inclusion_of :sorting_method, in: SORTING_METHODS
+  validates_inclusion_of :sorting_direction, in: SORTING_DIRECTIONS
   validates_length_of :description, maximum: 100
 
   # Scopes

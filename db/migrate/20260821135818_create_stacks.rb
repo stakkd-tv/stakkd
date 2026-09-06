@@ -5,6 +5,7 @@ class CreateStacks < ActiveRecord::Migration[8.1]
       t.string :type, null: false, default: "standard"
       t.string :name, null: false
       t.string :sorting_method, null: false, default: "added_at"
+      t.string :sorting_direction, null: false, default: "asc"
       t.boolean :private, null: false, default: false
       t.string :description, null: true
       t.string :name_kebab, null: false
