@@ -18,8 +18,8 @@ class Release < ApplicationRecord
   validates_inclusion_of :type, in: TYPES
 
   # Callbacks
-  after_save :trigger_movie_update
-  after_destroy :trigger_movie_update
+  after_save_commit :trigger_movie_update
+  after_destroy_commit :trigger_movie_update
 
   def self.inheritance_column = nil
 
