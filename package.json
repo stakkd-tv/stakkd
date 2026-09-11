@@ -22,7 +22,7 @@
     "@hotwired/turbo-rails": "^8.0.23",
     "easymde": "^2.21.0",
     "flatpickr": "^4.6.13",
-    "instantsearch.js": "^4.108.0",
+    "instantsearch.js": "^4.116.0",
     "marked": "^18.0.5",
     "marked-inline-spoilers": "^1.0.1",
     "sanitize-html": "^2.17.7",
