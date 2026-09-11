@@ -3,8 +3,11 @@
   "private": true,
   "devDependencies": {
     "@biomejs/biome": "2.5.8",
+    "@tailwindcss/cli": "^4.3.3",
     "@types/sanitize-html": "^2.16.1",
+    "@types/tabulator-tables": "^6.3.6",
     "esbuild": "^0.28.1",
+    "tailwindcss": "^4.3.3",
     "tsc-watch": "^7.2.1",
     "typescript": "^6.0.3"
   },
@@ -17,8 +20,6 @@
     "@babel/runtime": "^7.29.7",
     "@hotwired/stimulus": "^3.2.2",
     "@hotwired/turbo-rails": "^8.0.23",
-    "@tailwindcss/cli": "^4.3.3",
-    "@types/tabulator-tables": "^6.3.6",
     "easymde": "^2.21.0",
     "flatpickr": "^4.6.13",
     "instantsearch.js": "^4.108.0",
@@ -27,7 +28,6 @@
     "sanitize-html": "^2.17.7",
     "slim-select": "^4.2.0",
     "tabulator-tables": "^6.5.2",
-    "tailwindcss": "^4.3.3",
     "typesense-instantsearch-adapter": "github:typesense/typesense-instantsearch-adapter#5855720f05df6b5af79e1e4e550de86369b09805"
   },
   "packageManager": "yarn@4.18.0"
