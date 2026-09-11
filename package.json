@@ -2,7 +2,7 @@
   "name": "app",
   "private": true,
   "devDependencies": {
-    "@biomejs/biome": "2.5.8",
+    "@biomejs/biome": "2.5.12",
     "@tailwindcss/cli": "^4.3.3",
     "@types/sanitize-html": "^2.16.1",
     "@types/tabulator-tables": "^6.3.6",
