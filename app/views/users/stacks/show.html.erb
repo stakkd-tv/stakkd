@@ -8,6 +8,7 @@
     <% if @stack.description.present? %>
       <p class="text-sm text-gray-300 mt-2"><%= @stack.description %></p>
     <% end %>
+    <p class="text-sm text-gray-300 mt-2"><%= pluralize(@stack.stack_items.count, "item") %></p>
     <hr class="my-4 border-t-3 border-background">
     <div class="flex gap-2 items-center">
       <%= select_tag :sort,
@@ -21,9 +22,42 @@
     </div>
   </div>
 
-  <div id="stack_items" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
+  <div id="stack_items" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
     <% @stack_items.each do |stack_item| %>
-      <%= render "shared/poster_with_actions", record: stack_item.item, watch_status: @watch_statuses[stack_item.item] %>
+      <div class="p-4 bg-background-darker rounded-lg flex flex-col gap-4 relative group">
+        <div class="flex flex-col md:flex-row gap-4">
+          <% if stack_item.item.respond_to?(:poster) %>
+            <%= link_to polymorphic_record_path(stack_item.item, nil), class: "w-fit" do %>
+              <div class="h-fit min-w-30 max-w-30 aspect-2/3 border border-pop outline outline-transparent group-hover:outline-pop rounded-lg overflow-hidden transition duration-300 ease-in-out">
+                <%= image_tag stack_item.item.poster(variant: :small),
+                     class: "w-full",
+                     title: stack_item.item %>
+              </div>
+            <% end %>
+          <% end %>
+          <div>
+            <%= link_to polymorphic_record_path(stack_item.item, nil), class: "inline-block max-w-9/10" do %>
+              <h5 class="text-md font-domine font-bold line-clamp-2 mb-2">
+                <%= stack_item.item %>
+              </h5>
+            <% end %>
+            <small class="text-xs text-gray-300 line-clamp-4 leading-4 mb-2">
+              <%= stack_item.item.overview %>
+            </small>
+            <small class="text-xs line-clamp-2">
+              Added: <%= stack_item.added_at.strftime("%b %d, %Y %H:%M") %>
+            </small>
+          </div>
+        </div>
+        <% watch_status = @watch_statuses[stack_item.item] || :not_consumed %>
+        <%= render "shared/actions/compact_actions", record: stack_item.item, watch_status: watch_status %>
+
+        <% if @stack.user === current_user %>
+          <button class="h-fit absolute top-0 right-0 my-3 mx-4">
+            <i class="fa-solid fa-xmark cursor-pointer"></i>
+          </button>
+        <% end %>
+      </div>
     <% end %>
   </div>
 </div>

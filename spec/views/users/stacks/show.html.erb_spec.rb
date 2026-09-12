@@ -29,16 +29,17 @@ RSpec.describe "users/stacks/show.html.erb", type: :view do
     render
     expect(rendered).to match(/Amazing stack/)
     expect(rendered).to match(/This is an amazing stack/)
+    expect(rendered).to match(/2 items/)
   end
 
   it "renders the stack items" do
     render
     assert_select "#stack_items" do
-      assert_select "p", text: "Great Movie"
-      assert_select "a[href='#{movie_path(Movie.last)}']"
+      assert_select "h5", text: "Great Movie"
+      assert_select "a[href='#{movie_path(Movie.last)}']", count: 2
 
-      assert_select "p", text: "Great Show"
-      assert_select "a[href='#{show_path(Show.first)}']"
+      assert_select "h5", text: "Great Show"
+      assert_select "a[href='#{show_path(Show.first)}']", count: 2
     end
   end
 
@@ -89,5 +90,25 @@ RSpec.describe "users/stacks/show.html.erb", type: :view do
   it "renders an icon for sort direction" do
     render
     assert_select "i.fa-arrow-up[data-direction='#{@stack.sorting_direction}']"
+  end
+
+  context "when the current user is the creator of the stack" do
+    before do
+      def view.current_user
+        @user
+      end
+    end
+
+    it "renders a button to destroy the stack items" do
+      render
+      assert_select "i.fa-xmark", count: 2
+    end
+  end
+
+  context "when the current user is not the creator of the stack" do
+    it "does not render a button to destroy the stack items" do
+      render
+      assert_select "i.fa-xmark", count: 0
+    end
   end
 end
