@@ -30,8 +30,8 @@
             <%= link_to polymorphic_record_path(stack_item.item, nil), class: "w-fit" do %>
               <div class="h-fit min-w-30 max-w-30 aspect-2/3 border border-pop outline outline-transparent group-hover:outline-pop rounded-lg overflow-hidden transition duration-300 ease-in-out">
                 <%= image_tag stack_item.item.poster(variant: :small),
-                     class: "w-full",
-                     title: stack_item.item %>
+                      class: "w-full",
+                      title: stack_item.item %>
               </div>
             <% end %>
           <% end %>
