@@ -61,20 +61,10 @@
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
           <%# TODO: Test ordering of all views %>
           <% @franchise.ordered_franchise_items.includes(record: {posters_attachments: {blob: :variant_records}}).each do |item| %>
-            <div class="flex flex-col gap-2">
-              <%# NOTE: polymorphic_path assumes that record will be a top-level record (e.g. Movie, Show). This should always be the case. %>
-              <%= link_to polymorphic_path(item.record) do %>
-                <div class="h-full aspect-2/3 border border-pop rounded-lg overflow-hidden">
-                  <%= image_tag item.record.poster(variant: :small), class: "w-full" %>
-                </div>
-              <% end %>
-              <% watch_status = @watch_statuses[item.record] || :not_consumed %>
-              <%= render "shared/actions/compact_actions", record: item.record, watch_status: watch_status %>
-              <p class="text-center whitespace-nowrap overflow-hidden text-ellipsis"><%= item.record.translated_title %></p>
-              <% if item.date %>
-                <small class="text-center"><%= item.date.strftime("%B %d, %Y") %></small>
-              <% end %>
-            </div>
+            <%= render "shared/poster_with_actions",
+                  record: item.record,
+                  watch_status: @watch_statuses[item.record],
+                  subtitle: item.date&.strftime("%B %d, %Y") %>
           <% end %>
         </div>
       </div>

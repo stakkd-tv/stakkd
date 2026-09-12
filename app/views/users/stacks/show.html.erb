@@ -1,0 +1,32 @@
+<% content_for :title, "Stakkd - #{@stack.name}" %>
+
+<div class="max-w-7xl mx-auto my-8 px-6 pt-10">
+  <%= render "users/compact_header", user: @user %>
+
+  <div class="bg-background-darker rounded-lg p-4 mb-8">
+    <h4 class="text-xl sm:text-2xl font-bold font-domine"><%= @stack.name %></h4>
+    <% if @stack.description.present? %>
+      <p class="text-sm text-gray-300 mt-2"><%= @stack.description %></p>
+    <% end %>
+    <hr class="my-4 border-t-3 border-background">
+    <div class="flex gap-2 items-center">
+      <%= select_tag :sort,
+            options_for_select(
+              Stack::SORTING_METHODS.map { [it.humanize, it] },
+              @stack.sorting_method
+            ),
+            class: "input text-sm max-w-50 w-full cursor-pointer",
+            autocomplete: "off" %>
+      <i data-direction="<%= @stack.sorting_direction %>" class="fa-solid fa-arrow-up mx-3 text-2xl cursor-pointer data-[direction=desc]:rotate-180"></i>
+    </div>
+  </div>
+
+  <div id="stack_items" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
+    <% @stack_items.each do |stack_item| %>
+      <%= render "shared/poster_with_actions", record: stack_item.item, watch_status: @watch_statuses[stack_item.item] %>
+    <% end %>
+  </div>
+</div>
+
+<%= render "shared/actions/dialogs/history" %>
+<%= render "shared/actions/dialogs/stack" %>

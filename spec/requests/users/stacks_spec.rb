@@ -67,6 +67,80 @@ RSpec.describe "Users::Stacks", type: :request do
     end
   end
 
+  describe "GET /users/:username/stacks/:id" do
+    let(:stack) { FactoryBot.create(:stack, user:, private: stack_private) }
+    let(:user) { FactoryBot.create(:user, private: user_private) }
+    let(:current_user) { nil }
+
+    before do
+      if current_user
+        session = Session.new(user: current_user)
+        allow(Current).to receive(:session).and_return(session)
+        allow(Current).to receive(:user).and_return(current_user)
+      end
+    end
+
+    def perform
+      get user_stack_path(stack, user_id: user)
+    end
+
+    context "when the stack is public" do
+      let(:current_user) { nil }
+      let(:stack_private) { false }
+      let(:user_private) { false }
+
+      it "renders a successful response" do
+        perform
+        expect(response).to be_successful
+      end
+    end
+
+    context "when the stack is private" do
+      let(:current_user) { nil }
+      let(:stack_private) { true }
+      let(:user_private) { false }
+
+      it "redirects to the user page with a flash message" do
+        perform
+        expect(response).to redirect_to(user_path(user))
+        expect(flash[:notice]).to eq("This stack is private.")
+      end
+    end
+
+    context "when the stack is not marked as private but the user is" do
+      let(:current_user) { nil }
+      let(:stack_private) { false }
+      let(:user_private) { true }
+
+      it "redirects to the user page" do
+        perform
+        expect(response).to redirect_to(user_path(user))
+      end
+    end
+
+    context "when the stack is private but is created by the current user" do
+      let(:current_user) { user }
+      let(:stack_private) { true }
+      let(:user_private) { false }
+
+      it "renders a successful response" do
+        perform
+        expect(response).to be_successful
+      end
+    end
+
+    context "when the stack is created by the current user, who is private" do
+      let(:current_user) { user }
+      let(:stack_private) { false }
+      let(:user_private) { true }
+
+      it "renders a successful response" do
+        perform
+        expect(response).to be_successful
+      end
+    end
+  end
+
   describe "GET /users/:username/stacks/new" do
     let(:user) { FactoryBot.create(:user, :confirmed) }
 

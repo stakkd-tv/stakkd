@@ -7,6 +7,10 @@ module Users
         expect(get: "/users/1/stacks").to route_to("users/stacks#index", user_id: "1")
       end
 
+      it "routes to #show" do
+        expect(get: "/users/1/stacks/1").to route_to("users/stacks#show", user_id: "1", id: "1")
+      end
+
       it "routes to #new" do
         expect(get: "/users/1/stacks/new").to route_to("users/stacks#new", user_id: "1")
       end

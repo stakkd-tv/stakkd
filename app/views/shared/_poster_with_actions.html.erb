@@ -1,0 +1,22 @@
+<% subtitle = local_assigns.fetch(:subtitle, nil) %>
+<div class="flex flex-col gap-2 group">
+  <%= link_to polymorphic_record_path(record, nil) do %>
+    <div class="h-full aspect-2/3 border border-pop outline outline-transparent group-hover:outline-pop rounded-lg overflow-hidden transition duration-300 ease-in-out">
+      <% if record.respond_to?(:poster) %>
+        <%= image_tag record.poster(variant: :small),
+              class: "w-full",
+              title: record %>
+      <% else %>
+        <div class="flex items-center justify-center w-full h-full" title="<%= record %>">
+          <p class="text-xs md:text-sm font-domine font-bold text-pop text-center"><%= record %></p>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+  <% watch_status = local_assigns.fetch(:watch_status, :not_consumed) %>
+  <%= render "shared/actions/compact_actions", record: record, watch_status: watch_status %>
+  <p class="text-center whitespace-nowrap overflow-hidden text-ellipsis"><%= record %></p>
+  <% if subtitle %>
+    <small class="text-center"><%= subtitle %></small>
+  <% end %>
+</div>

@@ -110,9 +110,9 @@
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
           <%# TODO: Test ordering of all views %>
           <% @show.ordered_seasons.with_attached_posters.includes(:episodes).each do |season| %>
-            <div class="flex flex-col gap-2">
+            <div class="flex flex-col gap-2 group">
               <%= link_to show_season_path(season, show_id: @show) do %>
-                <div class="h-full aspect-2/3 border border-pop rounded-lg overflow-hidden">
+                <div class="h-full aspect-2/3 border border-pop rounded-lg overflow-hidden outline outline-transparent group-hover:outline-pop transition duration-300 ease-in-out">
                   <%= image_tag season.poster(variant: :small), class: "w-full" %>
                 </div>
               <% end %>

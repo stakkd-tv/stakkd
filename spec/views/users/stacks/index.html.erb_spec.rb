@@ -77,6 +77,7 @@ RSpec.describe "users/stacks/index.html.erb", type: :view do
       render
       assert_select "turbo-frame[id='top_stacks']" do
         assert_select "h6", text: "Amazing Stack"
+        assert_select "a[href='#{user_stack_path(stack, user_id: user)}']", count: 2 # One for the preview, another for the title
       end
     end
 
