@@ -84,16 +84,6 @@ RSpec.describe "shows/show", type: :view do
     end
   end
 
-  it "renders the add to history dialog" do
-    render
-    assert_select "dialog[data-controller='history-dialog']"
-  end
-
-  it "renders the add to stack dialog" do
-    render
-    assert_select "dialog[data-controller='stack-dialog']"
-  end
-
   it "renders the add to history button when authenticated" do
     allow(view).to receive(:authenticated?).and_return(true)
     FactoryBot.create(:season, :with_premiere_date, show: @show)

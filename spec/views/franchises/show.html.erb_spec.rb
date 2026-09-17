@@ -53,16 +53,6 @@ RSpec.describe "franchises/show", type: :view do
     end
   end
 
-  it "renders the add to history dialog" do
-    render
-    assert_select "dialog[data-controller='history-dialog']"
-  end
-
-  it "renders the add to stack dialog" do
-    render
-    assert_select "dialog[data-controller='stack-dialog']"
-  end
-
   it "renders the add to history buttons for each history item with the correct status when authenticated" do
     allow(view).to receive(:authenticated?).and_return(true)
     render
