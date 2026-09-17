@@ -18,7 +18,8 @@ class Users::StacksController < Users::BaseController
 
   # TODO: System specs for actions for each stack item
   def show
-    @stack_items = @stack.stack_items.includes(item: [:show, :season]).limit(100)
+    # TODO: Pagination on stack items. Need to figure out how this would interact with drag and drop sorting...
+    @stack_items = @stack.stack_items.includes(item: [:show, :season])
     @watch_statuses = Manage::History.new(current_user).statuses_for(@stack_items.map(&:item))
   end
 
