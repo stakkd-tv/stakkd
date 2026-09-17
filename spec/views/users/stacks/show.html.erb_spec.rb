@@ -93,12 +93,22 @@ RSpec.describe "users/stacks/show.html.erb", type: :view do
       render
       assert_select "i.fa-xmark", count: 2
     end
+
+    it "renders a button to edit the stack" do
+      render
+      assert_select "button[data-controller='edit-stack-button']"
+    end
   end
 
   context "when the current user is not the creator of the stack" do
     it "does not render a button to destroy the stack items" do
       render
       assert_select "i.fa-xmark", count: 0
+    end
+
+    it "does not render a button to edit the stack" do
+      render
+      assert_select "button[data-controller='edit-stack-button']", count: 0
     end
   end
 end
