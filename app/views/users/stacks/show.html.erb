@@ -42,7 +42,7 @@
 
   <div id="stack_items" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
     <% @stack_items.each do |stack_item| %>
-      <div class="p-4 bg-background-darker rounded-lg flex flex-col gap-4 relative group">
+      <div class="p-4 bg-background-darker rounded-lg flex flex-col gap-4 relative group StackItem_<%= stack_item.id %>_card">
         <div class="flex flex-col md:flex-row gap-4">
           <% if stack_item.item.respond_to?(:poster) %>
             <%= link_to polymorphic_record_path(stack_item.item, nil), class: "w-fit" do %>
@@ -71,7 +71,11 @@
         <%= render "shared/actions/compact_actions", record: stack_item.item, watch_status: watch_status %>
 
         <% if @stack.user === current_user %>
-          <button class="h-fit absolute top-0 right-0 my-3 mx-4">
+          <button class="h-fit absolute top-0 right-0 my-3 mx-4"
+            data-controller="deletion-button"
+            data-action="deletion-button#open deletion-dialog:deleted@window->deletion-button#removeElementFromDOM"
+            data-deletion-button-card-element-selector-value="<%= ".StackItem_#{stack_item.id}_card" %>"
+            data-deletion-button-delete-record-url-value="<%= user_stack_stack_item_path(stack_item, stack_id: @stack, user_id: current_user) %>">
             <i class="fa-solid fa-xmark cursor-pointer"></i>
           </button>
         <% end %>

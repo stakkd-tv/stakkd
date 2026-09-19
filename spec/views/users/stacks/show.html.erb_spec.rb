@@ -91,7 +91,8 @@ RSpec.describe "users/stacks/show.html.erb", type: :view do
 
     it "renders a button to destroy the stack items" do
       render
-      assert_select "i.fa-xmark", count: 2
+      assert_select "button[data-controller='deletion-button'][data-deletion-button-delete-record-url-value='#{user_stack_stack_item_path(@user, @stack, StackItem.first)}']"
+      assert_select "button[data-controller='deletion-button'][data-deletion-button-delete-record-url-value='#{user_stack_stack_item_path(@user, @stack, StackItem.second)}']"
     end
 
     it "renders a button to edit the stack" do
@@ -103,7 +104,8 @@ RSpec.describe "users/stacks/show.html.erb", type: :view do
   context "when the current user is not the creator of the stack" do
     it "does not render a button to destroy the stack items" do
       render
-      assert_select "i.fa-xmark", count: 0
+      assert_select "button[data-controller='deletion-button'][data-deletion-button-delete-record-url-value='#{user_stack_stack_item_path(@user, @stack, StackItem.first)}']", count: 0
+      assert_select "button[data-controller='deletion-button'][data-deletion-button-delete-record-url-value='#{user_stack_stack_item_path(@user, @stack, StackItem.second)}']", count: 0
     end
 
     it "does not render a button to edit the stack" do

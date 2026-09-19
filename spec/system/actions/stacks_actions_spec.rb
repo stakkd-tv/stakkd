@@ -202,4 +202,37 @@ RSpec.feature "Stack actions", type: :system, js: true do
     expect(page).to have_content "New name"
     expect(page).to have_css "p", text: "Only you can see this stack", count: 2
   end
+
+  scenario "deleting stack item from stack page" do
+    user = FactoryBot.create(:user, :confirmed, email_address: "test@example.com", password: "top-secret")
+    stack = FactoryBot.create(:stack, user:, name: "Amazing Stack")
+    movie = FactoryBot.create(:movie, translated_title: "Amazing Movie")
+    stack_item = FactoryBot.create(:stack_item, stack:, item: movie)
+
+    # User being viewed is not the same as the current user, so can't delete stack item
+    visit user_stack_path(stack, user_id: user)
+    expect(page).not_to have_css "button[data-deletion-button-delete-record-url-value='#{user_stack_stack_item_path(stack_item, stack_id: stack, user_id: user)}']"
+
+    sign_in(user)
+    # User is now the same as the current user
+    visit user_stack_path(stack, user_id: user)
+    expect(page).to have_css "button[data-deletion-button-delete-record-url-value='#{user_stack_stack_item_path(stack_item, stack_id: stack, user_id: user)}']"
+
+    expect(page).to have_content "Amazing Movie"
+    find("button[data-deletion-button-delete-record-url-value='#{user_stack_stack_item_path(stack_item, stack_id: stack, user_id: user)}']").click
+    expect(page).to have_content "Are you sure you want to delete this?"
+    click_button "No"
+    # Does not delete the stack item when clicking No
+    expect(page).not_to have_content "Are you sure you want to delete this?"
+    expect(page).to have_content "Amazing Movie"
+    expect(StackItem.count).to eq 1
+
+    find("button[data-deletion-button-delete-record-url-value='#{user_stack_stack_item_path(stack_item, stack_id: stack, user_id: user)}']").click
+    expect(page).to have_content "Are you sure you want to delete this?"
+    click_button "Yes"
+    # Stack item is now deleted
+    expect(page).not_to have_content "Are you sure you want to delete this?"
+    expect(page).not_to have_content "Amazing Movie"
+    expect(StackItem.count).to eq 0
+  end
 end
