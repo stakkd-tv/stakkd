@@ -1,6 +1,6 @@
 class Users::StacksController < Users::BaseController
-  before_action :require_same_user, only: [:new, :create, :destroy]
-  before_action :set_stack, only: [:show, :destroy]
+  before_action :require_same_user, only: [:new, :create, :destroy, :update]
+  before_action :set_stack, only: [:show, :destroy, :update]
   before_action :check_stack_privacy, only: [:show]
 
   # TODO: Edit stack
@@ -36,6 +36,22 @@ class Users::StacksController < Users::BaseController
     end
   end
 
+  def update
+    if @stack.update(stack_params)
+      json = {
+        name: @stack.name,
+        description: @stack.description,
+        sorting_direction: @stack.sorting_direction,
+        sorting_method: @stack.sorting_method,
+        private: @stack.private
+      }
+      render json: json, status: :ok
+    else
+      errors = @stack.errors.group_by_attribute.each_pair.map { |field, errors| {field => errors.map(&:full_message)} }
+      render json: {success: false, errors:}, status: 422
+    end
+  end
+
   def destroy
     @stack.destroy
     respond_to do |format|
@@ -47,7 +63,7 @@ class Users::StacksController < Users::BaseController
   private
 
   def stack_params
-    params.require(:stack).permit(:name, :description, :private)
+    params.require(:stack).permit(:name, :description, :private, :sorting_direction, :sorting_method)
   end
 
   def set_stack

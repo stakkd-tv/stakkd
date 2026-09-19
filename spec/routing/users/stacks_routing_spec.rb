@@ -19,6 +19,10 @@ module Users
         expect(post: "/users/1/stacks").to route_to("users/stacks#create", user_id: "1")
       end
 
+      it "routes to #update" do
+        expect(patch: "/users/1/stacks/1").to route_to("users/stacks#update", user_id: "1", id: "1")
+      end
+
       it "routes to #destroy" do
         expect(delete: "/users/1/stacks/1").to route_to("users/stacks#destroy", user_id: "1", id: "1")
       end

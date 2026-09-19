@@ -5,13 +5,17 @@ RSpec.describe "Users::Stacks", type: :request do
     {
       name: "Test Stack",
       description: "This is a description",
-      private: true
+      private: true,
+      sorting_method: "position",
+      sorting_direction: "desc"
     }
   }
 
   let(:invalid_attributes) {
     valid_attributes.merge({
-      name: nil
+      name: nil,
+      sorting_method: nil,
+      sorting_direction: nil
     })
   }
 
@@ -182,7 +186,8 @@ RSpec.describe "Users::Stacks", type: :request do
           expect(stack.name).to eq "Test Stack"
           expect(stack.description).to eq "This is a description"
           expect(stack.type).to eq "standard"
-          expect(stack.sorting_method).to eq "added_at"
+          expect(stack.sorting_method).to eq "position"
+          expect(stack.sorting_direction).to eq "desc"
           expect(stack.private).to eq true
         end
 
@@ -211,6 +216,112 @@ RSpec.describe "Users::Stacks", type: :request do
         user = FactoryBot.create(:user)
         post user_stacks_path(user), params: {stack: valid_attributes}
         expect(response).to redirect_to user_path(user)
+      end
+    end
+  end
+
+  describe "PATCH /users/:username/stacks/:id" do
+    let(:user) { FactoryBot.create(:user, :confirmed) }
+    let(:stack) { FactoryBot.create(:stack, user:, name: "Amazing Stack") }
+
+    def perform
+      patch user_stack_path(stack, user_id: user), params: {stack: params}
+    end
+
+    context "when the user is not the current logged in user" do
+      let(:params) { valid_attributes }
+
+      before do
+        another_user = FactoryBot.create(:user)
+        session = Session.new(user: another_user)
+        allow(Current).to receive(:session).and_return(session)
+        allow(Current).to receive(:user).and_return(another_user)
+      end
+
+      it "redirects to the user page" do
+        perform
+        expect(response).to redirect_to user_path(user)
+      end
+
+      it "does not update the stack" do
+        perform
+        expect(stack.reload.name).to eq("Amazing Stack")
+      end
+    end
+
+    context "when the stack does not belong to the current user" do
+      let(:stack) { FactoryBot.create(:stack, name: "Amazing Stack") }
+      let(:params) { valid_attributes }
+
+      before do
+        session = Session.new(user:)
+        allow(Current).to receive(:session).and_return(session)
+        allow(Current).to receive(:user).and_return(user)
+      end
+
+      it "renders a 404" do
+        perform
+        expect(response).to have_http_status(:not_found)
+      end
+
+      it "does not update the stack" do
+        perform
+        expect(stack.reload.name).to eq("Amazing Stack")
+      end
+    end
+
+    context "when the stack belongs to the current user" do
+      before do
+        session = Session.new(user:)
+        allow(Current).to receive(:session).and_return(session)
+        allow(Current).to receive(:user).and_return(user)
+      end
+
+      context "with valid params" do
+        let(:params) { valid_attributes }
+
+        it "updates the stack" do
+          perform
+          stack.reload
+          expect(stack.name).to eq("Test Stack")
+          expect(stack.description).to eq("This is a description")
+          expect(stack.private).to be(true)
+          expect(stack.sorting_method).to eq("position")
+          expect(stack.sorting_direction).to eq("desc")
+        end
+
+        it "renders json" do
+          perform
+          expect(response).to have_http_status(:ok)
+          json = JSON.parse(response.body)
+          expect(json).to eq({
+            "name" => "Test Stack",
+            "description" => "This is a description",
+            "private" => true,
+            "sorting_method" => "position",
+            "sorting_direction" => "desc"
+          })
+        end
+      end
+
+      context "with invalid params" do
+        let(:params) { invalid_attributes }
+
+        it "does not update the stack" do
+          perform
+          expect(stack.reload.name).to eq("Amazing Stack")
+        end
+
+        it "renders errors in json" do
+          perform
+          expect(response).to have_http_status(:unprocessable_entity)
+          json = JSON.parse(response.body)
+          expect(json["errors"]).to contain_exactly(
+            {"name" => ["Name can't be blank"]},
+            {"sorting_method" => ["Sorting method is not included in the list"]},
+            {"sorting_direction" => ["Sorting direction is not included in the list"]}
+          )
+        end
       end
     end
   end
