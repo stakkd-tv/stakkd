@@ -3,8 +3,6 @@ class Users::StacksController < Users::BaseController
   before_action :set_stack, only: [:show, :destroy, :update]
   before_action :check_stack_privacy, only: [:show]
 
-  # TODO: Edit stack
-
   def index
     @stacks_with_previews, @stacks_next_page = Stacks::WithPreviews
       .new(@user.stacks, user: current_user, per_page: 9)
