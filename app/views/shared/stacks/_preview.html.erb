@@ -24,7 +24,7 @@
   <div class="flex flex-col gap-1.5">
     <div class="flex justify-between items-center relative">
       <%= link_to path, data: {turbo: false} do %>
-        <h6 class="font-domine text-md"><%= stack.name %></h6>
+        <h6 class="font-domine text-md <%= "stack_#{stack.id}_name" %>"><%= stack.name %></h6>
       <% end %>
       <% if stack.user == current_user %>
         <button
@@ -39,10 +39,20 @@
         <div class="<%= selector %> mt-2 z-1 opacity-0 pointer-events-none transition-all duration-300 ease-in-out fixed sm:absolute bottom-0 left-0 h-fit w-full sm:w-50 sm:top-full sm:right-0 sm:left-auto flex flex-col gap-2 p-2 bg-background-darker border-t-2 sm:border-2 border-pop sm:rounded-lg">
           <p class="sm:hidden text-xl font-domine my-4"><%= stack.name %></p>
 
-          <%= link_to "#", class: "link w-full" do %>
+          <button
+            class="link w-full"
+            data-controller="edit-stack-button"
+            data-edit-stack-button-update-stack-url-value="<%= user_stack_path(stack, user_id: stack.user) %>"
+            data-edit-stack-button-stack-id-value="<%= stack.id %>"
+            data-edit-stack-button-name-value="<%= stack.name %>"
+            data-edit-stack-button-description-value="<%= stack.description %>"
+            data-edit-stack-button-sorting-method-value="<%= stack.sorting_method %>"
+            data-edit-stack-button-sorting-direction-value="<%= stack.sorting_direction %>"
+            data-edit-stack-button-private-value="<%= stack.private %>"
+            data-action="edit-stack-button#open edit-stack-dialog:updated-stack@window->edit-stack-button#update">
             <i class="fa-solid fa-pen mr-2"></i>
             Edit
-          <% end %>
+          </button>
 
           <button
             class="link w-full"
@@ -64,9 +74,11 @@
         </div>
         <p class="text-sm underline decoration-pop"><%= stack.user %></p>
       <% end %>
-      <% if stack.user === current_user && stack.private? %>
-        <p class="text-xs mt-2"><i class="fas fa-lock mr-2"></i> Only you can see this stack</p>
-      <% end %>
+      <% is_private = stack.user === current_user && stack.private? %>
+      <p class="text-xs mt-2 <%= is_private ? "" : "hidden" %> <%= "stack_#{stack.id}_private" %>">
+        <i class="fas fa-lock mr-2"></i>
+        Only you can see this stack
+      </p>
     <% else %>
       <%= link_to "#", class: "flex items-center gap-2", data: {turbo: false} do %>
         <div class="w-8 h-8 aspect-square overflow-hidden rounded-full outline outline-pop">

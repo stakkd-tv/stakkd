@@ -29,6 +29,7 @@ export default class extends Controller {
       this.toggleContainerTarget.classList.remove('bg-pop')
       this.toggleHandleTarget.style.transform = 'translateX(0)'
     }
+    this.element.setAttribute('data-checked', checked.toString())
   }
 
   receiveDispatch(event: {

@@ -5,16 +5,27 @@
 
   <div class="bg-background-darker rounded-lg p-4 mb-8">
     <div class="flex justify-between gap-4">
-      <h4 class="text-xl sm:text-2xl font-bold font-domine"><%= @stack.name %></h4>
+      <h4 class="text-xl sm:text-2xl font-bold font-domine <%= "stack_#{@stack.id}_name" %>">
+        <%= @stack.name %>
+      </h4>
       <% if @stack.user == current_user %>
-        <button data-controller="edit-stack-button" class="h-fit cursor-pointer inline-block">
+        <button data-controller="edit-stack-button"
+          data-edit-stack-button-update-stack-url-value="<%= user_stack_path(@stack, user_id: @user) %>"
+          data-edit-stack-button-stack-id-value="<%= @stack.id %>"
+          data-edit-stack-button-name-value="<%= @stack.name %>"
+          data-edit-stack-button-description-value="<%= @stack.description %>"
+          data-edit-stack-button-sorting-method-value="<%= @stack.sorting_method %>"
+          data-edit-stack-button-sorting-direction-value="<%= @stack.sorting_direction %>"
+          data-edit-stack-button-private-value="<%= @stack.private %>"
+          data-action="edit-stack-button#open edit-stack-dialog:updated-stack@window->edit-stack-button#update"
+          class="h-fit cursor-pointer inline-block">
           <i class="fa-solid fa-pen"></i>
         </button>
       <% end %>
     </div>
-    <% if @stack.description.present? %>
-      <p class="text-sm text-gray-300 mt-2"><%= @stack.description %></p>
-    <% end %>
+    <p class="text-sm text-gray-300 mt-2 <%= "stack_#{@stack.id}_description" %>">
+      <%= @stack.description %>
+    </p>
     <p class="text-sm text-gray-300 mt-2"><%= pluralize(@stack.stack_items.count, "item") %></p>
     <hr class="my-4 border-t-3 border-background">
     <div class="flex gap-2 items-center">
