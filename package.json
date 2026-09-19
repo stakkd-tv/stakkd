@@ -9,7 +9,7 @@
     "esbuild": "^0.28.1",
     "tailwindcss": "^4.3.3",
     "tsc-watch": "^7.2.1",
-    "typescript": "^6.0.3"
+    "typescript": "^7.0.2"
   },
   "scripts": {
     "build": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets",
