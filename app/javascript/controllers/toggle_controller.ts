@@ -30,4 +30,13 @@ export default class extends Controller {
       this.toggleHandleTarget.style.transform = 'translateX(0)'
     }
   }
+
+  receiveDispatch(event: {
+    detail: { target: HTMLElement; checked: boolean }
+  }) {
+    if (this.element === event.detail.target) {
+      this.checkboxTarget.checked = event.detail.checked
+      this.toggle(event.detail.checked)
+    }
+  }
 }
