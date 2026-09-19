@@ -924,7 +924,7 @@ __metadata:
     esbuild: "npm:^0.28.1"
     flatpickr: "npm:^4.6.13"
     instantsearch.js: "npm:^4.116.0"
-    marked: "npm:^18.0.5"
+    marked: "npm:^18.0.13"
     marked-inline-spoilers: "npm:^1.0.1"
     sanitize-html: "npm:^2.17.7"
     slim-select: "npm:^4.2.3"
@@ -1959,12 +1959,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"marked@npm:^18.0.5":
-  version: 18.0.5
-  resolution: "marked@npm:18.0.5"
+"marked@npm:^18.0.13":
+  version: 18.0.13
+  resolution: "marked@npm:18.0.13"
   bin:
     marked: bin/marked.js
-  checksum: 10c0/22763935a0a243c41851b010a086ea85a09951e379948b6aa629b6cecdcd66e3a5e8c4acac2f6b29c183c20609d3e5102495270207dfd5f4c46ddd773a4ddb9b
+  checksum: 10c0/420039a67d7cebddee022cfc4766fa9b4f965b83848d0f252d6782dcbdca06c972a83f6dc0242dfbd392652aa1f7ef25eaecf18856c7ec80da61d3176342e20f
   languageName: node
   linkType: hard
 
