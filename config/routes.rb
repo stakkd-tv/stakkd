@@ -16,7 +16,9 @@ Rails.application.routes.draw do
   draw :company_routes
 
   resources :users, only: [:show, :new, :create, :update] do
-    resources :stacks, except: [:edit], controller: "users/stacks"
+    resources :stacks, except: [:edit], controller: "users/stacks" do
+      resources :stack_items, only: [:destroy], controller: "users/stack_items"
+    end
 
     get :confirm, on: :collection
   end
