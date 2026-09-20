@@ -1,5 +1,5 @@
 class StackItem < ApplicationRecord
-  acts_as_list scope: :item
+  acts_as_list scope: :stack
 
   # Associations
   belongs_to :stack
