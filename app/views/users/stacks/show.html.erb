@@ -36,7 +36,9 @@
             ),
             class: "input p-1.5 text-sm max-w-50 w-full cursor-pointer",
             autocomplete: "off" %>
-      <i data-direction="<%= @stack.sorting_direction %>" class="fa-solid fa-arrow-up mx-2 text-xl cursor-pointer data-[direction=desc]:rotate-180"></i>
+      <button class="h-[34px] aspect-square cursor-pointer">
+        <i data-direction="<%= @stack.sorting_direction %>" class="fa-solid fa-arrow-up mx-2 text-xl data-[direction=desc]:rotate-180"></i>
+      </button>
     </div>
   </div>
 
