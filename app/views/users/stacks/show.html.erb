@@ -34,9 +34,9 @@
               Stack::SORTING_METHODS.map { [it.humanize, it] },
               @stack.sorting_method
             ),
-            class: "input text-sm max-w-50 w-full cursor-pointer",
+            class: "input p-1.5 text-sm max-w-50 w-full cursor-pointer",
             autocomplete: "off" %>
-      <i data-direction="<%= @stack.sorting_direction %>" class="fa-solid fa-arrow-up mx-3 text-2xl cursor-pointer data-[direction=desc]:rotate-180"></i>
+      <i data-direction="<%= @stack.sorting_direction %>" class="fa-solid fa-arrow-up mx-2 text-xl cursor-pointer data-[direction=desc]:rotate-180"></i>
     </div>
   </div>
 
