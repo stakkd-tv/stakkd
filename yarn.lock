@@ -1068,7 +1068,7 @@ __metadata:
     marked-inline-spoilers: "npm:^1.0.1"
     sanitize-html: "npm:^2.17.7"
     slim-select: "npm:^4.2.3"
-    tabulator-tables: "npm:^6.5.2"
+    tabulator-tables: "npm:^6.5.3"
     tailwindcss: "npm:^4.3.3"
     tsc-watch: "npm:^7.2.1"
     typescript: "npm:^7.0.2"
@@ -2654,10 +2654,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tabulator-tables@npm:^6.5.2":
-  version: 6.5.2
-  resolution: "tabulator-tables@npm:6.5.2"
-  checksum: 10c0/18ba8c573f786ad9ef7b2c4d48b6e4bd2163183d810d51b797188a12354c1d8397bb39b0d27e3a989371280288ada7c98af2ce962ed347f4089fb0093ef9f2bc
+"tabulator-tables@npm:^6.5.3":
+  version: 6.5.3
+  resolution: "tabulator-tables@npm:6.5.3"
+  checksum: 10c0/aa47e2465376c6a21ab4470d83f444ed7347f45957c24cf4b64ae08431dab570abe15126b12731a61af7b6d7598796a917c1cb82c990e2a4d09322af5bbf4617
   languageName: node
   linkType: hard
 
