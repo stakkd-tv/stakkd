@@ -6,7 +6,7 @@
     "@tailwindcss/cli": "^4.3.3",
     "@types/sanitize-html": "^2.16.1",
     "@types/tabulator-tables": "^6.3.6",
-    "esbuild": "^0.28.1",
+    "esbuild": "^0.28.2",
     "tailwindcss": "^4.3.3",
     "tsc-watch": "^7.2.1",
     "typescript": "^7.0.2"
