@@ -23,6 +23,8 @@ RSpec.describe "users/stacks/show.html.erb", type: :view do
     assign(:user, @user)
     assign(:stack_items, @stack.stack_items.includes(item: [:show, :season]))
     assign(:watch_statuses, {@movie => :consumed, @show => :not_consumed})
+    assign(:sorting_method, @stack.sorting_method)
+    assign(:sorting_direction, @stack.sorting_direction)
   end
 
   it "renders attributes" do
@@ -66,12 +68,14 @@ RSpec.describe "users/stacks/show.html.erb", type: :view do
 
   it "renders a select box for sorting" do
     render
-    assert_select "select#sort" do
-      Stack::SORTING_METHODS.each do |method|
-        if method == @stack.sorting_method
-          assert_select "option[value='#{method}'][selected='selected']", text: method.humanize
-        else
-          assert_select "option[value='#{method}']", text: method.humanize
+    assert_select "form[action='#{user_stack_path(@stack, user_id: @user)}'][data-controller='stack-controls']" do
+      assert_select "select#sort" do
+        Stack::SORTING_METHODS.each do |method|
+          if method == @stack.sorting_method
+            assert_select "option[value='#{method}'][selected='selected']", text: method.humanize
+          else
+            assert_select "option[value='#{method}']", text: method.humanize
+          end
         end
       end
     end
@@ -79,7 +83,9 @@ RSpec.describe "users/stacks/show.html.erb", type: :view do
 
   it "renders an icon for sort direction" do
     render
-    assert_select "i.fa-arrow-up[data-direction='#{@stack.sorting_direction}']"
+    assert_select "form[action='#{user_stack_path(@stack, user_id: @user)}'][data-controller='stack-controls']" do
+      assert_select "i.fa-arrow-up[data-direction='#{@stack.sorting_direction}']"
+    end
   end
 
   context "when the current user is the creator of the stack" do
