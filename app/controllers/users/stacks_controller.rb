@@ -16,8 +16,13 @@ class Users::StacksController < Users::BaseController
 
   # TODO: System specs for actions for each stack item
   def show
+    @sorting_method = params[:sort].presence_in(Stack::SORTING_METHODS) || @stack.sorting_method
+    @sorting_direction = params[:direction].presence_in(Stack::SORTING_DIRECTIONS) || @stack.sorting_direction
+
     # TODO: Pagination on stack items. Need to figure out how this would interact with drag and drop sorting...
-    @stack_items = @stack.stack_items.includes(item: [:show, :season])
+    @stack_items = @stack.stack_items
+      .public_send("ordered_by_#{@sorting_method}", @sorting_direction.to_sym)
+      .includes(item: [:show, :season])
     @watch_statuses = Manage::History.new(current_user).statuses_for(@stack_items.map(&:item))
   end
 
@@ -30,7 +35,7 @@ class Users::StacksController < Users::BaseController
     if @stack.save
       redirect_to user_stacks_path(@user), status: :see_other
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
