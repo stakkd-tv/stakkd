@@ -72,9 +72,12 @@ RSpec.describe "Users::Stacks", type: :request do
   end
 
   describe "GET /users/:username/stacks/:id" do
-    let(:stack) { FactoryBot.create(:stack, user:, private: stack_private) }
+    let(:stack) { FactoryBot.create(:stack, user:, private: stack_private, sorting_method: "added_at", sorting_direction: "asc") }
     let(:user) { FactoryBot.create(:user, private: user_private) }
     let(:current_user) { nil }
+
+    let(:sort) { nil }
+    let(:direction) { nil }
 
     before do
       if current_user
@@ -85,7 +88,78 @@ RSpec.describe "Users::Stacks", type: :request do
     end
 
     def perform
-      get user_stack_path(stack, user_id: user)
+      get user_stack_path(stack, user_id: user, sort:, direction:)
+    end
+
+    shared_examples_for "user stack show page" do
+      it "renders a successful response" do
+        perform
+        expect(response).to be_successful
+      end
+
+      context "when there is a sort param" do
+        context "when the param is valid" do
+          let(:sort) { "position" }
+
+          it "sets the sort to the param" do
+            stack_items = instance_double("Association", count: 0)
+            allow_any_instance_of(Stack).to receive(:stack_items).and_return(stack_items)
+            ordered = instance_double("Association")
+            expect(stack_items).to receive(:ordered_by_position).and_return(ordered)
+            expect(ordered).to receive(:includes).and_return([])
+            perform
+            assert_select "select#sort" do
+              assert_select "option[selected][value='position']"
+            end
+          end
+        end
+
+        context "when the param is not valid" do
+          let(:sort) { "invalid" }
+
+          it "sets the sort to the default" do
+            stack_items = instance_double("Association", count: 0)
+            allow_any_instance_of(Stack).to receive(:stack_items).and_return(stack_items)
+            ordered = instance_double("Association")
+            expect(stack_items).to receive(:ordered_by_added_at).and_return(ordered)
+            expect(ordered).to receive(:includes).and_return([])
+            perform
+            assert_select "select#sort" do
+              assert_select "option[selected][value='added_at']"
+            end
+          end
+        end
+      end
+
+      context "when there is a direction param" do
+        context "when the param is valid" do
+          let(:direction) { "desc" }
+
+          it "sets the sort to the param" do
+            stack_items = instance_double("Association", count: 0)
+            allow_any_instance_of(Stack).to receive(:stack_items).and_return(stack_items)
+            ordered = instance_double("Association")
+            expect(stack_items).to receive(:ordered_by_added_at).with(:desc).and_return(ordered)
+            expect(ordered).to receive(:includes).and_return([])
+            perform
+            assert_select "i[data-direction='desc']"
+          end
+        end
+
+        context "when the param is not valid" do
+          let(:direction) { "invalid" }
+
+          it "sets the sort to the default" do
+            stack_items = instance_double("Association", count: 0)
+            allow_any_instance_of(Stack).to receive(:stack_items).and_return(stack_items)
+            ordered = instance_double("Association")
+            expect(stack_items).to receive(:ordered_by_added_at).with(:asc).and_return(ordered)
+            expect(ordered).to receive(:includes).and_return([])
+            perform
+            assert_select "i[data-direction='asc']"
+          end
+        end
+      end
     end
 
     context "when the stack is public" do
@@ -93,10 +167,7 @@ RSpec.describe "Users::Stacks", type: :request do
       let(:stack_private) { false }
       let(:user_private) { false }
 
-      it "renders a successful response" do
-        perform
-        expect(response).to be_successful
-      end
+      it_behaves_like "user stack show page"
     end
 
     context "when the stack is private" do
@@ -127,10 +198,7 @@ RSpec.describe "Users::Stacks", type: :request do
       let(:stack_private) { true }
       let(:user_private) { false }
 
-      it "renders a successful response" do
-        perform
-        expect(response).to be_successful
-      end
+      it_behaves_like "user stack show page"
     end
 
     context "when the stack is created by the current user, who is private" do
@@ -138,10 +206,7 @@ RSpec.describe "Users::Stacks", type: :request do
       let(:stack_private) { false }
       let(:user_private) { true }
 
-      it "renders a successful response" do
-        perform
-        expect(response).to be_successful
-      end
+      it_behaves_like "user stack show page"
     end
   end
 
@@ -314,7 +379,7 @@ RSpec.describe "Users::Stacks", type: :request do
 
         it "renders errors in json" do
           perform
-          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to have_http_status(:unprocessable_content)
           json = JSON.parse(response.body)
           expect(json["errors"]).to contain_exactly(
             {"name" => ["Name can't be blank"]},

@@ -24,6 +24,7 @@ import NavController from './nav_controller'
 import SearchResultsController from './search_results_controller'
 import SettingsController from './settings_controller'
 import SlimSelectController from './slim_select_controller'
+import StackControlsController from './stack_controls_controller'
 import TableEditorController from './table_editor_controller'
 import ToggleController from './toggle_controller'
 import UploadsController from './uploads_controller'
@@ -45,9 +46,10 @@ application.register('livesearch', LivesearchController)
 application.register('markdown-renderer', MarkdownRendererController)
 application.register('more-options', MoreOptionsController)
 application.register('nav', NavController)
-application.register('slim-select', SlimSelectController)
 application.register('search-results', SearchResultsController)
 application.register('settings', SettingsController)
+application.register('slim-select', SlimSelectController)
+application.register('stack-controls', StackControlsController)
 application.register('table-editor', TableEditorController)
 application.register('toggle', ToggleController)
 application.register('uploads', UploadsController)
