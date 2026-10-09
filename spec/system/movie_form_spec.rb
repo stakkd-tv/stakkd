@@ -321,9 +321,9 @@ RSpec.feature "Movie form", type: :system, js: true do
     # Videos
     click_link "Videos"
     expect(page).to have_css("a[data-active='true']", text: "Videos")
-    select "YouTube", from: "video_source"
+    slim_select "YouTube", from: "video_source"
     fill_in "video_source_key", with: "abc123"
-    select "Trailer", from: "video_type"
+    slim_select "Trailer", from: "video_type"
     allow_any_instance_of(Videos::YouTube).to receive(:title).and_return("YouTube Trailer")
     allow_any_instance_of(Videos::YouTube).to receive(:thumbnail_url).and_return("https://example.com/thumbnail.jpg")
     click_button "Save"
