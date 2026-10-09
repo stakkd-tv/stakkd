@@ -4,7 +4,8 @@ require "rails_helper"
 
 RSpec.feature "Show form", type: :system, js: true do
   before do
-    FactoryBot.create(:language)
+    @english = FactoryBot.create(:language, translated_name: "English")
+    @arab = FactoryBot.create(:language, translated_name: "Arabic")
     @uk = FactoryBot.create(:country, code: "GB", translated_name: "United Kingdom")
     @saudi = FactoryBot.create(:country, code: "KS", translated_name: "Saudi Arabia")
 
@@ -41,9 +42,17 @@ RSpec.feature "Show form", type: :system, js: true do
     # Details
     fill_in "show_translated_title", with: "Test title"
     fill_in "show_original_title", with: "Original title"
+    slim_select "English", from: "language_id"
+    slim_select "United Kingdom", from: "country_id"
+    slim_select "Miniseries", from: "type"
+    slim_select "Planned", from: "status"
     click_button "Save"
     expect(page).to have_content("Show was successfully created.")
-    show = Show.includes(:genres, :companies, :videos).last
+    show = Show.includes(:genres, :companies, :videos, :language, :country).last
+    expect(show.language).to eq @english
+    expect(show.country).to eq @uk
+    expect(show.type).to eq "miniseries"
+    expect(show.status).to eq "planned"
 
     # Posters
     click_link "Posters"
