@@ -20,7 +20,12 @@
       </div>
       <div class="basis-1/2">
         <%= form.label :country_id %>
-        <%= form.collection_select :country_id, Country.order(:translated_name), :id, :translated_name %>
+        <%= form.collection_select :country_id,
+              Country.order(:translated_name),
+              :id,
+              :translated_name,
+              {},
+              {class: "country_id", data: {controller: "slim-select"}, autocomplete: "off"} %>
       </div>
     </div>
 

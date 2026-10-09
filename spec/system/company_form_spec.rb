@@ -4,7 +4,8 @@ require "rails_helper"
 
 RSpec.feature "Company form", type: :system, js: true do
   before do
-    FactoryBot.create(:country)
+    @uk = FactoryBot.create(:country, translated_name: "United Kingdom")
+    @us = FactoryBot.create(:country, translated_name: "United States")
     user = FactoryBot.create(:user, :confirmed)
     sign_in(user)
   end
@@ -23,8 +24,11 @@ RSpec.feature "Company form", type: :system, js: true do
     fill_in "company_name", with: "Test company"
     fill_in "company_description", with: "Test description"
     fill_in "company_homepage", with: "https://example.com"
+    slim_select "United States", from: "country_id"
     click_button "Save"
     expect(page).to have_content("Company was successfully created.")
+    company = Company.includes(:country).last
+    expect(company.country).to eq @us
 
     # Logos
     click_link "Logos"
