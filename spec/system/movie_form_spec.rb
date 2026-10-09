@@ -95,7 +95,7 @@ RSpec.feature "Movie form", type: :system, js: true do
     expect(page).to have_content("Add a new alternative name")
     fill_in "alternative_name_name", with: "New alt name"
     fill_in "alternative_name_type", with: "New alt type"
-    select "Saudi Arabia", from: "alternative_name_country_id"
+    slim_select "Saudi Arabia", from: "alternative_name_country_id"
     click_button "Save"
     using_wait_time 5 do
       expect(page).to have_css "div.tabulator-cell", text: "New alt name"
