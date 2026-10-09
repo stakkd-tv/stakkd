@@ -8,7 +8,7 @@ gem "propshaft"
 gem "puma", ">= 5.0"
 
 # Use postgresql as the database for Active Record
-gem "pg", "~> 1.6"
+gem "pg", "~> 1.7"
 
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
 gem "turbo-rails"
