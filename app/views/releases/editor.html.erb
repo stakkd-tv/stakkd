@@ -19,7 +19,12 @@
 
         <div class="basis-full sm:basis-1/2">
           <%= form.label :type %>
-          <%= form.collection_select :type, Release::TYPES, :to_s, :to_s, {}, {autocomplete: "off"} %>
+          <%= form.collection_select :type,
+                Release::TYPES,
+                :to_s,
+                :to_s,
+                {},
+                {class: "release_type", data: {controller: "slim-select", slim_select_searchable_value: false}, autocomplete: "off"} %>
         </div>
       </div>
 
@@ -34,7 +39,7 @@
                 :id,
                 :to_s,
                 {prompt: "Select a Certification", required: true},           # options
-                {data: {controller: "slim-select"}, autocomplete: "off"}
+                {class: "certification_id", data: {controller: "slim-select"}, autocomplete: "off"}
               ) %>
         </div>
 

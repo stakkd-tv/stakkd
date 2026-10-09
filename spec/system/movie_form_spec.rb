@@ -263,9 +263,8 @@ RSpec.feature "Movie form", type: :system, js: true do
     click_link "Releases"
     expect(page).to have_css("a[data-active='true']", text: "Releases")
     fill_in "release_date", with: Date.new(2025, 2, 1)
-    select "Theatrical", from: "release_type"
-    find("div.ss-main").click
-    find("div.ss-option", text: "GB - PG").click
+    slim_select "Theatrical", from: "release_type"
+    slim_select "GB - PG", from: "certification_id"
     fill_in "release_note", with: "Test release note"
     click_button "Save"
     using_wait_time 5 do
