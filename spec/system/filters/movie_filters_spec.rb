@@ -30,19 +30,19 @@ RSpec.feature "Movie filters", type: :system, js: true do
     visit movies_path
 
     # Filtering releases
-    select "Digital", from: "release_type"
+    slim_select "Digital", from: "release_type"
     fill_in "release_date_from", with: Date.new(2025, 1, 1)
     fill_in "release_date_to", with: Date.new(2025, 1, 1)
     click_button "Apply filter"
     expect(page).to have_content("Ready Player One")
     expect(page).not_to have_content("Jurassic Park")
-    select "Theatrical", from: "release_type"
+    slim_select "Theatrical", from: "release_type"
     fill_in "release_date_from", with: Date.new(2025, 1, 1)
     fill_in "release_date_to", with: Date.new(2025, 1, 1)
     click_button "Apply filter"
     expect(page).to have_content("Jurassic Park")
     expect(page).not_to have_content("Ready Player One")
-    select "All Releases", from: "release_type"
+    slim_select "All Releases", from: "release_type"
     fill_in "release_date_from", with: Date.new(2025, 1, 1)
     fill_in "release_date_to", with: Date.new(2025, 1, 1)
     click_button "Apply filter"
@@ -78,17 +78,17 @@ RSpec.feature "Movie filters", type: :system, js: true do
     expect(page).to have_content("Ready Player One")
 
     # Filtering country
-    select "Great Britain", from: "country_id"
+    slim_select "Great Britain", from: "country_id"
     click_button "Apply filter"
     expect(page).to have_content("Ready Player One")
     expect(page).not_to have_content("Jurassic Park")
-    select "None selected", from: "country_id"
+    slim_select "None selected", from: "country_id"
     click_button "Apply filter"
     expect(page).to have_content("Jurassic Park")
     expect(page).to have_content("Ready Player One")
 
     # Certifications
-    find_all("div.ss-main").first.click
+    find("div.ss-main.certification_ids").click
     expect(page).to have_css("div.ss-option", text: "UK - PG")
     expect(page).to have_css("div.ss-option", text: "US - NR")
     find_all("div.ss-search>input").first.send_keys("PG")
@@ -103,7 +103,7 @@ RSpec.feature "Movie filters", type: :system, js: true do
     expect(page).not_to have_css("div.ss-value-text", text: "UK - PG")
 
     # Keywords
-    find_all("div.ss-main").last.click
+    find("div.ss-main.keywords").click
     expect(page).to have_css("div.ss-option", text: "ready player one")
     expect(page).to have_css("div.ss-option", text: "jurassic")
     find_all("div.ss-search>input").last.send_keys("Hello there")
@@ -149,7 +149,7 @@ RSpec.feature "Movie filters", type: :system, js: true do
     visit movies_path
 
     # Sorting title
-    select "Title", from: "sort"
+    slim_select "Title", from: "sort"
     click_button "Apply filter"
     sleep 0.5
     first_h3 = find_all("#movies h3")[0]
@@ -158,7 +158,7 @@ RSpec.feature "Movie filters", type: :system, js: true do
     expect(second_h3.text).to eq "Ready Player One"
 
     # Sorting release date
-    select "Release Date", from: "sort"
+    slim_select "Release Date", from: "sort"
     click_button "Apply filter"
     sleep 0.5
     first_h3 = find_all("#movies h3")[0]
