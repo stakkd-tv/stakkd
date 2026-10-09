@@ -1,4 +1,8 @@
 @import "tailwindcss";
+@import "slim-select/styles";
+@import "tabulator-tables/dist/css/tabulator.min.css";
+@import "flatpickr/dist/flatpickr.min.css";
+@import "easymde/dist/easymde.min.css";
 
 @theme {
     --breakpoint-xs: 378px;

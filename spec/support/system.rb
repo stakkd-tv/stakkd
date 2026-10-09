@@ -24,6 +24,15 @@ def assert_no_console_errors(page, excludes = [])
   end
 end
 
+# We need to ignore external CSS as we get 404 errors on development.
+CSS = [
+  "assets/tailwindcss",
+  "assets/slim-select/styles",
+  "assets/tabulator-tables/dist/css/tabulator.min.css",
+  "assets/flatpickr/dist/flatpickr.min.css",
+  "assets/easymde/dist/easymde.min.css"
+]
+
 RSpec.configure do |config|
   config.before(:each, type: :system) do
     driven_by :rack_test
@@ -36,17 +45,14 @@ RSpec.configure do |config|
   end
 
   config.after(:each, type: :system, js: true, ignore_console_errors: false, ignore_form_failures: false) do
-    excludes = [
-      "assets/tailwindcss" # We need to ignore assets/tailwindcss as we get 404 errors on development.
-    ]
+    excludes = CSS
     assert_no_console_errors(page, excludes)
   end
 
   config.after(:each, type: :system, js: true, ignore_console_errors: false, ignore_form_failures: true) do
     excludes = [
-      "assets/tailwindcss", # We need to ignore assets/tailwindcss as we get 404 errors on development.
       "Failed to load resource: the server responded with a status of 422" # Form errors respond with 422, and turbo outputs this to the console
-    ]
+    ] + CSS
     assert_no_console_errors(page, excludes)
   end
 
