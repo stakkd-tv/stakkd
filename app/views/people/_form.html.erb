@@ -45,12 +45,22 @@
 
     <div class="basis-1/3">
       <%= form.label :known_for %>
-      <%= form.collection_select :known_for, Person::CREDITS.sort, :to_s, :humanize %>
+      <%= form.collection_select :known_for,
+            Person::CREDITS.sort,
+            :to_s,
+            :humanize,
+            {},
+            {class: "known_for", data: {controller: "slim-select", slim_select_searchable_value: false}, autocomplete: "off"} %>
     </div>
 
     <div class="basis-1/3">
       <%= form.label :gender %>
-      <%= form.collection_select :gender, Person::GENDERS.sort, :to_s, :humanize %>
+      <%= form.collection_select :gender,
+            Person::GENDERS.sort,
+            :to_s,
+            :humanize,
+            {},
+            {class: "gender", data: {controller: "slim-select", slim_select_searchable_value: false}, autocomplete: "off"} %>
     </div>
   </div>
 

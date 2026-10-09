@@ -23,8 +23,13 @@ RSpec.feature "Person form", type: :system, js: true do
     # Details
     fill_in "person_translated_name", with: "Test name"
     fill_in "person_original_name", with: "Original name"
+    slim_select "Sound", from: "known_for"
+    slim_select "Unknown", from: "gender"
     click_button "Save"
     expect(page).to have_content("Person was successfully created.")
+    person = Person.last
+    expect(person.known_for).to eq "sound"
+    expect(person.gender).to eq "unknown"
 
     # Images
     click_link "Images"
