@@ -22,7 +22,7 @@ RSpec.feature "Stack controls", type: :system, js: true do
     expect(ordered_stack_item_titles).to eq(["King of the Hill", "The Dark Knight"])
 
     # Changing sorting method updates DOM and url
-    select "Position", from: "sort"
+    slim_select "Position", from: "sort"
     sleep 1
     expect(ordered_stack_item_titles).to eq(["The Dark Knight", "King of the Hill"])
     expect(page).to have_current_path(user_stack_path(stack, user_id: stack.user, direction: "asc", sort: "position"))

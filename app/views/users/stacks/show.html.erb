@@ -40,9 +40,9 @@
               Stack::SORTING_METHODS.map { [it.humanize, it] },
               @sorting_method
             ),
-            class: "input p-1.5 text-sm max-w-50 w-full cursor-pointer",
+            class: "slim-input sort max-w-50",
             autocomplete: "off",
-            data: {action: "change->stack-controls#submit"} %>
+            data: {action: "change->stack-controls#submit", controller: "slim-select", slim_select_searchable_value: false} %>
       <button type="button" class="h-[34px] aspect-square cursor-pointer" data-action="click->stack-controls#toggleDirection">
         <i data-direction="<%= @sorting_direction %>"
           data-stack-controls-target="directionIcon"

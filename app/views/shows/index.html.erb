@@ -107,7 +107,7 @@
                   :id,
                   :to_s,
                   {include_blank: false, selected: params[:certification_ids]},
-                  {class: "filter", data: {controller: "slim-select"}, multiple: true, autocomplete: "off"}
+                  {class: "slim-input", data: {controller: "slim-select"}, multiple: true, autocomplete: "off"}
                 ) %>
           </div>
 
@@ -118,7 +118,7 @@
                   :to_s,
                   :to_s,
                   {include_blank: false, selected: params[:keywords]},
-                  {class: "filter", data: {controller: "slim-select", slim_select_addable_value: true}, multiple: true, autocomplete: "off"}) %>
+                  {class: "slim-input", data: {controller: "slim-select", slim_select_addable_value: true}, multiple: true, autocomplete: "off"}) %>
           </div>
 
           <div class="p-4 border-b-2 border-background">

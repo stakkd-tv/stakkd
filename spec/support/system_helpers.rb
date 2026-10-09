@@ -8,4 +8,10 @@ module SystemHelpers
     click_button "Enter"
     expect(page).to have_content "Successfully logged in. Enjoy your stay!"
   end
+
+  def slim_select(option, from:)
+    find("div.ss-main.#{from}").click
+    expect(page).to have_css "div.ss-option", text: option
+    find("div.ss-option", text: option).click
+  end
 end
