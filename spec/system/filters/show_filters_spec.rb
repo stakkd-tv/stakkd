@@ -99,17 +99,17 @@ RSpec.feature "Show filters", type: :system, js: true do
     expect(page).to have_content("Avatar: The Last Airbender")
 
     # Filtering country
-    select "Great Britain", from: "country_id"
+    slim_select "Great Britain", from: "country_id"
     click_button "Apply filter"
     expect(page).to have_content("Game of Thrones")
     expect(page).not_to have_content("Avatar: The Last Airbender")
-    select "None selected", from: "country_id"
+    slim_select "None selected", from: "country_id"
     click_button "Apply filter"
     expect(page).to have_content("Avatar: The Last Airbender")
     expect(page).to have_content("Game of Thrones")
 
     # Content ratings
-    find_all("div.ss-main").first.click
+    find("div.ss-main.certification_ids").click
     expect(page).to have_css("div.ss-option", text: "UK - PG")
     expect(page).to have_css("div.ss-option", text: "US - NR")
     find_all("div.ss-search>input").first.send_keys("PG")
@@ -124,7 +124,7 @@ RSpec.feature "Show filters", type: :system, js: true do
     expect(page).not_to have_css("div.ss-value-text", text: "UK - PG")
 
     # Keywords
-    find_all("div.ss-main").last.click
+    find("div.ss-main.keywords").click
     expect(page).to have_css("div.ss-option", text: "rubbish tv show")
     expect(page).to have_css("div.ss-option", text: "greatest tv show of all time")
     find_all("div.ss-search>input").last.send_keys("Hello there")
@@ -136,7 +136,7 @@ RSpec.feature "Show filters", type: :system, js: true do
     expect(page).not_to have_content("Game of Thrones")
     find_all("div.ss-value-delete").last.click
     expect(page).not_to have_css("div.ss-value-text", text: "Hello there")
-    find_all("div.ss-main").last.click
+    find("div.ss-main.keywords").click
     find_all("div.ss-search>input").last.send_keys("rubbish tv show")
     expect(page).to have_css("div.ss-option", text: "rubbish tv show")
     find("div.ss-option", text: "rubbish tv show").click
@@ -170,7 +170,7 @@ RSpec.feature "Show filters", type: :system, js: true do
     visit shows_path
 
     # Sorting title
-    select "Title", from: "sort"
+    slim_select "Title", from: "sort"
     click_button "Apply filter"
     sleep 0.5
     first_h3 = find_all("#shows h3")[0]
@@ -179,7 +179,7 @@ RSpec.feature "Show filters", type: :system, js: true do
     expect(second_h3.text).to eq "Game of Thrones"
 
     # Sorting premiere date
-    select "Premiere Date", from: "sort"
+    slim_select "Premiere Date", from: "sort"
     click_button "Apply filter"
     sleep 0.5
     first_h3 = find_all("#shows h3")[0]
@@ -229,19 +229,19 @@ RSpec.feature "Show filters", type: :system, js: true do
     fill_in "episode_air_date_from", with: Date.new(2013, 5, 1)
     fill_in "episode_air_date_to", with: Date.new(2013, 5, 1)
     find("label", text: "Action").click # Check "Action"
-    select "Great Britain", from: "country_id"
+    slim_select "Great Britain", from: "country_id"
     # Content ratings
-    find_all("div.ss-main").first.click
-    find_all("div.ss-search>input").first.send_keys("PG")
+    find("div.ss-main.certification_ids").click
+    find_all("div.certification_ids>div.ss-search>input").first.send_keys("PG")
     expect(page).to have_css("div.ss-option", text: "UK - PG")
     expect(page).not_to have_css("div.ss-option", text: "US - NR")
     find("div.ss-option", text: "UK - PG").click
     expect(page).to have_css("div.ss-value-text", text: "UK - PG")
     # Keywords
-    find_all("div.ss-main").last.click
+    find("div.ss-main.keywords").click
     expect(page).to have_css("div.ss-option", text: "rubbish tv show")
     expect(page).to have_css("div.ss-option", text: "greatest tv show of all time")
-    find_all("div.ss-search>input").last.send_keys("rubbish tv show")
+    find_all("div.keywords>div.ss-search>input").last.send_keys("rubbish tv show")
     expect(page).to have_css("div.ss-option", text: "rubbish tv show")
     find("div.ss-option", text: "rubbish tv show").click
     click_button "Apply filter"
