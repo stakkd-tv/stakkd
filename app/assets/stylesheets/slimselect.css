@@ -21,7 +21,7 @@
     border-radius: var(--radius-lg);
 }
 
-form .ss-main.slim-input {
+.ss-main.slim-input {
     width: 100%;
     background-color: var(--color-background);
     padding: 0.5rem;

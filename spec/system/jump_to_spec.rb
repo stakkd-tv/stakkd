@@ -15,12 +15,11 @@ RSpec.feature "Jump to episode/season", type: :system, js: true do
     visit show_season_path(@show, @specials)
     expect(page).to have_content("Specials")
     expect(page).to have_current_path(show_season_path(@show, @specials))
-    select_box = find_all("select[name='jump_to']").first
-    select_box.select("Season 1")
+    slim_select "Season 1", from: "jump_to"
     expect(page).to have_current_path(show_season_path(@show, @season1))
     click_link "Episode 1 - Episode 1"
     expect(page).to have_current_path(show_season_episode_path(@show, @season1, @episode1))
-    select "Episode 2", from: "jump_to"
+    slim_select "Episode 2", from: "jump_to"
     expect(page).to have_current_path(show_season_episode_path(@show, @season1, @episode2))
   end
 end

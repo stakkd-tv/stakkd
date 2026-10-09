@@ -10,7 +10,7 @@ module SystemHelpers
   end
 
   def slim_select(option, from:)
-    find("div.ss-main.#{from}").click
+    find_all("div.ss-main.#{from}").first.click
     regex = /\A#{Regexp.escape(option)}\z/
     expect(page).to have_css "div.ss-option", text: regex
     find("div.ss-option", text: regex).click
