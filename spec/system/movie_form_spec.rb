@@ -4,7 +4,8 @@ require "rails_helper"
 
 RSpec.feature "Movie form", type: :system, js: true do
   before do
-    FactoryBot.create(:language)
+    @english = FactoryBot.create(:language, translated_name: "English")
+    @arab = FactoryBot.create(:language, translated_name: "Arabic")
     @uk = FactoryBot.create(:country, code: "GB", translated_name: "United Kingdom")
     @saudi = FactoryBot.create(:country, code: "KS", translated_name: "Saudi Arabia")
 
@@ -42,9 +43,15 @@ RSpec.feature "Movie form", type: :system, js: true do
     # Details
     fill_in "movie_translated_title", with: "Test title"
     fill_in "movie_original_title", with: "Original title"
+    slim_select "English", from: "language_id"
+    slim_select "United Kingdom", from: "country_id"
+    slim_select "Rumored", from: "status"
     click_button "Save"
     expect(page).to have_content("Movie was successfully created.")
-    movie = Movie.includes(:genres, :companies, :videos).last
+    movie = Movie.includes(:genres, :companies, :videos, :country, :language).last
+    expect(movie.language).to eq @english
+    expect(movie.country).to eq @uk
+    expect(movie.status).to eq "rumored"
 
     # Posters
     click_link "Posters"

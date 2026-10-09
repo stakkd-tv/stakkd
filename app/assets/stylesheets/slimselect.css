@@ -16,7 +16,7 @@
     width: 100%;
     height: auto;
     background-color: var(--color-background);
-    padding: 0.5rem;
+    padding: 0.35rem;
     border: 1px solid var(--color-pop);
     border-radius: var(--radius-lg);
 }
