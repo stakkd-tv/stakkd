@@ -20,11 +20,11 @@ RSpec.feature "Company filters", type: :system, js: true do
     visit companies_path
 
     # Filtering country
-    select "Great Britain", from: "country_id"
+    slim_select "Great Britain", from: "country_id"
     click_button "Apply filter"
     expect(page).to have_content("Other Corp")
     expect(page).not_to have_content("Evil Corp")
-    select "None selected", from: "country_id"
+    slim_select "None selected", from: "country_id"
     click_button "Apply filter"
     expect(page).to have_content("Evil Corp")
     expect(page).to have_content("Other Corp")
@@ -51,7 +51,7 @@ RSpec.feature "Company filters", type: :system, js: true do
 
     visit companies_path
 
-    select "United States", from: "country_id"
+    slim_select "United States", from: "country_id"
     click_button "Apply filter"
 
     # It applies filter when loading more (Never displays Zombie Zombie Zombie)

@@ -12,7 +12,7 @@
         <div class="flex flex-col">
           <div class="p-4 border-b-2 border-background">
             <p class="mb-4"><b>Country</b></p>
-            <select name="country_id" class="input" autocomplete="off">
+            <select name="country_id" class="slim-input country_id" autocomplete="off" data-controller="slim-select">
               <option value="" <%= params[:country_id].blank? ? "selected" : "" %>>None selected</option>
               <% Country.all.order(:translated_name).each do |country| %>
                 <option value="<%= country.id %>" <%= (params[:country_id].to_i == country.id) ? "selected" : "" %>><%= country.translated_name %></option>
