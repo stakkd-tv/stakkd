@@ -39,29 +39,29 @@ RSpec.feature "Person filters", type: :system, js: true do
     expect(page).to have_content("Dude Two")
 
     # Filtering gender
-    select "Male", from: "gender"
+    slim_select "Male", from: "gender"
     click_button "Apply filter"
     expect(page).to have_content("Dude One")
     expect(page).not_to have_content("Dude Two")
-    select "Female", from: "gender"
+    slim_select "Female", from: "gender"
     click_button "Apply filter"
     expect(page).to have_content("Dude Two")
     expect(page).not_to have_content("Dude One")
-    select "None selected", from: "gender"
+    slim_select "None selected", from: "gender"
     click_button "Apply filter"
     expect(page).to have_content("Dude One")
     expect(page).to have_content("Dude Two")
 
     # Filtering known for
-    select "Art", from: "known_for"
+    slim_select "Art", from: "known_for"
     click_button "Apply filter"
     expect(page).to have_content("Dude One")
     expect(page).not_to have_content("Dude Two")
-    select "Writing", from: "known_for"
+    slim_select "Writing", from: "known_for"
     click_button "Apply filter"
     expect(page).to have_content("Dude Two")
     expect(page).not_to have_content("Dude One")
-    select "None selected", from: "known_for"
+    slim_select "None selected", from: "known_for"
     click_button "Apply filter"
     expect(page).to have_content("Dude One")
     expect(page).to have_content("Dude Two")
@@ -82,7 +82,7 @@ RSpec.feature "Person filters", type: :system, js: true do
     visit people_path
 
     # Sorting name
-    select "Name", from: "sort"
+    slim_select "Name", from: "sort"
     click_button "Apply filter"
     sleep 0.5
     first_h3 = find_all("#people h3")[0]
@@ -91,7 +91,7 @@ RSpec.feature "Person filters", type: :system, js: true do
     expect(second_h3.text).to eq "Dude 2 (Test Name)"
 
     # Sorting age
-    select "Age", from: "sort"
+    slim_select "Age", from: "sort"
     click_button "Apply filter"
     sleep 0.5
     first_h3 = find_all("#people h3")[0]
@@ -119,7 +119,7 @@ RSpec.feature "Person filters", type: :system, js: true do
 
     visit people_path
 
-    select "Male", from: "gender"
+    slim_select "Male", from: "gender"
     click_button "Apply filter"
 
     # It applies filter when loading more (Never displays Zombie Zombie Zombie)

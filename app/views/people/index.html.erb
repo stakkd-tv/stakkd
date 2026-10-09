@@ -10,7 +10,7 @@
       <details class="bg-background-darker w-full rounded-lg" data-auto-open>
         <summary class="p-4 cursor-pointer border-b-2 border-background"><span class="ml-2">Sort</span></summary>
         <div class="p-4">
-          <select class="input" name="sort" autocomplete="off">
+          <select class="slim-input sort" name="sort" autocomplete="off" data-controller="slim-select" data-slim-select-searchable-value="false">
             <% @people_filter.sorting_options.each do |option| %>
               <option value="<%= option[:value] %>" <%= (params[:sort] == option[:value]) ? "selected" : "" %>><%= option[:name] %></option>
             <% end %>
@@ -35,7 +35,7 @@
 
           <div class="p-4 border-b-2 border-background">
             <p class="mb-4"><b>Gender</b></p>
-            <select name="gender" class="input" autocomplete="off">
+            <select name="gender" class="slim-input gender" autocomplete="off" data-controller="slim-select" data-slim-select-searchable-value="false">
               <option value="" <%= params[:gender].blank? ? "selected" : "" %>>None selected</option>
               <% Person::GENDERS.each do |gender| %>
                 <option value="<%= gender %>" <%= (params[:gender] == gender) ? "selected" : "" %>><%= gender.humanize %></option>
@@ -45,7 +45,7 @@
 
           <div class="p-4 border-b-2 border-background">
             <p class="mb-4"><b>Known for</b></p>
-            <select name="known_for" class="input" autocomplete="off">
+            <select name="known_for" class="slim-input known_for" autocomplete="off" data-controller="slim-select" data-slim-select-searchable-value="false">
               <option value="" <%= params[:known_for].blank? ? "selected" : "" %>>None selected</option>
               <% Person::CREDITS.each do |credit| %>
                 <option value="<%= credit %>" <%= (params[:known_for] == credit) ? "selected" : "" %>><%= credit.humanize %></option>
