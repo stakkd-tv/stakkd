@@ -38,7 +38,12 @@
 
       <div class="basis-1/2">
         <%= form.label :episode_type %>
-        <%= form.collection_select :episode_type, Episode::TYPES, :to_s, :humanize %>
+        <%= form.collection_select :episode_type,
+              Episode::TYPES,
+              :to_s,
+              :humanize,
+              {},
+              {class: "episode_type", data: {controller: "slim-select", slim_select_searchable_value: false}, autocomplete: "off"} %>
       </div>
     </div>
 

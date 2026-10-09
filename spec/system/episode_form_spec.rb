@@ -39,9 +39,11 @@ RSpec.feature "Episode form", type: :system, js: true do
     fill_in "episode_translated_name", with: "Test name"
     fill_in "episode_original_name", with: "Original name"
     fill_in "episode_number", with: "1"
+    slim_select "Season finale", from: "episode_type"
     click_button "Save"
     expect(page).to have_content("Episode was successfully created.")
     episode = Episode.includes(:videos).last
+    expect(episode.episode_type).to eq "season finale"
 
     # Backgrounds
     click_link "Backgrounds"
