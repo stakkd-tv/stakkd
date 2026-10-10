@@ -20,7 +20,8 @@ export default class extends Controller {
       select: this.element,
       settings: {
         showSearch: this.searchableValue,
-        placeholderText: this.placeholderValue
+        placeholderText: this.placeholderValue,
+        modal: 'off'
       }
     }
     if (this.addableValue) {
