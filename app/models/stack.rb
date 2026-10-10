@@ -22,6 +22,13 @@ class Stack < ApplicationRecord
     "desc"
   ]
 
+  ALLOWED_ITEM_TYPES = [
+    "Movie",
+    "Show",
+    "Season",
+    "Episode"
+  ]
+
   # Associations
   belongs_to :user, optional: true
   has_many :stack_items, dependent: :delete_all

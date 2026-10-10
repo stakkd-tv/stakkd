@@ -5,11 +5,13 @@ import SlimSelect, { Config } from 'slim-select'
 export default class extends Controller {
   static values = {
     addable: { type: Boolean, default: false },
-    searchable: { type: Boolean, default: true }
+    searchable: { type: Boolean, default: true },
+    placeholder: { type: String, default: undefined }
   }
 
   declare addableValue: boolean
   declare searchableValue: boolean
+  declare placeholderValue: string | undefined
 
   declare slim: SlimSelect
 
@@ -17,7 +19,8 @@ export default class extends Controller {
     const options: Config = {
       select: this.element,
       settings: {
-        showSearch: this.searchableValue
+        showSearch: this.searchableValue,
+        placeholderText: this.placeholderValue
       }
     }
     if (this.addableValue) {
