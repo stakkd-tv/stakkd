@@ -25,6 +25,8 @@ RSpec.describe "users/stacks/show.html.erb", type: :view do
     assign(:watch_statuses, {@movie => :consumed, @show => :not_consumed})
     assign(:sorting_method, @stack.sorting_method)
     assign(:sorting_direction, @stack.sorting_direction)
+    assign(:filter_options, Stack::ALLOWED_ITEM_TYPES.map { [it.pluralize, it] })
+    assign(:selected_filters, [])
   end
 
   it "renders attributes" do

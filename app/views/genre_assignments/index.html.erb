@@ -15,7 +15,7 @@
     <div>
       <%= form_with model: [@relatable, GenreAssignment.new], method: "post", class: "flex border-b border-pop bg-background" do |form| %>
         <div class="w-full border-r border-pop">
-          <%= form.collection_select :genre_id, Genre.order(:name), :id, :name, {include_blank: "Assign a genre"}, {class: "text-sm w-full py-5 px-2.5", data: {controller: "slim-select"}, autocomplete: "off"} %>
+          <%= form.collection_select :genre_id, Genre.order(:name), :id, :name, {include_blank: "Assign a genre"}, {class: "text-sm w-full slim-no-border", data: {controller: "slim-select"}, autocomplete: "off"} %>
         </div>
         <div class="min-w-[40px] p-2.5">
           <button role="submit" class="w-full h-full cursor-pointer">

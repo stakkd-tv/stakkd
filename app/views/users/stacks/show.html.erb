@@ -41,7 +41,7 @@
                 Stack::SORTING_METHODS.map { [it.humanize, it] },
                 @sorting_method
               ),
-              class: "slim-input sort max-w-50 text-sm",
+              class: "sort max-w-50 text-sm",
               autocomplete: "off",
               data: {action: "change->stack-controls#submit", controller: "slim-select", slim_select_searchable_value: false} %>
         <button type="button" class="h-[34px] aspect-square cursor-pointer" data-action="click->stack-controls#toggleDirection">
@@ -58,7 +58,7 @@
               @selected_filters
             ),
             multiple: true,
-            class: "slim-input filters max-w-50 text-sm",
+            class: "filters max-w-50 text-sm",
             autocomplete: "off",
             required: false,
             data: {
