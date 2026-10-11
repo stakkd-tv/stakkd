@@ -32,7 +32,7 @@
           method: :get,
           class: "flex flex-col sm:flex-row gap-2 items-center justify-between",
           data: {controller: "stack-controls", turbo_frame: "stack_items", turbo_action: "advance"} do |form| %>
-      <div class="flex gap-2 items-center w-full">
+      <div class="flex gap-1 items-center w-full">
         <%= form.hidden_field :direction,
               value: @sorting_direction,
               data: {stack_controls_target: "directionInput"} %>
@@ -43,30 +43,46 @@
               ),
               class: "sort w-full sm:max-w-50 text-sm",
               autocomplete: "off",
-              data: {action: "change->stack-controls#submit", controller: "slim-select", slim_select_searchable_value: false} %>
-        <button type="button" class="h-8.5 aspect-square cursor-pointer" data-action="click->stack-controls#toggleDirection">
+              data: {action: "change->stack-controls#submit", stack_controls_target: "sortingDirectionInput", controller: "slim-select", slim_select_searchable_value: false} %>
+        <button type="button" class="h-8.5 w-8.5 aspect-square cursor-pointer" data-action="click->stack-controls#toggleDirection" title="Change sort direction">
           <i data-direction="<%= @sorting_direction %>"
             data-stack-controls-target="directionIcon"
-            class="fa-solid fa-arrow-up mx-2 text-xl data-[direction=desc]:rotate-180 transition duration-300 ease-in-out">
+            class="fa-solid fa-arrow-up text-xl data-[direction=desc]:rotate-180 transition duration-300 ease-in-out">
           </i>
         </button>
+        <% if @stack.user == current_user %>
+          <button type="button"
+            class="h-8.5 w-8.5 aspect-square cursor-pointer disabled:cursor-not-allowed <%= @reorderable ? "" : "text-gray-400" %>"
+            <%= @reorderable ? "" : "disabled" %>
+            data-action="click->stack-controls#toggleReordering"
+            data-stack-controls-target="reorderingButton"
+            title="Reorder items">
+            <i data-enabled="false"
+              data-stack-controls-target="reorderingIcon"
+              class="fa-solid fa-up-down-left-right text-xl data-[enabled=true]:rotate-45 data-[enabled=true]:text-pop transition duration-300 ease-in-out"></i>
+          </button>
+        <% end %>
       </div>
 
-      <%= select_tag :filters,
-            grouped_options_for_select(
-              [["Media type", @filter_options]],
-              @selected_filters
-            ),
-            multiple: true,
-            class: "filters w-full sm:max-w-50 text-sm",
-            autocomplete: "off",
-            required: false,
-            data: {
-              action: "change->stack-controls#submit",
-              controller: "slim-select",
-              slim_select_searchable_value: false,
-              slim_select_placeholder_value: "Filters"
-            } %>
+      <div class="flex flex-col sm:flex-row gap-2 items-center w-full sm:w-auto sm:min-w-60">
+        <%= select_tag :filters,
+              grouped_options_for_select(
+                [["Media type", @filter_options]],
+                @selected_filters
+              ),
+              multiple: true,
+              class: "filters w-full sm:max-w-50 text-sm",
+              autocomplete: "off",
+              required: false,
+              data: {
+                action: "change->stack-controls#submit",
+                controller: "slim-select",
+                slim_select_searchable_value: false,
+                slim_select_placeholder_value: "Filters",
+                stack_controls_target: "filterInput"
+              } %>
+        <%= link_to "Reset", user_stack_path(@stack, user_id: @stack.user), class: "link w-full sm:w-fit" %>
+      </div>
     <% end %>
   </div>
 
@@ -97,8 +113,14 @@
             </small>
           </div>
         </div>
-        <% watch_status = @watch_statuses[stack_item.item] || :not_consumed %>
-        <%= render "shared/actions/compact_actions", record: stack_item.item, watch_status: watch_status %>
+        <div class="flex gap-2 items-center justify-between">
+          <% watch_status = @watch_statuses[stack_item.item] || :not_consumed %>
+          <%= render "shared/actions/compact_actions", record: stack_item.item, watch_status: watch_status %>
+
+          <% if @stack.user == current_user %>
+            <i class="fa-solid fa-up-down-left-right text-xl cursor-grab hidden! drag-handle"></i>
+          <% end %>
+        </div>
 
         <% if @stack.user === current_user %>
           <button class="h-fit absolute top-0 right-0 my-3 mx-4"

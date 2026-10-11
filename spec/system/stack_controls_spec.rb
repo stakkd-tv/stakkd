@@ -7,6 +7,23 @@ RSpec.feature "Stack controls", type: :system, js: true do
     page.all("h5.stack-item").map(&:text)
   end
 
+  def expect_reordering_available
+    expect(page).not_to have_css "button[data-stack-controls-target='reorderingButton'][disabled]"
+    expect(page).to have_css "button[data-stack-controls-target='reorderingButton']"
+  end
+
+  def expect_reordering_enabled(drag_handle_count:)
+    expect(page).to have_css "i.fa-up-down-left-right[data-enabled='true']"
+    expect_reordering_available
+    expect(page).to have_css "i.drag-handle", count: drag_handle_count
+  end
+
+  def expect_reordering_disabled
+    expect(page).to have_css "i.fa-up-down-left-right[data-enabled='false']"
+    expect(page).to have_css "button[data-stack-controls-target='reorderingButton'][disabled]"
+    expect(page).not_to have_css "i.drag-handle"
+  end
+
   scenario "interacting with the stack controls" do
     stack = FactoryBot.create(:stack, name: "Ranking of Kings", sorting_method: "added_at", sorting_direction: "asc")
     movie = FactoryBot.create(:movie, translated_title: "King of the Hill")
@@ -20,6 +37,9 @@ RSpec.feature "Stack controls", type: :system, js: true do
     expect(page).to have_css("option[selected][value='added_at']")
     expect(page).to have_css("i[data-direction='asc']")
     expect(ordered_stack_item_titles).to eq(["King of the Hill", "The Dark Knight"])
+
+    # Reordering is not possible, as not signed in as stack creator
+    expect(page).not_to have_css "button[data-stack-controls-target='reorderingButton']"
 
     # Changing sorting method updates DOM and url
     slim_select "Position", from: "sort"
@@ -56,5 +76,54 @@ RSpec.feature "Stack controls", type: :system, js: true do
     slim_select "Shows", from: "filters"
     sleep 0.5
     expect(ordered_stack_item_titles).to eq(["King of the Hill"])
+  end
+
+  scenario "reordering" do
+    stack = FactoryBot.create(:stack, name: "Ranking of Kings", sorting_method: "added_at", sorting_direction: "asc")
+    movie = FactoryBot.create(:movie, translated_title: "King of the Hill")
+    FactoryBot.create(:stack_item, stack:, added_at: 3.seconds.ago, position: 2, item: movie)
+    show = FactoryBot.create(:show, translated_title: "The Dark Knight")
+    FactoryBot.create(:stack_item, stack:, added_at: 2.seconds.ago, position: 1, item: show)
+    stack.user.update(confirmed_at: Time.current)
+    sign_in(stack.user)
+    visit user_stack_path(stack, user_id: stack.user)
+
+    # Reordering is not possible on page load due to default sorting method being added_at
+    expect(page).to have_css "button[data-stack-controls-target='reorderingButton'][disabled]"
+
+    stack.update(sorting_method: "position")
+    page.refresh
+
+    # Reordering is now possible on page load as default sorting method is now position
+    expect_reordering_available
+
+    # Drag handles are not visible by default
+    expect(page).not_to have_css "i.drag-handle"
+
+    # Enabling reordering updates the icon and displays drag handles
+    click_button "Reorder items"
+    expect_reordering_enabled(drag_handle_count: 2)
+
+    # Interacting with sort direction while reordering is enabled disables it
+    page.find("i[data-direction='asc']").click
+    expect_reordering_disabled
+    page.find("i[data-direction='desc']").click
+    expect_reordering_available
+
+    # Interacting with sorting method while reordering is enabled disables it
+    click_button "Reorder items"
+    expect_reordering_enabled(drag_handle_count: 2)
+    slim_select "Added at", from: "sort"
+    expect_reordering_disabled
+    slim_select "Position", from: "sort"
+    expect_reordering_available
+
+    # Interacting with filters while reordering is enabled disables it
+    click_button "Reorder items"
+    expect_reordering_enabled(drag_handle_count: 2)
+    slim_select "Shows", from: "filters"
+    expect_reordering_disabled
+    slim_select "Shows", from: "filters" # Reset filters
+    expect_reordering_available
   end
 end

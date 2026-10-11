@@ -27,6 +27,7 @@ RSpec.describe "users/stacks/show.html.erb", type: :view do
     assign(:sorting_direction, @stack.sorting_direction)
     assign(:filter_options, Stack::ALLOWED_ITEM_TYPES.map { [it.pluralize, it] })
     assign(:selected_filters, [])
+    assign(:reorderable, false)
   end
 
   it "renders attributes" do
@@ -90,6 +91,17 @@ RSpec.describe "users/stacks/show.html.erb", type: :view do
     end
   end
 
+  it "renders a multi select box for filtering" do
+    render
+    assert_select "form[action='#{user_stack_path(@stack, user_id: @user)}'][data-controller='stack-controls']" do
+      assert_select "select#filters" do
+        Stack::ALLOWED_ITEM_TYPES.each do |filter|
+          assert_select "option[value='#{filter}']", text: filter.pluralize
+        end
+      end
+    end
+  end
+
   context "when the current user is the creator of the stack" do
     before do
       def view.current_user
@@ -107,6 +119,24 @@ RSpec.describe "users/stacks/show.html.erb", type: :view do
       render
       assert_select "button[data-controller='edit-stack-button']"
     end
+
+    it "renders a disabled button to reorder the stack when cannot reorder" do
+      assign(:reorderable, false)
+      render
+      assert_select "button[data-stack-controls-target='reorderingButton'][disabled]"
+    end
+
+    it "renders a button to reorder the stack when can reorder" do
+      assign(:reorderable, true)
+      render
+      assert_select "button[data-stack-controls-target='reorderingButton'][disabled]", count: 0
+      assert_select "button[data-stack-controls-target='reorderingButton']"
+    end
+
+    it "renders a hidden drag handle for each stack item" do
+      render
+      assert_select "i.drag-handle.hidden\\!", count: 2
+    end
   end
 
   context "when the current user is not the creator of the stack" do
@@ -119,6 +149,16 @@ RSpec.describe "users/stacks/show.html.erb", type: :view do
     it "does not render a button to edit the stack" do
       render
       assert_select "button[data-controller='edit-stack-button']", count: 0
+    end
+
+    it "does not render a button to reorder the stack" do
+      render
+      assert_select "button[data-stack-controls-target='reorderingButton']", count: 0
+    end
+
+    it "does not render any drag handles for the stack items" do
+      render
+      assert_select "i.drag-handle.hidden\\!", count: 0
     end
   end
 end

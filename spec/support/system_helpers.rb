@@ -10,7 +10,9 @@ module SystemHelpers
   end
 
   def slim_select(option, from:)
-    find_all("div.ss-main.#{from}").first.click
+    # Avoid removing selected options from multi selects by specifically
+    # clicking the arrow inside the slim select box.
+    find_all("div.ss-main.#{from}>.ss-arrow").first.click
     regex = /\A#{Regexp.escape(option)}\z/
     expect(page).to have_css "div.ss-option", text: regex
     find("div.ss-option", text: regex).click
