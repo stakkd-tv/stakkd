@@ -98,4 +98,99 @@ RSpec.describe "Users::StackItems", type: :request do
       end
     end
   end
+
+  describe "PATCH /users/:username/stacks/:stack_id/stack_items/:id/move" do
+    let(:user) { FactoryBot.create(:user, :confirmed) }
+    let(:stack) { FactoryBot.create(:stack, user:) }
+
+    before do
+      StackItem.acts_as_list_no_update do
+        @stack_item1 = FactoryBot.create(:stack_item, stack:, position: 1)
+        @stack_item2 = FactoryBot.create(:stack_item, stack:, position: 2)
+      end
+    end
+
+    def perform(new_position: 1)
+      patch move_user_stack_stack_item_path(user, stack, @stack_item2), params: {position: new_position}
+    end
+
+    context "when the user is not the current logged in user" do
+      before do
+        another_user = FactoryBot.create(:user)
+        session = Session.new(user: another_user)
+        allow(Current).to receive(:session).and_return(session)
+        allow(Current).to receive(:user).and_return(another_user)
+      end
+
+      it "redirects to the user page" do
+        perform
+        expect(response).to redirect_to user_path(user)
+      end
+
+      it "does not update the stack item position" do
+        perform
+        expect(@stack_item2.reload.position).to eq 2
+      end
+    end
+
+    context "when the stack does not belong to the current user" do
+      let(:stack) { FactoryBot.create(:stack) }
+
+      before do
+        session = Session.new(user:)
+        allow(Current).to receive(:session).and_return(session)
+        allow(Current).to receive(:user).and_return(user)
+      end
+
+      it "renders a 404" do
+        perform
+        expect(response).to have_http_status(:not_found)
+      end
+
+      it "does not update the stack item position" do
+        perform
+        expect(@stack_item2.reload.position).to eq 2
+      end
+    end
+
+    context "when the stack belongs to the current user" do
+      before do
+        session = Session.new(user:)
+        allow(Current).to receive(:session).and_return(session)
+        allow(Current).to receive(:user).and_return(user)
+      end
+
+      it "updates the stacks position" do
+        perform
+        expect(@stack_item2.reload.position).to eq 1
+        expect(@stack_item1.reload.position).to eq 2
+      end
+
+      it "renders a successful response" do
+        perform
+        expect(response).to have_http_status(:ok)
+      end
+
+      context "when the stack item does not belong to the stack" do
+        let(:other_stack) { FactoryBot.create(:stack, user:) }
+
+        before do
+          StackItem.acts_as_list_no_update do
+            @stack_item1.update(stack: other_stack)
+            @stack_item2.update(stack: other_stack)
+          end
+        end
+
+        it "does not update the stack item position" do
+          perform
+          expect(@stack_item2.reload.position).to eq 2
+        end
+
+        it "renders a 404" do
+          perform
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+    end
+  end
 end

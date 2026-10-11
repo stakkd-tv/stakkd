@@ -1,3 +1,4 @@
+import { csrfToken } from '../../helpers/csrfToken'
 import DialogController from '../dialog_controller'
 
 // Connects to data-controller="stack-dialog"
@@ -131,14 +132,9 @@ export default class extends DialogController {
     body: BodyInit | null | undefined,
     contentType: string | null = 'application/json'
   ) {
-    const csrfToken =
-      document
-        .querySelector('meta[name="csrf-token"]')
-        ?.getAttribute('content') ?? ''
-
     const headers: HeadersInit = {
       Accept: 'application/json',
-      'X-CSRF-Token': csrfToken
+      'X-CSRF-Token': csrfToken()
     }
 
     if (contentType) {

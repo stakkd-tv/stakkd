@@ -7,6 +7,15 @@ RSpec.feature "Stack controls", type: :system, js: true do
     page.all("h5.stack-item").map(&:text)
   end
 
+  def move(element, to:)
+    page.driver.browser.action
+      .move_to(element.native)
+      .click_and_hold
+      .move_to(to.native)
+      .release
+      .perform
+  end
+
   def expect_reordering_available
     expect(page).not_to have_css "button[data-stack-controls-target='reorderingButton'][disabled]"
     expect(page).to have_css "button[data-stack-controls-target='reorderingButton']"
@@ -80,10 +89,12 @@ RSpec.feature "Stack controls", type: :system, js: true do
 
   scenario "reordering" do
     stack = FactoryBot.create(:stack, name: "Ranking of Kings", sorting_method: "added_at", sorting_direction: "asc")
-    movie = FactoryBot.create(:movie, translated_title: "King of the Hill")
-    FactoryBot.create(:stack_item, stack:, added_at: 3.seconds.ago, position: 2, item: movie)
-    show = FactoryBot.create(:show, translated_title: "The Dark Knight")
-    FactoryBot.create(:stack_item, stack:, added_at: 2.seconds.ago, position: 1, item: show)
+    StackItem.acts_as_list_no_update do
+      movie = FactoryBot.create(:movie, translated_title: "King of the Hill")
+      @stack_item1 = FactoryBot.create(:stack_item, stack:, added_at: 3.seconds.ago, position: 2, item: movie)
+      show = FactoryBot.create(:show, translated_title: "The Dark Knight")
+      @stack_item2 = FactoryBot.create(:stack_item, stack:, added_at: 2.seconds.ago, position: 1, item: show)
+    end
     stack.user.update(confirmed_at: Time.current)
     sign_in(stack.user)
     visit user_stack_path(stack, user_id: stack.user)
@@ -125,5 +136,19 @@ RSpec.feature "Stack controls", type: :system, js: true do
     expect_reordering_disabled
     slim_select "Shows", from: "filters" # Reset filters
     expect_reordering_available
+    sleep 0.5
+
+    # Now reorder the second item to be the first
+    expect(@stack_item1.reload.position).to eq 2
+    expect(@stack_item2.reload.position).to eq 1
+    click_button "Reorder items"
+    expect_reordering_enabled(drag_handle_count: 2)
+    expect(ordered_stack_item_titles).to eq(["The Dark Knight", "King of the Hill"])
+    drag_handle = find_all(".drag-handle").last
+    target = find_all(".drag-handle").first
+    move drag_handle, to: target
+    expect(ordered_stack_item_titles).to eq(["King of the Hill", "The Dark Knight"])
+    expect(@stack_item1.reload.position).to eq 1
+    expect(@stack_item2.reload.position).to eq 2
   end
 end

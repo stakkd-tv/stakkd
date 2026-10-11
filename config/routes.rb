@@ -17,7 +17,9 @@ Rails.application.routes.draw do
 
   resources :users, only: [:show, :new, :create, :update] do
     resources :stacks, except: [:edit], controller: "users/stacks" do
-      resources :stack_items, only: [:destroy], controller: "users/stack_items"
+      resources :stack_items, only: [:destroy], controller: "users/stack_items" do
+        patch :move, on: :member
+      end
     end
 
     get :confirm, on: :collection

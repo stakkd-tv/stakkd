@@ -6,6 +6,7 @@ import {
   RowComponent,
   TabulatorFull as Tabulator
 } from 'tabulator-tables'
+import { csrfToken } from '../helpers/csrfToken'
 import { dateEditor } from '../helpers/tabulator/date_editor'
 import { listEditor } from '../helpers/tabulator/list_editor'
 
@@ -42,10 +43,6 @@ export default class extends Controller {
   declare hasGroupByValue: boolean
 
   async saveRecord(rowData: RowData): Promise<Response> {
-    const token =
-      document
-        .querySelector('meta[name="csrf-token"]')
-        ?.getAttribute('content') ?? ''
     const { id, ...data } = rowData
     const url = `${this.pathPrefixValue}/${id}`
     const body = Object.entries(data).reduce((acc, [key, value]) => {
@@ -61,7 +58,10 @@ export default class extends Controller {
 
     const response = await fetch(url, {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': token },
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': csrfToken()
+      },
       body: JSON.stringify({ [this.modelNameValue]: body })
     })
 
@@ -74,15 +74,14 @@ export default class extends Controller {
   }
 
   async removeRow(_event: UIEvent, cell: CellComponent): Promise<void> {
-    const token =
-      document
-        .querySelector('meta[name="csrf-token"]')
-        ?.getAttribute('content') ?? ''
     const { id } = cell.getRow().getData()
     const url = `${this.pathPrefixValue}/${id}`
     const response = await fetch(url, {
       method: 'DELETE',
-      headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': token }
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': csrfToken()
+      }
     })
     if (response.ok) {
       const row = cell.getRow()
@@ -92,15 +91,14 @@ export default class extends Controller {
 
   async moveRow(row: RowComponent) {
     const newPosition = row.getPosition()
-    const token =
-      document
-        .querySelector('meta[name="csrf-token"]')
-        ?.getAttribute('content') ?? ''
     const { id } = row.getData()
     const url = `${this.pathPrefixValue}/${id}/move`
     await fetch(url, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': token },
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': csrfToken()
+      },
       body: JSON.stringify({ position: newPosition })
     })
   }

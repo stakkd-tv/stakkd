@@ -11,6 +11,11 @@ class Users::StackItemsController < Users::BaseController
     end
   end
 
+  def move
+    @stack_item.insert_at(params[:position].to_i)
+    head :ok
+  end
+
   private
 
   def set_stack

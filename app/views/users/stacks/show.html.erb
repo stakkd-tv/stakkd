@@ -88,7 +88,7 @@
 
   <%= turbo_frame_tag "stack_items", target: "_top", class: "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" do %>
     <% @stack_items.each do |stack_item| %>
-      <div class="p-4 bg-background-darker rounded-lg flex flex-col gap-4 relative group StackItem_<%= stack_item.id %>_card">
+      <div class="p-4 bg-background-darker rounded-lg flex flex-col gap-4 relative group StackItem_<%= stack_item.id %>_card" data-stack-item-url="<%= user_stack_stack_item_path(stack_item, stack_id: @stack, user_id: @stack.user) %>">
         <div class="flex flex-col md:flex-row gap-4">
           <% if stack_item.item.respond_to?(:poster) %>
             <%= link_to polymorphic_record_path(stack_item.item, nil), class: "w-fit" do %>

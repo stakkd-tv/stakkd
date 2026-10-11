@@ -1,4 +1,6 @@
 import { Controller } from '@hotwired/stimulus'
+import Sortable from 'sortablejs'
+import { csrfToken } from '../helpers/csrfToken'
 
 // Connects to data-controller="stack-controls"
 export default class extends Controller<HTMLFormElement> {
@@ -20,6 +22,8 @@ export default class extends Controller<HTMLFormElement> {
 
   declare readonly hasReorderingIconTarget: boolean
   declare readonly hasReorderingButtonTarget: boolean
+
+  declare sortable: Sortable | undefined
 
   submit() {
     if (this.hasReorderingIconTarget && this.hasReorderingButtonTarget) {
@@ -51,8 +55,10 @@ export default class extends Controller<HTMLFormElement> {
 
     if (next === 'true') {
       stackItemHandles.forEach((element) => element.classList.remove('hidden!'))
+      this._initializeSortable()
     } else {
       stackItemHandles.forEach((element) => element.classList.add('hidden!'))
+      this._destroySortable()
     }
   }
 
@@ -72,5 +78,42 @@ export default class extends Controller<HTMLFormElement> {
       this.sortingDirectionInputTarget.value === 'position' &&
       this.filterInputTarget.selectedOptions.length === 0
     )
+  }
+
+  _initializeSortable() {
+    if (this.sortable !== undefined) return
+
+    const stackItems = document.querySelector<HTMLElement>('#stack_items')
+    if (stackItems === null) return
+    this.sortable = new Sortable(stackItems, {
+      handle: '.drag-handle',
+      ghostClass: 'opacity-50',
+      onEnd: this._updatePosition.bind(this)
+    })
+  }
+
+  _destroySortable() {
+    if (this.sortable === undefined) return
+
+    this.sortable.destroy()
+    this.sortable = undefined
+  }
+
+  async _updatePosition(event: Sortable.SortableEvent) {
+    const newPosition = (event.newIndex || 0) + 1
+    const element = event.item
+    const stackItemUrl = element.dataset.stackItemUrl
+    const endpoint = `${stackItemUrl}/move`
+    const response = await fetch(endpoint, {
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': csrfToken()
+      },
+      method: 'PATCH',
+      body: JSON.stringify({ position: newPosition })
+    })
+    if (!response.ok) {
+      console.error(response.status)
+    }
   }
 }

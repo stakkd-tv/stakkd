@@ -1,4 +1,5 @@
 import { Controller } from '@hotwired/stimulus'
+import { csrfToken } from '../helpers/csrfToken'
 
 // TODO: System specs
 // Connects to data-controller="uploads"
@@ -47,13 +48,9 @@ export default class extends Controller {
     this.statusesTarget.appendChild(result)
 
     try {
-      const token =
-        document
-          .querySelector('meta[name="csrf-token"]')
-          ?.getAttribute('content') ?? ''
       const response = await fetch('/uploads', {
         method: 'POST',
-        headers: { 'X-CSRF-Token': token },
+        headers: { 'X-CSRF-Token': csrfToken() },
         body: formData
       })
 
