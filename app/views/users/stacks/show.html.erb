@@ -84,6 +84,9 @@
         <%= link_to "Reset", user_stack_path(@stack, user_id: @stack.user), class: "link w-full sm:w-fit" %>
       </div>
     <% end %>
+    <% if @stack.user == current_user %>
+      <small class="inline-block mt-2 text-gray-300">Tip: You can reorder items in this stack by setting the sorting method to position and the direction to ascending.</small>
+    <% end %>
   </div>
 
   <%= turbo_frame_tag "stack_items", target: "_top", class: "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" do %>
@@ -118,7 +121,7 @@
           <%= render "shared/actions/compact_actions", record: stack_item.item, watch_status: watch_status %>
 
           <% if @stack.user == current_user %>
-            <i class="fa-solid fa-up-down-left-right text-xl cursor-grab hidden! drag-handle"></i>
+            <i class="fa-solid fa-grip-vertical text-xl cursor-grab hidden! drag-handle"></i>
           <% end %>
         </div>
 
