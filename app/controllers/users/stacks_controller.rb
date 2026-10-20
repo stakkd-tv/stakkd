@@ -1,4 +1,6 @@
 class Users::StacksController < Users::BaseController
+  include StackConcerns
+
   before_action :require_same_user, only: [:new, :create, :destroy, :update]
   before_action :set_stack, only: [:show, :destroy, :update]
   before_action :check_stack_privacy, only: [:show]
@@ -14,23 +16,8 @@ class Users::StacksController < Users::BaseController
     end
   end
 
-  # TODO: System specs for actions for each stack item
-  def show
-    @sorting_method = params[:sort].presence_in(Stack::SORTING_METHODS) || @stack.sorting_method
-    @sorting_direction = params[:direction].presence_in(Stack::SORTING_DIRECTIONS) || @stack.sorting_direction
-    @filter_options = Stack::ALLOWED_ITEM_TYPES.map { [it.pluralize, it] }
-    @selected_filters = params[:filters] || []
-    filter_params = (params[:filters] || Stack::ALLOWED_ITEM_TYPES) & Stack::ALLOWED_ITEM_TYPES
-    @reorderable = @sorting_method == "position" && @sorting_direction == "asc" && @selected_filters == []
-
-    # TODO: Pagination on stack items. Need to figure out how this would interact with drag and drop sorting...
-    @stack_items = @stack.stack_items
-      .where(item_type: filter_params)
-      .public_send("ordered_by_#{@sorting_method}", @sorting_direction.to_sym)
-      .includes(item: [:show, :season])
-      .map { StackItemPresenter.new(it) }
-    @watch_statuses = Manage::History.new(current_user).statuses_for(@stack_items.map(&:item))
-  end
+  # TODO: System specs for actions for each stack item - mark as watched etc?
+  def show = stack_show
 
   def new
     @stack = current_user.stacks.new

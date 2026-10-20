@@ -1,0 +1,18 @@
+<% content_for :title, "Stakkd - #{@stack.name}" %>
+
+<div class="max-w-7xl mx-auto my-8 px-6 pt-10">
+  <div class="rounded-lg border-2 border-pop overflow-hidden mb-8 min-h-57 p-8 flex items-center justify-center relative">
+    <% if @stack_items.any? %>
+      <% stack_item = @stack_items.first %>
+      <% if background = stack_item.item.background(variant: :small, use_fallback: false) %>
+        <div class="absolute left-0 top-0 -z-1 w-full h-full overflow-hidden">
+          <%= image_tag background, alt: "Background", class: "blur-sm w-full h-full object-cover object-center" %>
+          <div class="absolute left-0 top-0 bg-black/75 w-full h-full"></div>
+        </div>
+      <% end %>
+    <% end %>
+    <%= image_tag "wordmark.svg" %>
+  </div>
+
+  <%= render "shared/stacks/show" %>
+</div>

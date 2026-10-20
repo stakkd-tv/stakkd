@@ -27,6 +27,8 @@ Rails.application.routes.draw do
   get "settings", to: "users#settings", as: :user_settings
   resources :confirmation_tokens, only: [:new, :create], path: "confirmations"
 
+  resources :official_stacks, only: [:show], path: "stacks/official"
+
   resources :genres, only: [:index]
   resources :countries, only: [:index]
   resources :languages, only: [:index]

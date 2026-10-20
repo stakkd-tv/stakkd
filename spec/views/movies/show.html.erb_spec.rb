@@ -283,14 +283,19 @@ RSpec.describe "movies/show", type: :view do
 
   context "when the movie has some stacks" do
     let(:stack) { FactoryBot.create(:stack, name: "Amazing Stack") }
+    let(:official_stack) { FactoryBot.create(:stack, user: nil, name: "Official Stack") }
     let(:stack_items) { [FactoryBot.create(:stack_item, item: @movie)] }
-    let(:stacks_with_previews) { {stack => stack_items} }
+    let(:stacks_with_previews) { {stack => stack_items, official_stack => []} }
 
     it "renders the top stacks section" do
       render
       assert_select "h4", text: "Top stacks:"
       assert_select "turbo-frame[id='top_stacks']" do
         assert_select "h6", text: "Amazing Stack"
+        assert_select "a[href='#{user_stack_path(stack, user_id: stack.user)}']"
+
+        assert_select "h6", text: "Official Stack"
+        assert_select "a[href='#{official_stack_path(official_stack)}']"
       end
     end
 

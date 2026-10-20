@@ -1,6 +1,6 @@
 <% selector = "Stack_#{stack.id}_options" %>
 <div class="flex flex-col gap-2 group Stack_<%= stack.id %>_card">
-  <% path = stack.official? ? "" : user_stack_path(stack, user_id: stack.user) %>
+  <% path = stack.official? ? official_stack_path(stack) : user_stack_path(stack, user_id: stack.user) %>
   <%= link_to path, data: {turbo: false} do %>
     <div class="relative w-full aspect-3/2 outline outline-transparent group-hover:outline-pop rounded-lg bg-background-darker overflow-hidden -z-4 transition duration-300 ease-in-out">
       <%# NOTE: There should only ever be three stack items in the preview %>
@@ -24,9 +24,9 @@
   <div class="flex flex-col gap-1.5">
     <div class="flex justify-between items-center relative">
       <%= link_to path, data: {turbo: false} do %>
-        <h6 class="font-domine text-md <%= "stack_#{stack.id}_name" %>"><%= stack.name %></h6>
+        <h6 class="font-domine text-md leading-[42px] <%= "stack_#{stack.id}_name" %>"><%= stack.name %></h6>
       <% end %>
-      <% if stack.user == current_user %>
+      <% if current_user && stack.user == current_user %>
         <button
           class="cursor-pointer h-full min-w-10.5 aspect-square rounded-lg border border-transparent focus:bg-black/75 hover:bg-black/75 transition-all duration-300 ease-in-out"
           title="More options"

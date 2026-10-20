@@ -46,9 +46,11 @@ RSpec.describe Stack, type: :model do
       public_by_other_user = FactoryBot.create(:stack, private: false)
       # Stacks for a private user, disregards private flag on individual stacks
       private_user = FactoryBot.create(:user, private: true)
+      # Official stack
+      official_stack = FactoryBot.create(:stack, user: nil)
       FactoryBot.create(:stack, user: private_user, private: false)
       FactoryBot.create(:stack, user: private_user, private: true)
-      expect(Stack.visible_to(user)).to contain_exactly(private_stack, public_stack, public_by_other_user)
+      expect(Stack.visible_to(user)).to contain_exactly(private_stack, public_stack, public_by_other_user, official_stack)
     end
 
     context "when user is nil" do
@@ -60,8 +62,10 @@ RSpec.describe Stack, type: :model do
         public_stack = FactoryBot.create(:stack, private: false)
         # Public stack but private user
         private_user = FactoryBot.create(:user, private: true)
+        # Official stack
+        official_stack = FactoryBot.create(:stack, user: nil)
         FactoryBot.create(:stack, user: private_user, private: false)
-        expect(Stack.visible_to(user)).to contain_exactly(public_stack)
+        expect(Stack.visible_to(user)).to contain_exactly(public_stack, official_stack)
       end
     end
   end
