@@ -7,7 +7,7 @@ class StackItemPresenter < SimpleDelegator
   private
 
   def format_added_at
-    "Added: #{added_at.strftime('%b %d, %Y %H:%M')}"
+    "Added: #{added_at.strftime("%b %d, %Y %H:%M")}"
   end
 
   def format_position

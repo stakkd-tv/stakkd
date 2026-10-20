@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Official Stacks", type: :request do
   describe "GET /stacks/official/:id" do
