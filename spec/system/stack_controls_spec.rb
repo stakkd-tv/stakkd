@@ -7,6 +7,10 @@ RSpec.feature "Stack controls", type: :system, js: true do
     page.all("h5.stack-item").map(&:text)
   end
 
+  def ordered_position_detail
+    page.all(".stackItem-position").map(&:text)
+  end
+
   def move(element, to:)
     page.driver.browser.action
       .move_to(element.native)
@@ -144,10 +148,13 @@ RSpec.feature "Stack controls", type: :system, js: true do
     click_button "Reorder items"
     expect_reordering_enabled(drag_handle_count: 2)
     expect(ordered_stack_item_titles).to eq(["The Dark Knight", "King of the Hill"])
+    expect(ordered_position_detail).to eq(["1", "2"])
     drag_handle = find_all(".drag-handle").last
     target = find_all(".drag-handle").first
     move drag_handle, to: target
     expect(ordered_stack_item_titles).to eq(["King of the Hill", "The Dark Knight"])
+    # It keeps the sorting detail up to date for all items in the stack
+    expect(ordered_position_detail).to eq(["1", "2"])
     expect(@stack_item1.reload.position).to eq 1
     expect(@stack_item2.reload.position).to eq 2
   end

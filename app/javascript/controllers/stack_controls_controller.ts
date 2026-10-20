@@ -115,5 +115,14 @@ export default class extends Controller<HTMLFormElement> {
     if (!response.ok) {
       console.error(response.status)
     }
+    this._updatePositionNumbers()
+  }
+
+  _updatePositionNumbers() {
+    const positionNumbers = document.querySelectorAll('.stackItem-position')
+    positionNumbers.forEach((element, index) => {
+      const postion = index + 1
+      element.innerHTML = postion.toString()
+    })
   }
 }
