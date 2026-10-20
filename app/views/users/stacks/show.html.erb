@@ -111,9 +111,11 @@
             <small class="text-xs text-gray-300 line-clamp-4 leading-4 mb-2">
               <%= stack_item.item.overview %>
             </small>
-            <small class="text-xs line-clamp-2">
-              Added: <%= stack_item.added_at.strftime("%b %d, %Y %H:%M") %>
-            </small>
+            <% if detail = stack_item.sorting_detail(@sorting_method) %>
+              <small class="text-xs line-clamp-2">
+                <%= detail %>
+              </small>
+            <% end %>
           </div>
         </div>
         <div class="flex gap-2 items-center justify-between">

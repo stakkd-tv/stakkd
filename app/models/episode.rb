@@ -67,6 +67,9 @@ class Episode < ApplicationRecord
 
   def released? = original_air_date && original_air_date <= Date.today
 
+  # NOTE: This is for duck-typing with other media types
+  def release_date = original_air_date
+
   TYPES.each do |type|
     define_method "#{type}?" do
       episode_type == type

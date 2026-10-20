@@ -13,21 +13,27 @@ RSpec.describe "users/stacks/show.html.erb", type: :view do
       :stack,
       name: "Amazing stack",
       description: "This is an amazing stack",
-      user: @user
+      user: @user,
+      sorting_method: "runtime"
     )
-    @movie = FactoryBot.create(:movie, :with_release_date, date_for_release: Date.today, translated_title: "Great Movie")
+    @movie = FactoryBot.create(:movie, :with_release_date, date_for_release: Date.today, translated_title: "Great Movie", runtime: 25)
     FactoryBot.create(:stack_item, stack: @stack, item: @movie)
     @show = FactoryBot.create(:show, :with_premiere_date, date_for_premiere: Date.tomorrow, translated_title: "Great Show")
     FactoryBot.create(:stack_item, stack: @stack, item: @show)
     assign(:stack, @stack)
     assign(:user, @user)
-    assign(:stack_items, @stack.stack_items.includes(item: [:show, :season]))
+    assign(:stack_items, @stack.stack_items.includes(item: [:show, :season]).map { StackItemPresenter.new(it) })
     assign(:watch_statuses, {@movie => :consumed, @show => :not_consumed})
     assign(:sorting_method, @stack.sorting_method)
     assign(:sorting_direction, @stack.sorting_direction)
     assign(:filter_options, Stack::ALLOWED_ITEM_TYPES.map { [it.pluralize, it] })
     assign(:selected_filters, [])
     assign(:reorderable, false)
+  end
+
+  it "renders the sorting detail" do
+    render
+    assert_select "small", text: "Runtime: 25m"
   end
 
   it "renders attributes" do

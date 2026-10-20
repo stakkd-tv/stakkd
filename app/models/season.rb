@@ -51,6 +51,9 @@ class Season < ApplicationRecord
 
   def released? = premiere_date && premiere_date <= Date.today
 
+  # NOTE: For duck typing with other media types
+  def release_date = premiere_date
+
   private
 
   def set_show_premiere_date

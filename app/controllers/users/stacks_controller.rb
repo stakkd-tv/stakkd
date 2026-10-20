@@ -28,6 +28,7 @@ class Users::StacksController < Users::BaseController
       .where(item_type: filter_params)
       .public_send("ordered_by_#{@sorting_method}", @sorting_direction.to_sym)
       .includes(item: [:show, :season])
+      .map { StackItemPresenter.new(it) }
     @watch_statuses = Manage::History.new(current_user).statuses_for(@stack_items.map(&:item))
   end
 

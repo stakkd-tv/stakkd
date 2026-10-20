@@ -234,6 +234,13 @@ RSpec.describe Season, type: :model do
     end
   end
 
+  describe "#release_date" do
+    it "returns the seasons premiere_date" do
+      season = FactoryBot.create(:season, :with_premiere_date)
+      expect(season.release_date).to eq season.premiere_date
+    end
+  end
+
   it_behaves_like "a stackable model" do
     let(:item) { FactoryBot.create(:season) }
   end

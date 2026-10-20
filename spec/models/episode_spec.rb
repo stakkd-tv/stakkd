@@ -237,6 +237,13 @@ RSpec.describe Episode, type: :model do
     end
   end
 
+  describe "#release_date" do
+    it "returns the episodes air date" do
+      episode = FactoryBot.create(:episode, original_air_date: Date.today)
+      expect(episode.release_date).to eq episode.original_air_date
+    end
+  end
+
   it_behaves_like "a stackable model" do
     let(:item) { FactoryBot.create(:episode) }
   end
