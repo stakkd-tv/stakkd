@@ -14,7 +14,7 @@ RSpec.feature "Season load more stacks", type: :system, js: true do
       FactoryBot.create(:stack_item, item: season, stack:)
     end
     # Make the first stack private
-    Stack.first.update(private: true)
+    Stack.standard.first.update(private: true)
     # Private stack for another user
     private_stack = FactoryBot.create(:stack, private: true, name: "Private Stack")
     FactoryBot.create(:stack_item, item: season, stack: private_stack)

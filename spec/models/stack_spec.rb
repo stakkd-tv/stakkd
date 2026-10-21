@@ -33,7 +33,7 @@ RSpec.describe Stack, type: :model do
   end
 
   describe ".visible_to" do
-    it "only returns stacks that are visible to the user" do
+    it "only returns standard stacks that are visible to the user" do
       # Even though the user is private they can still see their own stacks
       user = FactoryBot.create(:user, private: true)
       # Private stack for the user

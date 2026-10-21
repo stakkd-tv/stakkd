@@ -449,7 +449,7 @@ RSpec.describe "Users::Stacks", type: :request do
 
       it "does not delete the stack" do
         perform
-        expect(Stack.count).to eq(1)
+        expect(Stack.standard.count).to eq(1)
       end
     end
 
@@ -469,7 +469,7 @@ RSpec.describe "Users::Stacks", type: :request do
 
       it "does not delete the stack" do
         perform
-        expect(Stack.count).to eq(1)
+        expect(Stack.standard.count).to eq(1)
       end
     end
 
@@ -483,7 +483,7 @@ RSpec.describe "Users::Stacks", type: :request do
       context "when the request is HTML" do
         it "deletes the stack" do
           perform
-          expect(Stack.count).to eq(0)
+          expect(Stack.standard.count).to eq(0)
         end
 
         it "redirects to the user stacks page" do
@@ -495,7 +495,7 @@ RSpec.describe "Users::Stacks", type: :request do
       context "when the request is JSON" do
         it "deletes the stack" do
           perform(format: :json)
-          expect(Stack.count).to eq(0)
+          expect(Stack.standard.count).to eq(0)
         end
 
         it "renders json" do

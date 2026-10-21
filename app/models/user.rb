@@ -23,7 +23,8 @@ class User < ApplicationRecord
   has_many :sessions, dependent: :destroy
   has_many :confirmation_tokens, dependent: :destroy
   has_many :history_items, dependent: :delete_all
-  has_many :stacks, dependent: :delete_all
+  has_many :stacks, dependent: :destroy
+  has_one :watchlist, -> { where(type: "watchlist") }, class_name: "Stack"
   has_one_attached :profile_picture
   has_one_attached :background
 
@@ -42,6 +43,7 @@ class User < ApplicationRecord
 
   # Callbacks
   before_validation :normalize_email
+  after_create :create_watchlist
 
   # Scopes
   scope :confirmed, -> { where.not(confirmed_at: nil) }
@@ -76,6 +78,10 @@ class User < ApplicationRecord
 
   def active? = !banned? && confirmed?
 
+  def watchlist!
+    watchlist || create_watchlist
+  end
+
   private
 
   def username_exclusions
@@ -87,5 +93,9 @@ class User < ApplicationRecord
 
   def normalize_email
     self.email_address = email_address.to_s.strip.downcase
+  end
+
+  def create_watchlist
+    stacks.create!(name: "Watchlist", type: "watchlist", sorting_method: "position", sorting_direction: "asc")
   end
 end

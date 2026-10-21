@@ -8,7 +8,8 @@ RSpec.describe User, type: :model do
     it { should have_many(:sessions).dependent(:destroy) }
     it { should have_many(:confirmation_tokens).dependent(:destroy) }
     it { should have_many(:history_items).dependent(:delete_all) }
-    it { should have_many(:stacks).dependent(:delete_all) }
+    it { should have_many(:stacks).dependent(:destroy) }
+    it { should have_one(:watchlist) }
     it { should have_one_attached(:profile_picture) }
     it { should have_one_attached(:background) }
   end
@@ -36,6 +37,17 @@ RSpec.describe User, type: :model do
       user = User.new(email_address: "HELLO@THERE.COM", username: "hehe", password: "hehe")
       user.save!
       expect(user.reload.email_address).to eq "hello@there.com"
+    end
+  end
+
+  describe "after_create :create_watchlist" do
+    it "creates a watchlist for the user" do
+      FactoryBot.create(:user)
+      watchlist = Stack.last
+      expect(watchlist.name).to eq "Watchlist"
+      expect(watchlist.type).to eq "watchlist"
+      expect(watchlist.sorting_method).to eq "position"
+      expect(watchlist.sorting_direction).to eq "asc"
     end
   end
 
@@ -215,6 +227,27 @@ RSpec.describe User, type: :model do
     it "returns false for unconfirmed, banned users" do
       user = FactoryBot.create(:user, banned_at: Time.current, ban_reason: "Test")
       expect(user.active?).to be_falsey
+    end
+  end
+
+  describe "#watchlist!" do
+    context "when the user does not have a watchlist" do
+      it "creates a new watchlist for the user" do
+        user = FactoryBot.create(:user)
+        user.watchlist.destroy # Should not happen in the real world
+        expect(user.reload.watchlist).to be_nil
+        user.watchlist!
+        watchlist = Stack.last
+        expect(user.reload.watchlist).to eq watchlist
+      end
+    end
+
+    context "when the user has a watchlist" do
+      it "returns the users watchlist" do
+        user = FactoryBot.create(:user)
+        watchlist = user.watchlist
+        expect(user.watchlist!).to eq watchlist
+      end
     end
   end
 end

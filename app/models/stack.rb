@@ -44,7 +44,7 @@ class Stack < ApplicationRecord
   scope :official, -> { where(user_id: nil) }
   scope :standard, -> { where(type: "standard") }
   scope :visible_to, ->(user) {
-    left_joins(:user).where(
+    left_joins(:user).standard.where(
       "NOT stacks.private AND (users.id IS NULL OR NOT users.private) OR stacks.user_id = :user_id",
       user_id: user&.id
     )

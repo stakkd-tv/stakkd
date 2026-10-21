@@ -157,6 +157,9 @@ RSpec.feature "Movie actions", type: :system, js: true do
     # Dialog is now shown
     expect(page).to have_css "dialog[data-controller='stack-dialog']"
 
+    # Watchlist is not available from list of stacks
+    expect(page).not_to have_button "Watchlist"
+
     # Adding to 'Amazing Stack'
     click_button "Amazing Stack"
     expect(page).to have_css "button[data-stack-id='#{stack1.id}'][data-active='true']"

@@ -25,7 +25,7 @@ RSpec.feature "Stack actions", type: :system, js: true do
     # Does not delete the stack when clicking No
     expect(page).not_to have_content "Are you sure you want to delete this?"
     expect(page).to have_content "Amazing Stack"
-    expect(Stack.count).to eq 1
+    expect(Stack.standard.count).to eq 1
 
     click_button "Stack_#{stack.id}_more_options"
     expect(page).to have_button "Delete"
@@ -35,7 +35,7 @@ RSpec.feature "Stack actions", type: :system, js: true do
     # Stack is now deleted
     expect(page).not_to have_content "Are you sure you want to delete this?"
     expect(page).not_to have_content "Amazing Stack"
-    expect(Stack.count).to eq 0
+    expect(Stack.standard.count).to eq 0
   end
 
   scenario "deleting stack from stacks page" do
@@ -60,7 +60,7 @@ RSpec.feature "Stack actions", type: :system, js: true do
     # Does not delete the stack when clicking No
     expect(page).not_to have_content "Are you sure you want to delete this?"
     expect(page).to have_content "Amazing Stack"
-    expect(Stack.count).to eq 1
+    expect(Stack.standard.count).to eq 1
 
     click_button "Stack_#{stack.id}_more_options"
     expect(page).to have_button "Delete"
@@ -70,7 +70,7 @@ RSpec.feature "Stack actions", type: :system, js: true do
     # Stack is now deleted
     expect(page).not_to have_content "Are you sure you want to delete this?"
     expect(page).not_to have_content "Amazing Stack"
-    expect(Stack.count).to eq 0
+    expect(Stack.standard.count).to eq 0
   end
 
   scenario "editing a stack from the stack page", ignore_form_failures: true do

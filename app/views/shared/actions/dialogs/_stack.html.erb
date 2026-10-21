@@ -12,7 +12,7 @@
         <p>Add to an existing stack, or create a new one. You can learn more about stacks <a href="#" class="underline">here</a>.</p>
         <div class="flex flex-wrap gap-2 my-4" data-stack-dialog-target="availableStacks">
           <button type="button" data-stack-dialog-target="stackPlaceholder" data-action="stack-dialog#select" data-stack-id="" data-active="false" class="hidden text-sm whitespace-nowrap bg-background-darker data-[active=true]:border-watch border border-transparent rounded py-1 px-2 cursor-pointer transition duration-300 ease-in-out"></button>
-          <% stacks = current_user&.stacks || [] %>
+          <% stacks = current_user&.stacks&.standard || [] %>
           <% stacks.each do |stack| %>
             <button type="button" data-stack-dialog-target="stack" data-action="stack-dialog#select" data-stack-id="<%= stack.id %>" data-active="false" class="text-sm whitespace-nowrap bg-background-darker data-[active=true]:border-watch border border-transparent rounded py-1 px-2 cursor-pointer transition duration-300 ease-in-out"><%= stack.name %></button>
           <% end %>
