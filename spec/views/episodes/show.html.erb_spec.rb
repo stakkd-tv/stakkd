@@ -8,6 +8,7 @@ RSpec.describe "episodes/show", type: :view do
   let(:watch_status) { :not_consumed }
   let(:stacks_with_previews) { {} }
   let(:stacks_next_page) { nil }
+  let(:watchlisted) { false }
 
   before(:each) do
     def view.authenticated? = false
@@ -35,6 +36,7 @@ RSpec.describe "episodes/show", type: :view do
     assign(:watch_status, watch_status)
     assign(:stacks_with_previews, stacks_with_previews)
     assign(:stacks_next_page, stacks_next_page)
+    assign(:watchlisted, watchlisted)
   end
 
   it "renders attributes in <p>" do
@@ -240,12 +242,36 @@ RSpec.describe "episodes/show", type: :view do
     end
   end
 
-  context "when the movies does not have any stacks" do
+  context "when the episode does not have any stacks" do
     let(:stacks_with_previews) { {} }
 
     it "does not render the top stacks section" do
       render
       assert_select "h4", text: "Top stacks:", count: 0
+    end
+  end
+
+  context "when the episode is watchlisted" do
+    let(:watchlisted) { true }
+
+    it "renders the add to watchlist button in active state" do
+      allow(view).to receive(:authenticated?).and_return(true)
+      render
+      assert_select "i.fa-solid.fa-bookmark"
+      assert_select "i.fa-solid.fa-bookmark.hidden\\!", count: 0
+      assert_select "i.fa-regular.fa-bookmark.hidden\\!"
+    end
+  end
+
+  context "when the episode is not watchlisted" do
+    let(:watchlisted) { false }
+
+    it "renders the add to watchlist button in inactive state" do
+      allow(view).to receive(:authenticated?).and_return(true)
+      render
+      assert_select "i.fa-solid.fa-bookmark.hidden\\!"
+      assert_select "i.fa-regular.fa-bookmark"
+      assert_select "i.fa-regular.fa-bookmark.hidden\\!", count: 0
     end
   end
 end

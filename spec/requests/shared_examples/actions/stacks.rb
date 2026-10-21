@@ -179,4 +179,76 @@ RSpec.shared_examples "stackable actions" do
       end
     end
   end
+
+  describe "POST /add_to_watchlist" do
+    context "when user not logged in" do
+      it "redirects to the sign in page" do
+        perform_add_to_watchlist
+        expect(response).to redirect_to new_session_path
+      end
+    end
+
+    context "when user logged in" do
+      before do
+        @user = FactoryBot.create(:user)
+        Stack.last.destroy
+        session = Session.new(user: @user)
+        allow(Current).to receive(:session).and_return(session)
+        allow(Current).to receive(:user).and_return(@user)
+      end
+
+      it "adds to the users watchlist even if one is not available" do
+        perform_add_to_watchlist
+        expect(@user.reload.watchlist).to eq Stack.last
+        watchlist_item = @user.watchlist.stack_items.first
+        expect(watchlist_item.item).to eq item
+      end
+
+      it "renders json" do
+        perform_add_to_watchlist
+        json = JSON.parse(response.body)
+        expect(json).to eq({"success" => true})
+        expect(response).to be_successful
+      end
+    end
+  end
+
+  describe "DELETE /remove_from_watchlist" do
+    context "when user not logged in" do
+      it "redirects to the sign in page" do
+        perform_remove_from_watchlist
+        expect(response).to redirect_to new_session_path
+      end
+    end
+
+    context "when user logged in" do
+      before do
+        @user = FactoryBot.create(:user)
+        session = Session.new(user: @user)
+        allow(Current).to receive(:session).and_return(session)
+        allow(Current).to receive(:user).and_return(@user)
+      end
+
+      it "removes from the users watchlist" do
+        FactoryBot.create(:stack_item, stack: @user.watchlist, item: item)
+        perform_remove_from_watchlist
+        expect(StackItem.count).to eq 0
+      end
+
+      it "renders a successful response even if the item is not in the watchlist" do
+        perform_remove_from_watchlist
+        json = JSON.parse(response.body)
+        expect(json).to eq({"success" => true})
+        expect(response).to be_successful
+      end
+
+      it "renders json" do
+        FactoryBot.create(:stack_item, stack: @user.watchlist, item: item)
+        perform_remove_from_watchlist
+        json = JSON.parse(response.body)
+        expect(json).to eq({"success" => true})
+        expect(response).to be_successful
+      end
+    end
+  end
 end

@@ -73,5 +73,13 @@ RSpec.describe ShowsController, type: :routing do
     it "routes to #load_more_top_stacks" do
       expect(get: "/shows/1/load-more-top-stacks").to route_to("shows#load_more_top_stacks", id: "1")
     end
+
+    it "routes to #add_to_watchlist" do
+      expect(post: "/shows/1/add_to_watchlist").to route_to("shows#add_to_watchlist", id: "1")
+    end
+
+    it "routes to #add_to_watchlist" do
+      expect(delete: "/shows/1/remove_from_watchlist").to route_to("shows#remove_from_watchlist", id: "1")
+    end
   end
 end

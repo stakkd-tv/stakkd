@@ -227,4 +227,22 @@ RSpec.feature "Movie actions", type: :system, js: true do
     # Counts are updated
     expect(page).to have_css "small[data-stack-button-target='stackCount']", text: "0", visible: false
   end
+
+  scenario "adding to and removing from watchlist" do
+    sign_in @user
+    visit movie_path(@movie)
+    expect(page).to have_content @movie.translated_title
+
+    expect(page).to have_css "i.fa-regular.fa-bookmark"
+    expect(page).not_to have_css "i.fa-solid.fa-bookmark"
+    click_button "Add to watchlist"
+    expect(page).not_to have_css "i.fa-regular.fa-bookmark"
+    expect(page).to have_css "i.fa-solid.fa-bookmark"
+    expect(@user.watchlist.reload.stack_items.count).to eq 1
+
+    click_button "Add to watchlist"
+    expect(page).not_to have_css "i.fa-solid.fa-bookmark"
+    expect(page).to have_css "i.fa-regular.fa-bookmark"
+    expect(@user.watchlist.reload.stack_items.count).to eq 0
+  end
 end

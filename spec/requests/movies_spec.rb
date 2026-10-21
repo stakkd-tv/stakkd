@@ -364,5 +364,13 @@ RSpec.describe "Movies", type: :request do
     def perform_load_more_top_stacks(format: :html)
       get load_more_top_stacks_movie_path(item, format: format)
     end
+
+    def perform_add_to_watchlist
+      post add_to_watchlist_movie_path(item)
+    end
+
+    def perform_remove_from_watchlist
+      delete remove_from_watchlist_movie_path(item)
+    end
   end
 end

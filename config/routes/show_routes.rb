@@ -41,9 +41,11 @@ resources :shows, except: [:destroy] do
       post :add_to_history, on: :member
       post :add_to_stack, on: :member
       post :create_and_add_to_stack, on: :member
+      post :add_to_watchlist, on: :member
 
       delete :remove_from_history, on: :member
       delete :remove_from_stack, on: :member
+      delete :remove_from_watchlist, on: :member
     end
 
     get :posters, on: :member
@@ -53,9 +55,11 @@ resources :shows, except: [:destroy] do
     post :add_to_history, on: :member
     post :add_to_stack, on: :member
     post :create_and_add_to_stack, on: :member
+    post :add_to_watchlist, on: :member
 
     delete :remove_from_history, on: :member
     delete :remove_from_stack, on: :member
+    delete :remove_from_watchlist, on: :member
   end
 
   get :posters, on: :member
@@ -68,7 +72,9 @@ resources :shows, except: [:destroy] do
   post :add_to_history, on: :member
   post :add_to_stack, on: :member
   post :create_and_add_to_stack, on: :member
+  post :add_to_watchlist, on: :member
 
   delete :remove_from_history, on: :member
   delete :remove_from_stack, on: :member
+  delete :remove_from_watchlist, on: :member
 end

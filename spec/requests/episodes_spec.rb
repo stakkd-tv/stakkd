@@ -285,5 +285,13 @@ RSpec.describe "/shows/:show_id/seasons/:season_id/episodes", type: :request do
     def perform_load_more_top_stacks(format: :html)
       get load_more_top_stacks_show_season_episode_path(item, season_id: item.season, show_id: item.show, format: format)
     end
+
+    def perform_add_to_watchlist
+      post add_to_watchlist_show_season_episode_path(item, season_id: item.season, show_id: item.show)
+    end
+
+    def perform_remove_from_watchlist
+      delete remove_from_watchlist_show_season_episode_path(item, season_id: item.season, show_id: item.show)
+    end
   end
 end

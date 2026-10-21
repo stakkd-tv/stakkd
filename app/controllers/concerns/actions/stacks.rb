@@ -42,5 +42,22 @@ module Actions
         end
       end
     end
+
+    def add_to_watchlist
+      watchlist = current_user.watchlist!
+      watchlist.add!(record)
+      render json: {success: true}
+    end
+
+    def remove_from_watchlist
+      watchlist = current_user.watchlist!
+      watchlist.remove!(record)
+      render json: {success: true}
+    rescue ActiveRecord::RecordNotFound
+      # We should only hit this if the item is not in the user's
+      # watchlist. In that case, it's fine to just continue as
+      # normal.
+      render json: {success: true}
+    end
   end
 end

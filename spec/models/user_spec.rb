@@ -250,4 +250,49 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe "#watchlisted?" do
+    let(:user) { FactoryBot.create(:user) }
+    let(:watchlist) { user.watchlist }
+    let(:item) { FactoryBot.create(:movie) }
+
+    subject { user.watchlisted?(item) }
+
+    context "when the user has watchlisted the item" do
+      before do
+        FactoryBot.create(:stack_item, stack: watchlist, item:)
+      end
+
+      it { should be_truthy }
+    end
+
+    context "when the user has not watchlisted the item" do
+      it { should be_falsey }
+    end
+  end
+
+  describe "#watchlisted_items_from" do
+    let(:user) { FactoryBot.create(:user) }
+    let(:watchlist) { user.watchlist }
+    let(:movie) { FactoryBot.create(:movie) }
+    let(:show) { FactoryBot.create(:show) }
+
+    subject { user.watchlisted_items_from(items) }
+
+    before do
+      FactoryBot.create(:stack_item, stack: watchlist, item: movie)
+    end
+
+    context "with no items" do
+      let(:items) { [] }
+
+      it { should eq Set.new }
+    end
+
+    context "with items" do
+      let(:items) { [movie, show] }
+
+      it { should eq [movie].to_set }
+    end
+  end
 end

@@ -57,5 +57,13 @@ RSpec.describe SeasonsController, type: :routing do
     it "routes to #load_more_top_stacks" do
       expect(get: "/shows/1/seasons/1/load-more-top-stacks").to route_to("seasons#load_more_top_stacks", id: "1", show_id: "1")
     end
+
+    it "routes to #add_to_watchlist" do
+      expect(post: "/shows/1/seasons/1/add_to_watchlist").to route_to("seasons#add_to_watchlist", id: "1", show_id: "1")
+    end
+
+    it "routes to #add_to_watchlist" do
+      expect(delete: "/shows/1/seasons/1/remove_from_watchlist").to route_to("seasons#remove_from_watchlist", id: "1", show_id: "1")
+    end
   end
 end

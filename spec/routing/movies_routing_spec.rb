@@ -73,5 +73,13 @@ RSpec.describe MoviesController, type: :routing do
     it "routes to #load_more_top_stacks" do
       expect(get: "/movies/1/load-more-top-stacks").to route_to("movies#load_more_top_stacks", id: "1")
     end
+
+    it "routes to #add_to_watchlist" do
+      expect(post: "/movies/1/add_to_watchlist").to route_to("movies#add_to_watchlist", id: "1")
+    end
+
+    it "routes to #add_to_watchlist" do
+      expect(delete: "/movies/1/remove_from_watchlist").to route_to("movies#remove_from_watchlist", id: "1")
+    end
   end
 end

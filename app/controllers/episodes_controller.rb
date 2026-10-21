@@ -12,6 +12,7 @@ class EpisodesController < ApplicationController
     @pagination = Pagination::Episodes.new(@episode, @season, @show)
     @watch_status = @episode.status_for(current_user)
     @stacks_with_previews, @stacks_next_page = @episode.stacks_with_previews(current_user:)
+    @watchlisted = current_user&.watchlisted?(@episode) || false
   end
 
   def new

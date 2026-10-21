@@ -82,6 +82,19 @@ class User < ApplicationRecord
     watchlist || create_watchlist
   end
 
+  def watchlisted?(item)
+    watchlisted_items_from([item]).include?(item)
+  end
+
+  def watchlisted_items_from(items)
+    return Set.new unless items.any?
+    watchlist!.stack_items
+      .includes(:item)
+      .where(item: items)
+      .map(&:item)
+      .to_set
+  end
+
   private
 
   def username_exclusions

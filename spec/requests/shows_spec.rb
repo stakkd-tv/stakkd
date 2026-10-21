@@ -356,5 +356,13 @@ RSpec.describe "/shows", type: :request do
     def perform_load_more_top_stacks(format: :html)
       get load_more_top_stacks_show_path(item, format: format)
     end
+
+    def perform_add_to_watchlist
+      post add_to_watchlist_show_path(item)
+    end
+
+    def perform_remove_from_watchlist
+      delete remove_from_watchlist_show_path(item)
+    end
   end
 end
