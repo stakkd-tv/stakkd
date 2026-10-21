@@ -114,7 +114,7 @@ class Show < ApplicationRecord
   def _slug = title_kebab
 
   def create_specials_season
-    seasons.create(number: 0, translated_name: "Specials", original_name: "Specials")
+    seasons.create!(number: 0, translated_name: "Specials", original_name: "Specials")
   end
 
   def update_franchise_item_date
