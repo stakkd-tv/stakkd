@@ -24,6 +24,7 @@ RSpec.describe "official_stacks/show.html.erb", type: :view do
     assign(:filter_options, Stack::ALLOWED_ITEM_TYPES.map { [it.pluralize, it] })
     assign(:selected_filters, [])
     assign(:reorderable, false)
+    assign(:watchlisted_items, [])
   end
 
   it "renders the sorting detail" do

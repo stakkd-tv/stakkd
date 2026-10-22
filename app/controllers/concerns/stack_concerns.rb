@@ -15,6 +15,8 @@ module StackConcerns
       .public_send("ordered_by_#{@sorting_method}", @sorting_direction.to_sym)
       .includes(item: [:show, :season])
       .map { StackItemPresenter.new(it) }
-    @watch_statuses = Manage::History.new(current_user).statuses_for(@stack_items.map(&:item))
+    items = @stack_items.map(&:item)
+    @watch_statuses = Manage::History.new(current_user).statuses_for(items)
+    @watchlisted_items = current_user&.watchlisted_items_from(items) || []
   end
 end
