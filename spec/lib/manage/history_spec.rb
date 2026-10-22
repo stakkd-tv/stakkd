@@ -68,6 +68,14 @@ module Manage
         expect(user.history_items.count).to eq 2
       end
 
+      it "removes any related items from the users watchlist" do
+        FactoryBot.create(:stack_item, stack: user.watchlist, item: item)
+        FactoryBot.create(:stack_item, stack: user.watchlist, item: item.show)
+        FactoryBot.create(:stack_item, stack: user.watchlist) # For a different item
+        subject
+        expect(StackItem.count).to eq 1
+      end
+
       context "when consumed_at is :release_date" do
         let(:consumed_at) { :release_date }
         let(:episode) { FactoryBot.create(:episode, original_air_date: Date.new(2026, 2, 2)) }

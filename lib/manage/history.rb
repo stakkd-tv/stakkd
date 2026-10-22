@@ -15,6 +15,7 @@ module Manage
       items.each_slice(BATCH_SIZE) do |batch|
         insert_batch(batch, consumed_at)
       end
+      remove_related_items_from_watchlist(item)
     end
 
     def remove_all(item)
@@ -113,6 +114,11 @@ module Manage
       when total then :consumed
       else :partially_consumed
       end
+    end
+
+    def remove_related_items_from_watchlist(item)
+      watchlist = user.watchlist!
+      watchlist.stack_items.where(item: item.ordered_related_records).destroy_all
     end
   end
 end
