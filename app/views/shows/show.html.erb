@@ -111,11 +111,11 @@
           <%# TODO: Test ordering of all views %>
           <% @show.ordered_seasons.with_attached_posters.includes(:episodes).each do |season| %>
             <% watchlisted = @watchlisted_seasons.include?(season) %>
-            <div class="flex flex-col gap-2 group relative">
-              <% if watchlisted %>
-                <i class="fa-solid fa-bookmark absolute right-0 top-0 w-8 h-8 rounded-full bg-pop/75 text-center p-2 mr-2 mt-2"></i>
-              <% end %>
-              <%= link_to show_season_path(season, show_id: @show) do %>
+            <div class="flex flex-col gap-2 group">
+              <%= link_to show_season_path(season, show_id: @show), class: "relative" do %>
+                <% if watchlisted %>
+                  <i class="fa-solid fa-bookmark absolute right-0 top-0 w-8 h-8 rounded-full bg-pop/75 text-center p-2 mr-2 mt-2"></i>
+                <% end %>
                 <div class="h-full aspect-2/3 border border-pop rounded-lg overflow-hidden outline outline-transparent group-hover:outline-pop transition duration-300 ease-in-out">
                   <%= image_tag season.poster(variant: :small), class: "w-full" %>
                 </div>

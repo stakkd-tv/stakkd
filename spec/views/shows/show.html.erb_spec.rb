@@ -85,7 +85,7 @@ RSpec.describe "shows/show", type: :view do
       assert_select "p", text: "Season 1"
       assert_select "small", text: "1 episode"
       assert_select "a[href='#{show_season_path(season, show_id: @show)}']"
-      assert_select "div.flex>i.fa-solid.fa-bookmark", count: 1
+      assert_select "a.relative>i.fa-solid.fa-bookmark", count: 1
     end
   end
 

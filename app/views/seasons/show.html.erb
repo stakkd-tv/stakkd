@@ -72,9 +72,13 @@
           <% end %>
         </div>
         <% @season.ordered_episodes.with_attached_backgrounds.each do |episode| %>
+          <% watchlisted = @watchlisted_episodes.include?(episode) %>
           <div class="grid grid-cols-1 md:grid-cols-3">
             <div class="col-span-1">
-              <%= link_to show_season_episode_path(episode, season_id: @season, show_id: @show), class: "w-full" do %>
+              <%= link_to show_season_episode_path(episode, season_id: @season, show_id: @show), class: "w-full relative" do %>
+                <% if watchlisted %>
+                  <i class="fa-solid fa-bookmark absolute z-1 left-0 top-0 w-8 h-8 rounded-full bg-pop/75 text-center p-2 ml-2 mt-2"></i>
+                <% end %>
                 <%= image_tag episode.background(variant: :small), class: "w-full rounded-lg md:rounded-r-none border border-pop aspect-[16/9]" %>
               <% end %>
             </div>
@@ -90,7 +94,7 @@
                 </div>
                 <div class="w-40">
                   <% watch_status = @episode_watch_statuses[episode] || :not_consumed %>
-                  <%= render "shared/actions/compact_actions", record: episode, watch_status: watch_status %>
+                  <%= render "shared/actions/compact_actions", record: episode, watch_status: watch_status, watchlisted: watchlisted %>
                 </div>
               </div>
               <p class="px-4 pt-2 text-sm line-clamp-2 sm:line-clamp-3 md:line-clamp-4"><%= episode.overview %></p>

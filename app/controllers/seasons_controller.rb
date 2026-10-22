@@ -14,6 +14,7 @@ class SeasonsController < ApplicationController
     @episode_watch_statuses = Manage::History.new(current_user).statuses_for(@season.episodes)
     @stacks_with_previews, @stacks_next_page = @season.stacks_with_previews(current_user:)
     @watchlisted = current_user&.watchlisted?(@season) || false
+    @watchlisted_episodes = current_user&.watchlisted_items_from(@season.episodes) || []
   end
 
   def new

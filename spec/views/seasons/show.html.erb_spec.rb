@@ -54,6 +54,7 @@ RSpec.describe "seasons/show", type: :view do
     assign(:stacks_with_previews, stacks_with_previews)
     assign(:stacks_next_page, stacks_next_page)
     assign(:watchlisted, watchlisted)
+    assign(:watchlisted_episodes, [])
   end
 
   it "renders attributes" do
