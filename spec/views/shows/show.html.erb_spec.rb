@@ -48,6 +48,7 @@ RSpec.describe "shows/show", type: :view do
     assign(:stacks_with_previews, stacks_with_previews)
     assign(:stacks_next_page, stacks_next_page)
     assign(:watchlisted, watchlisted)
+    assign(:watchlisted_seasons, [])
   end
 
   it "renders attributes in <p>" do
@@ -74,6 +75,7 @@ RSpec.describe "shows/show", type: :view do
   it "renders the seasons" do
     season = FactoryBot.create(:season, show: @show, number: 1, translated_name: "Season 1")
     FactoryBot.create(:episode, season:)
+    assign(:watchlisted_seasons, [season])
     render
     assert_select "#seasons" do
       assert_select "h4", text: "1 Season"
@@ -83,6 +85,7 @@ RSpec.describe "shows/show", type: :view do
       assert_select "p", text: "Season 1"
       assert_select "small", text: "1 episode"
       assert_select "a[href='#{show_season_path(season, show_id: @show)}']"
+      assert_select "div.flex>i.fa-solid.fa-bookmark", count: 1
     end
   end
 

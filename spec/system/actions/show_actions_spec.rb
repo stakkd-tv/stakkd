@@ -302,5 +302,26 @@ RSpec.feature "Show actions", type: :system, js: true do
     expect(page).not_to have_css "i.fa-solid.fa-bookmark"
     expect(page).to have_css "i.fa-regular.fa-bookmark"
     expect(@user.watchlist.reload.stack_items.count).to eq 0
+
+    # Adding and removing seasons from watchlist
+    specials = @show.ordered_seasons.first
+    # Specials season is in watchlist
+    FactoryBot.create(:stack_item, stack: @user.watchlist, item: specials)
+    page.refresh
+    click_button "Season_#{specials.id}_more_options"
+    within ".Season-#{specials.id}-more-options" do
+      expect(page).to have_css "span", text: "Remove from watchlist"
+      expect(page).not_to have_css "span", text: "Add to watchlist"
+
+      click_button "Add to watchlist"
+      expect(page).not_to have_css "span", text: "Remove from watchlist"
+      expect(page).to have_css "span", text: "Add to watchlist"
+      expect(@user.watchlist.reload.stack_items.count).to eq 0
+
+      click_button "Add to watchlist"
+      expect(page).to have_css "span", text: "Remove from watchlist"
+      expect(page).not_to have_css "span", text: "Add to watchlist"
+      expect(@user.watchlist.reload.stack_items.count).to eq 1
+    end
   end
 end

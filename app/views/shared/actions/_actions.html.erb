@@ -8,6 +8,7 @@
       title="Add to watchlist"
       data-controller="watchlist-button"
       data-watchlist-button-watchlisted-value="<%= watchlisted %>"
+      data-watchlist-button-record-path-value="<%= polymorphic_record_path(record, nil) %>"
       data-action="watchlist-button#submit">
       <i class="<%= watchlisted ? "" : "hidden!" %> fa-solid fa-bookmark text-xl transition-all duration-300 ease-in-out" data-watchlist-button-target="activeState"></i>
       <i class="<%= watchlisted ? "hidden!" : "" %> fa-regular fa-bookmark text-xl transition-all duration-300 ease-in-out" data-watchlist-button-target="inactiveState"></i>

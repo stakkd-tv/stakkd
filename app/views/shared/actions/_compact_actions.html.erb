@@ -1,5 +1,6 @@
 <% if authenticated? %>
   <% watch_status = local_assigns.fetch(:watch_status, :not_consumed) %>
+  <% watchlisted = local_assigns.fetch(:watchlisted, false) %>
   <% selector = "#{record.class}-#{record.id}-more-options" %>
   <div class="flex gap-2 w-full sm:relative">
     <%= render "shared/actions/buttons/add_to_history", record: record, watch_status: watch_status %>
@@ -14,10 +15,21 @@
         View history
       <% end %>
 
-      <%= link_to "#", class: "link w-full" do %>
-        <i class="fa-regular fa-bookmark mr-2"></i>
-        Add to watchlist
-      <% end %>
+      <button class="link w-full cursor-pointer"
+        title="Add to watchlist"
+        data-controller="watchlist-button"
+        data-watchlist-button-watchlisted-value="<%= watchlisted %>"
+        data-watchlist-button-record-path-value="<%= polymorphic_record_path(record, nil) %>"
+        data-action="watchlist-button#submit">
+        <span class="<%= watchlisted ? "" : "hidden!" %>" data-watchlist-button-target="activeState">
+          <i class="fa-solid fa-bookmark mr-2"></i>
+          Remove from watchlist
+        </span>
+        <span class="<%= watchlisted ? "hidden!" : "" %>" data-watchlist-button-target="inactiveState">
+          <i class="fa-regular fa-bookmark mr-2"></i>
+          Add to watchlist
+        </span>
+      </button>
 
       <%= link_to "#", class: "link w-full" do %>
         <i class="fa-regular fa-folder mr-2"></i>
