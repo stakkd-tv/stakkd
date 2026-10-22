@@ -29,6 +29,7 @@ RSpec.describe "franchises/show", type: :view do
     assign(:franchise, @franchise)
     assign(:gallery_presenter, gallery_presenter)
     assign(:watch_statuses, {@movie => :consumed, @show => :not_consumed, @show_no_air_date => :partially_consumed})
+    assign(:watchlisted_items, [])
   end
 
   it "renders attributes" do
@@ -39,6 +40,8 @@ RSpec.describe "franchises/show", type: :view do
   end
 
   it "renders the franchise items" do
+    item = @franchise.franchise_items.first.record
+    assign(:watchlisted_items, [item])
     render
     assert_select "#franchise_items" do
       assert_select "h4", text: "3 Items"
@@ -50,6 +53,7 @@ RSpec.describe "franchises/show", type: :view do
       assert_select "a[href='#{show_path(Show.first)}']"
       assert_select "p", text: "No air date"
       assert_select "a[href='#{show_path(Show.second)}']"
+      assert_select "a.relative>i.fa-solid.fa-bookmark", count: 1
     end
   end
 

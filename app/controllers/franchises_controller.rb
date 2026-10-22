@@ -10,7 +10,9 @@ class FranchisesController < ApplicationController
 
   def show
     @gallery_presenter = Galleries::Presenter.new(@franchise)
-    @watch_statuses = Manage::History.new(current_user).statuses_for(@franchise.franchise_items.map(&:record))
+    items = @franchise.franchise_items.map(&:record)
+    @watch_statuses = Manage::History.new(current_user).statuses_for(items)
+    @watchlisted_items = current_user&.watchlisted_items_from(items) || []
   end
 
   def new

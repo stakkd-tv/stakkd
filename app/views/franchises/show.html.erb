@@ -64,6 +64,7 @@
             <%= render "shared/poster_with_actions",
                   record: item.record,
                   watch_status: @watch_statuses[item.record],
+                  watchlisted: @watchlisted_items.include?(item.record),
                   subtitle: item.date&.strftime("%B %d, %Y") %>
           <% end %>
         </div>
