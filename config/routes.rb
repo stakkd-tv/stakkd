@@ -22,6 +22,8 @@ Rails.application.routes.draw do
       end
     end
 
+    get :watchlist, on: :member
+
     get :confirm, on: :collection
   end
   get "settings", to: "users#settings", as: :user_settings

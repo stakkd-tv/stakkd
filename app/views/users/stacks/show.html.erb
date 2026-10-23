@@ -3,5 +3,5 @@
 <div class="max-w-7xl mx-auto my-8 px-6 pt-10">
   <%= render "users/compact_header", user: @user %>
 
-  <%= render "shared/stacks/show" %>
+  <%= render "shared/stacks/show", filter_url: user_stack_path(@stack, user_id: @user) %>
 </div>

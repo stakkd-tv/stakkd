@@ -98,6 +98,15 @@ RSpec.describe "Users::Stacks", type: :request do
         expect(response).to be_successful
       end
 
+      context "when the stack is not a standard stack" do
+        let(:stack) { user.watchlist }
+
+        it "renders a 404" do
+          perform
+          expect(response).to be_not_found
+        end
+      end
+
       context "when there are filters" do
         context "with invalid filter" do
           let(:filters) { ["invalid"] }

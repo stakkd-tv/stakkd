@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
+  include StackConcerns
+
   before_action :require_authentication, only: [:settings, :update]
-  before_action :set_user, only: [:show, :update]
+  before_action :set_user, only: [:show, :update, :watchlist]
   before_action :authorize_user, only: [:update]
   rate_limit to: 10, within: 3.minutes, only: :create, with: -> { redirect_to new_session_url, alert: "Try again later." }
 
@@ -70,6 +72,14 @@ class UsersController < ApplicationController
     else
       redirect_to new_confirmation_token_path, alert: "Confirmation link is invalid or has expired. Please request a new confirmation email."
     end
+  end
+
+  def watchlist
+    @stack = @user.watchlist!
+    if @stack.private? && current_user != @user
+      return redirect_to user_path(@user), alert: "This user's watchlist is private."
+    end
+    stack_show
   end
 
   private

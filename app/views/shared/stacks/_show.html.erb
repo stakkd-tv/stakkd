@@ -23,8 +23,7 @@
   </p>
   <p class="text-sm text-gray-300 mt-2"><%= pluralize(@stack.stack_items.count, "item") %></p>
   <hr class="my-4 border-t-3 border-background">
-  <% form_url = @stack.official? ? official_stack_path(@stack) : user_stack_path(@stack, user_id: @user) %>
-  <%= form_with url: form_url,
+  <%= form_with url: filter_url,
         method: :get,
         class: "flex flex-col sm:flex-row gap-2 items-center justify-between",
         data: {controller: "stack-controls", turbo_frame: "stack_items", turbo_action: "advance"} do |form| %>
@@ -77,7 +76,7 @@
               slim_select_placeholder_value: "Filters",
               stack_controls_target: "filterInput"
             } %>
-      <%= link_to "Reset", form_url, class: "link w-full sm:w-fit" %>
+      <%= link_to "Reset", filter_url, class: "link w-full sm:w-fit" %>
     </div>
   <% end %>
   <% if current_user && @stack.user == current_user %>

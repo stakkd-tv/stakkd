@@ -17,7 +17,12 @@ class Users::StacksController < Users::BaseController
   end
 
   # TODO: System specs for actions for each stack item - mark as watched etc?
-  def show = stack_show
+  def show
+    unless @stack.type == "standard"
+      return not_found
+    end
+    stack_show
+  end
 
   def new
     @stack = current_user.stacks.new

@@ -98,7 +98,7 @@
           <% end %>
         </div>
         <div class="btn">
-          <%= link_to "/", class: "link-flex p-4" do %>
+          <%= link_to watchlist_user_path("me"), class: "link-flex p-4" do %>
             <i class="fa-solid fa-list-check text-xl w-3/20"></i>
             <p>Watchlist</p>
           <% end %>
@@ -162,7 +162,7 @@
       <i class="fa-solid fa-layer-group w-2/20"></i>
       Stacks
     <% end %>
-    <%= link_to "/", class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50 focus:bg-pop/50 transition duration-300 ease-in-out" do %>
+    <%= link_to watchlist_user_path("me"), class: "link-flex rounded-lg border border-pop p-2 hover:bg-pop/50 focus:bg-pop/50 transition duration-300 ease-in-out" do %>
       <i class="fa-solid fa-list-check w-2/20"></i>
       Watchlist
     <% end %>
