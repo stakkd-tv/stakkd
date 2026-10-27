@@ -24,7 +24,7 @@
     "easymde": "^2.21.0",
     "flatpickr": "^4.6.13",
     "instantsearch.js": "^4.120.0",
-    "marked": "^18.0.13",
+    "marked": "^18.1.1",
     "marked-inline-spoilers": "^1.0.1",
     "sanitize-html": "^2.18.1",
     "slim-select": "^4.3.0",
