@@ -99,7 +99,7 @@ group :development, :test do
   gem "parallel_tests"
 
   # Mock HTTP requests
-  gem "webmock", "~> 3.26"
+  gem "webmock", "~> 3.34"
 
   # Load environment variables from .env files
   gem "dotenv"
