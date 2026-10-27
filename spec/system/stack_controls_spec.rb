@@ -108,6 +108,19 @@ RSpec.feature "Stack controls", type: :system, js: true do
     it_behaves_like "stack controls"
   end
 
+  context "for a watchlist" do
+    let(:user) { FactoryBot.create(:user) }
+    let(:stack) { user.watchlist! }
+    let(:path_helper) { method(:watchlist_user_path) }
+    let(:path_args) { [user] }
+
+    before do
+      stack.update(sorting_method: "added_at", sorting_direction: "asc")
+    end
+
+    it_behaves_like "stack controls"
+  end
+
   scenario "reordering" do
     stack = FactoryBot.create(:stack, name: "Ranking of Kings", sorting_method: "added_at", sorting_direction: "asc")
     StackItem.acts_as_list_no_update do
