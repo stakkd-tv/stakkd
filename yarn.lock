@@ -1077,7 +1077,7 @@ __metadata:
     sanitize-html: "npm:^2.18.1"
     slim-select: "npm:^4.3.0"
     sortablejs: "npm:^1.15.7"
-    tabulator-tables: "npm:^6.5.3"
+    tabulator-tables: "npm:^6.7.1"
     tailwindcss: "npm:^4.3.3"
     tsc-watch: "npm:^7.2.1"
     typescript: "npm:^7.0.2"
@@ -2649,10 +2649,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tabulator-tables@npm:^6.5.3":
-  version: 6.5.3
-  resolution: "tabulator-tables@npm:6.5.3"
-  checksum: 10c0/aa47e2465376c6a21ab4470d83f444ed7347f45957c24cf4b64ae08431dab570abe15126b12731a61af7b6d7598796a917c1cb82c990e2a4d09322af5bbf4617
+"tabulator-tables@npm:^6.7.1":
+  version: 6.7.1
+  resolution: "tabulator-tables@npm:6.7.1"
+  checksum: 10c0/65c7853f548b221eede74e608210348e11d278ad63767bed40ca40f1df100ea2f744f0b1fc5f7798e36500e63b970f110dd3b5ee63fb6a803d2561b7e689eecc
   languageName: node
   linkType: hard
 
