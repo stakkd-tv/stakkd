@@ -2,7 +2,7 @@
   "name": "app",
   "private": true,
   "devDependencies": {
-    "@biomejs/biome": "2.5.14",
+    "@biomejs/biome": "2.6.3",
     "@tailwindcss/cli": "^4.3.3",
     "@types/sanitize-html": "^2.16.1",
     "@types/sortablejs": "^1.15.9",
