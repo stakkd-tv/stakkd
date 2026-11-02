@@ -30,7 +30,7 @@
             <i class="fa-solid fa-video"></i>
             Movies
             <%= form.check_box "hidden_media_types",
-                  { multiple: true, checked: !movie_active, autocomplete: "off", class: "hidden", data: { action: "change->history-controls#toggleMediaType" } },
+                  {multiple: true, checked: !movie_active, autocomplete: "off", class: "hidden", data: {action: "change->history-controls#toggleMediaType"}},
                   "Movie",
                   nil %>
           </label>
@@ -40,7 +40,7 @@
             <i class="fa-solid fa-play"></i>
             Episodes
             <%= form.check_box "hidden_media_types",
-                  { multiple: true, checked: !episode_active, autocomplete: "off", class: "hidden", data: { action: "change->history-controls#toggleMediaType" } },
+                  {multiple: true, checked: !episode_active, autocomplete: "off", class: "hidden", data: {action: "change->history-controls#toggleMediaType"}},
                   "Episode",
                   nil %>
           </label>
@@ -48,7 +48,7 @@
       </div>
 
       <div class="flex gap-1 p-1 bg-background rounded-lg w-full sm:min-w-62.5 sm:w-fit">
-        <%= form.hidden_field :hide_dates, value: !@show_dates, data: { history_controls_target: "hideDatesInput" } %>
+        <%= form.hidden_field :hide_dates, value: !@show_dates, data: {history_controls_target: "hideDatesInput"} %>
         <button data-active="<%= @show_dates %>"
           type="button"
           class="groupedButtons-item"
