@@ -1,0 +1,11 @@
+<%= turbo_stream.append "history_items" do %>
+  <%= render "items_with_headers", history_items: @history_items, previous_date: @last_date %>
+<% end %>
+
+<% if @history_items.next_page.present? %>
+  <%= turbo_stream.replace "load_more_history_items" do %>
+    <%= render "load_more_history_items" %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.remove "load_more_history_items" %>
+<% end %>

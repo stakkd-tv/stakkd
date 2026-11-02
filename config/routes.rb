@@ -21,6 +21,7 @@ Rails.application.routes.draw do
         patch :move, on: :member
       end
     end
+    resources :history, only: [:index], controller: "users/history"
 
     get :watchlist, on: :member
 

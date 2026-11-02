@@ -46,7 +46,7 @@ RSpec.feature "Stack controls", type: :system, js: true do
       visit path_helper.call(*path_args)
 
       # Inputs are set to default
-      expect(page).to have_content("Ranking of Kings")
+      expect(page).to have_content(stack.name)
       expect(page).to have_css("option[selected][value='added_at']")
       expect(page).to have_css("i[data-direction='asc']")
       expect(ordered_stack_item_titles).to eq(["King of the Hill", "The Dark Knight"])

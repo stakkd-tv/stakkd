@@ -177,6 +177,10 @@
         @apply bg-pop/50;
     }
 
+    .groupedButtons-item {
+        @apply cursor-pointer text-center basis-1/2 px-3 py-1 rounded-md data-[active=true]:bg-pop bg-background font-bold flex flex-col gap-1 text-xs sm:text-sm w-full;
+    }
+
     .CodeMirror {
         .rendered-markdown {
             padding: 10px;

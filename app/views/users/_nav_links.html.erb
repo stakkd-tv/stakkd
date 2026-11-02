@@ -1,5 +1,5 @@
 <%= link_to "Profile", user_path(user), class: "link", data: {active: params[:controller] == "users" && params[:action] == "show"} %>
-<%= link_to "History", "", class: "link", data: {active: false} %>
+<%= link_to "History", user_history_index_path(user), class: "link", data: {active: params[:controller] == "users/history"} %>
 <%= link_to "Progress", "", class: "link", data: {active: false} %>
 <%= link_to "Watchlist", watchlist_user_path(user), class: "link", data: {active: params[:controller] == "users" && params[:action] == "watchlist"} %>
 <%= link_to "Collection", "", class: "link", data: {active: false} %>

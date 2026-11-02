@@ -58,6 +58,7 @@ RSpec.describe "users/show", type: :view do
       it "does not render the recently watched section" do
         render
         assert_select "h4.text-xl", text: "Recently watched:", count: 0
+        assert_select "a[href='#{user_history_index_path(user)}']", text: "View all ➤", count: 0
       end
     end
 
@@ -71,6 +72,7 @@ RSpec.describe "users/show", type: :view do
         assert_select "h4.text-xl", text: "Recently watched:"
         assert_select "p.font-domine", text: "Test Movie"
         assert_select "p.text-xs", text: "Movie"
+        assert_select "a[href='#{user_history_index_path(user)}']", text: "View all ➤"
       end
     end
 

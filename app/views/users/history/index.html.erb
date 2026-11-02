@@ -1,0 +1,82 @@
+<% content_for :title, "Stakkd - #{@user.username}'s History" %>
+
+<div class="max-w-7xl mx-auto my-8 px-6 pt-10">
+  <%= render "users/compact_header", user: @user %>
+
+  <div class="flex flex-col xs:flex-row gap-2 justify-between xs:items-center mb-4">
+    <h4 class="text-2xl font-bold font-domine whitespace-nowrap">
+      <%= (current_user == @user) ? "Your" : "#{@user}'s" %>
+      history
+      <% if @scope %>
+      for <%= @scope %>
+      <% end %>
+    </h4>
+  </div>
+
+  <div class="mt-4 bg-black/25 backdrop-blur-sm rounded-lg p-2 sm:p-4 mb-8 sticky top-18.75 sm:top-22.5 z-1">
+    <%= form_with url: "#",
+          method: :get,
+          class: "flex gap-2 justify-between items-center flex-col sm:flex-row",
+          data: {controller: "history-controls", turbo_frame: "history_items_and_load_more", turbo_action: "advance"} do |form| %>
+      <div class="flex gap-1 p-1 bg-background rounded-lg w-full sm:min-w-62.5 sm:w-fit">
+        <% if @scope %>
+          <label data-active="true" class="groupedButtons-item basis-1/1">
+            <i class="fa-solid fa-play"></i>
+            <%= @scope %>
+          </label>
+        <% else %>
+          <% movie_active = @hidden_media_types.exclude?("Movie") %>
+          <label data-active="<%= movie_active %>" class="groupedButtons-item">
+            <i class="fa-solid fa-video"></i>
+            Movies
+            <%= form.check_box "hidden_media_types",
+                  { multiple: true, checked: !movie_active, autocomplete: "off", class: "hidden", data: { action: "change->history-controls#toggleMediaType" } },
+                  "Movie",
+                  nil %>
+          </label>
+
+          <% episode_active = @hidden_media_types.exclude?("Episode") %>
+          <label data-active="<%= episode_active %>" class="groupedButtons-item">
+            <i class="fa-solid fa-play"></i>
+            Episodes
+            <%= form.check_box "hidden_media_types",
+                  { multiple: true, checked: !episode_active, autocomplete: "off", class: "hidden", data: { action: "change->history-controls#toggleMediaType" } },
+                  "Episode",
+                  nil %>
+          </label>
+        <% end %>
+      </div>
+
+      <div class="flex gap-1 p-1 bg-background rounded-lg w-full sm:min-w-62.5 sm:w-fit">
+        <%= form.hidden_field :hide_dates, value: !@show_dates, data: { history_controls_target: "hideDatesInput" } %>
+        <button data-active="<%= @show_dates %>"
+          type="button"
+          class="groupedButtons-item"
+          data-history-controls-target="showDates"
+          data-action="history-controls#showDates">
+          <i class="fa-solid fa-calendar"></i>
+          Show date
+        </button>
+
+        <button data-active="<%= !@show_dates %>"
+          type="button"
+          class="groupedButtons-item"
+          data-history-controls-target="hideDates"
+          data-action="history-controls#hideDates">
+          <i class="fa-solid fa-calendar-xmark"></i>
+          Hide date
+        </button>
+      </div>
+    <% end %>
+  </div>
+
+  <%= turbo_frame_tag "history_items_and_load_more" do %>
+    <%= turbo_frame_tag "history_items", class: "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4", data: {show_dates: @show_dates} do %>
+      <%= render "items_with_headers", history_items: @history_items, previous_date: nil %>
+    <% end %>
+
+    <% if @history_items.next_page.present? %>
+      <%= render "load_more_history_items" %>
+    <% end %>
+  <% end %>
+</div>

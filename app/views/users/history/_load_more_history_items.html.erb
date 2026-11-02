@@ -1,0 +1,2 @@
+<% last_date = @history_items.last&.consumed_at&.to_date %>
+<%= turbo_frame_tag "load_more_history_items", src: user_history_index_path(@user, page: @history_items.next_page, last_date:, hide_dates: params[:hide_dates], hidden_media_types: @hidden_media_types, scope: params[:scope], scope_id: params[:scope_id], format: :turbo_stream), loading: :lazy %>

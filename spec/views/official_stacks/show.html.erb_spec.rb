@@ -52,6 +52,7 @@ RSpec.describe "official_stacks/show.html.erb", type: :view do
 
   it "renders the add to history buttons for each stack item with the correct status when authenticated" do
     allow(view).to receive(:authenticated?).and_return(true)
+    def view.current_user = FactoryBot.build_stubbed(:user)
     render
     assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_movie_path(@movie)}'][data-status='consumed']"
     assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_path(@show)}'][data-status='not_consumed']"
@@ -59,6 +60,7 @@ RSpec.describe "official_stacks/show.html.erb", type: :view do
 
   it "renders the add to stack buttons for each stack item when authenticated" do
     allow(view).to receive(:authenticated?).and_return(true)
+    def view.current_user = FactoryBot.build_stubbed(:user)
     render
     assert_select "button[title='Add to stack'][data-stack-button-add-to-stack-url-value='#{add_to_stack_movie_path(@movie)}']"
     assert_select "button[title='Add to stack'][data-stack-button-add-to-stack-url-value='#{add_to_stack_show_path(@show)}']"

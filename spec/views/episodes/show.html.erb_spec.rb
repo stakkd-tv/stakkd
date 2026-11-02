@@ -58,6 +58,7 @@ RSpec.describe "episodes/show", type: :view do
 
   it "renders the add to history button when authenticated" do
     allow(view).to receive(:authenticated?).and_return(true)
+    def view.current_user = FactoryBot.build_stubbed(:user)
     render
     assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_season_episode_path(@show, @season, @episode)}']"
     assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_season_episode_path(@show, @season, @episode)}'][disabled]", count: 0
@@ -65,6 +66,7 @@ RSpec.describe "episodes/show", type: :view do
 
   it "renders the add to stack button when authenticated" do
     allow(view).to receive(:authenticated?).and_return(true)
+    def view.current_user = FactoryBot.build_stubbed(:user)
     render
     assert_select "button[title='Add to stack'][data-stack-button-add-to-stack-url-value='#{add_to_stack_show_season_episode_path(@show, @season, @episode)}']"
   end
@@ -80,6 +82,7 @@ RSpec.describe "episodes/show", type: :view do
 
     it "renders the button in a consumed state" do
       allow(view).to receive(:authenticated?).and_return(true)
+      def view.current_user = FactoryBot.build_stubbed(:user)
       render
       assert_select "button[title='Add to history'][data-status='consumed']"
     end
@@ -90,6 +93,7 @@ RSpec.describe "episodes/show", type: :view do
 
     it "renders the button in an unconsumed state" do
       allow(view).to receive(:authenticated?).and_return(true)
+      def view.current_user = FactoryBot.build_stubbed(:user)
       render
       assert_select "button[title='Add to history'][data-status='not_consumed']"
     end
@@ -105,6 +109,7 @@ RSpec.describe "episodes/show", type: :view do
 
     it "renders the add to history button in a disabled state" do
       allow(view).to receive(:authenticated?).and_return(true)
+      def view.current_user = FactoryBot.build_stubbed(:user)
       render
       assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_season_episode_path(@show, @season, @episode)}'][disabled]", count: 1
     end
@@ -256,6 +261,7 @@ RSpec.describe "episodes/show", type: :view do
 
     it "renders the add to watchlist button in active state" do
       allow(view).to receive(:authenticated?).and_return(true)
+      def view.current_user = FactoryBot.build_stubbed(:user)
       render
       assert_select "i.fa-solid.fa-bookmark"
       assert_select "i.fa-solid.fa-bookmark.hidden\\!", count: 0
@@ -268,6 +274,7 @@ RSpec.describe "episodes/show", type: :view do
 
     it "renders the add to watchlist button in inactive state" do
       allow(view).to receive(:authenticated?).and_return(true)
+      def view.current_user = FactoryBot.build_stubbed(:user)
       render
       assert_select "i.fa-solid.fa-bookmark.hidden\\!"
       assert_select "i.fa-regular.fa-bookmark"

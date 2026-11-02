@@ -1,0 +1,16 @@
+<% current_date = local_assigns[:previous_date] %>
+<% history_items.each do |item| %>
+  <% item_date = item.consumed_at&.to_date %>
+  <% if item_date != current_date %>
+    <% current_date = item_date %>
+    <div class="col-span-full flex flex-nowrap items-center gap-4 hidden in-data-[show-dates=true]:flex">
+      <h3 class="text-xl font-fugaz w-fit shrink-0">
+        <i class="fa-regular fa-calendar mr-2"></i>
+        <%= item_date&.strftime("%B %-d, %Y") || "Unknown" %>
+      </h3>
+      <span class="h-1 flex-1 bg-background-darker"></span>
+    </div>
+  <% end %>
+
+  <%= render "users/history_item", history_item: HistoryItemPresenter.new(item) %>
+<% end %>
