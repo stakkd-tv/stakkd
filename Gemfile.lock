@@ -581,7 +581,7 @@ GEM
       actionview (>= 8.0.0)
       bindex (>= 0.4.0)
       railties (>= 8.0.0)
-    webmock (3.26.4)
+    webmock (3.34.0)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
@@ -648,7 +648,7 @@ DEPENDENCIES
   tzinfo-data
   vimeo (~> 1.5)
   web-console
-  webmock (~> 3.26)
+  webmock (~> 3.34)
   will_paginate (~> 4.0)
 
 BUNDLED WITH
