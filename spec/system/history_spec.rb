@@ -9,8 +9,11 @@ RSpec.feature "History", type: :system, js: true do
     travel_to Time.new(2026, 11, 2, 10)
   end
 
-  def ordered_history_items
-    page.all("p.text-md.font-domine").map(&:text)
+  def expect_history_items(*titles)
+    expect(page).to have_css "#history_items p.text-md.font-domine", count: titles.size
+    titles.each.with_index(1) do |title, position|
+      expect(page).to have_css "#history_items > a:nth-child(#{position} of a) > p.text-md.font-domine", exact_text: title
+    end
   end
 
   def toggle(media_type)
@@ -37,22 +40,20 @@ RSpec.feature "History", type: :system, js: true do
     visit user_history_index_path(user)
     expect(page).to have_content "bob's history"
 
-    expect(ordered_history_items).to eq ["Meh show", "Bad show", "Amazing show", "Amazing movie"]
+    expect_history_items "Meh show", "Bad show", "Amazing show", "Amazing movie"
 
     toggle "Movies"
-    sleep 0.1
-    expect(ordered_history_items).to eq ["Meh show", "Bad show", "Amazing show"]
+    expect_history_items "Meh show", "Bad show", "Amazing show"
     expect(page).to have_current_path("/users/bob/history?hidden_media_types%5B%5D=Movie&hide_dates=false")
 
     toggle "Movies"
+    expect_history_items "Meh show", "Bad show", "Amazing show", "Amazing movie"
     toggle "Episodes"
-    sleep 0.1
-    expect(ordered_history_items).to eq ["Amazing movie"]
+    expect_history_items "Amazing movie"
     expect(page).to have_current_path("/users/bob/history?hidden_media_types%5B%5D=Episode&hide_dates=false")
 
     toggle "Episodes"
-    sleep 0.1
-    expect(ordered_history_items).to eq ["Meh show", "Bad show", "Amazing show", "Amazing movie"]
+    expect_history_items "Meh show", "Bad show", "Amazing show", "Amazing movie"
     expect(page).to have_current_path("/users/bob/history?hide_dates=false")
 
     # Renders dates
@@ -78,10 +79,9 @@ RSpec.feature "History", type: :system, js: true do
     stub_const("Users::HistoryController::PER_PAGE", 2)
     visit user_history_index_path(user)
     expect(page).to have_content "bob's history"
-    expect(ordered_history_items).to eq ["Meh show", "Bad show"]
+    expect_history_items "Meh show", "Bad show"
     page.execute_script("window.scrollTo(0, document.body.scrollHeight)")
-    sleep 0.1
-    expect(ordered_history_items).to eq ["Meh show", "Bad show", "Amazing show", "Amazing movie"]
+    expect_history_items "Meh show", "Bad show", "Amazing show", "Amazing movie"
     expect(page).to have_css "h3.font-fugaz", count: 3
     expect(page).to have_css "h3.font-fugaz", text: "October 29, 2026", count: 1
     expect(page).to have_css "h3.font-fugaz", text: "October 30, 2026", count: 1
