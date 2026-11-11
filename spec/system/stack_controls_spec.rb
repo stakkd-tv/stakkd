@@ -11,6 +11,12 @@ RSpec.feature "Stack controls", type: :system, js: true do
     page.all(".stackItem-position").map(&:text)
   end
 
+  def expect_stack_item_order(*items)
+    cards = items.map { |item| ".StackItem_#{item.id}_card" }.join(" + ")
+    expect(page).to have_css "#stack_items > #{cards}"
+    expect(page).to have_css "#stack_items h5.stack-item", count: items.size
+  end
+
   def move(element, to:)
     page.driver.browser.action
       .move_to(element.native)
@@ -152,7 +158,9 @@ RSpec.feature "Stack controls", type: :system, js: true do
     # Interacting with sort direction while reordering is enabled disables it
     page.find("i[data-direction='asc']").click
     expect_reordering_disabled
+    expect_stack_item_order(@stack_item1, @stack_item2)
     page.find("i[data-direction='desc']").click
+    expect_stack_item_order(@stack_item2, @stack_item1)
     expect_reordering_available
 
     # Interacting with sorting method while reordering is enabled disables it
@@ -160,7 +168,9 @@ RSpec.feature "Stack controls", type: :system, js: true do
     expect_reordering_enabled(drag_handle_count: 2)
     slim_select "Added at", from: "sort"
     expect_reordering_disabled
+    expect_stack_item_order(@stack_item1, @stack_item2)
     slim_select "Position", from: "sort"
+    expect_stack_item_order(@stack_item2, @stack_item1)
     expect_reordering_available
 
     # Interacting with filters while reordering is enabled disables it
@@ -168,9 +178,10 @@ RSpec.feature "Stack controls", type: :system, js: true do
     expect_reordering_enabled(drag_handle_count: 2)
     slim_select "Shows", from: "filters"
     expect_reordering_disabled
+    expect_stack_item_order(@stack_item2)
     slim_select "Shows", from: "filters" # Reset filters
+    expect_stack_item_order(@stack_item2, @stack_item1)
     expect_reordering_available
-    sleep 0.5
 
     # Now reorder the second item to be the first
     expect(@stack_item1.reload.position).to eq 2
@@ -182,6 +193,7 @@ RSpec.feature "Stack controls", type: :system, js: true do
     drag_handle = find_all(".drag-handle").last
     target = find_all(".drag-handle").first
     move drag_handle, to: target
+    expect_stack_item_order(@stack_item1, @stack_item2)
     expect(ordered_stack_item_titles).to eq(["King of the Hill", "The Dark Knight"])
     # It keeps the sorting detail up to date for all items in the stack
     expect(ordered_position_detail).to eq(["1", "2"])
