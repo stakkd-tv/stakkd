@@ -13,7 +13,7 @@ RSpec.feature "User load more stacks", type: :system, js: true do
     end
 
     visit user_path(user)
-    click_link "Stacks"
+    page.find("a[data-active='false']", text: "Stacks").click
     expect(page).to have_css("a[href='#{user_stacks_path(user)}'][data-active='true']")
 
     expect(page).to have_content("Stack #19")
@@ -62,7 +62,7 @@ RSpec.feature "User load more stacks", type: :system, js: true do
     FactoryBot.create(:stack, user: other_user, private: true, name: "Private Stack")
 
     visit user_path(other_user)
-    click_link "Stacks"
+    page.find("a[data-active='false']", text: "Stacks").click
     expect(page).to have_css("a[href='#{user_stacks_path(other_user)}'][data-active='true']")
 
     expect(page).not_to have_content("Private Stack")

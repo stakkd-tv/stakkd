@@ -40,6 +40,7 @@ Rails.application.routes.draw do
   resources :search, only: [:index, :show]
 
   get "about" => "pages#about", :as => :about
+  get "stacks" => "pages#stacks", :as => :stacks
   get "contribute" => "pages#contribute", :as => :contribute
 
   post "uploads" => "images#upload", :as => :upload
