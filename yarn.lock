@@ -1075,7 +1075,7 @@ __metadata:
     marked: "npm:^18.1.2"
     marked-inline-spoilers: "npm:^1.0.1"
     sanitize-html: "npm:^2.18.1"
-    slim-select: "npm:^4.3.0"
+    slim-select: "npm:^4.6.4"
     sortablejs: "npm:^1.15.7"
     tabulator-tables: "npm:^6.7.1"
     tailwindcss: "npm:^4.3.3"
@@ -2533,9 +2533,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"slim-select@npm:^4.3.0":
-  version: 4.3.0
-  resolution: "slim-select@npm:4.3.0"
+"slim-select@npm:^4.6.4":
+  version: 4.6.4
+  resolution: "slim-select@npm:4.6.4"
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
@@ -2547,7 +2547,7 @@ __metadata:
       optional: true
     vue:
       optional: true
-  checksum: 10c0/75c23b292d09db5d8f79dbd92b1dbbb31c56447a7e7feacd1dd86eb6b11a792e75c9045ccec3199852b39a4e9df656c428ac1fdc942248bb5462ebb285967338
+  checksum: 10c0/7d2f2ec18513bea34eb267e595cd214d0d72554ccf4c42f1b3ca904a4137c599aa36f0428b00ee39866a9441e18224be238a8125a85e85b6731ccafcd363948b
   languageName: node
   linkType: hard
 
