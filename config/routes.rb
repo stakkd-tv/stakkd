@@ -22,6 +22,7 @@ Rails.application.routes.draw do
       end
     end
     resources :history, only: [:index], controller: "users/history"
+    resources :history_items, only: [:destroy], controller: "users/history_items"
 
     get :watchlist, on: :member
 

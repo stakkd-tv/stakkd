@@ -1,8 +1,43 @@
-<%= link_to polymorphic_record_path(history_item.item, nil), class: "group flex flex-col gap-2", data: {turbo: false} do %>
-  <div class="relative">
-    <%= image_tag history_item.item.background(variant: :small), class: "w-full border border-transparent group-hover:border-pop rounded-lg transition duration-300 ease-in-out" %>
-    <small class="absolute left-0 bottom-0 bg-background px-2 py-1 m-1 rounded-full"><%= history_item.formatted_consumed_at %></small>
+<% card = "HistoryItem_#{history_item.history_item.id}" %>
+<div class="flex flex-col gap-2 group <%= card %>_card">
+  <%= link_to polymorphic_record_path(history_item.item, nil), data: {turbo: false} do %>
+    <div class="relative">
+      <%= image_tag history_item.item.background(variant: :small), class: "w-full border border-transparent group-hover:border-pop rounded-lg transition duration-300 ease-in-out" %>
+      <small class="absolute left-0 bottom-0 bg-background px-2 py-1 m-1 rounded-full"><%= history_item.formatted_consumed_at %></small>
+    </div>
+  <% end %>
+
+  <div class="flex flex-col gap-1.5">
+    <div class="flex justify-between items-center relative">
+      <%= link_to polymorphic_record_path(history_item.item, nil), class: "min-w-0", data: {turbo: false} do %>
+        <h6 class="font-domine text-md leading-[42px] truncate"><%= history_item.title %></h6>
+      <% end %>
+      <% if current_user && current_user == @user %>
+        <button
+          type="button"
+          class="cursor-pointer h-full min-w-10.5 shrink-0 aspect-square rounded-lg border border-transparent focus:bg-black/75 hover:bg-black/75 transition-all duration-300 ease-in-out"
+          title="More options"
+          data-controller="more-options"
+          data-more-options-selector-value=".<%= card %>_options">
+          <i class="fa-solid fa-ellipsis-vertical text-xl transition-all duration-300 ease-in-out"></i>
+        </button>
+
+        <div class="<%= card %>_options mt-2 z-1 opacity-0 pointer-events-none transition-all duration-300 ease-in-out fixed sm:absolute bottom-0 left-0 h-fit w-full sm:w-50 sm:top-full sm:right-0 sm:left-auto flex flex-col gap-2 p-2 bg-background-darker border-t-2 sm:border-2 border-pop sm:rounded-lg">
+          <p class="sm:hidden text-xl font-domine my-4"><%= history_item.title %></p>
+
+          <button
+            type="button"
+            class="link w-full"
+            data-controller="deletion-button"
+            data-action="deletion-button#open deletion-dialog:deleted@window->deletion-button#removeElementFromDOM"
+            data-deletion-button-card-element-selector-value=".<%= card %>_card"
+            data-deletion-button-delete-record-url-value="<%= user_history_item_path(@user, history_item.history_item) %>">
+            <i class="fa-solid fa-trash-can mr-2"></i>
+            Delete
+          </button>
+        </div>
+      <% end %>
+    </div>
+    <p class="text-xs"><%= history_item.subtitle %></p>
   </div>
-  <p class="text-md font-domine"><%= history_item.title %></p>
-  <p class="text-xs"><%= history_item.subtitle %></p>
-<% end %>
+</div>

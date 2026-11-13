@@ -23,12 +23,12 @@
 
   <div class="flex flex-col gap-1.5">
     <div class="flex justify-between items-center relative">
-      <%= link_to path, data: {turbo: false} do %>
-        <h6 class="font-domine text-md leading-[42px] <%= "stack_#{stack.id}_name" %>"><%= stack.name %></h6>
+      <%= link_to path, class: "min-w-0", data: {turbo: false} do %>
+        <h6 class="font-domine text-md leading-[42px] truncate <%= "stack_#{stack.id}_name" %>"><%= stack.name %></h6>
       <% end %>
       <% if current_user && stack.user == current_user %>
         <button
-          class="cursor-pointer h-full min-w-10.5 aspect-square rounded-lg border border-transparent focus:bg-black/75 hover:bg-black/75 transition-all duration-300 ease-in-out"
+          class="cursor-pointer h-full min-w-10.5 shrink-0 aspect-square rounded-lg border border-transparent focus:bg-black/75 hover:bg-black/75 transition-all duration-300 ease-in-out"
           title="More options"
           data-controller="more-options"
           data-more-options-selector-value=".<%= selector %>"

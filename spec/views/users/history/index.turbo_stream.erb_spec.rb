@@ -5,6 +5,7 @@ RSpec.describe "users/history/index.turbo_stream.erb", type: :view do
   let(:hidden_media_types) { [] }
 
   before do
+    def view.current_user = nil
     item = FactoryBot.create(:movie, translated_title: "Amazing movie")
     FactoryBot.create(:history_item, item:, consumed_at: Date.today)
     FactoryBot.create(:history_item, item:, consumed_at: Date.today)
@@ -16,7 +17,7 @@ RSpec.describe "users/history/index.turbo_stream.erb", type: :view do
   it "renders a turbo append with history items" do
     render
     assert_select "turbo-stream[action='append'][target='history_items']" do
-      assert_select "p.font-domine", text: "Amazing movie", count: 2
+      assert_select "h6.font-domine", text: "Amazing movie", count: 2
     end
   end
 
