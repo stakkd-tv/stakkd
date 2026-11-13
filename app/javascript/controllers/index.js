@@ -15,6 +15,7 @@ import WatchlistButtonController from './actions/watchlist_button_controller'
 
 import { application } from './application'
 import DetailsAutoOpenController from './details_auto_open_controller'
+import FaqDisclosureController from './faq_disclosure_controller'
 import FlashItemController from './flash_item_controller'
 import FormNavController from './form_nav_controller'
 import HistoryControlsController from './history_controls_controller'
@@ -42,6 +43,7 @@ application.register('stack-dialog', StackDialogController)
 application.register('watchlist-button', WatchlistButtonController)
 
 application.register('details-auto-open', DetailsAutoOpenController)
+application.register('faq-disclosure', FaqDisclosureController)
 application.register('flash-item', FlashItemController)
 application.register('form-nav', FormNavController)
 application.register('history-controls', HistoryControlsController)
