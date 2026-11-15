@@ -1,7 +1,4 @@
 import { Controller } from '@hotwired/stimulus'
-import EasyMDE from 'easymde'
-import { MARKED_CONFIG } from '../helpers/marked'
-import { sanitize } from '../helpers/sanitize_html'
 
 // Connects to data-controller="settings"
 export default class extends Controller {
@@ -9,29 +6,15 @@ export default class extends Controller {
     'profilePictureUpload',
     'profilePictureImage',
     'backgroundUpload',
-    'backgroundImage',
-    'biographyInput'
+    'backgroundImage'
   ]
 
   declare profilePictureUploadTarget: HTMLInputElement
   declare profilePictureImageTarget: HTMLImageElement
   declare backgroundUploadTarget: HTMLInputElement
   declare backgroundImageTarget: HTMLImageElement
-  declare biographyInputTarget: HTMLTextAreaElement
 
   connect() {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const _ = new EasyMDE({
-      element: this.biographyInputTarget,
-      hideIcons: ['fullscreen', 'side-by-side'],
-      spellChecker: false,
-      previewClass: 'rendered-markdown',
-      renderingConfig: {
-        sanitizerFunction: sanitize,
-        markedOptions: MARKED_CONFIG
-      }
-    })
-
     this.profilePictureUploadTarget.addEventListener(
       'change',
       this.uploadProfilePicture.bind(this)
