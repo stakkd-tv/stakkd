@@ -10,9 +10,9 @@ RSpec.feature "History", type: :system, js: true do
   end
 
   def expect_history_items(*titles)
-    expect(page).to have_css "#history_items p.text-md.font-domine", count: titles.size
+    expect(page).to have_css "#history_items h6", count: titles.size
     titles.each.with_index(1) do |title, position|
-      expect(page).to have_css "#history_items > a:nth-child(#{position} of a) > p.text-md.font-domine", exact_text: title
+      expect(page).to have_css "#history_items > div:nth-child(#{position} of [class*=\"HistoryItem_\"]) h6", exact_text: title
     end
   end
 
@@ -86,5 +86,26 @@ RSpec.feature "History", type: :system, js: true do
     expect(page).to have_css "h3.font-fugaz", text: "October 29, 2026", count: 1
     expect(page).to have_css "h3.font-fugaz", text: "October 30, 2026", count: 1
     expect(page).to have_css "h3.font-fugaz", text: "October 31, 2026", count: 1
+  end
+
+  scenario "deleting a history item" do
+    user = FactoryBot.create(:user, :confirmed)
+    history_item = FactoryBot.create(:history_item, user:)
+    sign_in(user)
+
+    visit user_history_index_path(user)
+
+    card = ".HistoryItem_#{history_item.id}_card"
+    within(card) do
+      click_button "More options"
+      click_button "Delete"
+    end
+
+    within("dialog[open]") do
+      click_button "Yes"
+    end
+
+    expect(page).not_to have_css(card)
+    expect(HistoryItem.exists?(history_item.id)).to be(false)
   end
 end

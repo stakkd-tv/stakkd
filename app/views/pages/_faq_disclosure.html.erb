@@ -1,0 +1,11 @@
+<%# locals: (question:) %>
+
+<details class="group py-4" data-controller="faq-disclosure">
+  <summary data-action="click->faq-disclosure#animateToggle" class="flex cursor-pointer list-none items-center justify-between gap-4 font-bold [&::-webkit-details-marker]:hidden">
+    <%= question %>
+    <i class="fa-solid fa-chevron-down shrink-0 text-pop group-open:rotate-180 motion-safe:transition-transform motion-safe:duration-200" aria-hidden="true"></i>
+  </summary>
+  <div class="flow-root overflow-hidden" data-faq-disclosure-target="answer">
+    <%= yield %>
+  </div>
+</details>

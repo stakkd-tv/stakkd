@@ -1,0 +1,155 @@
+<% content_for :title, "Stakkd - What is a stack?" %>
+
+<header class="bg-background-darker">
+  <div class="mx-auto grid max-w-6xl items-center gap-10 px-6 py-12 md:grid-cols-2 md:gap-16 md:py-20">
+    <div>
+      <h1 class="font-domine text-4xl font-bold sm:text-5xl">What is a stack?</h1>
+      <p class="mt-5 max-w-lg text-lg text-white/80">A stack is a list you curate on Stakkd. Put films, shows, seasons and individual episodes together in one place, in whatever order you like.</p>
+      <div class="mt-7 flex flex-wrap items-center gap-4">
+        <% if current_user %>
+          <%= link_to "Create a stack", new_user_stack_path(current_user), class: "primary-btn rounded-lg px-4 py-2 text-sm" %>
+        <% else %>
+          <%= link_to "Sign up to make a stack", new_user_path, class: "primary-btn rounded-lg px-4 py-2 text-sm" %>
+        <% end %>
+        <a href="#make-a-stack" class="link">How to make one</a>
+      </div>
+    </div>
+
+    <figure class="mx-auto w-full max-w-md">
+      <div class="relative isolate aspect-3/2" aria-hidden="true">
+        <div class="absolute top-[13%] left-[4%] grid aspect-2/3 w-1/3 -rotate-8 place-items-center rounded-lg border border-pop bg-linear-to-br from-slate-950 via-slate-800 to-sky-900 text-center shadow-lg">
+          <span class="font-domine text-xl font-bold sm:text-2xl">Star<br>Wars</span>
+        </div>
+        <div class="absolute top-[17%] right-[4%] grid aspect-2/3 w-1/3 rotate-8 place-items-center rounded-lg border border-pop bg-linear-to-br from-indigo-950 via-violet-950 to-slate-800 text-center shadow-lg">
+          <span class="font-domine text-lg font-bold sm:text-2xl">Midnight</span>
+        </div>
+        <div class="absolute top-[4%] left-1/3 grid aspect-2/3 w-1/3 place-items-center rounded-lg border border-pop bg-linear-to-br from-emerald-950 via-teal-900 to-teal-700 text-center shadow-lg">
+          <span class="font-domine text-lg font-bold sm:text-2xl">Star Trek</span>
+        </div>
+      </div>
+      <figcaption class="mt-4">
+        <h2 class="font-domine text-2xl font-bold">Beyond the stars</h2>
+        <p class="mt-2 text-sm text-white/80">Star Wars: A New Hope · Star Trek · Doctor Who, “Midnight”</p>
+      </figcaption>
+    </figure>
+  </div>
+</header>
+
+<section id="make-a-stack" class="mx-auto max-w-6xl scroll-mt-20 px-6 py-12 md:py-16" aria-labelledby="make-a-stack-heading">
+  <h2 id="make-a-stack-heading" class="font-domine text-3xl font-bold">Make your first stack</h2>
+  <ol role="list" class="mt-6 grid list-none gap-8 md:grid-cols-3 md:gap-y-0">
+    <li class="md:row-span-2 md:grid md:grid-rows-subgrid">
+      <div>
+        <h3 class="font-domine text-xl font-bold"><span class="mr-2 text-pop" aria-hidden="true">1.</span>Pick a title</h3>
+        <p class="mt-2 text-white/80">Open a film, show, season or episode you want to add.</p>
+      </div>
+      <div class="mt-4 flex min-h-40 items-center gap-4 rounded-lg bg-background-darker p-4" aria-hidden="true">
+        <div class="grid aspect-2/3 w-16 shrink-0 place-items-center rounded border border-pop bg-linear-to-br from-slate-950 to-sky-900 text-center font-domine text-sm font-bold">Star<br>Wars</div>
+        <div>
+          <p class="font-domine font-bold">Star Wars</p>
+          <p class="text-sm text-white/80">A New Hope · Film</p>
+        </div>
+      </div>
+    </li>
+    <li class="md:row-span-2 md:grid md:grid-rows-subgrid">
+      <div>
+        <h3 class="font-domine text-xl font-bold"><span class="mr-2 text-pop" aria-hidden="true">2.</span>Add it to a stack</h3>
+        <p class="mt-2 text-white/80">Choose <strong>Add to stack</strong> from the title’s actions.</p>
+      </div>
+      <div class="mt-4 grid min-h-40 content-center gap-2 rounded-lg bg-background-darker p-4 text-sm" aria-hidden="true">
+        <span class="px-3 text-white/70">Add to watchlist</span>
+        <span class="rounded-lg border border-pop bg-pop/25 px-3 py-2 font-bold">Add to stack</span>
+      </div>
+    </li>
+    <li class="md:row-span-2 md:grid md:grid-rows-subgrid">
+      <div>
+        <h3 class="font-domine text-xl font-bold"><span class="mr-2 text-pop" aria-hidden="true">3.</span>Create and add</h3>
+        <p class="mt-2 text-white/80">Pick an existing stack, or enter a name and choose <strong>Create and add</strong>.</p>
+      </div>
+      <div class="mt-4 grid min-h-40 content-center gap-2 rounded-lg bg-background-darker p-4 text-sm" aria-hidden="true">
+        <span>Create a new stack</span>
+        <span class="rounded-lg border border-white/25 bg-background px-3 py-2">Beyond the stars</span>
+        <span class="w-fit rounded border border-pop bg-pop/25 px-2 py-1 font-bold">Create and add</span>
+      </div>
+    </li>
+  </ol>
+</section>
+
+<section class="bg-background-darker" aria-labelledby="stack-ideas-heading">
+  <div class="mx-auto max-w-6xl px-6 py-12 md:py-16">
+    <h2 id="stack-ideas-heading" class="font-domine text-3xl font-bold">What can you do with a stack?</h2>
+    <div class="mt-8 grid items-center gap-8 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:gap-12">
+      <div class="rounded-lg border border-pop/40 bg-background p-5 sm:p-8">
+        <h3 class="font-domine text-2xl font-bold">Build a stack together</h3>
+        <p class="mt-2 text-white/80">Make a shared watchlist with friends so everyone can add their picks for the next film night.</p>
+        <figure class="mt-6">
+          <figcaption class="font-domine text-lg font-bold">Friday Film Night</figcaption>
+          <ul role="list" class="mt-4 flex flex-wrap gap-y-4 sm:flex-nowrap">
+            <% [
+                 ["Clue", "Maya", "from-rose-950 to-amber-900", "-rotate-6"],
+                 ["Knives Out", "Alex", "from-emerald-950 to-teal-800", "z-10"],
+                 ["Game Night", "Sam", "from-indigo-950 to-violet-800", "rotate-6"]
+               ].each do |title, contributor, colours, tilt| %>
+              <li class="relative min-w-0 basis-1/3 text-center">
+                <div class="mx-auto grid aspect-2/3 w-full max-w-28 place-items-center rounded-lg border border-pop/70 bg-linear-to-br px-1 text-center font-domine text-xs font-bold shadow-lg sm:text-base <%= colours %> <%= tilt %>">
+                  <%= title %>
+                </div>
+                <p class="mt-3 text-xs text-white/80 sm:text-sm">Added by <%= contributor %></p>
+              </li>
+            <% end %>
+          </ul>
+        </figure>
+      </div>
+      <div class="divide-y divide-white/15">
+        <div class="flex gap-4 py-5">
+          <i class="fa-solid fa-arrow-up-wide-short mt-1 text-pop" aria-hidden="true"></i>
+          <div>
+            <h3 class="font-domine text-xl font-bold">Set a viewing order</h3>
+            <p class="mt-2 text-white/80">Arrange a franchise in the order you want to watch it. You can also sort by runtime, release date or rating, and filter by media type.</p>
+          </div>
+        </div>
+        <div class="flex gap-4 py-5">
+          <i class="fa-solid fa-link mt-1 text-pop" aria-hidden="true"></i>
+          <div>
+            <h3 class="font-domine text-xl font-bold">Share your recommendations</h3>
+            <p class="mt-2 text-white/80">Give friends a link to a public stack of your favourite films or episodes. Set a stack to private when you want to keep it to yourself.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mx-auto max-w-6xl px-6 pt-12 md:pt-16" aria-labelledby="stack-questions-heading">
+  <h2 id="stack-questions-heading" class="font-domine text-3xl font-bold">Got any questions?</h2>
+  <div class="mt-5 divide-y divide-white/15 border-y border-white/15">
+    <%= render "pages/faq_disclosure", question: "How do I reorder my stack?" do %>
+      <ol class="mt-3 list-decimal space-y-2 pl-5 text-white/80">
+        <li>Open your stack and choose <strong>Position</strong> from the sort menu. Use the sort arrow next to it to switch to ascending order if needed.</li>
+        <li>Clear any selected media-type filters so all items are visible.</li>
+        <li>Select <strong>Reorder items</strong> next to the sort arrow. Grab the handle on an item and drag it to where you want it in the list.</li>
+      </ol>
+    <% end %>
+    <%= render "pages/faq_disclosure", question: "Where can I find other stacks?" do %>
+      <p class="mt-2 text-white/80">Start with a title you like and look for stacks that feature it. You can also browse someone’s public lists from the <strong>Stacks</strong> tab on their profile. Lists curated by Stakkd carry the <strong>Official stack</strong> label.</p>
+    <% end %>
+    <%= render "pages/faq_disclosure", question: "What’s the difference between a stack and my watchlist?" do %>
+      <p class="mt-2 text-white/80">Your watchlist is a single place to save titles for later. You can make several named stacks, each with its own theme, description and order.</p>
+    <% end %>
+    <%= render "pages/faq_disclosure", question: "Can I add the same title to more than one stack?" do %>
+      <p class="mt-2 text-white/80">Yes. A film can be in both your sci-fi favourites and your film-night shortlist.</p>
+    <% end %>
+    <%= render "pages/faq_disclosure", question: "Who can see my stacks?" do %>
+      <p class="mt-2 text-white/80">People can find your public stacks in the <strong>Stacks</strong> tab on your public profile or open them directly from a link. A private stack is visible only to you. If your profile is private, your stacks are private too.</p>
+    <% end %>
+    <%= render "pages/faq_disclosure", question: "Can I change a stack after I’ve made it?" do %>
+      <p class="mt-2 text-white/80">Yes. You can rename it, update its description, and add, remove or reorder items whenever you like.</p>
+    <% end %>
+    <%= render "pages/faq_disclosure", question: "Can someone edit my stack if I send them the link?" do %>
+      <p class="mt-2 text-white/80">A public stack link lets people view the list. Editing requires permission to collaborate on the stack.</p>
+    <% end %>
+    <%= render "pages/faq_disclosure", question: "How can I invite people to collaborate on my stack?" do %>
+      <p class="mt-2 text-white/80">TODO: Stack collaborations coming soon</p>
+    <% end %>
+  </div>
+</section>

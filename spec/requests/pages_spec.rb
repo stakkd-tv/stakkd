@@ -7,4 +7,11 @@ RSpec.describe "Pages", type: :request do
       expect(response).to have_http_status(:success)
     end
   end
+
+  describe "GET /stacks" do
+    it "returns http success" do
+      get stacks_path
+      expect(response).to have_http_status(:success)
+    end
+  end
 end

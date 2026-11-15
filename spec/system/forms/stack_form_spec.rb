@@ -10,7 +10,7 @@ RSpec.feature "Stack form", type: :system, js: true do
 
     visit user_path("me")
     expect(page).to have_content "crxssed"
-    click_link "Stacks"
+    page.find("a[data-active='false']", text: "Stacks").click
     expect(page).to have_css "a[data-active='true']", text: "Stacks"
     expect(page).to have_css "h6.font-domine", text: "Amazing Stack"
 
@@ -51,7 +51,7 @@ RSpec.feature "Stack form", type: :system, js: true do
 
     visit user_path(user)
     expect(page).to have_content "crxssed"
-    click_link "Stacks"
+    page.find("a[data-active='false']", text: "Stacks").click
     expect(page).to have_css "a[data-active='true']", text: "Stacks"
     expect(page).to have_css "h6.font-domine", text: "Amazing Stack"
 

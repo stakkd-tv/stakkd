@@ -60,7 +60,7 @@ RSpec.describe "users/stacks/index.html.erb", type: :view do
 
     it "renders a note" do
       render
-      assert_select "p", text: "No stacks yet. Learn more about stacks here."
+      assert_select "p", text: "No stacks yet. Learn more about stacks."
     end
   end
 

@@ -6,6 +6,9 @@ class PagesController < ApplicationController
     @contributors = Github::Contributors.all
   end
 
+  def stacks
+  end
+
   def contribute
   end
 end

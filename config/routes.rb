@@ -22,6 +22,7 @@ Rails.application.routes.draw do
       end
     end
     resources :history, only: [:index], controller: "users/history"
+    resources :history_items, only: [:destroy], controller: "users/history_items"
 
     get :watchlist, on: :member
 
@@ -39,6 +40,7 @@ Rails.application.routes.draw do
   resources :search, only: [:index, :show]
 
   get "about" => "pages#about", :as => :about
+  get "stacks" => "pages#stacks", :as => :stacks
   get "contribute" => "pages#contribute", :as => :contribute
 
   post "uploads" => "images#upload", :as => :upload

@@ -34,6 +34,14 @@ module Searchable
   class_methods do
     def searchable(options = {}, &block)
       options = {collection_name: collection_name}.merge(options)
+      if Rails.env.test?
+        # disable_indexing also skips explicit index! calls from application callbacks.
+        options.merge!(
+          auto_index: false,
+          auto_remove: false,
+          disable_indexing: true
+        )
+      end
       model = self
 
       typesense(options) do

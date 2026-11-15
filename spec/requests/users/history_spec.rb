@@ -20,8 +20,8 @@ module Users
       it "renders the history items" do
         get user_history_index_path(user)
         assert_select "turbo-frame#history_items[data-show-dates='true']" do
-          assert_select "p.font-domine", text: "Amazing movie"
-          assert_select "p.font-domine", text: @episode.show.translated_title
+          assert_select "h6.font-domine", text: "Amazing movie"
+          assert_select "h6.font-domine", text: @episode.show.translated_title
           assert_select "p.text-xs", text: "S#{@episode.season.number}E#{@episode.number} - Amazing episode"
         end
       end
@@ -29,29 +29,29 @@ module Users
       it "paginates history items" do
         stub_const("Users::HistoryController::PER_PAGE", 1)
         get user_history_index_path(user)
-        assert_select "p.font-domine", text: "Amazing movie"
-        assert_select "p.font-domine", text: @episode.show.translated_title, count: 0
+        assert_select "h6.font-domine", text: "Amazing movie"
+        assert_select "h6.font-domine", text: @episode.show.translated_title, count: 0
         assert_select "p.text-xs", text: "S#{@episode.season.number}E#{@episode.number} - Amazing episode", count: 0
       end
 
       it "can hide movies" do
         get user_history_index_path(user, hidden_media_types: ["movie"])
-        assert_select "p.font-domine", text: "Amazing movie", count: 0
-        assert_select "p.font-domine", text: @episode.show.translated_title
+        assert_select "h6.font-domine", text: "Amazing movie", count: 0
+        assert_select "h6.font-domine", text: @episode.show.translated_title
         assert_select "p.text-xs", text: "S#{@episode.season.number}E#{@episode.number} - Amazing episode"
       end
 
       it "can hide episodes" do
         get user_history_index_path(user, hidden_media_types: ["episode"])
-        assert_select "p.font-domine", text: "Amazing movie"
-        assert_select "p.font-domine", text: @episode.show.translated_title, count: 0
+        assert_select "h6.font-domine", text: "Amazing movie"
+        assert_select "h6.font-domine", text: @episode.show.translated_title, count: 0
         assert_select "p.text-xs", text: "S#{@episode.season.number}E#{@episode.number} - Amazing episode", count: 0
       end
 
       it "can hide both movies and episodes" do
         get user_history_index_path(user, hidden_media_types: ["episode", "movie"])
-        assert_select "p.font-domine", text: "Amazing movie", count: 0
-        assert_select "p.font-domine", text: @episode.show.translated_title, count: 0
+        assert_select "h6.font-domine", text: "Amazing movie", count: 0
+        assert_select "h6.font-domine", text: @episode.show.translated_title, count: 0
         assert_select "p.text-xs", text: "S#{@episode.season.number}E#{@episode.number} - Amazing episode", count: 0
       end
 
@@ -59,9 +59,9 @@ module Users
         movie2 = FactoryBot.create(:movie, translated_title: "Bad movie")
         FactoryBot.create(:history_item, item: movie2, user:)
         get user_history_index_path(user, scope: "movie", scope_id: @movie.id)
-        assert_select "p.font-domine", text: "Amazing movie"
-        assert_select "p.font-domine", text: "Bad movie", count: 0
-        assert_select "p.font-domine", text: @episode.show.translated_title, count: 0
+        assert_select "h6.font-domine", text: "Amazing movie"
+        assert_select "h6.font-domine", text: "Bad movie", count: 0
+        assert_select "h6.font-domine", text: @episode.show.translated_title, count: 0
         assert_select "p.text-xs", text: "S#{@episode.season.number}E#{@episode.number} - Amazing episode", count: 0
       end
 
@@ -69,23 +69,23 @@ module Users
         episode2 = FactoryBot.create(:episode, translated_name: "Bad episode")
         FactoryBot.create(:history_item, item: episode2, user:)
         get user_history_index_path(user, scope: "episode", scope_id: @episode.id)
-        assert_select "p.font-domine", text: "Amazing movie", count: 0
-        assert_select "p.font-domine", text: @episode.show.translated_title
+        assert_select "h6.font-domine", text: "Amazing movie", count: 0
+        assert_select "h6.font-domine", text: @episode.show.translated_title
         assert_select "p.text-xs", text: "S#{@episode.season.number}E#{@episode.number} - Amazing episode"
         assert_select "p.text-xs", text: "S#{episode2.season.number}E#{episode2.number} - Bad episode", count: 0
       end
 
       it "can scope by a season" do
         get user_history_index_path(user, scope: "season", scope_id: @episode.season.id)
-        assert_select "p.font-domine", text: "Amazing movie", count: 0
-        assert_select "p.font-domine", text: @episode.show.translated_title
+        assert_select "h6.font-domine", text: "Amazing movie", count: 0
+        assert_select "h6.font-domine", text: @episode.show.translated_title
         assert_select "p.text-xs", text: "S#{@episode.season.number}E#{@episode.number} - Amazing episode"
       end
 
       it "can scope by a show" do
         get user_history_index_path(user, scope: "show", scope_id: @episode.show.id)
-        assert_select "p.font-domine", text: "Amazing movie", count: 0
-        assert_select "p.font-domine", text: @episode.show.translated_title
+        assert_select "h6.font-domine", text: "Amazing movie", count: 0
+        assert_select "h6.font-domine", text: @episode.show.translated_title
         assert_select "p.text-xs", text: "S#{@episode.season.number}E#{@episode.number} - Amazing episode"
       end
 

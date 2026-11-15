@@ -54,7 +54,7 @@ RSpec.describe "users/history/index.html.erb", type: :view do
   it "renders the history items with date headers" do
     render
     assert_select "h3", text: Date.today.strftime("%B %-d, %Y")
-    assert_select "p.font-domine", text: "Amazing movie"
+    assert_select "h6.font-domine", text: "Amazing movie"
   end
 
   context "when there is a next page present" do

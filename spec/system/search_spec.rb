@@ -30,9 +30,14 @@ RSpec.feature "Search results", type: :system, js: true do
     sign_in(user)
   end
 
-  scenario "Searching for records", :ignore_console_errors do
+  scenario "Searching for records" do
     visit root_path
-    find("input.nav-search").send_keys(query, :enter)
+    stub_live_search(query, @movie1, :slug, :translated_title)
+    find("input.nav-search").send_keys(query)
+    within(".hits-results") do
+      expect(page).to have_link("Test Movie 1", href: movie_path(@movie1))
+    end
+    find("input.nav-search").send_keys(:enter)
     expect(page).to have_content "Search - #{query}"
 
     expect(page).to have_css "button[data-sidetab-active='true']", text: "Movies (2)"
