@@ -29,6 +29,40 @@ RSpec.describe "/shows/:show_id/seasons", type: :request do
       expect(response).to be_successful
     end
 
+    it "loads episodes in order and removes the loader after the last page" do
+      stub_const("SeasonsController::EPISODES_PER_PAGE", 1)
+      season = FactoryBot.create(:season, show:)
+      3.downto(1) { |number| FactoryBot.create(:episode, season:, number:) }
+      page_two_path = show_season_path(season, show_id: show, page: 2, format: :turbo_stream)
+      page_three_path = show_season_path(season, show_id: show, page: 3, format: :turbo_stream)
+
+      get show_season_path(season, show_id: show)
+      expect(response).to be_successful
+      assert_select "turbo-frame#season_episodes[target='_top'] b.text-pop", count: 1 do |episodes|
+        expect(episodes.first.text).to eq("Episode 1")
+      end
+      assert_select "turbo-frame#load_more_episodes[loading='lazy']", count: 1 do |frames|
+        expect(frames.first["src"]).to eq(page_two_path)
+      end
+
+      get page_two_path
+      expect(response.media_type).to eq("text/vnd.turbo-stream.html")
+      assert_select "turbo-stream[action='append'][target='season_episodes'] b.text-pop", count: 1 do |episodes|
+        expect(episodes.first.text).to eq("Episode 2")
+      end
+      assert_select "turbo-stream[action='replace'][target='load_more_episodes']" do
+        assert_select "turbo-frame#load_more_episodes[loading='lazy']", count: 1 do |frames|
+          expect(frames.first["src"]).to eq(page_three_path)
+        end
+      end
+
+      get page_three_path
+      assert_select "turbo-stream[action='append'][target='season_episodes'] b.text-pop", count: 1 do |episodes|
+        expect(episodes.first.text).to eq("Episode 3")
+      end
+      assert_select "turbo-stream[action='remove'][target='load_more_episodes']", count: 1
+    end
+
     context "when there is no season with that number" do
       it "responds with 404" do
         get show_season_url(1, show_id: show)
