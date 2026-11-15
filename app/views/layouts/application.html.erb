@@ -32,6 +32,7 @@
     <span id="rails-env" class="hidden"><%= Rails.env %><%= ENV["TEST_ENV_NUMBER"] %></span>
     <%= render "layouts/nav" %>
     <span id="typesense-config" class="hidden"
+      <%= "data-disabled" if Rails.env.test? %>
       data-api-key="<%= AppConfig::TYPESENSE_SEARCH_API_KEY %>"
       data-host="<%= AppConfig::TYPESENSE_HOST %>"
       data-port="<%= AppConfig::TYPESENSE_PORT %>"

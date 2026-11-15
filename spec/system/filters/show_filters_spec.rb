@@ -85,6 +85,7 @@ RSpec.feature "Show filters", type: :system, js: true do
     expect(page).to have_content("Avatar: The Last Airbender")
 
     # Filtering companies
+    stub_live_search("Universal", company, :name)
     fill_in "company", with: "Universal"
     expect(page).to have_css "li.p-2", text: "Universal"
     find("li.p-2", text: "Universal").click

@@ -53,13 +53,10 @@ RSpec.feature "Season form", type: :system, js: true do
     expect(season.posters.count).to eq 1
 
     # Season Regulars
-    collection = ::WillPaginate::Collection.create(1, 100, 1) do |pager|
-      pager.replace [@obi]
-    end
-    allow(Person).to receive(:search).with("obi wan", any_args).and_return(collection)
     click_link "Season Regulars"
     expect(page).to have_css("a[data-active='true']", text: "Season Regulars")
     expect(page).to have_content("Add a season regular")
+    stub_live_search("obi wan", @obi, :translated_name)
     fill_in "person", with: "obi wan"
     expect(page).to have_css("li.p-2", text: "Obi Wan")
     expect(page).not_to have_css("li.p-2", text: "John Doe") # Applies searching
@@ -86,6 +83,7 @@ RSpec.feature "Season form", type: :system, js: true do
       expect(season.reload.season_regulars).to eq []
     end
     # Add to all seasons
+    stub_live_search("obi wan", @obi, :translated_name)
     fill_in "person", with: "obi wan"
     expect(page).to have_css("li.p-2", text: "Obi Wan")
     expect(page).not_to have_css("li.p-2", text: "John Doe") # Applies searching
