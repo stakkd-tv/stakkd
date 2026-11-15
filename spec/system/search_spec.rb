@@ -43,7 +43,10 @@ RSpec.feature "Search results", type: :system, js: true do
     expect(page).to have_css "button[data-sidetab-active='true']", text: "Movies (2)"
     expect(page).to have_css "button[data-sidetab-active='false']", text: "Shows (1)"
     expect(page).to have_content "Test Movie 1"
-    expect(page).to have_content "Test Movie 2" # Load more has been triggered
+
+    # The lazy frame may be below the viewport or already removed after loading.
+    page.execute_script("document.getElementById('load_more_movies')?.scrollIntoView({ block: 'center' })")
+    expect(page).to have_content "Test Movie 2"
     expect(page).not_to have_content "Test Show 1"
 
     click_on "Shows (1)"
