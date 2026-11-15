@@ -128,7 +128,7 @@
       </details>
     <% end %>
     <div class="col-span-3">
-      <%= turbo_frame_tag "shows_filter_results" do %>
+      <%= turbo_frame_tag "shows_filter_results", class: "dim-while-busy" do %>
         <%= turbo_frame_tag "shows", class: "grid grid-cols-2 md:grid-cols-3 gap-4" do %>
           <% @shows.each do |show| %>
             <%= render show %>

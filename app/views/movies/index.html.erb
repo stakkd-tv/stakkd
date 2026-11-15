@@ -122,7 +122,7 @@
       </details>
     <% end %>
     <div class="col-span-3">
-      <%= turbo_frame_tag "movies_filter_results" do %>
+      <%= turbo_frame_tag "movies_filter_results", class: "dim-while-busy" do %>
         <%= turbo_frame_tag "movies", class: "grid grid-cols-2 md:grid-cols-3 gap-4" do %>
           <% @movies.each do |movie| %>
             <%= render movie %>

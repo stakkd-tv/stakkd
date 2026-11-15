@@ -29,6 +29,10 @@
 }
 
 @layer base {
+    turbo-frame.dim-while-busy[busy] {
+        opacity: 0.35;
+    }
+
     .btn {
         @apply text-white/75 hover:text-white transition duration-300 ease-in-out;
     }

@@ -70,7 +70,7 @@
     <% end %>
   </div>
 
-  <%= turbo_frame_tag "history_items_and_load_more" do %>
+  <%= turbo_frame_tag "history_items_and_load_more", class: "dim-while-busy" do %>
     <%= turbo_frame_tag "history_items", class: "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4", data: {show_dates: @show_dates} do %>
       <%= render "items_with_headers", history_items: @history_items, previous_date: nil %>
     <% end %>

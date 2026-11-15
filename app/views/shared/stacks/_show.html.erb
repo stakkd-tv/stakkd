@@ -84,7 +84,7 @@
   <% end %>
 </div>
 
-<%= turbo_frame_tag "stack_items", target: "_top", class: "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" do %>
+<%= turbo_frame_tag "stack_items", target: "_top", class: "dim-while-busy grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" do %>
   <% @stack_items.each do |stack_item| %>
     <% stack_item_url = @stack.official? ? "" : user_stack_stack_item_path(stack_item, stack_id: @stack, user_id: @stack.user) %>
     <div class="p-4 bg-background-darker rounded-lg flex flex-col gap-4 relative group StackItem_<%= stack_item.id %>_card" data-stack-item-url="<%= stack_item_url %>">
