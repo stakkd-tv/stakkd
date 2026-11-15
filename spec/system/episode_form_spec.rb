@@ -58,13 +58,10 @@ RSpec.feature "Episode form", type: :system, js: true do
     expect(page).not_to have_css("img[src*='1279x719.png']")
 
     # Guest Stars
-    collection = ::WillPaginate::Collection.create(1, 100, 1) do |pager|
-      pager.replace [@obi]
-    end
-    allow(Person).to receive(:search).with("obi wan", any_args).and_return(collection)
     click_link "Guest Stars"
     expect(page).to have_css("a[data-active='true']", text: "Guest Stars")
     expect(page).to have_content("Add a guest star")
+    stub_live_search("obi wan", @obi, :translated_name)
     fill_in "person", with: "obi wan"
     expect(page).to have_css("li.p-2", text: "Obi Wan")
     expect(page).not_to have_css("li.p-2", text: "John Doe") # Applies searching
@@ -92,14 +89,15 @@ RSpec.feature "Episode form", type: :system, js: true do
     end
 
     # Crew Members
-    allow(Job).to receive(:search).with("producer", any_args).and_return([@producer])
     click_link "Crew"
     expect(page).to have_css("a[data-active='true']", text: "Crew")
     expect(page).to have_content("Add a crew member")
+    stub_live_search("obi wan", @obi, :translated_name)
     fill_in "person", with: "obi wan"
     expect(page).to have_css("li.p-2", text: "Obi Wan")
     expect(page).not_to have_css("li.p-2", text: "John Doe") # Applies searching
     find("li.p-2", text: "Obi Wan").click
+    stub_live_search("producer", @producer, :name, :department)
     fill_in "job", with: "producer"
     expect(page).to have_css("li.p-2", text: "Producer")
     expect(page).not_to have_css("li.p-2", text: "Actor") # Applies searching

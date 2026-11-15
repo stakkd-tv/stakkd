@@ -70,6 +70,7 @@ RSpec.feature "Franchise form", type: :system, js: true do
     # Items
     click_link "Items"
     expect(page).to have_css("a[data-active='true']", text: "Items")
+    stub_live_search("amazing", @movie, :translated_title)
     fill_in "record", with: "amazing"
     expect(page).to have_css "li.p-2", text: "Amazing movie"
     find("li.p-2", text: "Amazing movie").click
