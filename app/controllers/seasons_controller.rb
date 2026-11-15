@@ -2,19 +2,24 @@ class SeasonsController < ApplicationController
   include Actions::History
   include Actions::Stacks
 
+  EPISODES_PER_PAGE = 20
+
   before_action :require_authentication, except: [:show, :cast, :load_more_top_stacks]
   before_action :set_show
   before_action :set_season, except: [:new, :create]
 
   def show
+    @episodes = @season.ordered_episodes.with_attached_backgrounds.paginate(page: params[:page], per_page: EPISODES_PER_PAGE)
+    @episode_watch_statuses = Manage::History.new(current_user).statuses_for(@episodes)
+    @watchlisted_episodes = current_user&.watchlisted_items_from(@episodes.to_a) || []
+    return if request.format.turbo_stream?
+
     @gallery_presenter = Galleries::Presenter.new(@season)
     @cast_members = CastMembers::Season.new(@season).cast_members
     @pagination = Pagination::Seasons.new(@season, @show)
     @watch_status = @season.status_for(current_user)
-    @episode_watch_statuses = Manage::History.new(current_user).statuses_for(@season.episodes)
     @stacks_with_previews, @stacks_next_page = @season.stacks_with_previews(current_user:)
     @watchlisted = current_user&.watchlisted?(@season) || false
-    @watchlisted_episodes = current_user&.watchlisted_items_from(@season.episodes) || []
   end
 
   def new

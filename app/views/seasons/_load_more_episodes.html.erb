@@ -1,0 +1,1 @@
+<%= turbo_frame_tag "load_more_episodes", src: show_season_path(@season, show_id: @show, page: @episodes.next_page, format: :turbo_stream), loading: :lazy %>

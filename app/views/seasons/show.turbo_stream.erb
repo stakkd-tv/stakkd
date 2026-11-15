@@ -1,0 +1,11 @@
+<%= turbo_stream.append "season_episodes" do %>
+  <%= render partial: "seasons/episode", collection: @episodes %>
+<% end %>
+
+<% if @episodes.next_page.present? %>
+  <%= turbo_stream.replace "load_more_episodes" do %>
+    <%= render "load_more_episodes" %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.remove "load_more_episodes" %>
+<% end %>

@@ -46,6 +46,7 @@ RSpec.describe "seasons/show", type: :view do
     gallery_presenter = Galleries::Presenter.new(@season)
     assign(:show, @show)
     assign(:season, @season)
+    assign(:episodes, @season.ordered_episodes.paginate(page: 1, per_page: SeasonsController::EPISODES_PER_PAGE))
     assign(:gallery_presenter, gallery_presenter)
     assign(:cast_members, CastMembers::Season.new(@season).cast_members)
     assign(:pagination, Pagination::Seasons.new(@season, @show))
@@ -178,10 +179,11 @@ RSpec.describe "seasons/show", type: :view do
     end
   end
 
-  it "renders all episodes" do
+  it "renders the episodes without a loader when they fit on one page" do
     render
     assert_select "a.font-domine", text: "Episode 1 - Pilot"
     assert_select "a.font-domine", text: "Episode 2 - Ringtoneers"
+    assert_select "turbo-frame#load_more_episodes", count: 0
   end
 
   context "when there is a previous season" do
