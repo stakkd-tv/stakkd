@@ -43,7 +43,7 @@
 
       <div>
         <%= form.label :biography %>
-        <%= form.text_area :biography, class: "h-60", autocomplete: "off", data: {settings_target: "biographyInput"} %>
+        <%= form.text_area :biography, class: "h-60", autocomplete: "off", data: {controller: "markdown-editor", action: "turbo:before-cache@document->markdown-editor#disconnect"} %>
         <small class="inline-block mt-2">You can format your biography using Markdown. Read more about Markdown formatting <a class="underline" href="https://www.markdownguide.org/basic-syntax/">here</a>.</small>
       </div>
 

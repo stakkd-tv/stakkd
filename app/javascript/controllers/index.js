@@ -21,6 +21,7 @@ import FormNavController from './form_nav_controller'
 import HistoryControlsController from './history_controls_controller'
 import JumpToController from './jump_to_controller'
 import LivesearchController from './livesearch_controller'
+import MarkdownEditorController from './markdown_editor_controller'
 import MarkdownRendererController from './markdown_renderer_controller'
 import MoreOptionsController from './more_options_controller'
 import NavController from './nav_controller'
@@ -49,6 +50,7 @@ application.register('form-nav', FormNavController)
 application.register('history-controls', HistoryControlsController)
 application.register('jump-to', JumpToController)
 application.register('livesearch', LivesearchController)
+application.register('markdown-editor', MarkdownEditorController)
 application.register('markdown-renderer', MarkdownRendererController)
 application.register('more-options', MoreOptionsController)
 application.register('nav', NavController)
