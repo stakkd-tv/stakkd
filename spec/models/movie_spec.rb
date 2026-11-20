@@ -20,9 +20,22 @@ RSpec.describe Movie, type: :model do
     it { should have_many(:companies).through(:company_assignments) }
     it { should have_many(:releases).dependent(:destroy) }
     it { should have_many(:taglines).dependent(:destroy) }
+    it { should have_many(:collection_items).dependent(:destroy) }
     it { should have_many(:history_items).dependent(:destroy) }
     it { should have_one(:franchise_item).dependent(:destroy) }
     it { should have_one(:franchise).through(:franchise_item) }
+  end
+
+  describe "dependent collection records" do
+    it "cleans up custom formats when the underlying title is destroyed" do
+      user = FactoryBot.create(:user)
+      movie = FactoryBot.create(:movie, :with_release_date)
+      manager = Manage::Collection.new(user)
+      manager.add!(movie, formats: ["VHS"])
+      movie.destroy!
+      expect(user.collection_items).to be_empty
+      expect(user.collection_formats).to be_empty
+    end
   end
 
   describe "validations" do

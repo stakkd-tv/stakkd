@@ -45,6 +45,7 @@ class Movie < ApplicationRecord
   has_many :companies, through: :company_assignments
   has_many :releases, dependent: :destroy
   has_many :taglines, -> { order(position: :asc) }, as: :record, dependent: :destroy
+  has_many :collection_items, as: :item, dependent: :destroy
   has_many :history_items, as: :item, dependent: :destroy
   has_one :franchise_item, as: :record, dependent: :destroy
   has_one :franchise, through: :franchise_item
