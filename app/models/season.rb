@@ -45,7 +45,7 @@ class Season < ApplicationRecord
 
   def latest_episode_number = episodes.maximum(:number) || 0
 
-  def items_for_history = episodes.released
+  def tracking_items = episodes.released
 
   def history_status_items = [self, show, *episodes]
 

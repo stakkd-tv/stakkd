@@ -115,7 +115,7 @@
         </div>
       </div>
       <div class="flex gap-2 items-center justify-between">
-        <% watch_status = @watch_statuses[stack_item.item] || :not_consumed %>
+        <% watch_status = @watch_statuses[stack_item.item] || :none %>
         <% watchlisted = @watchlisted_items.include?(stack_item.item) %>
         <%= render "shared/actions/compact_actions", record: stack_item.item, watch_status: watch_status, watchlisted: watchlisted %>
 

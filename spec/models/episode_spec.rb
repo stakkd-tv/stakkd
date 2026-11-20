@@ -28,7 +28,7 @@ RSpec.describe Episode, type: :model do
 
   it_behaves_like "a model that can be added to history" do
     let(:record) { FactoryBot.create(:episode, original_air_date: Date.today) }
-    let(:items_for_history) { [record] }
+    let(:tracking_items) { [record] }
     let(:release_date) { record.original_air_date }
     let(:status_items) { [record, record.season, record.show] }
   end

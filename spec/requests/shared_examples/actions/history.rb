@@ -39,14 +39,14 @@ RSpec.shared_examples "a model with history actions" do
       end
     end
 
-    context "when consumed at type is 'now'" do
+    context "when completed at type is 'now'" do
       let(:consumed_at) { nil }
       let(:consumed_at_type) { "now" }
 
-      context "when consumed at is present" do
+      context "when completed at is present" do
         let(:consumed_at) { DateTime.new(2026, 2, 2, 10) }
 
-        it "ignores the consumed at and sets to current time" do
+        it "ignores the completed at and sets to current time" do
           expect_any_instance_of(Manage::History).to receive(:add!)
             .with(record, consumed_at: Time.current)
           perform_add_to_history
@@ -60,8 +60,8 @@ RSpec.shared_examples "a model with history actions" do
       end
 
       it "renders json with the statuses of the affected items" do
-        statuses = {record => :consumed}
-        affected_items = {"#{record.class.polymorphic_name}:#{record.id}" => "consumed"}
+        statuses = {record => :completed}
+        affected_items = {"#{record.class.polymorphic_name}:#{record.id}" => "completed"}
         expect_any_instance_of(Manage::History).to receive(:statuses_for)
           .with(record.history_status_items).and_return(statuses)
         perform_add_to_history
@@ -71,14 +71,14 @@ RSpec.shared_examples "a model with history actions" do
       end
     end
 
-    context "when consumed at type is 'release_date'" do
+    context "when completed at type is 'release_date'" do
       let(:consumed_at) { nil }
       let(:consumed_at_type) { "release_date" }
 
-      context "when consumed at is present" do
+      context "when completed at is present" do
         let(:consumed_at) { DateTime.new(2026, 2, 2, 10) }
 
-        it "ignores the consumed at and sets to release date" do
+        it "ignores the completed at and sets to release date" do
           expect_any_instance_of(Manage::History).to receive(:add!)
             .with(record, consumed_at: :release_date)
           perform_add_to_history
@@ -92,8 +92,8 @@ RSpec.shared_examples "a model with history actions" do
       end
 
       it "renders json with the statuses of the affected items" do
-        statuses = {record => :consumed}
-        affected_items = {"#{record.class.polymorphic_name}:#{record.id}" => "consumed"}
+        statuses = {record => :completed}
+        affected_items = {"#{record.class.polymorphic_name}:#{record.id}" => "completed"}
         expect_any_instance_of(Manage::History).to receive(:statuses_for)
           .with(record.history_status_items).and_return(statuses)
         perform_add_to_history
@@ -103,7 +103,7 @@ RSpec.shared_examples "a model with history actions" do
       end
     end
 
-    context "when consumed at type is 'date'" do
+    context "when completed at type is 'date'" do
       let(:consumed_at) { DateTime.new(2026, 3, 3, 10) }
       let(:consumed_at_type) { "date" }
 
@@ -114,8 +114,8 @@ RSpec.shared_examples "a model with history actions" do
       end
 
       it "renders json with the statuses of the affected items" do
-        statuses = {record => :consumed}
-        affected_items = {"#{record.class.polymorphic_name}:#{record.id}" => "consumed"}
+        statuses = {record => :completed}
+        affected_items = {"#{record.class.polymorphic_name}:#{record.id}" => "completed"}
         expect_any_instance_of(Manage::History).to receive(:statuses_for)
           .with(record.history_status_items).and_return(statuses)
         perform_add_to_history
@@ -125,14 +125,14 @@ RSpec.shared_examples "a model with history actions" do
       end
     end
 
-    context "when consumed at type is 'unknown'" do
+    context "when completed at type is 'unknown'" do
       let(:consumed_at) { nil }
       let(:consumed_at_type) { "unknown" }
 
-      context "when consumed at is present" do
+      context "when completed at is present" do
         let(:consumed_at) { DateTime.new(2026, 2, 2, 10) }
 
-        it "ignores the consumed at and sets unknown" do
+        it "ignores the completed at and sets unknown" do
           expect_any_instance_of(Manage::History).to receive(:add!)
             .with(record, consumed_at: nil)
           perform_add_to_history
@@ -146,8 +146,8 @@ RSpec.shared_examples "a model with history actions" do
       end
 
       it "renders json with the statuses of the affected items" do
-        statuses = {record => :consumed}
-        affected_items = {"#{record.class.polymorphic_name}:#{record.id}" => "consumed"}
+        statuses = {record => :completed}
+        affected_items = {"#{record.class.polymorphic_name}:#{record.id}" => "completed"}
         expect_any_instance_of(Manage::History).to receive(:statuses_for)
           .with(record.history_status_items).and_return(statuses)
         perform_add_to_history
@@ -157,7 +157,7 @@ RSpec.shared_examples "a model with history actions" do
       end
     end
 
-    context "when consumed at type is invalid" do
+    context "when completed at type is invalid" do
       let(:consumed_at_type) { nil }
 
       it "does not add anything to history" do
@@ -205,8 +205,8 @@ RSpec.shared_examples "a model with history actions" do
       end
 
       it "renders json with the statuses of the affected items" do
-        statuses = {record => :consumed}
-        affected_items = {"#{record.class.polymorphic_name}:#{record.id}" => "consumed"}
+        statuses = {record => :completed}
+        affected_items = {"#{record.class.polymorphic_name}:#{record.id}" => "completed"}
         expect_any_instance_of(Manage::History).to receive(:statuses_for)
           .with(record.history_status_items).and_return(statuses)
         perform_remove_from_history

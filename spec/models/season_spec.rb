@@ -25,7 +25,7 @@ RSpec.describe Season, type: :model do
     let!(:episode) { record.episodes.first }
     let!(:no_release_date) { FactoryBot.create(:episode, number: 2, season: record, original_air_date: nil) }
     let!(:not_released) { FactoryBot.create(:episode, number: 3, season: record, original_air_date: Time.current + 1.day) }
-    let(:items_for_history) { [episode] }
+    let(:tracking_items) { [episode] }
     let(:release_date) { :raises }
     let(:status_items) { [record, record.show, *record.episodes] }
   end

@@ -28,7 +28,7 @@ RSpec.describe "franchises/show", type: :view do
     gallery_presenter = Galleries::Presenter.new(@franchise)
     assign(:franchise, @franchise)
     assign(:gallery_presenter, gallery_presenter)
-    assign(:watch_statuses, {@movie => :consumed, @show => :not_consumed, @show_no_air_date => :partially_consumed})
+    assign(:watch_statuses, {@movie => :completed, @show => :none, @show_no_air_date => :partial})
     assign(:watchlisted_items, [])
   end
 
@@ -61,9 +61,9 @@ RSpec.describe "franchises/show", type: :view do
     allow(view).to receive(:authenticated?).and_return(true)
     def view.current_user = FactoryBot.build_stubbed(:user)
     render
-    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_movie_path(@movie)}'][data-status='consumed']"
-    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_path(@show)}'][data-status='not_consumed']"
-    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_path(@show_no_air_date)}'][data-status='partially_consumed']"
+    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_movie_path(@movie)}'][data-status='completed']"
+    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_path(@show)}'][data-status='none']"
+    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_path(@show_no_air_date)}'][data-status='partial']"
   end
 
   it "renders the add to stack buttons for each franchise item when authenticated" do

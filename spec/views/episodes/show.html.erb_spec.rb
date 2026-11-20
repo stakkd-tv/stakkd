@@ -5,7 +5,7 @@ RSpec.describe "episodes/show", type: :view do
   let(:backgrounds) { [] }
   let(:original_air_date) { Date.new(2023, 1, 1) }
   let(:imdb_id) { nil }
-  let(:watch_status) { :not_consumed }
+  let(:watch_status) { :none }
   let(:stacks_with_previews) { {} }
   let(:stacks_next_page) { nil }
   let(:watchlisted) { false }
@@ -77,25 +77,25 @@ RSpec.describe "episodes/show", type: :view do
     assert_select "button[title='Add to stack'][data-stack-button-add-to-stack-url-value='#{add_to_stack_show_season_episode_path(@show, @season, @episode)}']", count: 0
   end
 
-  context "when the episode is consumed" do
-    let(:watch_status) { :consumed }
+  context "when the episode is completed" do
+    let(:watch_status) { :completed }
 
-    it "renders the button in a consumed state" do
+    it "renders the button in a completed state" do
       allow(view).to receive(:authenticated?).and_return(true)
       def view.current_user = FactoryBot.build_stubbed(:user)
       render
-      assert_select "button[title='Add to history'][data-status='consumed']"
+      assert_select "button[title='Add to history'][data-status='completed']"
     end
   end
 
-  context "when the episode is not consumed" do
-    let(:watch_status) { :not_consumed }
+  context "when the episode is not completed" do
+    let(:watch_status) { :none }
 
     it "renders the button in an unconsumed state" do
       allow(view).to receive(:authenticated?).and_return(true)
       def view.current_user = FactoryBot.build_stubbed(:user)
       render
-      assert_select "button[title='Add to history'][data-status='not_consumed']"
+      assert_select "button[title='Add to history'][data-status='none']"
     end
   end
 

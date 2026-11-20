@@ -38,9 +38,9 @@ RSpec.shared_examples_for "a model that can be added to history" do
     end
   end
 
-  describe "#items_for_history" do
-    it "returns the items that need to be added to history" do
-      expect(record.items_for_history).to eq items_for_history
+  describe "#tracking_items" do
+    it "returns the underlying items used for tracking" do
+      expect(record.tracking_items).to eq tracking_items
     end
   end
 
