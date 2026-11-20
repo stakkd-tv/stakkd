@@ -3,8 +3,17 @@
 require "rails_helper"
 
 RSpec.feature "Stack controls", type: :system, js: true do
-  def ordered_stack_item_titles
-    page.all("h5.stack-item").map(&:text)
+  def expect_stack_item_titles(*titles)
+    expect_stack_items_loaded
+    expect(page).to have_css("#stack_items h5.stack-item", count: titles.size)
+    titles.each_with_index do |title, index|
+      expect(page).to have_css("#stack_items > :nth-child(#{index + 1}) h5.stack-item", exact_text: title)
+    end
+  end
+
+  def expect_stack_items_loaded
+    # Also wait when successive filters both return an empty list.
+    expect(page).to have_css("turbo-frame#stack_items:not([busy])", visible: :all)
   end
 
   def ordered_position_detail
@@ -12,6 +21,7 @@ RSpec.feature "Stack controls", type: :system, js: true do
   end
 
   def expect_stack_item_order(*items)
+    expect_stack_items_loaded
     cards = items.map { |item| ".StackItem_#{item.id}_card" }.join(" + ")
     expect(page).to have_css "#stack_items > #{cards}"
     expect(page).to have_css "#stack_items h5.stack-item", count: items.size
@@ -21,6 +31,11 @@ RSpec.feature "Stack controls", type: :system, js: true do
     page.driver.browser.action
       .move_to(element.native)
       .click_and_hold
+      .move_by(0, 10)
+      .perform
+    # Let the native drag start before moving over the destination.
+    expect(page).to have_css("#stack_items > .opacity-50")
+    page.driver.browser.action
       .move_to(to.native)
       .release
       .perform
@@ -55,21 +70,19 @@ RSpec.feature "Stack controls", type: :system, js: true do
       expect(page).to have_content(stack.name)
       expect(page).to have_css("option[selected][value='added_at']")
       expect(page).to have_css("i[data-direction='asc']")
-      expect(ordered_stack_item_titles).to eq(["King of the Hill", "The Dark Knight"])
+      expect_stack_item_titles("King of the Hill", "The Dark Knight")
 
       # Reordering is not possible, as not signed in as stack creator
       expect(page).not_to have_css "button[data-stack-controls-target='reorderingButton']"
 
       # Changing sorting method updates DOM and url
       slim_select "Position", from: "sort"
-      sleep 0.5
-      expect(ordered_stack_item_titles).to eq(["The Dark Knight", "King of the Hill"])
+      expect_stack_item_titles("The Dark Knight", "King of the Hill")
       expect(page).to have_current_path(path_helper.call(*path_args, direction: "asc", sort: "position"))
 
       # Changing direction updates DOM and url
       page.find("i[data-direction='asc']").click
-      sleep 0.5
-      expect(ordered_stack_item_titles).to eq(["King of the Hill", "The Dark Knight"])
+      expect_stack_item_titles("King of the Hill", "The Dark Knight")
       expect(page).to have_current_path(path_helper.call(*path_args, direction: "desc", sort: "position"))
 
       # Changing filters
@@ -77,24 +90,19 @@ RSpec.feature "Stack controls", type: :system, js: true do
       expect(page).to have_css "div.ss-placeholder", text: "Filters"
       # Select Episodes
       slim_select "Episodes", from: "filters"
-      sleep 0.5
-      expect(ordered_stack_item_titles).to eq([])
+      expect_stack_item_titles
       # Both Episodes and Seasons are selected
       slim_select "Seasons", from: "filters"
-      sleep 0.5
-      expect(ordered_stack_item_titles).to eq([])
+      expect_stack_item_titles
       # Episodes, Seasons and Shows are selected
       slim_select "Shows", from: "filters"
-      sleep 0.5
-      expect(ordered_stack_item_titles).to eq(["The Dark Knight"])
+      expect_stack_item_titles("The Dark Knight")
       # All media types selected
       slim_select "Movies", from: "filters"
-      sleep 0.5
-      expect(ordered_stack_item_titles).to eq(["King of the Hill", "The Dark Knight"])
+      expect_stack_item_titles("King of the Hill", "The Dark Knight")
       # Remove Shows from filter
       slim_select "Shows", from: "filters"
-      sleep 0.5
-      expect(ordered_stack_item_titles).to eq(["King of the Hill"])
+      expect_stack_item_titles("King of the Hill")
     end
   end
 
@@ -188,14 +196,16 @@ RSpec.feature "Stack controls", type: :system, js: true do
     expect(@stack_item2.reload.position).to eq 1
     click_button "Reorder items"
     expect_reordering_enabled(drag_handle_count: 2)
-    expect(ordered_stack_item_titles).to eq(["The Dark Knight", "King of the Hill"])
+    expect_stack_item_titles("The Dark Knight", "King of the Hill")
     expect(ordered_position_detail).to eq(["1", "2"])
     drag_handle = find_all(".drag-handle").last
-    target = find_all(".drag-handle").first
+    target = find("#stack_items > .StackItem_#{@stack_item2.id}_card")
     move drag_handle, to: target
     expect_stack_item_order(@stack_item1, @stack_item2)
-    expect(ordered_stack_item_titles).to eq(["King of the Hill", "The Dark Knight"])
+    expect_stack_item_titles("King of the Hill", "The Dark Knight")
     # It keeps the sorting detail up to date for all items in the stack
+    # Position labels update after the PATCH completes, unlike the DOM order.
+    expect(page).to have_css(".StackItem_#{@stack_item1.id}_card .stackItem-position", exact_text: "1")
     expect(ordered_position_detail).to eq(["1", "2"])
     expect(@stack_item1.reload.position).to eq 1
     expect(@stack_item2.reload.position).to eq 2
