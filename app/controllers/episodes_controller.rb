@@ -1,4 +1,5 @@
 class EpisodesController < ApplicationController
+  include Actions::Collections
   include Actions::History
   include Actions::Stacks
 
@@ -11,6 +12,7 @@ class EpisodesController < ApplicationController
     @cast_members = CastMembers::Episode.new(@episode).cast_members
     @pagination = Pagination::Episodes.new(@episode, @season, @show)
     @watch_status = @episode.status_for(current_user)
+    @collection_status = Manage::Collection.new(current_user).status_for(@episode)
     @stacks_with_previews, @stacks_next_page = @episode.stacks_with_previews(current_user:)
     @watchlisted = current_user&.watchlisted?(@episode) || false
   end

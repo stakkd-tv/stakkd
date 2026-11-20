@@ -1,7 +1,10 @@
 require "rails_helper"
+require_relative "../shared_examples/collection_actions"
 
 RSpec.describe "users/watchlist.html.erb", type: :view do
   before(:each) do
+    assign(:collection_statuses, {})
+    assign(:collection_status, :none)
     def view.authenticated? = false
     def view.current_user = nil
     allow(view).to receive(:params).and_return({controller: "users", action: "watchlist"})
@@ -167,5 +170,9 @@ RSpec.describe "users/watchlist.html.erb", type: :view do
       render
       assert_select "i.drag-handle.hidden\\!", count: 0
     end
+  end
+
+  it_behaves_like "collection action buttons" do
+    let(:collection_record) { @movie }
   end
 end

@@ -65,5 +65,21 @@ RSpec.describe EpisodesController, type: :routing do
     it "routes to #add_to_watchlist" do
       expect(delete: "/shows/1/seasons/1/episodes/1/remove_from_watchlist").to route_to("episodes#remove_from_watchlist", id: "1", season_id: "1", show_id: "1")
     end
+
+    it "routes to #collection" do
+      expect(get: "/shows/1/seasons/1/episodes/1/collection").to route_to("episodes#collection", id: "1", show_id: "1", season_id: "1")
+    end
+
+    it "routes to #add_to_collection" do
+      expect(post: "/shows/1/seasons/1/episodes/1/add_to_collection").to route_to("episodes#add_to_collection", id: "1", show_id: "1", season_id: "1")
+    end
+
+    it "routes to #remove_collection_formats" do
+      expect(delete: "/shows/1/seasons/1/episodes/1/remove_collection_formats").to route_to("episodes#remove_collection_formats", id: "1", show_id: "1", season_id: "1")
+    end
+
+    it "routes to #remove_from_collection" do
+      expect(delete: "/shows/1/seasons/1/episodes/1/remove_from_collection").to route_to("episodes#remove_from_collection", id: "1", show_id: "1", season_id: "1")
+    end
   end
 end

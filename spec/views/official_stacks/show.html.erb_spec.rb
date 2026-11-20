@@ -1,7 +1,10 @@
 require "rails_helper"
+require_relative "../shared_examples/collection_actions"
 
 RSpec.describe "official_stacks/show.html.erb", type: :view do
   before(:each) do
+    assign(:collection_statuses, {})
+    assign(:collection_status, :none)
     def view.authenticated? = false
     def view.current_user = nil
     @stack = FactoryBot.create(
@@ -104,5 +107,9 @@ RSpec.describe "official_stacks/show.html.erb", type: :view do
         end
       end
     end
+  end
+
+  it_behaves_like "collection action buttons" do
+    let(:collection_record) { @movie }
   end
 end

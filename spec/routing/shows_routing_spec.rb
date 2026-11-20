@@ -81,5 +81,21 @@ RSpec.describe ShowsController, type: :routing do
     it "routes to #add_to_watchlist" do
       expect(delete: "/shows/1/remove_from_watchlist").to route_to("shows#remove_from_watchlist", id: "1")
     end
+
+    it "routes to #collection" do
+      expect(get: "/shows/1/collection").to route_to("shows#collection", id: "1")
+    end
+
+    it "routes to #add_to_collection" do
+      expect(post: "/shows/1/add_to_collection").to route_to("shows#add_to_collection", id: "1")
+    end
+
+    it "routes to #remove_collection_formats" do
+      expect(delete: "/shows/1/remove_collection_formats").to route_to("shows#remove_collection_formats", id: "1")
+    end
+
+    it "routes to #remove_from_collection" do
+      expect(delete: "/shows/1/remove_from_collection").to route_to("shows#remove_from_collection", id: "1")
+    end
   end
 end

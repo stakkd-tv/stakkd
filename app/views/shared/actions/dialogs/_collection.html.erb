@@ -1,0 +1,68 @@
+<dialog
+  aria-labelledby="collection-dialog-title"
+  data-controller="collection-dialog"
+  data-action="collection-button:open@window->collection-dialog#open"
+  class="w-full max-w-full md:max-w-2xl mt-auto md:m-auto open:flex open:flex-col open:p-0 open:bg-transparent backdrop:backdrop-blur-sm">
+  <div class="bg-background border-t-2 md:border-2 border-watch text-white md:rounded-lg flex flex-col overflow-hidden w-full" style="height: min(38rem, 85dvh)">
+    <div class="border-b-2 border-background-darker p-4 shrink-0 grid grid-cols-1 gap-y-1 md:grid-cols-[minmax(0,1fr)_auto] md:gap-x-4">
+      <h2 id="collection-dialog-title" class="font-domine text-xl md:col-start-1">Collection</h2>
+      <p class="truncate md:col-start-1" data-collection-dialog-target="recordTitle"></p>
+      <p class="text-sm text-white/75 md:col-start-1" data-collection-dialog-target="ownership" aria-live="polite">Loading collection…</p>
+      <button type="button" class="hidden bg-red-500 rounded-lg py-1 px-2 cursor-pointer font-bold text-sm whitespace-nowrap justify-self-start mt-2 md:mt-0 md:col-start-2 md:row-start-1 md:row-span-3 md:self-start md:justify-self-end disabled:opacity-50" data-action="collection-dialog#showConfirmation" data-collection-dialog-target="removeCollectionAction">Remove from collection</button>
+    </div>
+    <form class="flex flex-col flex-1 min-h-0" data-action="submit->collection-dialog#submit">
+      <div class="p-4 overflow-y-auto flex-1 min-h-0 text-sm" data-collection-dialog-target="content" aria-busy="false">
+        <section data-collection-dialog-target="screen" data-screen="loading">
+          <h3 class="font-domine text-xl" tabindex="-1">Loading collection…</h3>
+        </section>
+
+        <section class="hidden" data-collection-dialog-target="screen" data-screen="overview">
+          <h3 class="font-domine text-xl mb-4" tabindex="-1">Your formats</h3>
+          <ul class="flex flex-wrap gap-2 mb-6" data-collection-dialog-target="summary"></ul>
+          <div class="flex flex-col gap-3 items-start">
+            <button type="button" class="bg-watch rounded-lg py-2 px-4 cursor-pointer font-bold" data-action="collection-dialog#showAdd" data-collection-dialog-target="addAction">Add formats…</button>
+            <button type="button" class="underline cursor-pointer py-2" data-action="collection-dialog#showRemove" data-collection-dialog-target="removeAction">Remove formats…</button>
+          </div>
+        </section>
+
+        <section class="hidden" data-collection-dialog-target="screen" data-screen="add">
+          <h3 class="font-domine text-xl mb-4" tabindex="-1" data-collection-dialog-target="addHeading">Add to collection</h3>
+          <fieldset class="mb-4 hidden" data-collection-dialog-target="scopeChoices">
+            <legend class="mb-2">Apply to</legend>
+            <label class="flex gap-2 items-center py-2"><input type="radio" name="collection_scope" value="owned" data-action="collection-dialog#changeScope"><span data-collection-dialog-target="ownedScopeLabel"></span></label>
+            <label class="flex gap-2 items-center py-2"><input type="radio" name="collection_scope" value="all" data-action="collection-dialog#changeScope"><span data-collection-dialog-target="allScopeLabel"></span></label>
+          </fieldset>
+          <p class="text-sm text-white/75 mb-3">Selecting formats adds them. Existing formats stay unchanged.</p>
+          <p class="mb-2">Formats to add <span class="text-white/75">(optional)</span></p>
+          <div class="flex flex-wrap gap-2 mb-4" data-collection-dialog-target="addFormats"></div>
+          <label for="collection-custom-format" class="text-sm">Custom format</label>
+          <div>
+            <input id="collection-custom-format" type="text" autocomplete="off" placeholder="e.g. Digital — Apple TV" class="w-full mt-2 p-2 border border-watch rounded-lg focus:outline-watch focus:outline" data-collection-dialog-target="customName" data-action="keydown.enter->collection-dialog#addCustom">
+            <button type="button" class="bg-background-darker border border-watch text-sm rounded-lg py-1 px-2 mt-2 cursor-pointer" data-action="collection-dialog#addCustom">Add choice</button>
+          </div>
+          <p class="text-sm text-white/75 mt-2">Custom formats are created when you save and can be reused.</p>
+          <p class="mt-4 border-l-2 border-watch pl-3" data-collection-dialog-target="preview" aria-live="polite"></p>
+        </section>
+
+        <section class="hidden" data-collection-dialog-target="screen" data-screen="remove">
+          <h3 class="font-domine text-xl mb-4" tabindex="-1">Remove formats</h3>
+          <div class="flex flex-wrap gap-2 mb-4" data-collection-dialog-target="removeFormats"></div>
+          <p class="border-l-2 border-watch pl-3">This keeps the item in your collection, even if no formats remain.</p>
+        </section>
+
+        <section class="hidden" data-collection-dialog-target="screen" data-screen="confirm">
+          <h3 class="font-domine text-xl mb-4" tabindex="-1">Remove from collection?</h3>
+          <p data-collection-dialog-target="removalSummary"></p>
+          <p class="mt-4">All recorded formats for these items will also be removed, including formats added individually.</p>
+          <p class="mt-4 text-white/75">Your history and watchlist will stay unchanged.</p>
+        </section>
+
+        <p class="text-red-400 mt-4" role="alert" data-collection-dialog-target="error"></p>
+      </div>
+      <div class="p-4 border-t-2 border-background-darker flex gap-2 justify-end shrink-0">
+        <button type="button" class="bg-background-darker rounded-lg py-2 px-4 cursor-pointer" data-action="collection-dialog#back" data-collection-dialog-target="backButton">Cancel</button>
+        <button type="submit" class="bg-watch rounded-lg py-2 px-4 cursor-pointer font-bold text-sm disabled:opacity-50 disabled:cursor-default hidden" data-collection-dialog-target="submitButton">Add to collection</button>
+      </div>
+    </form>
+  </div>
+</dialog>

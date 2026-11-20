@@ -1,6 +1,7 @@
 require "rails_helper"
 require_relative "shared_examples/actions/history"
 require_relative "shared_examples/actions/stacks"
+require_relative "shared_examples/actions/collections"
 
 RSpec.describe "/shows/:show_id/seasons/:season_id/episodes", type: :request do
   let(:season) { FactoryBot.create(:season) }
@@ -293,5 +294,9 @@ RSpec.describe "/shows/:show_id/seasons/:season_id/episodes", type: :request do
     def perform_remove_from_watchlist
       delete remove_from_watchlist_show_season_episode_path(item, season_id: item.season, show_id: item.show)
     end
+  end
+
+  it_behaves_like "a model with collection actions" do
+    let(:record) { FactoryBot.create(:episode) }
   end
 end

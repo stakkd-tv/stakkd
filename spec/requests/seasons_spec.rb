@@ -1,6 +1,7 @@
 require "rails_helper"
 require_relative "shared_examples/actions/history"
 require_relative "shared_examples/actions/stacks"
+require_relative "shared_examples/actions/collections"
 
 RSpec.describe "/shows/:show_id/seasons", type: :request do
   let(:show) { FactoryBot.create(:show) }
@@ -319,6 +320,25 @@ RSpec.describe "/shows/:show_id/seasons", type: :request do
 
     def perform_remove_from_watchlist
       delete remove_from_watchlist_show_season_path(item, show_id: item.show)
+    end
+  end
+
+  it_behaves_like "a model with collection actions" do
+    let(:record) { FactoryBot.create(:season, :with_premiere_date) }
+
+    context "with a partly owned season" do
+      let(:record) { FactoryBot.create(:season, :with_premiere_date) }
+      let(:first) { record.episodes.first }
+      let!(:second) { FactoryBot.create(:episode, season: record, number: 2) }
+
+      it "uses the explicit owned-only scope and updates episode and ancestor states" do
+        Manage::Collection.new(user).add!(first)
+        post collection_action_path("add_to_collection"), params: {scope: "owned", custom_formats: ["VHS"]}
+        expect(response).to have_http_status(:ok)
+        expect(user.collection_items.count).to eq(1)
+        expect(response.parsed_body["formats"].find { |format| format["name"] == "VHS" }["count"]).to eq(1)
+        expect(response.parsed_body["affected_items"]).to include("Episode:#{first.id}" => "completed", "Episode:#{second.id}" => "none", "Show:#{record.show_id}" => "partial")
+      end
     end
   end
 end

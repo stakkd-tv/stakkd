@@ -1,4 +1,5 @@
 require "rails_helper"
+require_relative "../../shared_examples/collection_actions"
 
 RSpec.describe "users/stacks/show.html.erb", type: :view do
   let(:posters) { [] }
@@ -6,6 +7,8 @@ RSpec.describe "users/stacks/show.html.erb", type: :view do
   let(:logos) { [] }
 
   before(:each) do
+    assign(:collection_statuses, {})
+    assign(:collection_status, :none)
     def view.authenticated? = false
     def view.current_user = nil
     @user = FactoryBot.create(:user)
@@ -169,5 +172,9 @@ RSpec.describe "users/stacks/show.html.erb", type: :view do
       render
       assert_select "i.drag-handle.hidden\\!", count: 0
     end
+  end
+
+  it_behaves_like "collection action buttons" do
+    let(:collection_record) { @movie }
   end
 end

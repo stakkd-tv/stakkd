@@ -38,6 +38,11 @@ resources :shows, except: [:destroy] do
       get :cast, on: :member
       get :load_more_top_stacks, on: :member, path: "load-more-top-stacks"
 
+      get :collection, on: :member
+      post :add_to_collection, on: :member
+      delete :remove_collection_formats, on: :member
+      delete :remove_from_collection, on: :member
+
       post :add_to_history, on: :member
       post :add_to_stack, on: :member
       post :create_and_add_to_stack, on: :member
@@ -51,6 +56,11 @@ resources :shows, except: [:destroy] do
     get :posters, on: :member
     get :cast, on: :member
     get :load_more_top_stacks, on: :member, path: "load-more-top-stacks"
+
+    get :collection, on: :member
+    post :add_to_collection, on: :member
+    delete :remove_collection_formats, on: :member
+    delete :remove_from_collection, on: :member
 
     post :add_to_history, on: :member
     post :add_to_stack, on: :member
@@ -68,6 +78,11 @@ resources :shows, except: [:destroy] do
   get :logos, on: :member
   get :cast, on: :member
   get :load_more_top_stacks, on: :member, path: "load-more-top-stacks"
+
+  get :collection, on: :member
+  post :add_to_collection, on: :member
+  delete :remove_collection_formats, on: :member
+  delete :remove_from_collection, on: :member
 
   post :add_to_history, on: :member
   post :add_to_stack, on: :member

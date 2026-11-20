@@ -1,4 +1,5 @@
 class MoviesController < ApplicationController
+  include Actions::Collections
   include Actions::History
   include Actions::Stacks
 
@@ -24,6 +25,7 @@ class MoviesController < ApplicationController
     @release_dates_for_country = @movie.release_dates_for_country
     @cast_members = CastMembers::Movie.new(@movie).cast_members
     @watch_status = @movie.status_for(current_user)
+    @collection_status = Manage::Collection.new(current_user).status_for(@movie)
     @stacks_with_previews, @stacks_next_page = @movie.stacks_with_previews(current_user:)
     @watchlisted = current_user&.watchlisted?(@movie) || false
   end

@@ -1,4 +1,5 @@
 require "rails_helper"
+require_relative "../shared_examples/collection_actions"
 
 RSpec.describe "episodes/show", type: :view do
   let(:posters) { [] }
@@ -11,6 +12,8 @@ RSpec.describe "episodes/show", type: :view do
   let(:watchlisted) { false }
 
   before(:each) do
+    assign(:collection_statuses, {})
+    assign(:collection_status, :none)
     def view.authenticated? = false
     def view.current_user = nil
     @season = FactoryBot.create(:season, number: 1, posters:, overview: "This is overview", translated_name: "NAME")
@@ -280,5 +283,9 @@ RSpec.describe "episodes/show", type: :view do
       assert_select "i.fa-regular.fa-bookmark"
       assert_select "i.fa-regular.fa-bookmark.hidden\\!", count: 0
     end
+  end
+
+  it_behaves_like "collection action buttons" do
+    let(:collection_record) { @episode }
   end
 end

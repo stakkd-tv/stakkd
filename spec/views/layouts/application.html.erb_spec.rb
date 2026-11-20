@@ -5,7 +5,8 @@ RSpec.describe "layouts/application.html.erb", type: :view do
     def view.authenticated? = false
     def view.current_user = nil
     render
-    assert_select "dialog", count: 4
+    assert_select "dialog", count: 5
+    assert_select "dialog[data-controller=collection-dialog]", count: 1
     assert_select "dialog[data-controller='history-dialog']"
     assert_select "dialog[data-controller='stack-dialog']"
     assert_select "dialog[data-controller='deletion-dialog']"

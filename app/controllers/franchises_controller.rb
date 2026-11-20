@@ -12,6 +12,7 @@ class FranchisesController < ApplicationController
     @gallery_presenter = Galleries::Presenter.new(@franchise)
     items = @franchise.franchise_items.map(&:record)
     @watch_statuses = Manage::History.new(current_user).statuses_for(items)
+    @collection_statuses = Manage::Collection.new(current_user).statuses_for(items)
     @watchlisted_items = current_user&.watchlisted_items_from(items) || []
   end
 
