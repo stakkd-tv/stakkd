@@ -18,7 +18,7 @@
     </div>
   <% end %>
   <% watch_status = local_assigns.fetch(:watch_status, :none) %>
-  <%= render "shared/actions/compact_actions", record: record, watch_status: watch_status, watchlisted: watchlisted %>
+  <%= render "shared/actions/compact_actions", record: record, collection_status: local_assigns.fetch(:collection_status, :none), watch_status: watch_status, watchlisted: watchlisted %>
   <p class="text-center whitespace-nowrap overflow-hidden text-ellipsis"><%= record %></p>
   <% if subtitle %>
     <small class="text-center"><%= subtitle %></small>

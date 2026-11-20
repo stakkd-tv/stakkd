@@ -1,6 +1,7 @@
 require "rails_helper"
 require_relative "shared_examples/actions/history"
 require_relative "shared_examples/actions/stacks"
+require_relative "shared_examples/actions/collections"
 
 RSpec.describe "Movies", type: :request do
   let(:country) { FactoryBot.create(:country) }
@@ -372,5 +373,9 @@ RSpec.describe "Movies", type: :request do
     def perform_remove_from_watchlist
       delete remove_from_watchlist_movie_path(item)
     end
+  end
+
+  it_behaves_like "a model with collection actions" do
+    let(:record) { FactoryBot.create(:movie, :with_release_date) }
   end
 end

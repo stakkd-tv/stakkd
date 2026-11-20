@@ -17,6 +17,7 @@ module StackConcerns
       .map { StackItemPresenter.new(it) }
     items = @stack_items.map(&:item)
     @watch_statuses = Manage::History.new(current_user).statuses_for(items)
+    @collection_statuses = Manage::Collection.new(current_user).statuses_for(items)
     @watchlisted_items = current_user&.watchlisted_items_from(items) || []
   end
 end

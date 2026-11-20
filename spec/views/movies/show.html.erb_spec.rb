@@ -1,4 +1,5 @@
 require "rails_helper"
+require_relative "../shared_examples/collection_actions"
 
 RSpec.describe "movies/show", type: :view do
   let(:country) { FactoryBot.create(:country) }
@@ -17,6 +18,8 @@ RSpec.describe "movies/show", type: :view do
   let(:watchlisted) { false }
 
   before(:each) do
+    assign(:collection_statuses, {})
+    assign(:collection_status, :none)
     def view.authenticated? = false
     def view.current_user = nil
     @movie = FactoryBot.create(
@@ -358,5 +361,9 @@ RSpec.describe "movies/show", type: :view do
       assert_select "i.fa-regular.fa-bookmark"
       assert_select "i.fa-regular.fa-bookmark.hidden\\!", count: 0
     end
+  end
+
+  it_behaves_like "collection action buttons" do
+    let(:collection_record) { @movie }
   end
 end

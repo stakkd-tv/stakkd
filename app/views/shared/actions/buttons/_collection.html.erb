@@ -1,0 +1,24 @@
+<% compact = local_assigns.fetch(:compact, false) %>
+<button type="button"
+  class="group disabled:pointer-events-none disabled:opacity-50 disabled:cursor-default <%= compact ? "link w-full data-[status=partial]:bg-watch/50 data-[status=completed]:bg-watch" : "z-1 cursor-pointer p-2 h-full min-w-10.5 aspect-square rounded-lg hover:bg-black/75 transition-all duration-300 ease-in-out" %>"
+  title="Collection"
+  data-controller="collection-button"
+  data-record-type="<%= record.class.polymorphic_name %>"
+  data-record-id="<%= record.id %>"
+  data-status="<%= collection_status || :none %>"
+  data-collection-button-state-url-value="<%= polymorphic_record_path(record, "collection") %>"
+  data-collection-button-add-url-value="<%= polymorphic_record_path(record, "add_to_collection") %>"
+  data-collection-button-remove-formats-url-value="<%= polymorphic_record_path(record, "remove_collection_formats") %>"
+  data-collection-button-remove-url-value="<%= polymorphic_record_path(record, "remove_from_collection") %>"
+  data-action="collection-button#open collection-dialog:status-update@window->collection-button#updateStatus"
+  <%= record.released? ? "" : "disabled" %>>
+  <% if compact %>
+    <i class="fa-regular fa-folder mr-2" aria-hidden="true"></i>
+  <% else %>
+    <span class="inline-grid align-middle text-white text-xl" aria-hidden="true">
+      <span class="col-start-1 row-start-1 opacity-0 group-data-[status=partial]:opacity-40 group-data-[status=completed]:opacity-100" data-collection-icon="fill"><i class="fa-solid fa-folder fa-fw"></i></span>
+      <span class="col-start-1 row-start-1" data-collection-icon="outline"><i class="fa-regular fa-folder fa-fw"></i></span>
+    </span>
+  <% end %>
+  <span class="<%= compact ? "" : "sr-only" %>">Collection</span>
+</button>

@@ -20,7 +20,7 @@
       </div>
       <div class="w-40">
         <% watch_status = @episode_watch_statuses[episode] || :none %>
-        <%= render "shared/actions/compact_actions", record: episode, watch_status: watch_status, watchlisted: watchlisted %>
+        <%= render "shared/actions/compact_actions", record: episode, collection_status: @collection_statuses[episode], watch_status: watch_status, watchlisted: watchlisted %>
       </div>
     </div>
     <p class="px-4 pt-2 text-sm line-clamp-2 sm:line-clamp-3 md:line-clamp-4"><%= episode.overview %></p>

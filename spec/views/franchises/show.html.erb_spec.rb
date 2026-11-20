@@ -1,4 +1,5 @@
 require "rails_helper"
+require_relative "../shared_examples/collection_actions"
 
 RSpec.describe "franchises/show", type: :view do
   let(:posters) { [] }
@@ -6,6 +7,8 @@ RSpec.describe "franchises/show", type: :view do
   let(:logos) { [] }
 
   before(:each) do
+    assign(:collection_statuses, {})
+    assign(:collection_status, :none)
     def view.authenticated? = false
     def view.current_user = nil
     @franchise = FactoryBot.create(
@@ -116,5 +119,9 @@ RSpec.describe "franchises/show", type: :view do
       assert_select "label", text: "Logos"
       assert_select "img[src*='300x450.png']", count: 1
     end
+  end
+
+  it_behaves_like "collection action buttons" do
+    let(:collection_record) { @movie }
   end
 end
