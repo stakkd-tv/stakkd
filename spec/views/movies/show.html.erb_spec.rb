@@ -11,7 +11,7 @@ RSpec.describe "movies/show", type: :view do
   let(:imdb_id) { nil }
   let(:has_franchise) { false }
   let(:has_release) { true }
-  let(:watch_status) { :not_consumed }
+  let(:watch_status) { :none }
   let(:stacks_with_previews) { {} }
   let(:stacks_next_page) { nil }
   let(:watchlisted) { false }
@@ -103,25 +103,25 @@ RSpec.describe "movies/show", type: :view do
     assert_select "button[title='Add to stack'][data-stack-button-add-to-stack-url-value='#{add_to_stack_movie_path(@movie)}']", count: 0
   end
 
-  context "when the movie is consumed" do
-    let(:watch_status) { :consumed }
+  context "when the movie is completed" do
+    let(:watch_status) { :completed }
 
     it "renders the add to history button in a disabled state" do
       allow(view).to receive(:authenticated?).and_return(true)
       def view.current_user = FactoryBot.build_stubbed(:user)
       render
-      assert_select "button[title='Add to history'][data-status='consumed']"
+      assert_select "button[title='Add to history'][data-status='completed']"
     end
   end
 
-  context "when the movies is not consumed" do
-    let(:watch_status) { :not_consumed }
+  context "when the movies is not completed" do
+    let(:watch_status) { :none }
 
     it "renders the add to history button" do
       allow(view).to receive(:authenticated?).and_return(true)
       def view.current_user = FactoryBot.build_stubbed(:user)
       render
-      assert_select "button[title='Add to history'][data-status='not_consumed']"
+      assert_select "button[title='Add to history'][data-status='none']"
     end
   end
 

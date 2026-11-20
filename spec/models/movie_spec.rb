@@ -38,7 +38,7 @@ RSpec.describe Movie, type: :model do
 
   it_behaves_like "a model that can be added to history" do
     let(:record) { FactoryBot.create(:movie, :with_release_date) }
-    let(:items_for_history) { [record] }
+    let(:tracking_items) { [record] }
     let(:release_date) { record.release_date }
     let(:status_items) { [record] }
   end

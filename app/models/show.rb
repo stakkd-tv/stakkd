@@ -101,7 +101,7 @@ class Show < ApplicationRecord
   # NOTE: This is for duck-typing with Movie
   def release_date = premiere_date
 
-  def items_for_history = non_special_episodes.released
+  def tracking_items = non_special_episodes.released
 
   def history_status_items = [self, *ordered_seasons]
 

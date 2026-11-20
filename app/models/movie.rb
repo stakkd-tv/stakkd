@@ -80,7 +80,7 @@ class Movie < ApplicationRecord
 
   def year = release_date&.year
 
-  def items_for_history = [self]
+  def tracking_items = [self]
 
   def history_release_date = release_date
 

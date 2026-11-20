@@ -1,5 +1,5 @@
 <% if authenticated? %>
-  <% watch_status = local_assigns.fetch(:watch_status, :not_consumed) %>
+  <% watch_status = local_assigns.fetch(:watch_status, :none) %>
   <% watchlisted = local_assigns.fetch(:watchlisted, false) %>
   <div class="flex gap-2 bg-background-darker p-2 border-2 border-pop rounded-xl w-fit relative">
     <%= render "shared/actions/buttons/add_to_history", record: record, watch_status: watch_status, extra_classes: "z-1" %>

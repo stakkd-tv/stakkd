@@ -61,8 +61,8 @@ export default class extends DialogController {
     removeFromHistoryUrl: string
   }): void {
     if (
-      this.triggeredBy?.dataset?.status === 'consumed' ||
-      this.triggeredBy?.dataset?.status === 'partially_consumed'
+      this.triggeredBy?.dataset?.status === 'completed' ||
+      this.triggeredBy?.dataset?.status === 'partial'
     ) {
       this.removeFromHistoryButtonTarget.classList.remove('hidden')
     } else {

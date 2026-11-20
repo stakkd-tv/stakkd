@@ -14,7 +14,7 @@ RSpec.describe "users/watchlist.html.erb", type: :view do
     assign(:stack, @stack)
     assign(:user, @user)
     assign(:stack_items, @stack.stack_items.includes(item: [:show, :season]).map { StackItemPresenter.new(it) })
-    assign(:watch_statuses, {@movie => :consumed, @show => :not_consumed})
+    assign(:watch_statuses, {@movie => :completed, @show => :none})
     assign(:sorting_method, @stack.sorting_method)
     assign(:sorting_direction, @stack.sorting_direction)
     assign(:filter_options, Stack::ALLOWED_ITEM_TYPES.map { [it.pluralize, it] })
@@ -57,8 +57,8 @@ RSpec.describe "users/watchlist.html.erb", type: :view do
     allow(view).to receive(:authenticated?).and_return(true)
     def view.current_user = FactoryBot.build_stubbed(:user)
     render
-    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_movie_path(@movie)}'][data-status='consumed']"
-    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_path(@show)}'][data-status='not_consumed']"
+    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_movie_path(@movie)}'][data-status='completed']"
+    assert_select "button[title='Add to history'][data-history-button-add-to-history-url-value='#{add_to_history_show_path(@show)}'][data-status='none']"
   end
 
   it "renders the add to stack buttons for each stack item when authenticated" do

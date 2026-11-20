@@ -24,7 +24,7 @@ RSpec.feature "Season load more episodes", type: :system, js: true do
     expect(page).to have_css("#season_episodes a.font-domine", text: "Episode 2 - Second episode")
     expect(page).to have_css("#season_episodes a.font-domine", text: "Episode 1 - Pilot")
     episode_path = show_season_episode_path(episode, season_id: season, show_id: season.show)
-    expect(page).to have_css("#season_episodes button[data-record-type='Episode'][data-record-id='#{episode.id}'][data-status='consumed']")
+    expect(page).to have_css("#season_episodes button[data-record-type='Episode'][data-record-id='#{episode.id}'][data-status='completed']")
     expect(page).to have_css("#season_episodes a[href='#{episode_path}'] i.fa-solid.fa-bookmark")
 
     page_three_path = show_season_path(season, show_id: season.show, page: 3, format: :turbo_stream)

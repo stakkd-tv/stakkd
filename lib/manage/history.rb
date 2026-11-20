@@ -11,7 +11,7 @@ module Manage
     def add!(item, consumed_at:)
       # TODO: Protect against nil user?
       # TODO: Protect against unreleased items?
-      items = item.items_for_history
+      items = item.tracking_items
       items.each_slice(BATCH_SIZE) do |batch|
         insert_batch(batch, consumed_at)
       end
@@ -19,7 +19,7 @@ module Manage
     end
 
     def remove_all(item)
-      items = item.items_for_history
+      items = item.tracking_items
       HistoryItem.where(user:, item: items).delete_all
     end
 
@@ -31,10 +31,10 @@ module Manage
       items = normalize_items(items)
       return default_statuses(items) unless user
 
-      sub_items = items_for_history(items)
+      sub_items = tracking_items_by_record(items)
       history_items = history_items_for(sub_items)
 
-      statuses_for_items(sub_items, history_items)
+      sub_items.transform_values { |items| Tracking::Completion.new(items, history_items).status }
     end
 
     private
@@ -68,12 +68,12 @@ module Manage
     end
 
     def default_statuses(items)
-      items.index_with { :not_consumed }
+      items.index_with { :none }
     end
 
-    def items_for_history(items)
+    def tracking_items_by_record(items)
       items.index_with do |item|
-        item.items_for_history.to_a
+        item.tracking_items.to_a
       end
     end
 
@@ -93,27 +93,6 @@ module Manage
         .distinct
         .pluck(:item_type, :item_id)
         .to_set
-    end
-
-    def statuses_for_items(sub_items, history_items)
-      sub_items.transform_values do |items|
-        status_for_items(items, history_items)
-      end
-    end
-
-    def status_for_items(items, history_items)
-      total = items.size
-      return :not_consumed if total.zero?
-
-      history_count = items.count do |sub_item|
-        history_items.include?([sub_item.class.polymorphic_name, sub_item.id])
-      end
-
-      case history_count
-      when 0 then :not_consumed
-      when total then :consumed
-      else :partially_consumed
-      end
     end
 
     def remove_related_items_from_watchlist(item)
