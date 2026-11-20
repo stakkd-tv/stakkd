@@ -1,3 +1,6 @@
+CollectionItem.destroy_all
+CollectionFormat.destroy_all
+
 Person.delete_all
 Job.delete_all
 Country.delete_all
@@ -7,6 +10,9 @@ Movie.delete_all
 Session.delete_all
 User.delete_all
 Company.delete_all
+
+puts "=== Creating collection formats ==="
+CollectionFormat::COMMON_NAMES.each { |name| CollectionFormat.create!(name:) }
 
 puts "=== Creating users ==="
 biography = <<~HEREDOC
@@ -55,7 +61,7 @@ biography = <<~HEREDOC
 
   ||Spoilers work too!|| <- Hover over this!
 HEREDOC
-User.create(username: "crxssed", email_address: "test@example.com", password: "123456", biography:, confirmed_at: Time.current, profile_picture: Rack::Test::UploadedFile.new(File.join(Rails.root, "spec", "support", "assets", "300x450.png")))
+crxssed = User.create(username: "crxssed", email_address: "test@example.com", password: "123456", biography:, confirmed_at: Time.current, profile_picture: Rack::Test::UploadedFile.new(File.join(Rails.root, "spec", "support", "assets", "300x450.png")))
 User.create(username: "other_user", email_address: "test2@example.com", password: "123456", confirmed_at: Time.current)
 User.create(username: "unconfirmed_user", email_address: "test3@example.com", password: "123456")
 User.create(username: "banned_user", email_address: "test4@example.com", password: "123456").ban!(reason: "Spam")
@@ -180,3 +186,6 @@ CastMember.create!(
   person: bautista,
   character: "Tagah (voice)"
 )
+
+puts "=== Creating collections ==="
+Manage::Collection.new(crxssed).add!(aang_the_last_airbender, formats: ["Blu-ray", "Digital — Apple TV"])

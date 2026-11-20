@@ -4,6 +4,8 @@ RSpec.describe User, type: :model do
   include ActiveSupport::Testing::TimeHelpers
 
   describe "associations" do
+    it { should have_many(:collection_items).dependent(:destroy) }
+    it { should have_many(:collection_formats).dependent(:destroy) }
     it { should belong_to(:banned_by).class_name("User").optional(true) }
     it { should have_many(:sessions).dependent(:destroy) }
     it { should have_many(:confirmation_tokens).dependent(:destroy) }
@@ -12,6 +14,20 @@ RSpec.describe User, type: :model do
     it { should have_one(:watchlist) }
     it { should have_one_attached(:profile_picture) }
     it { should have_one_attached(:background) }
+  end
+
+  describe "dependent collection records" do
+    it "destroys a user's collection and custom formats, retaining common formats" do
+      user = FactoryBot.create(:user)
+      movie = FactoryBot.create(:movie, :with_release_date)
+      CollectionFormat::COMMON_NAMES.each { |name| FactoryBot.create(:collection_format, :common, name:) }
+      manager = Manage::Collection.new(user)
+      manager.add!(movie, formats: ["VHS", "Digital"])
+      user.destroy!
+      expect(CollectionItem.where(user_id: user.id)).to be_empty
+      expect(CollectionFormat.where(user_id: user.id)).to be_empty
+      expect(CollectionFormat.common.count).to eq(4)
+    end
   end
 
   describe "validations" do

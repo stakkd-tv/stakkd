@@ -22,6 +22,8 @@ class User < ApplicationRecord
   belongs_to :banned_by, class_name: "User", optional: true
   has_many :sessions, dependent: :destroy
   has_many :confirmation_tokens, dependent: :destroy
+  has_many :collection_items, dependent: :destroy
+  has_many :collection_formats, dependent: :destroy
   has_many :history_items, dependent: :delete_all
   has_many :stacks, dependent: :destroy
   has_one :watchlist, -> { where(type: "watchlist") }, class_name: "Stack"

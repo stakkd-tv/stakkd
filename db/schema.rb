@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_21_142147) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_20_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -78,6 +78,40 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_21_142147) do
     t.integer "position", null: false
     t.datetime "updated_at", null: false
     t.index ["country_id"], name: "index_certifications_on_country_id"
+  end
+
+  create_table "collection_formats", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "name", null: false
+    t.string "normalized_name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["normalized_name"], name: "collection_formats_unique_common_name", unique: true, where: "(user_id IS NULL)"
+    t.index ["user_id", "normalized_name"], name: "collection_formats_unique_custom_name", unique: true, where: "(user_id IS NOT NULL)"
+    t.index ["user_id"], name: "index_collection_formats_on_user_id"
+    t.check_constraint "length(TRIM(BOTH FROM name)) > 0 AND length(TRIM(BOTH FROM normalized_name)) > 0", name: "collection_formats_valid_name"
+  end
+
+  create_table "collection_item_formats", force: :cascade do |t|
+    t.bigint "collection_item_id", null: false
+    t.bigint "collection_format_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["collection_format_id"], name: "index_collection_item_formats_on_collection_format_id"
+    t.index ["collection_item_id", "collection_format_id"], name: "collection_item_formats_unique_assignment", unique: true
+    t.index ["collection_item_id"], name: "index_collection_item_formats_on_collection_item_id"
+  end
+
+  create_table "collection_items", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "item_type", null: false
+    t.bigint "item_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_type", "item_id"], name: "index_collection_items_on_item"
+    t.index ["user_id", "item_type", "item_id"], name: "index_collection_items_on_user_id_and_item_type_and_item_id", unique: true
+    t.index ["user_id"], name: "index_collection_items_on_user_id"
+    t.check_constraint "item_type::text = ANY (ARRAY['Movie'::character varying::text, 'Episode'::character varying::text])", name: "collection_items_supported_types"
   end
 
   create_table "companies", force: :cascade do |t|
@@ -426,6 +460,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_21_142147) do
   add_foreign_key "alternative_names", "countries"
   add_foreign_key "cast_members", "people"
   add_foreign_key "certifications", "countries"
+  add_foreign_key "collection_formats", "users"
+  add_foreign_key "collection_item_formats", "collection_formats"
+  add_foreign_key "collection_item_formats", "collection_items", on_delete: :cascade
+  add_foreign_key "collection_items", "users"
   add_foreign_key "company_assignments", "companies"
   add_foreign_key "confirmation_tokens", "users"
   add_foreign_key "content_ratings", "certifications"
