@@ -44,6 +44,8 @@ RSpec.configure do |config|
     example.metadata[:ignore_console_errors] ||= false
     example.metadata[:ignore_form_failures] ||= false
     driven_by :selenium_chrome_headless
+    # Capybara resets page state between examples, but preserves window size.
+    page.current_window.resize_to(1920, 1080)
   end
 
   config.after(:each, type: :system, js: true, ignore_console_errors: false, ignore_form_failures: false) do
