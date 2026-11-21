@@ -49,6 +49,7 @@ RSpec.describe "Collection browsing", type: :system, js: true do
     find("#collection_show_#{collected_show.id} h6").click
     expect(page).to have_css("#collection_content summary", text: "Specials")
     expect(page).to have_link("E1 · #{episode.translated_name}")
+    scroll_to find("#collection_season_#{special.season_id}"), align: :center
     expect(page).to have_link("E1 · Special episode")
     click_link "Back to collection"
     expect(page).to have_css("#collection_groups h6", text: collected_show.translated_title)

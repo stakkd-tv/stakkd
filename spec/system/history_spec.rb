@@ -77,10 +77,11 @@ RSpec.feature "History", type: :system, js: true do
 
     # Loading more does not duplicate any dates
     stub_const("Users::HistoryController::PER_PAGE", 2)
+    page.current_window.resize_to(500, 500)
     visit user_history_index_path(user)
     expect(page).to have_content "bob's history"
     expect_history_items "Meh show", "Bad show"
-    page.execute_script("window.scrollTo(0, document.body.scrollHeight)")
+    scroll_to find("turbo-frame#load_more_history_items", visible: :all), align: :center
     expect_history_items "Meh show", "Bad show", "Amazing show", "Amazing movie"
     expect(page).to have_css "h3.font-fugaz", count: 3
     expect(page).to have_css "h3.font-fugaz", text: "October 29, 2026", count: 1

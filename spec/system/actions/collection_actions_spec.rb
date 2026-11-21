@@ -115,7 +115,7 @@ RSpec.describe "Collection actions", type: :system, js: true do
 
   it "applies formats to owned episodes by default and adds missing episodes only with explicit scope" do
     second = FactoryBot.create(:episode, season:, number: 2)
-    Manage::Collection.new(user).add!(episode)
+    original = Manage::Collection.new(user).add!(episode, formats: ["VHS"]).first
     visit show_season_path(season, show_id: show)
     open_collection(season)
     click_button "Add episodes or formats…"
@@ -131,6 +131,36 @@ RSpec.describe "Collection actions", type: :system, js: true do
     click_button "Add to collection"
     expect_closed
     expect(user.collection_items.pluck(:item_id)).to match_array([episode.id, second.id])
+    expect(CollectionItem.includes(:formats).find(original.id).formats.map(&:name)).to match_array(["Blu-ray", "Digital", "VHS"])
+
+    blu_ray = CollectionFormat.common.find_by!(name: "Blu-ray")
+    visit user_collection_show_path(user, show, formats: [blu_ray.id])
+    scroll_to find("#collection_season_#{season.id}"), align: :center
+    expect(page).to have_content("1 matching episode")
+    expect(page).to have_link("E1 · #{episode.translated_name}")
+    expect(page).to have_no_link("E2 · #{second.translated_name}")
+  end
+
+  it "keeps the mobile dialog frame stable and moves focus between screens" do
+    Manage::Collection.new(user).add!(movie, formats: Array.new(24) { |index| "Custom format #{index + 1}" })
+    page.current_window.resize_to(390, 640)
+    visit movie_path(movie)
+    open_collection(movie)
+
+    expect(page).to have_css("#{dialog_selector} h3:focus", text: "Your formats")
+    bounds = find(dialog_selector).evaluate_script("this.getBoundingClientRect().toJSON()")
+    click_button "Remove formats…"
+    expect(page).to have_css("#{dialog_selector} h3:focus", text: "Remove formats", exact_text: true)
+    expect(find(dialog_selector).evaluate_script("this.getBoundingClientRect().toJSON()")).to eq(bounds)
+
+    content = find("#{dialog_selector} [data-collection-dialog-target='content']")
+    expect(content.evaluate_script("this.scrollHeight > this.clientHeight")).to be(true)
+    submit = find("#{dialog_selector} button[type='submit']")
+    expect(submit.evaluate_script("this.getBoundingClientRect().bottom")).to be <= page.evaluate_script("window.innerHeight")
+
+    find(dialog_selector).send_keys(:escape)
+    expect_closed
+    expect(user.collection_formats.count).to eq(24)
   end
 
   it "adds movies, shows, seasons and episodes from a user's stack" do

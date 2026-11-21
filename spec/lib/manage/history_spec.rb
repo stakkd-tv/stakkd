@@ -7,6 +7,20 @@ module Manage
     let(:user) { FactoryBot.create(:user) }
     let(:history) { History.new(user) }
 
+    it "preserves existing collection ownership and formats when history changes" do
+      movie = FactoryBot.create(:movie, :with_release_date)
+      entry = Collection.new(user).add!(movie, formats: ["VHS"]).first
+      added_at = entry.reload.created_at
+
+      history.add!(movie, consumed_at: Time.current)
+      history.remove_all(movie)
+
+      expect(user.history_items).to be_empty
+      expect(user.collection_items).to contain_exactly(entry)
+      expect(entry.reload.created_at).to eq(added_at)
+      expect(CollectionItem.includes(:formats).find(entry.id).formats.map(&:name)).to eq(["VHS"])
+    end
+
     describe "#add!" do
       let(:episode1) { item.ordered_episodes.first }
       let(:episode2) { item.ordered_episodes.second }
