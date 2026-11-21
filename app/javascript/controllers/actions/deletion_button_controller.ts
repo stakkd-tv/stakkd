@@ -4,16 +4,22 @@ import { Controller } from '@hotwired/stimulus'
 export default class extends Controller {
   static values = {
     deleteRecordUrl: String,
-    cardElementSelector: String
+    cardElementSelector: String,
+    confirmation: String
   }
 
   declare deleteRecordUrlValue: string
   declare cardElementSelectorValue: string
 
-  declare cardElements: NodeListOf<HTMLElement>
+  declare confirmationValue: string
+  declare hasCardElementSelectorValue: boolean
+
+  private cardElements: NodeListOf<HTMLElement> | undefined
 
   connect() {
-    this.cardElements = document.querySelectorAll(this.cardElementSelectorValue)
+    this.cardElements = this.hasCardElementSelectorValue
+      ? document.querySelectorAll(this.cardElementSelectorValue)
+      : undefined
   }
 
   open() {
@@ -23,7 +29,8 @@ export default class extends Controller {
         target: window,
         detail: {
           button: this.element,
-          deleteRecordUrl: this.deleteRecordUrlValue
+          deleteRecordUrl: this.deleteRecordUrlValue,
+          confirmation: this.confirmationValue
         }
       })
     }
@@ -31,7 +38,7 @@ export default class extends Controller {
 
   removeElementFromDOM(event: { detail: { target: HTMLButtonElement } }) {
     if (event.detail.target !== this.element) return
-    this.cardElements.forEach((element) => {
+    this.cardElements?.forEach((element) => {
       element.addEventListener('animationend', () => {
         element.remove()
       })

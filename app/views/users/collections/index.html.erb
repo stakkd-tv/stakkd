@@ -1,0 +1,20 @@
+<% content_for :title, "Stakkd - #{@user.username}'s Collection" %>
+<% turbo_exempts_page_from_cache %>
+
+<div class="max-w-7xl mx-auto my-8 px-6 pt-10">
+  <%= render "users/compact_header", user: @user %>
+
+  <%= turbo_frame_tag "collection_content", class: "block group/collection", data: {turbo_action: "advance"} do %>
+    <h4 class="text-2xl font-bold font-domine mb-4"><%= (current_user == @user) ? "Your" : "#{@user}'s" %> collection</h4>
+    <%= render "filters" %>
+
+    <% if @groups.any? %>
+      <%= turbo_frame_tag "collection_groups", class: "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 group-aria-busy/collection:opacity-35" do %>
+        <%= render partial: "group", collection: @groups %>
+      <% end %>
+      <%= render "load_more" if @next_page %>
+    <% else %>
+      <p><%= @collection_query.filtered? ? "No collection items match these filters." : "No items in this collection yet." %></p>
+    <% end %>
+  <% end %>
+</div>

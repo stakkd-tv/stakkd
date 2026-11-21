@@ -16,6 +16,7 @@ import StackDialogController from './actions/stack_dialog_controller'
 import WatchlistButtonController from './actions/watchlist_button_controller'
 
 import { application } from './application'
+import CollectionControlsController from './collection_controls_controller'
 import DetailsAutoOpenController from './details_auto_open_controller'
 import FaqDisclosureController from './faq_disclosure_controller'
 import FlashItemController from './flash_item_controller'
@@ -37,6 +38,7 @@ import UploadsController from './uploads_controller'
 
 application.register('collection-button', CollectionButtonController)
 application.register('collection-dialog', CollectionDialogController)
+application.register('collection-controls', CollectionControlsController)
 application.register('deletion-button', DeletionButtonController)
 application.register('deletion-dialog', DeletionDialogController)
 application.register('edit-stack-button', EditStackButtonController)

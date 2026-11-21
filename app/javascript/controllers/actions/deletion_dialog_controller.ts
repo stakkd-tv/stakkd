@@ -3,6 +3,10 @@ import DialogController from '../dialog_controller'
 
 // Connects to data-controller="deletion-dialog"
 export default class extends DialogController {
+  static targets = ['confirmation']
+
+  declare confirmationTarget: HTMLElement
+
   // URL values
   declare deleteRecordUrl: string
 
@@ -15,8 +19,11 @@ export default class extends DialogController {
   setVariables(detail: {
     button: HTMLButtonElement
     deleteRecordUrl: string
+    confirmation?: string
   }): void {
     this.deleteRecordUrl = detail.deleteRecordUrl
+    this.confirmationTarget.textContent =
+      detail.confirmation || 'This action cannot be undone.'
   }
 
   resetVariables() {
