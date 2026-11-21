@@ -1,6 +1,6 @@
 <% compact = local_assigns.fetch(:compact, false) %>
 <button type="button"
-  class="group disabled:pointer-events-none disabled:opacity-50 disabled:cursor-default <%= compact ? "link w-full data-[status=partial]:bg-watch/50 data-[status=completed]:bg-watch" : "z-1 cursor-pointer p-2 h-full min-w-10.5 aspect-square rounded-lg hover:bg-black/75 transition-all duration-300 ease-in-out" %>"
+  class="group disabled:pointer-events-none disabled:opacity-50 disabled:cursor-default <%= compact ? "link w-full data-[status=partial]:bg-watch/50 data-[status=completed]:bg-watch" : "z-2 cursor-pointer p-2 h-full min-w-10.5 aspect-square rounded-lg hover:bg-black/75 transition-all duration-300 ease-in-out" %>"
   title="Collection"
   data-controller="collection-button"
   data-record-type="<%= record.class.polymorphic_name %>"
