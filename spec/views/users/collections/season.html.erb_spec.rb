@@ -32,9 +32,9 @@ RSpec.describe "users/collections/season.html.erb", type: :view do
   context "for the owner" do
     let(:owner) { user }
 
-    it "targets the episode row when deleting" do
+    it "refreshes the collection frame after deleting" do
       render
-      assert_select "button[data-deletion-button-card-element-selector-value=?]", "#collection_item_#{user.collection_items.first.id}", text: "Delete"
+      assert_select "button[data-deletion-button-refresh-frame-value=?]", "collection_content", text: "Delete"
     end
   end
 end

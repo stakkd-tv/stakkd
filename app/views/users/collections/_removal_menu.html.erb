@@ -29,7 +29,11 @@
         data-action="deletion-button#open deletion-dialog:deleted@window->deletion-button#removeElementFromDOM"
         data-deletion-button-delete-record-url-value="<%= polymorphic_record_path(record, "remove_from_collection") %>"
         data-deletion-button-confirmation-value="<%= confirmation %>"
-        data-deletion-button-card-element-selector-value="<%= local_assigns[:card_selector] %>">
+        <% if local_assigns[:card_selector] %>
+          data-deletion-button-card-element-selector-value="<%= card_selector %>"
+        <% else %>
+          data-deletion-button-refresh-frame-value="collection_content"
+        <% end %>>
         <i class="fa-solid fa-trash-can mr-2" aria-hidden="true"></i>
         Delete
       </button>

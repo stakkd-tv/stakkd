@@ -86,7 +86,7 @@ RSpec.describe "Collection browsing", type: :system, js: true do
       expect(page).to have_content("hidden by your format filters")
       click_button "Yes"
     end
-    expect(page).not_to have_css("[data-collection-regular-season]")
+    expect(page).not_to have_css("#collection_card_season_#{season.id}")
     expect(page).to have_current_path(/collection\/shows\//)
     expect(user.collection_items).to be_empty
 

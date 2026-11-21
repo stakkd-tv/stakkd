@@ -46,6 +46,8 @@ class Users::CollectionsController < Users::BaseController
     return if @collection_query.entries_for(@show).exists?
 
     if action_name == "show" && current_user == @user
+      return if turbo_frame_request_id == "collection_content"
+
       redirect_to user_collection_path(@user, **@collection_query.to_params)
     else
       not_found

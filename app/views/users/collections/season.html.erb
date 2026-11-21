@@ -13,7 +13,7 @@
         </div>
         <p class="text-xs text-white/75 mt-2">Added <%= entry.created_at.strftime("%d %b %Y") %></p>
       </div>
-      <%= render "users/collections/removal_menu", record: entry.item, title: entry.item.translated_name, card_selector: "##{dom_id(entry)}" if current_user == @user %>
+      <%= render "users/collections/removal_menu", record: entry.item, title: entry.item.translated_name if current_user == @user %>
     </div>
   <% end %>
   <div class="flex gap-4 justify-between text-sm">

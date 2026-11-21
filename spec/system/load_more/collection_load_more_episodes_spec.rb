@@ -27,4 +27,38 @@ RSpec.feature "Collection load more episodes", type: :system, js: true do
     end
     expect(page).to have_current_path(user_collection_show_path(user, season.show, formats: [bluray.id]))
   end
+
+  scenario "Deleting an episode draws the next episode onto the first page and refreshes counts" do
+    stub_const("Users::CollectionsController::EPISODES_PER_PAGE", 2)
+    user = FactoryBot.create(:user, :confirmed)
+    season = FactoryBot.create(:season)
+    ["Pilot", "Second episode", "Finale"].each_with_index do |name, index|
+      item = FactoryBot.create(:episode, season:, number: index + 1, translated_name: name)
+      FactoryBot.create(:collection_item, user:, item:)
+    end
+
+    sign_in user
+    visit user_collection_show_path(user, season.show)
+    frame = "#collection_season_#{season.id}"
+    scroll_to find(frame), align: :center
+    within(frame) do
+      expect(page).to have_link("More episodes")
+      expect(page).to have_no_link("E3 · Finale")
+      find('button[aria-label="More options for Pilot"]').click
+      within(".collection_episode_#{season.episodes.find_by!(number: 1).id}_options") do
+        click_button "Delete"
+      end
+    end
+    within("dialog[open]") { click_button "Yes" }
+
+    within(frame) do
+      expect(page).to have_link("E3 · Finale")
+      expect(page).to have_no_link("E1 · Pilot")
+      expect(page).to have_no_link("More episodes")
+    end
+    expect(page).to have_css("summary", text: /2 of 3 episodes owned/)
+    find('button[aria-label="More options for Season 1"]').click
+    within(".collection_season_#{season.id}_options") { click_button "Delete" }
+    within("dialog[open]") { expect(page).to have_content("2 owned episodes will be removed") }
+  end
 end

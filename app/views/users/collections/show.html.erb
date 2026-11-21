@@ -14,7 +14,7 @@
         <%= link_to @show.translated_title, show_path(@show), class: "underline", data: {turbo_frame: "_top"} %>
       </h4>
       <%= render "users/collections/removal_menu", record: @show, title: @show.translated_title,
-            count: @regular_removal_count, removable: @regular_removal_count.to_i.positive?, card_selector: "[data-collection-regular-season]", view_show_path: show_path(@show) %>
+            count: @regular_removal_count, removable: @regular_removal_count.to_i.positive?, view_show_path: show_path(@show) %>
     </div>
     <% if @active_format_names.any? %>
       <div class="mb-4 text-sm">
@@ -29,12 +29,10 @@
     <% end %>
     <% @seasons.each do |season| %>
       <% title = season.specials? ? "Specials" : "Season #{season.number}" %>
-      <%= tag.div id: dom_id(season, :collection_card), class: "relative bg-background-darker rounded-lg mb-4 group-aria-busy/collection:opacity-35",
-            data: {collection_regular_season: season.specials? ? nil : true} do %>
+      <div class="relative bg-background-darker rounded-lg mb-4 group-aria-busy/collection:opacity-35" id="<%= dom_id(season, :collection_card) %>">
         <% if @removal_counts&.fetch(season.id, 0).to_i.positive? %>
           <div class="absolute right-4 top-2">
-            <%= render "users/collections/removal_menu", record: season, title:, count: @removal_counts.fetch(season.id),
-                  card_selector: "##{dom_id(season, :collection_card)}" %>
+            <%= render "users/collections/removal_menu", record: season, title:, count: @removal_counts.fetch(season.id) %>
           </div>
         <% end %>
         <details open>
@@ -52,7 +50,7 @@
             <p class="text-sm text-white/75">Loading episodes…</p>
           <% end %>
         </details>
-      <% end %>
+      </div>
     <% end %>
   <% end %>
 </div>
