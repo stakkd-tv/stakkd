@@ -1,0 +1,34 @@
+<div class="mt-4 bg-black/25 backdrop-blur-sm rounded-lg p-2 sm:p-4 mb-8 sticky top-18.75 sm:top-22.5 z-1">
+  <%= form_with url: user_collection_path(@user), method: :get,
+        class: "flex flex-col gap-2 sm:flex-row sm:items-center justify-between",
+        data: {controller: "collection-controls", action: "change->collection-controls#submit", turbo_frame: "collection_content", turbo_action: "advance"} do |form| %>
+    <fieldset class="flex gap-1 p-1 bg-background rounded-lg w-full sm:min-w-62.5 sm:w-fit">
+      <legend class="sr-only">Media types</legend>
+      <% {"Movie" => ["Movies", "fa-video"], "Show" => ["Shows", "fa-play"]}.each do |type, (label, icon)| %>
+        <label data-active="<%= @collection_query.hidden_media_types.exclude?(type) %>" class="groupedButtons-item has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-pop">
+          <i class="fa-solid <%= icon %>" aria-hidden="true"></i>
+          <%= label %>
+          <%= form.check_box :hidden_media_types, {multiple: true, checked: @collection_query.hidden_media_types.include?(type), autocomplete: "off", class: "sr-only"}, type, nil %>
+        </label>
+      <% end %>
+    </fieldset>
+
+    <div class="flex flex-col gap-2 w-full sm:ml-auto sm:w-auto sm:min-w-0 sm:flex-row sm:items-center">
+      <% format_options = @formats.map { |format| [format.name, format.id] } + [["No format specified", "none"]] %>
+      <div class="w-full min-w-0 sm:w-48 lg:w-64">
+        <%= form.select :formats, options_for_select(format_options, @collection_query.format_ids),
+              {include_hidden: false}, multiple: true, class: "collection-formats w-full",
+              aria: {label: "Formats"}, autocomplete: "off",
+              data: {controller: "slim-select", slim_select_placeholder_value: "Formats"} %>
+      </div>
+
+      <div class="w-full sm:w-40 sm:shrink-0">
+        <%= form.select :sort, [["Recently added", "recent"], ["Title A–Z", "title"]],
+              {selected: @collection_query.sort}, class: "collection-sort w-full",
+              aria: {label: "Sort by"}, autocomplete: "off",
+              data: {controller: "slim-select", slim_select_searchable_value: false} %>
+      </div>
+    </div>
+    <noscript><%= form.submit "Apply filters", class: "link" %></noscript>
+  <% end %>
+</div>

@@ -1,0 +1,56 @@
+<% content_for :title, "Stakkd - #{@show.translated_title} in #{@user.username}'s Collection" %>
+<% turbo_exempts_page_from_cache %>
+
+<div class="max-w-7xl mx-auto my-8 px-6 pt-10">
+  <%= render "users/compact_header", user: @user %>
+
+  <%= turbo_frame_tag "collection_content", class: "block group/collection", data: {turbo_action: "advance"} do %>
+    <%= link_to user_collection_path(@user, **@collection_query.to_params), class: "inline-flex items-center gap-2 border-b border-current text-sm mb-4" do %>
+      <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+      Back to collection
+    <% end %>
+    <div class="flex items-start justify-between gap-4 mb-4">
+      <h4 class="min-w-0 wrap-anywhere text-2xl font-bold font-domine">
+        <%= link_to @show.translated_title, show_path(@show), class: "underline", data: {turbo_frame: "_top"} %>
+      </h4>
+      <%= render "users/collections/removal_menu", record: @show, title: @show.translated_title,
+            count: @regular_removal_count, removable: @regular_removal_count.to_i.positive?, view_show_path: show_path(@show) %>
+    </div>
+    <% if @active_format_names.any? %>
+      <div class="mb-4 text-sm">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="font-bold">Active format filters</span>
+          <% @active_format_names.each do |name| %>
+            <span class="rounded bg-background-darker px-2 py-1 break-all"><%= name %></span>
+          <% end %>
+        </div>
+        <p class="mt-2 text-white/75">Only episodes matching any of these formats are shown.</p>
+      </div>
+    <% end %>
+    <% @seasons.each do |season| %>
+      <% title = season.specials? ? "Specials" : "Season #{season.number}" %>
+      <div class="relative bg-background-darker rounded-lg mb-4 group-aria-busy/collection:opacity-35" id="<%= dom_id(season, :collection_card) %>">
+        <% if @removal_counts&.fetch(season.id, 0).to_i.positive? %>
+          <div class="absolute right-4 top-2">
+            <%= render "users/collections/removal_menu", record: season, title:, count: @removal_counts.fetch(season.id) %>
+          </div>
+        <% end %>
+        <details open>
+          <summary class="p-4 pr-16 cursor-pointer">
+            <span class="font-domine"><%= title %></span>
+            <span class="text-sm text-white/75 ml-2">
+              <% if @collection_query.format_ids.any? %>
+                <%= pluralize(@owned_counts.fetch(season.id, 0), "matching episode") %>
+              <% else %>
+                <%= @owned_counts.fetch(season.id, 0) %> of <%= @eligible_counts.fetch(season.id, 0) %> episodes owned
+              <% end %>
+            </span>
+          </summary>
+          <%= turbo_frame_tag dom_id(season, :collection), src: user_collection_season_path(@user, @show, season.number, **@collection_query.to_params), loading: :lazy, class: "block px-4 pb-4 dim-while-busy" do %>
+            <p class="text-sm text-white/75">Loading episodes…</p>
+          <% end %>
+        </details>
+      </div>
+    <% end %>
+  <% end %>
+</div>

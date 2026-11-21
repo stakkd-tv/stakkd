@@ -24,6 +24,10 @@ Rails.application.routes.draw do
     resources :history, only: [:index], controller: "users/history"
     resources :history_items, only: [:destroy], controller: "users/history_items"
 
+    get "collection", to: "users/collections#index", as: :collection
+    get "collection/shows/:show_id", to: "users/collections#show", as: :collection_show
+    get "collection/shows/:show_id/seasons/:season_number", to: "users/collections#season", as: :collection_season
+
     get :watchlist, on: :member
 
     get :confirm, on: :collection

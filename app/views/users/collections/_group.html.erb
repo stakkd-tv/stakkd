@@ -1,0 +1,44 @@
+<% record = group.record %>
+<% path = group.show? ? user_collection_show_path(@user, record, **@collection_query.to_params) : movie_path(record) %>
+<% card_id = dom_id(record, :collection) %>
+<div class="flex flex-col gap-2 group" id="<%= card_id %>">
+  <%= link_to path, class: "relative block", aria: {label: "Open #{record.translated_title}"}, data: {turbo_frame: group.show? ? "collection_content" : "_top"} do %>
+    <%= image_tag record.background(variant: :small), alt: record.translated_title, class: "w-full aspect-video object-cover border border-transparent group-hover:border-pop rounded-lg transition duration-300 ease-in-out" %>
+    <% if group.show? %>
+      <div class="absolute inset-x-1 bottom-1 flex flex-col gap-1 rounded-md bg-black/60 backdrop-blur-sm px-3 py-2 text-xs">
+        <% if @collection_query.format_ids.any? %>
+          <span><%= pluralize(group.owned_count, "matching episode") %></span>
+        <% else %>
+          <span>
+            <%= group.regular_count %>/<%= group.eligible_count %> episodes
+            <% if group.specials_count.positive? %>
+              · <%= pluralize(group.specials_count, "special") %>
+            <% end %>
+          </span>
+          <% if group.eligible_count.positive? %>
+            <progress class="h-1.5 w-full overflow-hidden rounded-full [&::-webkit-progress-bar]:bg-white/25 [&::-webkit-progress-value]:bg-pop [&::-moz-progress-bar]:bg-pop"
+              aria-label="Regular episodes owned" value="<%= group.regular_count %>" max="<%= group.eligible_count %>"></progress>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+  <div class="flex items-center justify-between gap-2">
+    <%= link_to path, class: "flex flex-1 min-w-0 items-center justify-between gap-2 font-domine text-md", data: {turbo_frame: group.show? ? "collection_content" : "_top"} do %>
+      <h6 class="leading-[42px] truncate">
+        <%= record.translated_title %>
+      </h6>
+      <% if group.show? %><i class="fa-solid fa-arrow-right shrink-0" aria-hidden="true"></i><% end %>
+    <% end %>
+    <%= render "users/collections/removal_menu", record:, title: record.translated_title, card_selector: "##{card_id}" if !group.show? && current_user == @user %>
+  </div>
+  <div class="flex flex-wrap gap-2">
+    <% group.format_counts.each do |name, count| %>
+      <span class="bg-background-darker rounded py-1 px-2 text-xs"><%= name %><%= " · #{count}" if group.show? %></span>
+    <% end %>
+    <% if group.unspecified_count.positive? %>
+      <span class="bg-background-darker rounded py-1 px-2 text-xs">No format specified<%= " · #{group.unspecified_count}" if group.show? %></span>
+    <% end %>
+  </div>
+  <p class="text-xs text-white/75">Added <%= group.added_at.strftime("%d %b %Y") %></p>
+</div>

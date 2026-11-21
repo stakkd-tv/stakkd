@@ -1,0 +1,11 @@
+<%= turbo_stream.append "collection_groups" do %>
+  <%= render partial: "group", collection: @groups %>
+<% end %>
+
+<% if @next_page %>
+  <%= turbo_stream.replace "load_more_collection_groups" do %>
+    <%= render "load_more" %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.remove "load_more_collection_groups" %>
+<% end %>

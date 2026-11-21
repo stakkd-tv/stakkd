@@ -1,0 +1,42 @@
+<% selector = "collection_#{dom_id(record)}_options" %>
+<% count = local_assigns[:count] %>
+<% if count %>
+  <% confirmation = "#{pluralize(count, "owned episode")} will be removed from #{title}, along with recorded formats." %>
+  <% confirmation += " This includes episodes hidden by your format filters." if @collection_query.format_ids.any? %>
+  <% confirmation += " Specials will stay in your collection." if record.is_a?(Show) %>
+<% end %>
+
+<div class="relative shrink-0">
+  <button type="button"
+    class="cursor-pointer w-10.5 aspect-square shrink-0 rounded-lg border border-transparent focus:bg-black/75 hover:bg-black/75 transition-all duration-300 ease-in-out"
+    aria-label="More options for <%= title %>"
+    data-controller="more-options"
+    data-more-options-selector-value=".<%= selector %>">
+    <i class="fa-solid fa-ellipsis-vertical text-xl" aria-hidden="true"></i>
+  </button>
+
+  <div class="<%= selector %> mt-2 z-1 opacity-0 pointer-events-none transition-all duration-300 ease-in-out fixed sm:absolute bottom-0 left-0 h-fit w-full sm:w-50 sm:top-full sm:right-0 sm:left-auto flex flex-col gap-2 p-2 bg-background-darker border-t-2 sm:border-2 border-pop sm:rounded-lg">
+    <p class="sm:hidden text-xl font-domine my-4"><%= title %></p>
+    <% if local_assigns[:view_show_path] %>
+      <%= link_to view_show_path, class: "link w-full", data: {turbo_frame: "_top"} do %>
+        <i class="fa-solid fa-arrow-up-right-from-square mr-2" aria-hidden="true"></i>
+        View show
+      <% end %>
+    <% end %>
+    <% if local_assigns.fetch(:removable, true) %>
+      <button type="button" class="link w-full"
+        data-controller="deletion-button"
+        data-action="deletion-button#open deletion-dialog:deleted@window->deletion-button#removeElementFromDOM"
+        data-deletion-button-delete-record-url-value="<%= polymorphic_record_path(record, "remove_from_collection") %>"
+        data-deletion-button-confirmation-value="<%= confirmation %>"
+        <% if local_assigns[:card_selector] %>
+          data-deletion-button-card-element-selector-value="<%= card_selector %>"
+        <% else %>
+          data-deletion-button-refresh-frame-value="collection_content"
+        <% end %>>
+        <i class="fa-solid fa-trash-can mr-2" aria-hidden="true"></i>
+        Delete
+      </button>
+    <% end %>
+  </div>
+</div>
