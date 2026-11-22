@@ -6,6 +6,7 @@ require_relative "shared_examples/stackable"
 
 RSpec.describe Season, type: :model do
   describe "associations" do
+    it { should have_many(:ratings).dependent(:delete_all) }
     it { should belong_to(:show) }
     it { should have_many(:season_regulars).class_name("CastMember").dependent(:destroy) }
     it { should have_many(:episodes).dependent(:destroy) }

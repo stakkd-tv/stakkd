@@ -2,6 +2,7 @@ require "rails_helper"
 require_relative "shared_examples/actions/history"
 require_relative "shared_examples/actions/stacks"
 require_relative "shared_examples/actions/collections"
+require_relative "shared_examples/actions/ratings"
 
 RSpec.describe "/shows/:show_id/seasons", type: :request do
   let(:show) { FactoryBot.create(:show) }
@@ -340,5 +341,9 @@ RSpec.describe "/shows/:show_id/seasons", type: :request do
         expect(response.parsed_body["affected_items"]).to include("Episode:#{first.id}" => "completed", "Episode:#{second.id}" => "none", "Show:#{record.show_id}" => "partial")
       end
     end
+  end
+
+  it_behaves_like "a model with rating actions" do
+    let(:record) { FactoryBot.create(:season, :with_premiere_date) }
   end
 end

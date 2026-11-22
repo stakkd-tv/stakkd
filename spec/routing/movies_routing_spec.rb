@@ -97,5 +97,13 @@ RSpec.describe MoviesController, type: :routing do
     it "routes to #remove_from_collection" do
       expect(delete: "/movies/1/remove_from_collection").to route_to("movies#remove_from_collection", id: "1")
     end
+
+    it "routes to #set_rating" do
+      expect(put: "/movies/1/rating").to route_to("movies#set_rating", id: "1")
+    end
+
+    it "routes to #remove_rating" do
+      expect(delete: "/movies/1/rating").to route_to("movies#remove_rating", id: "1")
+    end
   end
 end

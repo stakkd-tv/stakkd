@@ -4,6 +4,7 @@ RSpec.describe User, type: :model do
   include ActiveSupport::Testing::TimeHelpers
 
   describe "associations" do
+    it { should have_many(:ratings).dependent(:delete_all) }
     it { should have_many(:collection_items).dependent(:destroy) }
     it { should have_many(:collection_formats).dependent(:destroy) }
     it { should belong_to(:banned_by).class_name("User").optional(true) }

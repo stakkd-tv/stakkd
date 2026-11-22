@@ -1,6 +1,7 @@
 class SeasonsController < ApplicationController
   include Actions::Collections
   include Actions::History
+  include Actions::Ratings
   include Actions::Stacks
 
   EPISODES_PER_PAGE = 20

@@ -2,6 +2,7 @@ require "rails_helper"
 require_relative "shared_examples/actions/history"
 require_relative "shared_examples/actions/stacks"
 require_relative "shared_examples/actions/collections"
+require_relative "shared_examples/actions/ratings"
 
 RSpec.describe "Movies", type: :request do
   let(:country) { FactoryBot.create(:country) }
@@ -376,6 +377,10 @@ RSpec.describe "Movies", type: :request do
   end
 
   it_behaves_like "a model with collection actions" do
+    let(:record) { FactoryBot.create(:movie, :with_release_date) }
+  end
+
+  it_behaves_like "a model with rating actions" do
     let(:record) { FactoryBot.create(:movie, :with_release_date) }
   end
 end

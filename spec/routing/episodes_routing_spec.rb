@@ -81,5 +81,13 @@ RSpec.describe EpisodesController, type: :routing do
     it "routes to #remove_from_collection" do
       expect(delete: "/shows/1/seasons/1/episodes/1/remove_from_collection").to route_to("episodes#remove_from_collection", id: "1", show_id: "1", season_id: "1")
     end
+
+    it "routes to #set_rating" do
+      expect(put: "/shows/1/seasons/1/episodes/1/rating").to route_to("episodes#set_rating", id: "1", show_id: "1", season_id: "1")
+    end
+
+    it "routes to #remove_rating" do
+      expect(delete: "/shows/1/seasons/1/episodes/1/rating").to route_to("episodes#remove_rating", id: "1", show_id: "1", season_id: "1")
+    end
   end
 end

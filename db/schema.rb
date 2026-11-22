@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_20_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_22_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -300,6 +300,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_20_120000) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "ratings", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "item_id", null: false
+    t.string "item_type", null: false
+    t.integer "score", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["item_type", "item_id"], name: "index_ratings_on_item"
+    t.index ["user_id", "item_type", "item_id"], name: "index_ratings_on_user_id_and_item_type_and_item_id", unique: true
+    t.check_constraint "item_type::text = ANY (ARRAY['Movie'::character varying::text, 'Show'::character varying::text, 'Season'::character varying::text, 'Episode'::character varying::text])", name: "ratings_supported_types"
+    t.check_constraint "score >= 1 AND score <= 10", name: "ratings_valid_score"
+  end
+
   create_table "releases", force: :cascade do |t|
     t.bigint "certification_id", null: false
     t.datetime "created_at", null: false
@@ -474,6 +487,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_20_120000) do
   add_foreign_key "franchise_items", "franchises"
   add_foreign_key "genre_assignments", "genres"
   add_foreign_key "history_items", "users"
+  add_foreign_key "ratings", "users", on_delete: :cascade
   add_foreign_key "releases", "certifications"
   add_foreign_key "releases", "movies"
   add_foreign_key "seasons", "shows"

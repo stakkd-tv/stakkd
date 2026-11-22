@@ -8,6 +8,7 @@ require_relative "shared_examples/stackable"
 
 RSpec.describe Movie, type: :model do
   describe "associations" do
+    it { should have_many(:ratings).dependent(:delete_all) }
     it { should belong_to(:country) }
     it { should belong_to(:language) }
     it { should have_many(:alternative_names).dependent(:destroy) }

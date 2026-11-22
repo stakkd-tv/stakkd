@@ -1,6 +1,7 @@
 class EpisodesController < ApplicationController
   include Actions::Collections
   include Actions::History
+  include Actions::Ratings
   include Actions::Stacks
 
   before_action :require_authentication, except: [:show, :cast, :load_more_top_stacks]
