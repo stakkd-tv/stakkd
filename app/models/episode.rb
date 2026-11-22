@@ -11,12 +11,13 @@ class Episode < ApplicationRecord
     SEASON_FINALE = "season finale"
   ]
 
-  # Assocations
+  # Associations
   belongs_to :season
   has_many :guest_stars, -> { order(position: :asc) }, as: :record, class_name: "CastMember", dependent: :destroy
   has_many :crew_members, as: :record, dependent: :destroy
   has_many :collection_items, as: :item, dependent: :destroy
   has_many :history_items, as: :item, dependent: :destroy
+  has_many :ratings, as: :item, dependent: :delete_all
   has_one :show, through: :season
   has_galleries :backgrounds, :videos
 

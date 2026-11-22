@@ -189,3 +189,6 @@ CastMember.create!(
 
 puts "=== Creating collections ==="
 Manage::Collection.new(crxssed).add!(aang_the_last_airbender, formats: ["Blu-ray", "Digital — Apple TV"])
+
+puts "=== Creating ratings ==="
+Manage::Ratings.new(crxssed).set!(aang_the_last_airbender.reload, score: 10)

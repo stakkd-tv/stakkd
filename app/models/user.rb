@@ -26,6 +26,7 @@ class User < ApplicationRecord
   has_many :collection_formats, dependent: :destroy
   has_many :history_items, dependent: :delete_all
   has_many :stacks, dependent: :destroy
+  has_many :ratings, dependent: :delete_all
   has_one :watchlist, -> { where(type: "watchlist") }, class_name: "Stack"
   has_one_attached :profile_picture
   has_one_attached :background
