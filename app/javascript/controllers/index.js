@@ -11,6 +11,9 @@ import EditStackButtonController from './actions/edit_stack_button_controller'
 import EditStackDialogController from './actions/edit_stack_dialog_controller'
 import HistoryButtonController from './actions/history_button_controller'
 import HistoryDialogController from './actions/history_dialog_controller'
+import RatingButtonController from './actions/rating_button_controller'
+import RatingController from './actions/rating_controller'
+import RatingDialogController from './actions/rating_dialog_controller'
 import StackButtonController from './actions/stack_button_controller'
 import StackDialogController from './actions/stack_dialog_controller'
 import WatchlistButtonController from './actions/watchlist_button_controller'
@@ -45,6 +48,9 @@ application.register('edit-stack-button', EditStackButtonController)
 application.register('edit-stack-dialog', EditStackDialogController)
 application.register('history-button', HistoryButtonController)
 application.register('history-dialog', HistoryDialogController)
+application.register('rating', RatingController)
+application.register('rating-button', RatingButtonController)
+application.register('rating-dialog', RatingDialogController)
 application.register('stack-button', StackButtonController)
 application.register('stack-dialog', StackDialogController)
 application.register('watchlist-button', WatchlistButtonController)

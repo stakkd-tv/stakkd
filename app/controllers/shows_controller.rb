@@ -26,6 +26,7 @@ class ShowsController < ApplicationController
     @cast_members = CastMembers::Show.new(@show).cast_members
     @watch_status = @show.status_for(current_user)
     @collection_statuses = Manage::Collection.new(current_user).statuses_for([@show, *@show.ordered_seasons])
+    @rating_scores = Manage::Ratings.new(current_user).scores_for([@show, *@show.ordered_seasons])
     @season_watch_statuses = Manage::History.new(current_user).statuses_for(@show.ordered_seasons)
     @stacks_with_previews, @stacks_next_page = @show.stacks_with_previews(current_user:)
     @watchlisted = current_user&.watchlisted?(@show) || false

@@ -44,6 +44,28 @@ RSpec.describe "Movies", type: :request do
   end
 
   describe "GET /movies/:id" do
+    it "renders the saved score beneath the movie's actions for the owner" do
+      user = FactoryBot.create(:user)
+      allow(Current).to receive(:session).and_return(Session.new(user:))
+      allow(Current).to receive(:user).and_return(user)
+      rating = FactoryBot.create(:rating, user:, score: 8)
+      get movie_path(rating.item)
+
+      expect(response).to have_http_status(:ok)
+      assert_select "[data-rating-url-value='#{set_rating_movie_path(rating.item)}']" do
+        assert_select "button[data-rating-target='star']", count: 10
+        assert_select "button[data-score='8'][aria-pressed='true']", count: 1
+        assert_select "button[data-filled='true']", count: 8
+      end
+    end
+
+    it "renders one shared rating dialog and no inline rating picker for a guest" do
+      get movie_path(FactoryBot.create(:movie, :with_release_date))
+
+      assert_select "dialog[data-controller='rating-dialog']", count: 1
+      assert_select "[data-rating-url-value]", count: 0
+    end
+
     it "renders a successful response" do
       movie = FactoryBot.create(:movie)
       get movie_url(movie)

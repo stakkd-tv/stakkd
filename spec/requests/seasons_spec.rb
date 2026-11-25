@@ -25,6 +25,43 @@ RSpec.describe "/shows/:show_id/seasons", type: :request do
   }
 
   describe "GET /shows/:show_id/seasons/:id" do
+    it "renders a disabled rating button beside the image link for an unreleased episode" do
+      episode = FactoryBot.create(:episode, original_air_date: Date.current.tomorrow)
+      user = FactoryBot.create(:user)
+      allow(Current).to receive(:session).and_return(Session.new(user:))
+      allow(Current).to receive(:user).and_return(user)
+
+      get show_season_path(episode.season, show_id: episode.show)
+
+      expect(response).to have_http_status(:ok)
+      assert_select "dialog[data-controller='rating-dialog']", count: 1
+      assert_select "#season_episodes" do
+        assert_select "a:has(img) + button[data-rating-button-url-value][disabled]", count: 1
+        assert_select "button[data-controller='history-button'] + button[data-controller='more-options']", count: 1
+      end
+    end
+
+    it "renders the saved score and context for episodes loaded via Turbo" do
+      stub_const("SeasonsController::EPISODES_PER_PAGE", 1)
+      season = FactoryBot.create(:season)
+      FactoryBot.create(:episode, season:, number: 1)
+      episode = FactoryBot.create(:episode, season:, number: 2, translated_name: "Second episode")
+      user = FactoryBot.create(:user)
+      allow(Current).to receive(:session).and_return(Session.new(user:))
+      allow(Current).to receive(:user).and_return(user)
+      FactoryBot.create(:rating, user:, item: episode, score: 6)
+
+      get show_season_path(season, show_id: season.show, page: 2, format: :turbo_stream)
+
+      expect(response).to have_http_status(:ok)
+      fragment = Nokogiri::HTML.fragment(response.body)
+      button = fragment.at_css("button[data-rating-button-title-value='Second episode']")
+      expect(button["data-rating-button-score-value"]).to eq("6")
+      expect(button["data-rating-button-context-value"]).to include(season.show.translated_title, "Episode 2")
+      expect(button.previous_element.name).to eq("a")
+      expect(button.at_css("[data-rating-button-target='badgeScore']").text).to eq("6")
+    end
+
     it "renders a successful response" do
       season = FactoryBot.create(:season, show:)
       get show_season_url(season, show_id: show)

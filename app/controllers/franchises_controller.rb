@@ -13,6 +13,7 @@ class FranchisesController < ApplicationController
     items = @franchise.franchise_items.map(&:record)
     @watch_statuses = Manage::History.new(current_user).statuses_for(items)
     @collection_statuses = Manage::Collection.new(current_user).statuses_for(items)
+    @rating_scores = Manage::Ratings.new(current_user).scores_for(items)
     @watchlisted_items = current_user&.watchlisted_items_from(items) || []
   end
 

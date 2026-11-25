@@ -31,6 +31,14 @@ module Manage
       end
     end
 
+    def scores_for(items)
+      return {} if !@user || items.empty?
+
+      scores = @user.ratings.where(item: items).pluck(:item_type, :item_id, :score)
+        .to_h { |type, id, score| [[type, id], score] }
+      items.index_with { |item| scores[[item.class.polymorphic_name, item.id]] }
+    end
+
     private
 
     def ratings_for(item)

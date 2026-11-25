@@ -1,22 +1,28 @@
+<% rating = local_assigns[:rating] %>
 <% subtitle = local_assigns.fetch(:subtitle, nil) %>
 <% watchlisted = local_assigns.fetch(:watchlisted, false) %>
 <div class="flex flex-col gap-2 group">
-  <%= link_to polymorphic_record_path(record, nil), class: "relative" do %>
-    <% if watchlisted %>
-      <i class="fa-solid fa-bookmark absolute right-0 top-0 w-8 h-8 rounded-full bg-pop/75 text-center p-2 mr-2 mt-2"></i>
-    <% end %>
-    <div class="h-full aspect-2/3 border border-pop outline outline-transparent group-hover:outline-pop rounded-lg overflow-hidden transition duration-300 ease-in-out">
-      <% if record.respond_to?(:poster) %>
-        <%= image_tag record.poster(variant: :small),
-              class: "w-full",
-              title: record %>
-      <% else %>
-        <div class="flex items-center justify-center w-full h-full" title="<%= record %>">
-          <p class="text-xs md:text-sm font-domine font-bold text-pop text-center"><%= record %></p>
-        </div>
+  <div class="relative">
+    <%= link_to polymorphic_record_path(record, nil), class: "block relative" do %>
+      <% if watchlisted %>
+        <i class="fa-solid fa-bookmark absolute right-0 top-0 w-8 h-8 rounded-full bg-pop/75 text-center p-2 mr-2 mt-2"></i>
       <% end %>
-    </div>
-  <% end %>
+      <div class="h-full aspect-2/3 border border-pop outline outline-transparent group-hover:outline-pop rounded-lg overflow-hidden transition duration-300 ease-in-out">
+        <% if record.respond_to?(:poster) %>
+          <%= image_tag record.poster(variant: :small),
+                class: "w-full",
+                title: record %>
+        <% else %>
+          <div class="flex items-center justify-center w-full h-full" title="<%= record %>">
+            <p class="text-xs md:text-sm font-domine font-bold text-pop text-center"><%= record %></p>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+    <% if authenticated? && rating %>
+      <%= render "shared/actions/buttons/rating", record: record, **rating %>
+    <% end %>
+  </div>
   <% watch_status = local_assigns.fetch(:watch_status, :none) %>
   <%= render "shared/actions/compact_actions", record: record, collection_status: local_assigns.fetch(:collection_status, :none), watch_status: watch_status, watchlisted: watchlisted %>
   <p class="text-center whitespace-nowrap overflow-hidden text-ellipsis"><%= record %></p>

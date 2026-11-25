@@ -1,0 +1,27 @@
+<% selected_outline = local_assigns[:dialog] ? "aria-pressed:outline-watch" : "aria-pressed:outline-pop" %>
+<% score_label = score ? "#{score} - #{Rating::SCORE_WORDS.fetch(score)}" : "Unrated" %>
+<div data-rating-target="picker"
+     data-action="pointerleave->rating#clearHover focusout->rating#clearFocus"
+     class="min-w-0">
+  <p class="mb-1 font-fugaz text-sm text-white" data-rating-target="label" aria-hidden="true"><%= score_label %></p>
+  <span data-rating-target="status" aria-live="polite" class="sr-only">Your rating: <%= score_label %></span>
+  <div role="group" aria-label="Your rating" class="grid grid-cols-10 gap-0.5">
+    <% Rating::SCORES.each do |value| %>
+      <button type="button"
+              data-rating-target="star"
+              data-score="<%= value %>"
+              data-score-label="<%= "#{value} - #{Rating::SCORE_WORDS.fetch(value)}" %>"
+              data-filled="<%= score.present? && value <= score %>"
+              data-action="pointerenter->rating#hover focus->rating#focus click->rating#save"
+              aria-label="<%= (value == score) ? "Remove your #{value}/10 rating" : "Rate #{value} out of 10" %>"
+              aria-pressed="<%= value == score %>"
+              <%= "disabled" if !rateable && value != score %>
+              class="group grid place-items-center cursor-pointer min-h-11 sm:min-h-8 [@media(pointer:coarse)]:min-h-11 text-xs sm:text-base rounded-md bg-background-darker text-white <%= selected_outline %> aria-pressed:outline -outline-offset-1 focus-visible:ring-2 focus-visible:ring-white disabled:cursor-default disabled:opacity-50">
+        <span class="hidden items-center justify-center leading-none group-data-[filled=true]:flex"><i class="fa-solid fa-star" aria-hidden="true"></i></span>
+        <span class="flex items-center justify-center leading-none group-data-[filled=true]:hidden"><i class="fa-regular fa-star" aria-hidden="true"></i></span>
+      </button>
+    <% end %>
+  </div>
+  <p data-rating-target="removeHint" <%= "hidden" unless score %> class="mt-2 text-xs text-white/75">Select your saved star again to remove your rating.</p>
+  <p data-rating-target="error" role="alert" class="hidden mt-1 text-sm text-pop"></p>
+</div>

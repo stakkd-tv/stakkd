@@ -63,6 +63,7 @@
           <% @franchise.ordered_franchise_items.includes(record: {posters_attachments: {blob: :variant_records}}).each do |item| %>
             <%= render "shared/poster_with_actions",
                   record: item.record,
+                  rating: {score: @rating_scores[item.record], context: item.record.model_name.human},
                   watch_status: @watch_statuses[item.record],
                   collection_status: @collection_statuses[item.record],
                   watchlisted: @watchlisted_items.include?(item.record),

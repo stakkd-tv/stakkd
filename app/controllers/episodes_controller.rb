@@ -14,6 +14,7 @@ class EpisodesController < ApplicationController
     @pagination = Pagination::Episodes.new(@episode, @season, @show)
     @watch_status = @episode.status_for(current_user)
     @collection_status = Manage::Collection.new(current_user).status_for(@episode)
+    @rating_scores = Manage::Ratings.new(current_user).scores_for([@episode])
     @stacks_with_previews, @stacks_next_page = @episode.stacks_with_previews(current_user:)
     @watchlisted = current_user&.watchlisted?(@episode) || false
   end

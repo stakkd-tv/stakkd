@@ -27,6 +27,7 @@ class MoviesController < ApplicationController
     @cast_members = CastMembers::Movie.new(@movie).cast_members
     @watch_status = @movie.status_for(current_user)
     @collection_status = Manage::Collection.new(current_user).status_for(@movie)
+    @rating_scores = Manage::Ratings.new(current_user).scores_for([@movie])
     @stacks_with_previews, @stacks_next_page = @movie.stacks_with_previews(current_user:)
     @watchlisted = current_user&.watchlisted?(@movie) || false
   end

@@ -1,5 +1,6 @@
 require "rails_helper"
 require_relative "../shared_examples/collection_actions"
+require_relative "../shared_examples/rating_controls"
 
 RSpec.describe "shows/show", type: :view do
   let(:country) { FactoryBot.create(:country) }
@@ -17,6 +18,7 @@ RSpec.describe "shows/show", type: :view do
 
   before(:each) do
     assign(:collection_statuses, {})
+    assign(:rating_scores, {})
     assign(:collection_status, :none)
     def view.authenticated? = false
     def view.current_user = nil
@@ -365,5 +367,13 @@ RSpec.describe "shows/show", type: :view do
 
   it_behaves_like "collection action buttons" do
     let(:collection_record) { @show.ordered_seasons.first }
+  end
+
+  it_behaves_like "an inline rating picker" do
+    let(:rating_record) { @show }
+  end
+
+  it_behaves_like "an image rating button" do
+    let(:rating_record) { @show.ordered_seasons.first }
   end
 end
