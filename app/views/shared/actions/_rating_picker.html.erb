@@ -13,7 +13,7 @@
               data-score-label="<%= "#{value} - #{Rating::SCORE_WORDS.fetch(value)}" %>"
               data-filled="<%= score.present? && value <= score %>"
               data-action="pointerenter->rating#hover focus->rating#focus click->rating#save"
-              aria-label="<%= value == score ? "Remove your #{value}/10 rating" : "Rate #{value} out of 10" %>"
+              aria-label="<%= (value == score) ? "Remove your #{value}/10 rating" : "Rate #{value} out of 10" %>"
               aria-pressed="<%= value == score %>"
               <%= "disabled" if !rateable && value != score %>
               class="group grid place-items-center cursor-pointer min-h-11 sm:min-h-8 [@media(pointer:coarse)]:min-h-11 text-xs sm:text-base rounded-md bg-background-darker text-white <%= selected_outline %> aria-pressed:outline -outline-offset-1 focus-visible:ring-2 focus-visible:ring-white disabled:cursor-default disabled:opacity-50">
