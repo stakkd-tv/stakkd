@@ -93,7 +93,7 @@
         <p class="block sm:hidden text-xl font-domine">Overview:</p>
         <%= simple_format @show.overview %>
       </div>
-      <%= render "shared/actions/actions", record: @show, collection_status: @collection_statuses[@show], watch_status: @watch_status, watchlisted: @watchlisted %>
+      <%= render "shared/actions/actions", record: @show, rating_score: @rating_scores[@show], collection_status: @collection_statuses[@show], watch_status: @watch_status, watchlisted: @watchlisted %>
 
       <%= render "shared/cast_members", cast_members: @cast_members, full_cast_path: cast_show_path(@show) %>
 
@@ -112,14 +112,17 @@
           <% @show.ordered_seasons.with_attached_posters.includes(:episodes).each do |season| %>
             <% watchlisted = @watchlisted_seasons.include?(season) %>
             <div class="flex flex-col gap-2 group">
-              <%= link_to show_season_path(season, show_id: @show), class: "relative" do %>
-                <% if watchlisted %>
-                  <i class="fa-solid fa-bookmark absolute right-0 top-0 w-8 h-8 rounded-full bg-pop/75 text-center p-2 mr-2 mt-2"></i>
+              <div class="relative">
+                <%= link_to show_season_path(season, show_id: @show), class: "block relative" do %>
+                  <% if watchlisted %>
+                    <i class="fa-solid fa-bookmark absolute right-0 top-0 w-8 h-8 rounded-full bg-pop/75 text-center p-2 mr-2 mt-2"></i>
+                  <% end %>
+                  <div class="h-full aspect-2/3 border border-pop rounded-lg overflow-hidden outline outline-transparent group-hover:outline-pop transition duration-300 ease-in-out">
+                    <%= image_tag season.poster(variant: :small), class: "w-full" %>
+                  </div>
                 <% end %>
-                <div class="h-full aspect-2/3 border border-pop rounded-lg overflow-hidden outline outline-transparent group-hover:outline-pop transition duration-300 ease-in-out">
-                  <%= image_tag season.poster(variant: :small), class: "w-full" %>
-                </div>
-              <% end %>
+                <%= render "shared/actions/buttons/rating", record: season, score: @rating_scores[season], context: @show.translated_title if authenticated? %>
+              </div>
               <% watch_status = @season_watch_statuses[season] || :none %>
               <%= render "shared/actions/compact_actions", record: season, collection_status: @collection_statuses[season], watch_status: watch_status, watchlisted: watchlisted %>
               <p class="text-center whitespace-nowrap overflow-hidden text-ellipsis"><%= season.translated_name %></p>

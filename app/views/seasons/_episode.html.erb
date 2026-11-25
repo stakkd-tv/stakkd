@@ -1,11 +1,17 @@
 <% watchlisted = @watchlisted_episodes.include?(episode) %>
 <div class="grid grid-cols-1 md:grid-cols-3">
-  <div class="col-span-1">
-    <%= link_to show_season_episode_path(episode, season_id: @season, show_id: @show), class: "w-full relative" do %>
+  <div class="col-span-1 relative">
+    <%= link_to show_season_episode_path(episode, season_id: @season, show_id: @show), class: "block w-full relative" do %>
       <% if watchlisted %>
-        <i class="fa-solid fa-bookmark absolute z-1 left-0 top-0 w-8 h-8 rounded-full bg-pop/75 text-center p-2 ml-2 mt-2"></i>
+        <i class="fa-solid fa-bookmark absolute z-1 right-0 top-0 w-8 h-8 rounded-full bg-pop/75 text-center p-2 mr-2 mt-2"></i>
       <% end %>
       <%= image_tag episode.background(variant: :small), class: "w-full rounded-lg md:rounded-r-none border border-pop aspect-[16/9]" %>
+    <% end %>
+    <% if authenticated? %>
+      <%= render "shared/actions/buttons/rating",
+            record: episode,
+            score: @rating_scores[episode],
+            context: "#{@show.translated_title} · #{@season.translated_name}, Episode #{episode.number}" %>
     <% end %>
   </div>
   <div class="col-span-1 md:col-span-2">

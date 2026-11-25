@@ -13,6 +13,7 @@ class SeasonsController < ApplicationController
   def show
     @episodes = @season.ordered_episodes.with_attached_backgrounds.paginate(page: params[:page], per_page: EPISODES_PER_PAGE)
     @collection_statuses = Manage::Collection.new(current_user).statuses_for([@season, *@episodes])
+    @rating_scores = Manage::Ratings.new(current_user).scores_for([@season, *@episodes])
     @episode_watch_statuses = Manage::History.new(current_user).statuses_for(@episodes)
     @watchlisted_episodes = current_user&.watchlisted_items_from(@episodes.to_a) || []
     return if request.format.turbo_stream?

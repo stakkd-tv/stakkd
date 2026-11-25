@@ -1,0 +1,21 @@
+<% title = record.respond_to?(:translated_name) ? record.translated_name : record.to_s %>
+<button type="button"
+        class="group/rating absolute z-1 top-2 left-2 inline-flex h-8 min-w-8 items-center justify-center gap-1 rounded-full border border-pop bg-background-darker/65 px-1.5 text-xs leading-none text-white shadow-md backdrop-blur-sm transition-colors duration-300 ease-in-out cursor-pointer enabled:hover:bg-pop enabled:hover:text-background-darker enabled:focus-visible:bg-pop enabled:focus-visible:text-background-darker focus-visible:ring-2 focus-visible:ring-white disabled:border-white disabled:cursor-default"
+        <%= "disabled" unless record.released? %>
+        aria-haspopup="dialog"
+        aria-label="<%= score ? "Edit your #{score}/10 rating for #{title}" : "Rate #{title}" %>"
+        title="<%= score ? "Your rating: #{score}/10" : "Rate" %>"
+        data-rated="<%= score.present? %>"
+        data-controller="rating-button"
+        data-action="click->rating-button#open rating:changed@window->rating-button#sync"
+        data-rating-button-title-value="<%= title %>"
+        data-rating-button-context-value="<%= context %>"
+        data-rating-button-url-value="<%= polymorphic_record_path(record, "set_rating") %>"
+        data-rating-button-score-value="<%= score || 0 %>"
+        data-rating-button-rateable-value="<%= record.released? %>">
+  <span class="hidden size-3 shrink-0 place-items-center group-data-[rated=true]/rating:grid"><i class="fa-solid fa-star" aria-hidden="true"></i></span>
+  <span class="absolute inset-0 grid place-items-center group-data-[rated=true]/rating:hidden" aria-hidden="true">
+    <span class="grid size-4 -translate-y-px place-items-center leading-none [&>svg]:block"><i class="fa-regular fa-star"></i></span>
+  </span>
+  <span class="hidden translate-y-px supports-[-moz-appearance:none]:translate-y-0 items-center whitespace-nowrap tabular-nums group-data-[rated=true]/rating:flex" aria-hidden="true"><b data-rating-button-target="badgeScore"><%= score %></b><span class="opacity-75">/10</span></span>
+</button>

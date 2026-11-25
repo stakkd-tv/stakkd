@@ -1,5 +1,6 @@
 require "rails_helper"
 require_relative "../shared_examples/collection_actions"
+require_relative "../shared_examples/rating_controls"
 
 RSpec.describe "episodes/show", type: :view do
   let(:posters) { [] }
@@ -13,6 +14,7 @@ RSpec.describe "episodes/show", type: :view do
 
   before(:each) do
     assign(:collection_statuses, {})
+    assign(:rating_scores, {})
     assign(:collection_status, :none)
     def view.authenticated? = false
     def view.current_user = nil
@@ -287,5 +289,9 @@ RSpec.describe "episodes/show", type: :view do
 
   it_behaves_like "collection action buttons" do
     let(:collection_record) { @episode }
+  end
+
+  it_behaves_like "an inline rating picker" do
+    let(:rating_record) { @episode }
   end
 end

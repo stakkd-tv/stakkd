@@ -1,6 +1,18 @@
 class Rating < ApplicationRecord
   ITEM_TYPES = %w[Movie Show Season Episode].freeze
   SCORES = 1..10
+  SCORE_WORDS = {
+    1 => "Abysmal",
+    2 => "Terrible",
+    3 => "Bad",
+    4 => "Poor",
+    5 => "Meh",
+    6 => "Average",
+    7 => "Good",
+    8 => "Great",
+    9 => "Amazing",
+    10 => "Phenomenal!"
+  }.freeze
 
   belongs_to :user
   belongs_to :item, polymorphic: true

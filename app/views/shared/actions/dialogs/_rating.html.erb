@@ -1,0 +1,22 @@
+<dialog aria-labelledby="rating-dialog-title"
+        data-controller="rating-dialog"
+        data-action="rating-button:open@window->rating-dialog#open turbo:before-cache@document->rating-dialog#close"
+        class="w-full max-w-full md:max-w-2xl mt-auto md:m-auto open:flex open:flex-col open:p-0 open:bg-transparent backdrop:backdrop-blur-sm">
+  <div class="bg-background border-t-2 md:border-2 border-watch text-white md:rounded-lg flex flex-col overflow-hidden w-full">
+    <header class="border-b-2 border-background-darker p-4 shrink-0">
+      <h2 id="rating-dialog-title" data-rating-dialog-target="title" class="font-domine text-xl"></h2>
+      <p data-rating-dialog-target="context" class="text-sm text-white/75"></p>
+    </header>
+    <div class="p-4"
+         data-controller="rating"
+         data-rating-dialog-target="picker"
+         data-action="rating-dialog:configure->rating#configure rating:changed@window->rating#sync">
+      <%= render "shared/actions/rating_picker", score: nil, rateable: true, dialog: true %>
+    </div>
+    <footer class="p-4 border-t-2 border-background-darker flex justify-end shrink-0">
+      <button type="button" autofocus
+              class="bg-watch rounded-lg py-2 px-4 cursor-pointer font-bold text-sm"
+              data-action="rating-dialog#close">Close</button>
+    </footer>
+  </div>
+</dialog>

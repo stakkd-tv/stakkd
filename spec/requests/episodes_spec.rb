@@ -29,6 +29,17 @@ RSpec.describe "/shows/:show_id/seasons/:season_id/episodes", type: :request do
   }
 
   describe "GET /shows/:show_id/seasons/:season_id/episodes/:id" do
+    it "omits the inline rating picker for an unreleased episode" do
+      user = FactoryBot.create(:user)
+      allow(Current).to receive(:session).and_return(Session.new(user:))
+      allow(Current).to receive(:user).and_return(user)
+      unreleased = FactoryBot.create(:episode, season:, original_air_date: Date.current.tomorrow)
+
+      get show_season_episode_path(unreleased, season_id: season, show_id: season.show)
+
+      assert_select "[data-rating-url-value]", count: 0
+    end
+
     it "renders a successful response" do
       episode = FactoryBot.create(:episode, season:)
       get show_season_episode_url(episode, season_id: season, show_id: season.show)

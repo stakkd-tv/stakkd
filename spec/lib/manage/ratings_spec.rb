@@ -95,4 +95,30 @@ RSpec.describe Manage::Ratings do
       expect { manager.remove!(user) }.to raise_error(error_class, /persisted movie/)
     end
   end
+
+  describe "#scores_for" do
+    it "returns only the owner's scores for a mixed list in one query" do
+      movie = FactoryBot.create(:movie, :with_release_date)
+      unrated = FactoryBot.create(:episode)
+      FactoryBot.create(:rating, user:, item:, score: 7)
+      FactoryBot.create(:rating, user:, item: movie, score: 9)
+      FactoryBot.create(:rating, item: unrated, score: 10)
+
+      queries = []
+      track_ratings_query = ->(_name, _start, _finish, _id, payload) {
+        queries << payload[:sql] if payload[:sql].include?('FROM "ratings"')
+      }
+      scores = ActiveSupport::Notifications.subscribed(track_ratings_query, "sql.active_record") do
+        manager.scores_for([item, movie, unrated])
+      end
+
+      expect(scores).to eq(item => 7, movie => 9, unrated => nil)
+      expect(queries.size).to eq(1)
+    end
+
+    it "returns no scores for a guest or an empty list" do
+      expect(described_class.new(nil).scores_for([item])).to eq({})
+      expect(manager.scores_for([])).to eq({})
+    end
+  end
 end
