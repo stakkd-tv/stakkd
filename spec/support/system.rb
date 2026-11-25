@@ -3,12 +3,15 @@ Capybara.default_max_wait_time = 5
 Capybara.register_driver :selenium_chrome_headless do |app|
   args = ["--headless=new", "--window-size=1920,1080"]
   options = Selenium::WebDriver::Chrome::Options.new(args:)
+  # Chrome 158 rejects the wildcard origin used by Capybara 3.40 during session cleanup.
+  options.browser_version = "157"
   Capybara::Selenium::Driver.new(app, browser: :chrome, options:)
 end
 
 Capybara.register_driver :selenium_chrome_headless_mobile do |app|
   args = ["--headless=new", "--window-size=500,1000"]
   options = Selenium::WebDriver::Chrome::Options.new(args:)
+  options.browser_version = "157"
   Capybara::Selenium::Driver.new(app, browser: :chrome, options:)
 end
 
