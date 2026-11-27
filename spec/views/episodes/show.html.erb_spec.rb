@@ -180,14 +180,19 @@ RSpec.describe "episodes/show", type: :view do
 
     it "renders the previous episode link" do
       render
-      assert_select "a[href='#{show_season_episode_path(1, season_id: @season, show_id: @show)}']", text: "Previous"
+      assert_select "a[href='#{show_season_episode_path(1, season_id: @season, show_id: @show)}'][aria-label='Previous']" do
+        assert_select "i.fa-arrow-left[aria-hidden='true']"
+      end
     end
   end
 
   context "when there is no previous episode" do
-    it "does not render perevious season link" do
+    it "does not render the previous episode link" do
       render
-      assert_select "a", text: "Previous", count: 0
+      assert_select "a[aria-label='Previous']", count: 0
+      assert_select "p[aria-label='Previous'][aria-disabled='true']", count: 1 do
+        assert_select "i.fa-arrow-left[aria-hidden='true']"
+      end
     end
   end
 
@@ -198,14 +203,19 @@ RSpec.describe "episodes/show", type: :view do
 
     it "renders the next episode link" do
       render
-      assert_select "a[href='#{show_season_episode_path(3, season_id: @season, show_id: @show)}']", text: "Next"
+      assert_select "a[href='#{show_season_episode_path(3, season_id: @season, show_id: @show)}'][aria-label='Next']" do
+        assert_select "i.fa-arrow-right[aria-hidden='true']"
+      end
     end
   end
 
   context "when there is no next episode" do
     it "does not render next episode link" do
       render
-      assert_select "a", text: "Next", count: 0
+      assert_select "a[aria-label='Next']", count: 0
+      assert_select "p[aria-label='Next'][aria-disabled='true']", count: 1 do
+        assert_select "i.fa-arrow-right[aria-hidden='true']"
+      end
     end
   end
 

@@ -203,14 +203,19 @@ RSpec.describe "seasons/show", type: :view do
 
     it "renders the previous season link" do
       render
-      assert_select "a[href='#{show_season_path(0, show_id: @show)}']", text: "Previous", count: 2
+      assert_select "a[href='#{show_season_path(0, show_id: @show)}'][aria-label='Previous']", count: 2 do
+        assert_select "i.fa-arrow-left[aria-hidden='true']"
+      end
     end
   end
 
   context "when there is no previous season" do
-    it "does not render perevious season link" do
+    it "does not render the previous season link" do
       render
-      assert_select "a", text: "Previous", count: 0
+      assert_select "a[aria-label='Previous']", count: 0
+      assert_select "p[aria-label='Previous'][aria-disabled='true']", count: 2 do
+        assert_select "i.fa-arrow-left[aria-hidden='true']"
+      end
     end
   end
 
@@ -221,14 +226,19 @@ RSpec.describe "seasons/show", type: :view do
 
     it "renders the next season link" do
       render
-      assert_select "a[href='#{show_season_path(2, show_id: @show)}']", text: "Next", count: 2
+      assert_select "a[href='#{show_season_path(2, show_id: @show)}'][aria-label='Next']", count: 2 do
+        assert_select "i.fa-arrow-right[aria-hidden='true']"
+      end
     end
   end
 
   context "when there is no next season" do
     it "does not render next season link" do
       render
-      assert_select "a", text: "Next", count: 0
+      assert_select "a[aria-label='Next']", count: 0
+      assert_select "p[aria-label='Next'][aria-disabled='true']", count: 2 do
+        assert_select "i.fa-arrow-right[aria-hidden='true']"
+      end
     end
   end
 
