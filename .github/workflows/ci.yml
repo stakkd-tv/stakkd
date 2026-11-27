@@ -57,6 +57,8 @@ jobs:
           POSTGRES_USER: rails
           POSTGRES_PASSWORD: password
     env:
+      SE_SKIP_DRIVER_IN_PATH: "true"
+      SE_CHROMEDRIVER_VERSION: "157.0.8103.78"
       RAILS_ENV: test
       TEST_PGHOST: 127.0.0.1
       TEST_PGPORT: 5432
