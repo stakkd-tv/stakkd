@@ -1,0 +1,53 @@
+<div class="relative sm:sticky sm:top-22.5 mt-4 bg-black/25 backdrop-blur-sm rounded-lg p-2 sm:p-4 mb-8 z-10">
+  <%= form_with url: user_ratings_path(@user), method: :get,
+        class: "flex flex-col gap-2",
+        data: {ratings_controls_target: "form", action: "change->ratings-controls#submit", turbo_frame: "ratings_content", turbo_action: "advance"} do |form| %>
+    <div class="flex flex-wrap gap-2 items-center justify-between">
+      <fieldset class="grid grid-cols-2 xs:grid-cols-4 w-full sm:w-auto min-w-0 gap-1 p-1 bg-background rounded-lg">
+        <legend class="sr-only">Media types</legend>
+        <% Rating::ITEM_TYPES.each do |type| %>
+          <label data-active="<%= @ratings_query.hidden_media_types.exclude?(type) %>" class="groupedButtons-item min-h-11 items-center justify-center px-2 sm:px-3 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-pop">
+            <i class="fa-solid <%= {"Movie" => "fa-video", "Show" => "fa-tv", "Season" => "fa-layer-group", "Episode" => "fa-play"}.fetch(type) %>" aria-hidden="true"></i>
+            <span><%= type.pluralize %></span>
+            <%= form.check_box :hidden_media_types, {multiple: true, checked: @ratings_query.hidden_media_types.include?(type), autocomplete: "off", class: "sr-only"}, type, nil %>
+          </label>
+        <% end %>
+      </fieldset>
+
+      <%= form.hidden_field :hide_dates, value: @ratings_query.to_params[:hide_dates], data: {ratings_controls_target: "hideDatesInput"} %>
+      <div class="flex w-full sm:w-auto shrink-0 whitespace-nowrap gap-1 p-1 bg-background rounded-lg" data-ratings-controls-target="dates" <%= "hidden" unless @ratings_query.chronological? %>>
+        <button type="button" class="groupedButtons-item min-h-11 min-w-9 items-center justify-center px-2 sm:px-3" aria-pressed="<%= @ratings_query.show_dates? %>" data-active="<%= @ratings_query.show_dates? %>" data-ratings-controls-target="showDates" data-action="ratings-controls#showDates">
+          <i class="fa-solid fa-calendar" aria-hidden="true"></i>
+          <span>Show dates</span>
+        </button>
+        <button type="button" class="groupedButtons-item min-h-11 min-w-9 items-center justify-center px-2 sm:px-3" aria-pressed="<%= !@ratings_query.show_dates? %>" data-active="<%= !@ratings_query.show_dates? %>" data-ratings-controls-target="hideDates" data-action="ratings-controls#hideDates">
+          <i class="fa-solid fa-calendar-xmark" aria-hidden="true"></i>
+          <span>Hide dates</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="flex flex-col sm:flex-row gap-2 sm:items-center">
+      <div class="w-48 max-w-full shrink-0">
+        <%= form.select :sort, Ratings::Query::SORTS.map { |value, config| [config.fetch(:label), value] },
+              {selected: @ratings_query.sort}, class: "ratings-sort w-full", autocomplete: "off", aria: {label: "Sort by"},
+              data: {controller: "slim-select", slim_select_searchable_value: false, ratings_controls_target: "sort"} %>
+      </div>
+      <fieldset class="w-full min-w-0 sm:flex-1">
+        <legend class="sr-only">Score</legend>
+        <div class="relative overflow-x-auto no-scrollbar rounded-lg" data-ratings-controls-target="scores">
+          <div class="flex min-w-max gap-1 p-1 bg-background rounded-lg">
+            <% [["All", ""]].concat(Rating::SCORES.to_a.reverse.map { |score| [score, score.to_s] }).each do |label, value| %>
+              <label class="groupedButtons-item basis-auto w-10 shrink-0 min-h-11 justify-center px-2 has-[:checked]:bg-pop has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-pop">
+                <%= label %>
+                <%= form.radio_button :score, value, checked: @ratings_query.score.to_s == value,
+                      autocomplete: "off", class: "sr-only", aria: {label: value.empty? ? "All scores" : "Score #{value}"} %>
+              </label>
+            <% end %>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <noscript><%= form.submit "Apply filters", class: "link" %></noscript>
+  <% end %>
+</div>

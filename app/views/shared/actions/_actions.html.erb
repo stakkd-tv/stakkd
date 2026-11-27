@@ -48,7 +48,7 @@
            data-action="rating:changed@window->rating#sync"
            data-rating-url-value="<%= polymorphic_record_path(record, "set_rating") %>"
            data-rating-score-value="<%= rating_score || 0 %>"
-           data-rating-rateable-value="<%= record.released? %>">
+           data-rating-rateable-value="<%= !!record.released? %>">
         <%= render "shared/actions/rating_picker", score: rating_score, rateable: record.released? %>
       </div>
     <% end %>

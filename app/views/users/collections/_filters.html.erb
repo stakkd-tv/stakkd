@@ -1,4 +1,4 @@
-<div class="mt-4 bg-black/25 backdrop-blur-sm rounded-lg p-2 sm:p-4 mb-8 sticky top-18.75 sm:top-22.5 z-1">
+<div class="mt-4 bg-black/25 backdrop-blur-sm rounded-lg p-2 sm:p-4 mb-8 relative sm:sticky sm:top-22.5 z-1">
   <%= form_with url: user_collection_path(@user), method: :get,
         class: "flex flex-col gap-2 sm:flex-row sm:items-center justify-between",
         data: {controller: "collection-controls", action: "change->collection-controls#submit", turbo_frame: "collection_content", turbo_action: "advance"} do |form| %>

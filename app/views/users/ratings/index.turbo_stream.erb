@@ -1,0 +1,10 @@
+<%= turbo_stream.append "rating_items" do %>
+  <%= render "items", ratings: @ratings %>
+<% end %>
+<% if @next_cursor %>
+  <%= turbo_stream.replace "load_more_ratings" do %>
+    <%= render "load_more" %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.remove "load_more_ratings" %>
+<% end %>

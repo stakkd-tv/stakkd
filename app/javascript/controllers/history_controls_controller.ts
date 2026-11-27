@@ -1,4 +1,9 @@
 import { Controller } from '@hotwired/stimulus'
+import {
+  applyDateVisibility,
+  datesVisibleFromUrl,
+  updateDateVisibilityUrl
+} from '../helpers/dateVisibility'
 
 // Connects to data-controller="history-controls"
 export default class extends Controller<HTMLFormElement> {
@@ -9,17 +14,17 @@ export default class extends Controller<HTMLFormElement> {
   declare readonly hideDatesInputTarget: HTMLInputElement
 
   connect() {
-    window.addEventListener('popstate', this.handlePopstate.bind(this))
+    window.addEventListener('popstate', this.handlePopstate)
   }
 
   disconnect() {
-    window.removeEventListener('popstate', this.handlePopstate.bind(this))
+    window.removeEventListener('popstate', this.handlePopstate)
   }
 
   // Always get the freshest grid as turbo interacts with this. The grid
   // may be destroyed/recreated as the user loads more items.
-  grid(): HTMLElement {
-    return document.querySelector('turbo-frame#history_items')!
+  grid(): HTMLElement | null {
+    return document.querySelector('turbo-frame#history_items')
   }
 
   toggleMediaType(event: { currentTarget: HTMLElement }) {
@@ -35,35 +40,24 @@ export default class extends Controller<HTMLFormElement> {
 
   showDates() {
     this.applyState(true)
-    this.updateUrl(true)
-    this.hideDatesInputTarget.value = ''
+    updateDateVisibilityUrl(true)
   }
 
   hideDates() {
     this.applyState(false)
-    this.updateUrl(false)
-    this.hideDatesInputTarget.value = 'true'
+    updateDateVisibilityUrl(false)
   }
 
   applyState(showDates: boolean) {
-    this.grid().dataset.showDates = String(showDates)
-    this.showDatesTarget.dataset.active = String(showDates)
-    this.hideDatesTarget.dataset.active = String(!showDates)
+    applyDateVisibility(showDates, {
+      input: this.hideDatesInputTarget,
+      showButton: this.showDatesTarget,
+      hideButton: this.hideDatesTarget,
+      items: this.grid()
+    })
   }
 
-  updateUrl(showDates: boolean) {
-    const url = new URL(window.location.href)
-    if (showDates) {
-      url.searchParams.delete('hide_dates')
-    } else {
-      url.searchParams.set('hide_dates', 'true')
-    }
-    window.history.pushState({}, '', url)
-  }
-
-  handlePopstate() {
-    const params = new URLSearchParams(window.location.search)
-    const hideDates = params.get('hide_dates') === 'true'
-    this.applyState(!hideDates)
+  private handlePopstate = () => {
+    this.applyState(datesVisibleFromUrl())
   }
 }

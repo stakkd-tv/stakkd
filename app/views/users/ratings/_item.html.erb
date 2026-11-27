@@ -1,0 +1,19 @@
+<% record = entry.item %>
+<% path = polymorphic_record_path(record, nil) %>
+<article id="<%= dom_id(entry.rating) %>" data-rating-item="<%= dom_id(record) %>" class="min-w-0 flex flex-col gap-2">
+  <div class="relative">
+    <%= link_to path, data: {turbo_frame: "_top"}, aria: {label: "Open #{entry.title} · #{entry.subtitle}"} do %>
+      <%= image_tag entry.poster, alt: entry.title, loading: "lazy", class: "w-full aspect-2/3 object-cover rounded-lg border border-transparent hover:border-pop transition duration-300 ease-in-out" %>
+    <% end %>
+    <% if current_user == @user %>
+      <%# Rating events update the badge and dialog only; cards and month headings stay in place until the next listing request. %>
+      <%= render "shared/actions/buttons/rating", record:, score: entry.rating.score, context: "#{entry.title} · #{entry.subtitle}" %>
+    <% else %>
+      <span class="absolute top-2 left-2 rounded-full bg-background-darker/90 border border-pop px-2 py-1 text-xs" aria-label="<%= @user %>'s rating: <%= entry.rating.score %> out of 10">
+        <i class="fa-solid fa-star text-pop mr-1" aria-hidden="true"></i><%= entry.rating.score %>/10
+      </span>
+    <% end %>
+  </div>
+  <%= link_to entry.title, path, class: "font-domine text-sm hover:underline", data: {turbo_frame: "_top"} %>
+  <p class="text-xs text-white/75"><%= entry.subtitle %></p>
+</article>

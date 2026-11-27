@@ -23,6 +23,7 @@ Rails.application.routes.draw do
     end
     resources :history, only: [:index], controller: "users/history"
     resources :history_items, only: [:destroy], controller: "users/history_items"
+    resources :ratings, only: [:index], controller: "users/ratings"
 
     get "collection", to: "users/collections#index", as: :collection
     get "collection/shows/:show_id", to: "users/collections#show", as: :collection_show
