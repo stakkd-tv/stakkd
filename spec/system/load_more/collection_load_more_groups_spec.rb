@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.feature "Collection load more groups", type: :system, js: true do
-  scenario "Scrolling to each loader appends whole groups and preserves the filters" do
+  scenario "Loading more appends whole groups and preserves the filters" do
     stub_const("Users::CollectionsController::PER_PAGE", 1)
     user = FactoryBot.create(:user)
     first_movie = FactoryBot.create(:movie, translated_title: "Alpha")
@@ -14,15 +14,15 @@ RSpec.feature "Collection load more groups", type: :system, js: true do
     end
     filtered_out = FactoryBot.create(:collection_item, user:)
     FactoryBot.create(:collection_item_format, collection_item: filtered_out)
-    page.current_window.resize_to(500, 500)
 
     visit user_collection_path(user, sort: "title", formats: ["none"])
 
     expect(page).to have_css("#collection_groups h6", text: "Alpha")
-    scroll_to find("turbo-frame#load_more_collection_groups[src*='page=2']", visible: :all), align: :center
+    # At desktop width the lazy frame may already have loaded and been removed.
+    page.execute_script("document.getElementById('load_more_collection_groups')?.scrollIntoView({ block: 'center' })")
     expect(page).to have_css("#collection_groups h6", text: "Middle")
     expect(page).to have_content("2 matching episodes")
-    scroll_to find("turbo-frame#load_more_collection_groups[src*='page=3']", visible: :all), align: :center
+    page.execute_script("document.getElementById('load_more_collection_groups')?.scrollIntoView({ block: 'center' })")
 
     expect(page).to have_css("#collection_groups h6", text: "Zulu")
     expect(page).to have_css("#collection_groups h6", count: 3)

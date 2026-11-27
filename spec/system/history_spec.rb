@@ -77,7 +77,8 @@ RSpec.feature "History", type: :system, js: true do
 
     # Loading more does not duplicate any dates
     stub_const("Users::HistoryController::PER_PAGE", 2)
-    page.current_window.resize_to(500, 500)
+    # Keep lazy loaders below the viewport without switching to the mobile layout.
+    page.current_window.resize_to(1920, 500)
     visit user_history_index_path(user)
     expect(page).to have_content "bob's history"
     expect_history_items "Meh show", "Bad show"

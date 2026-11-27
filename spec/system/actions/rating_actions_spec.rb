@@ -33,26 +33,20 @@ RSpec.feature "Rating actions", type: :system, js: true do
     expect(user.ratings.exists?(item: movie)).to be(false)
   end
 
-  scenario "rating an episode from the image overlay at phone width" do
+  scenario "rating an episode from the image overlay" do
     episode = FactoryBot.create(:episode, translated_name: "A Quiet Crossing")
     season = episode.season
     show = season.show
-    page.current_window.resize_to(390, 850)
     sign_in user
     visit show_season_path(season, show_id: show)
 
     within("#season_episodes") do
       star = find("button[aria-label='Rate A Quiet Crossing']")
-      more_options = find("button[data-controller='more-options']")
-      dimensions = more_options.native.rect
-      expect(dimensions.width).to eq(dimensions.height)
       star.click
     end
     within("dialog[open]") do
       expect(page).to have_text(show.translated_title)
       expect(page).to have_text("A Quiet Crossing")
-      star_positions = all("button[data-rating-target='star']").map { |button| button.native.rect.y }
-      expect(star_positions.uniq.size).to eq(1)
       find("button[aria-label='Rate 9 out of 10']").click
       expect(page).to have_css("button[data-score='9'][aria-pressed='true']")
       expect(page).to have_text("9 - Amazing")

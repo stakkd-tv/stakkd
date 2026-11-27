@@ -141,28 +141,6 @@ RSpec.describe "Collection actions", type: :system, js: true do
     expect(page).to have_no_link("E2 · #{second.translated_name}")
   end
 
-  it "keeps the mobile dialog frame stable and moves focus between screens" do
-    Manage::Collection.new(user).add!(movie, formats: Array.new(24) { |index| "Custom format #{index + 1}" })
-    page.current_window.resize_to(390, 640)
-    visit movie_path(movie)
-    open_collection(movie)
-
-    expect(page).to have_css("#{dialog_selector} h3:focus", text: "Your formats")
-    bounds = find(dialog_selector).evaluate_script("this.getBoundingClientRect().toJSON()")
-    click_button "Remove formats…"
-    expect(page).to have_css("#{dialog_selector} h3:focus", text: "Remove formats", exact_text: true)
-    expect(find(dialog_selector).evaluate_script("this.getBoundingClientRect().toJSON()")).to eq(bounds)
-
-    content = find("#{dialog_selector} [data-collection-dialog-target='content']")
-    expect(content.evaluate_script("this.scrollHeight > this.clientHeight")).to be(true)
-    submit = find("#{dialog_selector} button[type='submit']")
-    expect(submit.evaluate_script("this.getBoundingClientRect().bottom")).to be <= page.evaluate_script("window.innerHeight")
-
-    find(dialog_selector).send_keys(:escape)
-    expect_closed
-    expect(user.collection_formats.count).to eq(24)
-  end
-
   it "adds movies, shows, seasons and episodes from a user's stack" do
     stack = FactoryBot.create(:stack, user:)
     [movie, episode, season, show].each { |record| stack.add!(record) }

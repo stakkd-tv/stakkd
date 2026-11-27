@@ -25,12 +25,6 @@ Capybara.register_driver :selenium_chrome_headless do |app|
   Capybara::Selenium::Driver.new(app, browser: :chrome, options:)
 end
 
-Capybara.register_driver :selenium_chrome_headless_mobile do |app|
-  args = ["--headless=new", "--window-size=500,1000"]
-  options = Selenium::WebDriver::Chrome::Options.new(args:)
-  Capybara::Selenium::Driver.new(app, browser: :chrome, options:)
-end
-
 def assert_no_console_errors(page, excludes = [])
   errors = page
     .driver

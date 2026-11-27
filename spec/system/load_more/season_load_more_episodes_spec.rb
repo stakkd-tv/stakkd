@@ -12,7 +12,8 @@ RSpec.feature "Season load more episodes", type: :system, js: true do
     FactoryBot.create(:episode, season:, number: 3, translated_name: "Third episode")
     FactoryBot.create(:history_item, user:, item: episode, consumed_at: 1.day.ago)
     FactoryBot.create(:stack_item, stack: user.watchlist!, item: episode)
-    page.current_window.resize_to(500, 500)
+    # Keep lazy loaders below the viewport without switching to the mobile layout.
+    page.current_window.resize_to(1920, 500)
 
     sign_in user
     visit show_season_path(season, show_id: season.show)

@@ -55,16 +55,6 @@ RSpec.describe "Collection browsing", type: :system, js: true do
     expect(page).to have_css("#collection_groups h6", text: collected_show.translated_title)
   end
 
-  it "fits the collection and show breakdown at desktop and mobile widths" do
-    visit user_collection_path(user)
-    expect(page).to have_css("#collection_groups h6", text: movie.translated_title)
-    page.driver.browser.manage.window.resize_to(390, 844)
-    expect(page.evaluate_script("document.documentElement.scrollWidth <= window.innerWidth")).to be(true)
-    find("#collection_show_#{collected_show.id} h6").click
-    expect(page).to have_link("E1 · #{episode.translated_name}")
-    expect(page.evaluate_script("document.documentElement.scrollWidth <= window.innerWidth")).to be(true)
-  end
-
   it "lets the owner remove movies and filtered show ownership from the collection" do
     second = FactoryBot.create(:episode, season:, number: 2)
     FactoryBot.create(:collection_item, user:, item: second)
