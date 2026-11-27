@@ -1,0 +1,24 @@
+<% content_for :title, "Stakkd - #{@user.username}'s Ratings" %>
+<% turbo_exempts_page_from_cache %>
+
+<div class="max-w-7xl mx-auto my-8 px-6 pt-10">
+  <%= render "users/compact_header", user: @user %>
+
+  <div data-controller="ratings-controls"
+       data-ratings-controls-chronological-sorts-value="<%= Ratings::Query.chronological_sorts.to_json %>"
+       data-action="turbo:before-stream-render@document->ratings-controls#preserveCards turbo:frame-load->ratings-controls#syncDates">
+    <h4 class="text-2xl font-bold font-domine mb-4"><%= (current_user == @user) ? "Your" : "#{@user}'s" %> ratings</h4>
+    <%= render "filters" %>
+
+    <%= turbo_frame_tag "ratings_content", class: "block dim-while-busy", data: {turbo_action: "advance"} do %>
+      <% if @ratings.any? %>
+        <%= turbo_frame_tag "rating_items", class: "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4", data: {show_dates: @ratings_query.show_dates?, ratings_controls_target: "items"} do %>
+          <%= render "items", ratings: @ratings %>
+        <% end %>
+        <%= render "load_more" if @next_cursor %>
+      <% else %>
+        <p><%= @ratings_query.filtered? ? "No ratings match these filters." : "No ratings yet." %></p>
+      <% end %>
+    <% end %>
+  </div>
+</div>

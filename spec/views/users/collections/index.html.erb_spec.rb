@@ -5,10 +5,20 @@ RSpec.describe "users/collections/index.html.erb", type: :view do
   let(:query) { Collections::Query.new(user) }
 
   before do
+    allow(view).to receive(:params).and_return({controller: "users/collections", action: "index"})
     view.define_singleton_method(:current_user) { @user }
     assign(:user, user)
     assign(:collection_query, query)
     assign(:formats, CollectionFormat.available_to(user).order(:name))
+    assign(:groups, [])
+  end
+
+  it "renders navigation with only Collection active" do
+    render
+    assert_select "a[data-active='true'][href=?]", user_collection_path(user), text: "Collection"
+    %w[Profile History Progress Watchlist Ratings Stacks Comments Followers Following].each do |label|
+      assert_select "a[data-active='false']", text: label
+    end
   end
 
   context "with collection groups" do

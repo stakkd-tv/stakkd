@@ -42,6 +42,7 @@ export default class extends Controller<HTMLButtonElement> {
 
     const { score } = detail
     this.scoreValue = score
+    this.element.disabled = !this.rateableValue && !score
     this.element.setAttribute(
       'aria-label',
       score

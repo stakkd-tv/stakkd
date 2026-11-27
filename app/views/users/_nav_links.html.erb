@@ -4,7 +4,7 @@
 <%= link_to "Watchlist", watchlist_user_path(user), class: "link", data: {active: params[:controller] == "users" && params[:action] == "watchlist"} %>
 <%= link_to "Collection", user_collection_path(user), class: "link", data: {active: params[:controller] == "users/collections"} %>
 <%= link_to "Stacks", user_stacks_path(user), class: "link", data: {active: params[:controller] == "users/stacks"} %>
-<%= link_to "Ratings", "", class: "link", data: {active: false} %>
+<%= link_to "Ratings", user_ratings_path(user), class: "link", data: {active: params[:controller] == "users/ratings"} %>
 <%= link_to "Comments", "", class: "link", data: {active: false} %>
 <%= link_to "Followers", "", class: "link", data: {active: false} %>
 <%= link_to "Following", "", class: "link", data: {active: false} %>

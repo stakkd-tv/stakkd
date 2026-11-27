@@ -31,6 +31,7 @@ import MarkdownEditorController from './markdown_editor_controller'
 import MarkdownRendererController from './markdown_renderer_controller'
 import MoreOptionsController from './more_options_controller'
 import NavController from './nav_controller'
+import RatingsControlsController from './ratings_controls_controller'
 import SearchResultsController from './search_results_controller'
 import SettingsController from './settings_controller'
 import SlimSelectController from './slim_select_controller'
@@ -66,6 +67,7 @@ application.register('markdown-editor', MarkdownEditorController)
 application.register('markdown-renderer', MarkdownRendererController)
 application.register('more-options', MoreOptionsController)
 application.register('nav', NavController)
+application.register('ratings-controls', RatingsControlsController)
 application.register('search-results', SearchResultsController)
 application.register('settings', SettingsController)
 application.register('slim-select', SlimSelectController)

@@ -1,0 +1,1 @@
+<%= turbo_frame_tag "load_more_ratings", src: user_ratings_path(@user, **@ratings_query.to_params, after: @next_cursor, format: :turbo_stream), loading: :lazy %>
