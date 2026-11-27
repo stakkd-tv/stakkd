@@ -1,0 +1,9 @@
+<% if record.ratings_count.positive? %>
+  <div class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1" role="group" aria-label="Community rating">
+    <span class="inline-flex items-center gap-2">
+      <i class="fa-solid fa-star text-pop text-xl" aria-hidden="true"></i>
+      <span class="text-2xl font-fugaz tabular-nums"><%= number_with_precision(record.average_rating, precision: 1) %></span>
+    </span>
+    <span class="text-sm text-white/75">Community · <%= pluralize(number_with_delimiter(record.ratings_count), "rating") %></span>
+  </div>
+<% end %>

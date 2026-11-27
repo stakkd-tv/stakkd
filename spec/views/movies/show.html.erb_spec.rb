@@ -1,4 +1,5 @@
 require "rails_helper"
+require_relative "../shared_examples/rating_summary"
 require_relative "../shared_examples/collection_actions"
 require_relative "../shared_examples/rating_controls"
 
@@ -18,13 +19,15 @@ RSpec.describe "movies/show", type: :view do
   let(:stacks_next_page) { nil }
   let(:watchlisted) { false }
 
+  let(:community_scores) { [] }
+
   before(:each) do
     assign(:collection_statuses, {})
     assign(:rating_scores, {})
     assign(:collection_status, :none)
     def view.authenticated? = false
     def view.current_user = nil
-    @movie = FactoryBot.create(
+    movie = FactoryBot.create(
       :movie,
       country:,
       original_title: "Original Title",
@@ -43,16 +46,18 @@ RSpec.describe "movies/show", type: :view do
       genres: [FactoryBot.create(:genre, name: "Action")],
       releases: [release]
     )
-    FactoryBot.create(:cast_member, record: @movie, person: FactoryBot.build(:person, translated_name: "John Doe"), character: "Bob")
+    FactoryBot.create(:cast_member, record: movie, person: FactoryBot.build(:person, translated_name: "John Doe"), character: "Bob")
     if has_release
-      cert = FactoryBot.create(:certification, country: @movie.country, code: "ABCODE")
-      release1 = FactoryBot.create(:release, movie: @movie, type: Release::THEATRICAL, certification: cert, date: Date.new(2022, 2, 1), note: "This is a note")
+      cert = FactoryBot.create(:certification, country: movie.country, code: "ABCODE")
+      release1 = FactoryBot.create(:release, movie: movie, type: Release::THEATRICAL, certification: cert, date: Date.new(2022, 2, 1), note: "This is a note")
     end
-    gallery_presenter = Galleries::Presenter.new(@movie)
+    gallery_presenter = Galleries::Presenter.new(movie)
     if has_franchise
       franchise = FactoryBot.create(:franchise, translated_title: "Franchise Title")
-      FactoryBot.create(:franchise_item, record: @movie, franchise:)
+      FactoryBot.create(:franchise_item, record: movie, franchise:)
     end
+    community_scores.each { |score| FactoryBot.create(:rating, item: movie, score:) }
+    @movie = Movie.with_rating_summary.includes(:country, :genres, :taglines, :keywords, :companies, :franchise).find(movie.id)
     assign(:movie, @movie)
     assign(:alternative_names, alternative_names)
     assign(:gallery_presenter, gallery_presenter)
@@ -372,4 +377,6 @@ RSpec.describe "movies/show", type: :view do
   it_behaves_like "an inline rating picker" do
     let(:rating_record) { @movie }
   end
+
+  it_behaves_like "a media page rating summary", 2
 end

@@ -1,4 +1,5 @@
 require "rails_helper"
+require_relative "shared_examples/rateable"
 require_relative "shared_examples/has_imdb"
 require_relative "shared_examples/has_galleries"
 require_relative "shared_examples/history"
@@ -7,7 +8,6 @@ require_relative "shared_examples/stackable"
 
 RSpec.describe Episode, type: :model do
   describe "associations" do
-    it { should have_many(:ratings).dependent(:delete_all) }
     it { should belong_to(:season) }
     it { should have_many(:guest_stars).class_name("CastMember") }
     it { should have_many(:crew_members).dependent(:destroy) }
@@ -261,6 +261,20 @@ RSpec.describe Episode, type: :model do
         episode = Episode.new(episode_type: Episode::TYPES.reject { |t| t == type }.sample)
         expect(episode.send("#{type}?")).to be_falsey
       end
+    end
+  end
+
+  it_behaves_like "a rateable model" do
+    let(:item) { FactoryBot.create(:episode) }
+
+    it "does not combine different media types with the same numeric ID" do
+      movie = FactoryBot.create(:movie)
+      episode = FactoryBot.create(:episode, id: movie.id)
+      FactoryBot.create(:rating, item: movie, score: 9)
+      FactoryBot.create(:rating, item: episode, score: 3)
+
+      expect(Movie.with_rating_summary.find(movie.id).average_rating).to eq(9)
+      expect(Episode.with_rating_summary.find(episode.id).average_rating).to eq(3)
     end
   end
 end

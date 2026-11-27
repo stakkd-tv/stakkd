@@ -68,7 +68,9 @@ class SeasonsController < ApplicationController
   end
 
   def set_season
-    @season = @show.seasons.find_by!(number: params.expect(:id))
+    seasons = @show.seasons
+    seasons = seasons.with_rating_summary if action_name == "show" && !request.format.turbo_stream?
+    @season = seasons.find_by!(number: params.expect(:id))
   end
 
   def record = @season

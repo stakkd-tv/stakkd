@@ -1,4 +1,5 @@
 require "rails_helper"
+require_relative "shared_examples/rateable"
 require_relative "shared_examples/slugify"
 require_relative "shared_examples/has_imdb"
 require_relative "shared_examples/has_galleries"
@@ -8,7 +9,6 @@ require_relative "shared_examples/stackable"
 
 RSpec.describe Movie, type: :model do
   describe "associations" do
-    it { should have_many(:ratings).dependent(:delete_all) }
     it { should belong_to(:country) }
     it { should belong_to(:language) }
     it { should have_many(:alternative_names).dependent(:destroy) }
@@ -262,5 +262,29 @@ RSpec.describe Movie, type: :model do
 
   it_behaves_like "a stackable model" do
     let(:item) { FactoryBot.create(:movie) }
+  end
+
+  it_behaves_like "a rateable model" do
+    let(:item) { FactoryBot.create(:movie) }
+
+    it "supports joins, SQL sorting at full precision and pagination without inflating votes" do
+      first = FactoryBot.create(:movie)
+      second = FactoryBot.create(:movie)
+      unrated = FactoryBot.create(:movie)
+      genres = [FactoryBot.create(:genre, name: "Drama"), FactoryBot.create(:genre, name: "Mystery")]
+      [first, second, unrated].each do |movie|
+        genres.each { |genre| FactoryBot.create(:genre_assignment, record: movie, genre:) }
+      end
+      [8, 8, 9].each { |score| FactoryBot.create(:rating, item: first, score:) }
+      [8, 9, 8, 8].each { |score| FactoryBot.create(:rating, item: second, score:) }
+
+      movies = Movie.with_rating_summary.joins(:genres).distinct
+        .order("average_rating DESC NULLS LAST, movies.id ASC")
+      expect(movies.map(&:id)).to eq([first.id, second.id, unrated.id])
+      expect(movies.map(&:ratings_count)).to eq([3, 4, 0])
+      page = movies.paginate(page: 2, per_page: 1)
+      expect(page.total_entries).to eq(3)
+      expect(page.map(&:id)).to eq([second.id])
+    end
   end
 end

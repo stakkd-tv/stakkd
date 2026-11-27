@@ -15,7 +15,10 @@
     <%= link_to @season.translated_name, show_season_path(@season, show_id: @show), class: "underline" %>
   </div>
   <div class="flex justify-between gap-8 mb-4">
-    <h1 class="font-domine text-2xl md:text-4xl"><span class="text-pop">Episode <%= @episode.number %></span> - <%= @episode.translated_name %></h1>
+    <div>
+      <h1 class="font-domine text-2xl md:text-4xl"><span class="text-pop">Episode <%= @episode.number %></span> - <%= @episode.translated_name %></h1>
+      <%= render "shared/rating_summary", record: @episode %>
+    </div>
     <%= link_to edit_show_season_episode_path(@episode, season_id: @season, show_id: @show) do %>
       <i class="fa-solid fa-pen text-lg"></i>
     <% end %>

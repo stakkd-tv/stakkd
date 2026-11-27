@@ -3,13 +3,13 @@ class Season < ApplicationRecord
   include History
   include Routable
   include Stackable
+  include Rateable
 
   # Associations
   belongs_to :show
   has_many :season_regulars, -> { order(position: :asc) }, as: :record, class_name: "CastMember", dependent: :destroy
   has_many :episodes, dependent: :destroy
   has_many :ordered_episodes, -> { ordered }, class_name: "Episode"
-  has_many :ratings, as: :item, dependent: :delete_all
   has_galleries :posters, :videos
 
   # Validations

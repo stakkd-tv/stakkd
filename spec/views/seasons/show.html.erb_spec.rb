@@ -1,4 +1,5 @@
 require "rails_helper"
+require_relative "../shared_examples/rating_summary"
 require_relative "../shared_examples/collection_actions"
 require_relative "../shared_examples/rating_controls"
 
@@ -12,6 +13,8 @@ RSpec.describe "seasons/show", type: :view do
   let(:stacks_next_page) { nil }
   let(:watchlisted) { false }
 
+  let(:community_scores) { [] }
+
   before(:each) do
     assign(:collection_statuses, {})
     assign(:rating_scores, {})
@@ -24,12 +27,12 @@ RSpec.describe "seasons/show", type: :view do
       backgrounds:
     )
     @show.ordered_seasons.first.destroy # Destroy specials season, not needed for this test
-    @season = FactoryBot.create(:season, show: @show, number: 1, posters:, overview: "This is overview", translated_name:)
+    season = FactoryBot.create(:season, show: @show, number: 1, posters:, overview: "This is overview", translated_name:)
     if has_episodes
       @episode1 = FactoryBot.create(
         :episode,
         number: 1,
-        season: @season,
+        season: season,
         original_air_date: Date.new(2023, 1, 1),
         runtime: 30,
         translated_name: "Pilot",
@@ -38,7 +41,7 @@ RSpec.describe "seasons/show", type: :view do
       @episode2 = FactoryBot.create(
         :episode,
         number: 2,
-        season: @season,
+        season: season,
         original_air_date: Date.new(2023, 1, 2),
         runtime: 30,
         translated_name: "Ringtoneers",
@@ -47,9 +50,11 @@ RSpec.describe "seasons/show", type: :view do
       @episode_watch_statuses = {@episode1 => :none, @episode2 => :completed}
     end
     @episode_watch_statuses ||= {}
-    FactoryBot.create(:cast_member, record: @season, person: FactoryBot.build(:person, translated_name: "John Doe"), character: "Bob")
-    gallery_presenter = Galleries::Presenter.new(@season)
+    FactoryBot.create(:cast_member, record: season, person: FactoryBot.build(:person, translated_name: "John Doe"), character: "Bob")
+    gallery_presenter = Galleries::Presenter.new(season)
     assign(:show, @show)
+    community_scores.each { |score| FactoryBot.create(:rating, item: season, score:) }
+    @season = Season.with_rating_summary.includes(:show, :ordered_episodes).find(season.id)
     assign(:season, @season)
     assign(:episodes, @season.ordered_episodes.paginate(page: 1, per_page: SeasonsController::EPISODES_PER_PAGE))
     assign(:gallery_presenter, gallery_presenter)
@@ -309,4 +314,6 @@ RSpec.describe "seasons/show", type: :view do
   it_behaves_like "an image rating button" do
     let(:rating_record) { @episode1 }
   end
+
+  it_behaves_like "a media page rating summary", 2
 end

@@ -1,4 +1,5 @@
 require "rails_helper"
+require_relative "shared_examples/rateable"
 require_relative "shared_examples/slugify"
 require_relative "shared_examples/has_imdb"
 require_relative "shared_examples/has_galleries"
@@ -8,7 +9,6 @@ require_relative "shared_examples/stackable"
 
 RSpec.describe Show, type: :model do
   describe "associations" do
-    it { should have_many(:ratings).dependent(:delete_all) }
     it { should belong_to(:country) }
     it { should belong_to(:language) }
     it { should have_many(:alternative_names).dependent(:destroy) }
@@ -238,5 +238,22 @@ RSpec.describe Show, type: :model do
 
   it_behaves_like "a stackable model" do
     let(:item) { FactoryBot.create(:show) }
+  end
+
+  it_behaves_like "a rateable model" do
+    let(:item) { FactoryBot.create(:show) }
+
+    it "keeps show, season and episode votes independent" do
+      episode = FactoryBot.create(:episode)
+      season = episode.season
+      show = season.show
+      [[show, 9], [season, 7], [episode, 5]].each do |item, score|
+        FactoryBot.create(:rating, item:, score:)
+      end
+
+      expect(Show.with_rating_summary.find(show.id).average_rating).to eq(9)
+      expect(Season.with_rating_summary.find(season.id).average_rating).to eq(7)
+      expect(Episode.with_rating_summary.find(episode.id).average_rating).to eq(5)
+    end
   end
 end

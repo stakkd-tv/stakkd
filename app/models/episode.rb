@@ -4,6 +4,7 @@ class Episode < ApplicationRecord
   include History
   include Routable
   include Stackable
+  include Rateable
 
   TYPES = [
     STANDARD = "standard",
@@ -17,7 +18,6 @@ class Episode < ApplicationRecord
   has_many :crew_members, as: :record, dependent: :destroy
   has_many :collection_items, as: :item, dependent: :destroy
   has_many :history_items, as: :item, dependent: :destroy
-  has_many :ratings, as: :item, dependent: :delete_all
   has_one :show, through: :season
   has_galleries :backgrounds, :videos
 

@@ -1,4 +1,5 @@
 require "rails_helper"
+require_relative "../shared_examples/rating_summary"
 require_relative "../shared_examples/collection_actions"
 require_relative "../shared_examples/rating_controls"
 
@@ -12,6 +13,8 @@ RSpec.describe "episodes/show", type: :view do
   let(:stacks_next_page) { nil }
   let(:watchlisted) { false }
 
+  let(:community_scores) { [] }
+
   before(:each) do
     assign(:collection_statuses, {})
     assign(:rating_scores, {})
@@ -21,7 +24,7 @@ RSpec.describe "episodes/show", type: :view do
     @season = FactoryBot.create(:season, number: 1, posters:, overview: "This is overview", translated_name: "NAME")
     @show = @season.show
     @show.ordered_seasons.first.destroy # Destroy specials season, not needed for this test
-    @episode = FactoryBot.create(
+    episode = FactoryBot.create(
       :episode,
       number: 2,
       season: @season,
@@ -31,8 +34,10 @@ RSpec.describe "episodes/show", type: :view do
       backgrounds: [Rack::Test::UploadedFile.new("spec/support/assets/1280x720.png", "image/png")],
       imdb_id:
     )
-    FactoryBot.create(:cast_member, record: @episode, person: FactoryBot.build(:person, translated_name: "John Doe"), character: "Bob")
+    FactoryBot.create(:cast_member, record: episode, person: FactoryBot.build(:person, translated_name: "John Doe"), character: "Bob")
     gallery_presenter = Galleries::Presenter.new(@season)
+    community_scores.each { |score| FactoryBot.create(:rating, item: episode, score:) }
+    @episode = Episode.with_rating_summary.includes(:season, :show).find(episode.id)
     assign(:show, @show)
     assign(:season, @season)
     assign(:gallery_presenter, gallery_presenter)
@@ -294,4 +299,6 @@ RSpec.describe "episodes/show", type: :view do
   it_behaves_like "an inline rating picker" do
     let(:rating_record) { @episode }
   end
+
+  it_behaves_like "a media page rating summary", 1
 end
