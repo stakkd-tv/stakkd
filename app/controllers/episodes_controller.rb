@@ -64,7 +64,9 @@ class EpisodesController < ApplicationController
   end
 
   def set_episode
-    @episode = @season.episodes.find_by!(number: params.expect(:id))
+    episodes = @season.episodes
+    episodes = episodes.with_rating_summary if action_name == "show"
+    @episode = episodes.find_by!(number: params.expect(:id))
   end
 
   def record = @episode

@@ -1,4 +1,5 @@
 require "rails_helper"
+require_relative "../shared_examples/rating_summary"
 require_relative "../shared_examples/collection_actions"
 require_relative "../shared_examples/rating_controls"
 
@@ -16,13 +17,15 @@ RSpec.describe "shows/show", type: :view do
   let(:stacks_next_page) { nil }
   let(:watchlisted) { false }
 
+  let(:community_scores) { [] }
+
   before(:each) do
     assign(:collection_statuses, {})
     assign(:rating_scores, {})
     assign(:collection_status, :none)
     def view.authenticated? = false
     def view.current_user = nil
-    @show = FactoryBot.create(
+    show = FactoryBot.create(
       :show,
       country:,
       original_title: "Original Title",
@@ -38,12 +41,14 @@ RSpec.describe "shows/show", type: :view do
       videos:,
       genres: [FactoryBot.create(:genre, name: "Action")]
     )
-    FactoryBot.create(:cast_member, record: @show, person: FactoryBot.build(:person, translated_name: "John Doe"), character: "Bob")
-    gallery_presenter = Galleries::Presenter.new(@show)
+    FactoryBot.create(:cast_member, record: show, person: FactoryBot.build(:person, translated_name: "John Doe"), character: "Bob")
+    gallery_presenter = Galleries::Presenter.new(show)
     if has_franchise
       franchise = FactoryBot.create(:franchise, translated_title: "Franchise Title")
-      FactoryBot.create(:franchise_item, record: @show, franchise:)
+      FactoryBot.create(:franchise_item, record: show, franchise:)
     end
+    community_scores.each { |score| FactoryBot.create(:rating, item: show, score:) }
+    @show = Show.with_rating_summary.includes(:genres, :taglines, :keywords, :companies, :franchise, :ordered_seasons, :seasons_without_specials).find(show.id)
     assign(:show, @show)
     assign(:alternative_names, alternative_names)
     assign(:gallery_presenter, gallery_presenter)
@@ -376,4 +381,6 @@ RSpec.describe "shows/show", type: :view do
   it_behaves_like "an image rating button" do
     let(:rating_record) { @show.ordered_seasons.first }
   end
+
+  it_behaves_like "a media page rating summary", 2
 end

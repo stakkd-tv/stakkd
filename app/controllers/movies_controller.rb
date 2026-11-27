@@ -85,7 +85,9 @@ class MoviesController < ApplicationController
   private
 
   def set_movie
-    @movie = Movie.includes(:country, :taglines, :videos, :keywords, :genres, :companies, :franchise).from_slug(params.expect(:id))
+    movies = Movie.includes(:country, :taglines, :videos, :keywords, :genres, :companies, :franchise)
+    movies = movies.with_rating_summary if action_name == "show"
+    @movie = movies.from_slug(params.expect(:id))
   end
 
   def record = @movie

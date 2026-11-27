@@ -29,6 +29,7 @@
         <% if @show.tagline %>
           <p class="text-sm mt-4 italic"><%= @show.tagline %></p>
         <% end %>
+        <%= render "shared/rating_summary", record: @show %>
       </div>
       <div class="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-1 gap-10">
         <div>
@@ -88,6 +89,7 @@
         <% if @show.tagline %>
           <p class="text-sm mt-4 italic"><%= @show.tagline %></p>
         <% end %>
+        <%= render "shared/rating_summary", record: @show %>
       </div>
       <div class="mt-10 md:mt-0 leading-6 text-sm md:text-base flex flex-col gap-6">
         <p class="block sm:hidden text-xl font-domine">Overview:</p>

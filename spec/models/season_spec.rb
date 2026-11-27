@@ -1,4 +1,5 @@
 require "rails_helper"
+require_relative "shared_examples/rateable"
 require_relative "shared_examples/has_galleries"
 require_relative "shared_examples/history"
 require_relative "shared_examples/routable"
@@ -6,7 +7,6 @@ require_relative "shared_examples/stackable"
 
 RSpec.describe Season, type: :model do
   describe "associations" do
-    it { should have_many(:ratings).dependent(:delete_all) }
     it { should belong_to(:show) }
     it { should have_many(:season_regulars).class_name("CastMember").dependent(:destroy) }
     it { should have_many(:episodes).dependent(:destroy) }
@@ -244,5 +244,21 @@ RSpec.describe Season, type: :model do
 
   it_behaves_like "a stackable model" do
     let(:item) { FactoryBot.create(:season) }
+  end
+
+  it_behaves_like "a rateable model" do
+    let(:item) { FactoryBot.create(:season) }
+
+    it "includes direct ratings for Specials and their episodes" do
+      show = FactoryBot.create(:show)
+      specials = show.seasons.find_by!(number: 0)
+      episode = FactoryBot.create(:episode, season: specials)
+      FactoryBot.create(:rating, item: specials, score: 9)
+      FactoryBot.create(:rating, item: episode, score: 6)
+
+      expect(Season.with_rating_summary.find(specials.id).average_rating).to eq(9)
+      expect(Episode.with_rating_summary.find(episode.id).average_rating).to eq(6)
+      expect(Show.with_rating_summary.find(show.id).average_rating).to be_nil
+    end
   end
 end

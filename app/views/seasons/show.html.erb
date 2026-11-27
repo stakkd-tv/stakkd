@@ -24,6 +24,7 @@
         <% if @season.translated_name != potential_name %>
           <p class="text-xl mt-4 italic font-bold"><%= @season.translated_name %></p>
         <% end %>
+        <%= render "shared/rating_summary", record: @season %>
       </div>
       <div class="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-1 gap-10">
         <div>
@@ -53,6 +54,7 @@
         <% if @season.translated_name != potential_name %>
           <p class="text-xl mt-4 italic font-bold"><%= @season.translated_name %></p>
         <% end %>
+        <%= render "shared/rating_summary", record: @season %>
       </div>
       <div class="mt-10 md:mt-0 leading-6 text-sm md:text-base flex flex-col gap-6">
         <p class="block sm:hidden text-xl font-domine">Overview:</p>

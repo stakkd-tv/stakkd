@@ -6,6 +6,7 @@ class Movie < ApplicationRecord
   include History
   include Routable
   include Stackable
+  include Rateable
 
   acts_as_taggable_on :keywords
 
@@ -47,7 +48,6 @@ class Movie < ApplicationRecord
   has_many :taglines, -> { order(position: :asc) }, as: :record, dependent: :destroy
   has_many :collection_items, as: :item, dependent: :destroy
   has_many :history_items, as: :item, dependent: :destroy
-  has_many :ratings, as: :item, dependent: :delete_all
   has_one :franchise_item, as: :record, dependent: :destroy
   has_one :franchise, through: :franchise_item
   has_galleries :posters, :backgrounds, :logos, :videos

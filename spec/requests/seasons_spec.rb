@@ -1,4 +1,5 @@
 require "rails_helper"
+require_relative "shared_examples/rating_summary"
 require_relative "shared_examples/actions/history"
 require_relative "shared_examples/actions/stacks"
 require_relative "shared_examples/actions/collections"
@@ -381,6 +382,10 @@ RSpec.describe "/shows/:show_id/seasons", type: :request do
   end
 
   it_behaves_like "a model with rating actions" do
+    let(:record) { FactoryBot.create(:season, :with_premiere_date) }
+  end
+
+  it_behaves_like "a media page with a rating summary", 2 do
     let(:record) { FactoryBot.create(:season, :with_premiere_date) }
   end
 end

@@ -86,10 +86,12 @@ class ShowsController < ApplicationController
   private
 
   def set_show
-    @show = Show.includes(
+    shows = Show.includes(
       :seasons_without_specials, :ordered_seasons, :taglines, :videos,
       :keywords, :season_regulars, :genres, :companies, :franchise
-    ).from_slug(params.expect(:id))
+    )
+    shows = shows.with_rating_summary if action_name == "show"
+    @show = shows.from_slug(params.expect(:id))
   end
 
   def record = @show
