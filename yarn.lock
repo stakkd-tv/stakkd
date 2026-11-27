@@ -1063,7 +1063,7 @@ __metadata:
     flatpickr: "npm:^4.6.13"
     instantsearch.js: "npm:^4.122.0"
     marked: "npm:^18.2.1"
-    marked-inline-spoilers: "npm:^1.0.1"
+    marked-inline-spoilers: "npm:^1.0.2"
     sanitize-html: "npm:^2.18.1"
     slim-select: "npm:^4.6.4"
     sortablejs: "npm:^1.15.7"
@@ -2013,12 +2013,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"marked-inline-spoilers@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "marked-inline-spoilers@npm:1.0.1"
+"marked-inline-spoilers@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "marked-inline-spoilers@npm:1.0.2"
   peerDependencies:
     marked: ">=1 <19"
-  checksum: 10c0/2377d692682f7c24582074804c79eff5dd9ef2b872665cd9b9d4556456677e5cfb9f5c47fe545f3cb6d5e5a41242d7912eb28c62b7d27d52c9ec24f610930714
+  checksum: 10c0/7cf6091cfaf5dc713f6bfb69a9eef37d652633cd9d185ed4bb3bce131cc0a1935cc2919ea06ff40bd401143dca58ab62a01a802cb66207b959ab384946098eaf
   languageName: node
   linkType: hard
 
